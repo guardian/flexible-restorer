@@ -1,7 +1,7 @@
 {
   "name": "composer-restorer",
   "scripts": {
-    "postinstall": "mkdir -p public/javascripts public/stylesheets/vendor && cp node_modules/bootstrap/dist/css/* $_ && npm run bundle",
+    "postinstall": "jspm install -y && mkdir -p public/javascripts public/stylesheets/vendor && cp node_modules/bootstrap/dist/css/* $_ && npm run bundle",
     "bundle": "browserify -t browserify-handlebars app/assets/javascripts/index.js -o public/javascripts/application.js",
     "watch-js": "watchify -t browserify-handlebars app/assets/javascripts/index.js -o public/javascripts/application.js",
     "watch": "npm run watch-js"
@@ -14,6 +14,7 @@
     "bootstrap": "^3.3.1",
     "browserify-handlebars": "^1.0.0",
     "handlebars": "^2.0.0",
+    "jspm": "^0.15.0-beta",
     "superagent": "^0.21.0",
     "to-array": "^0.1.4"
   },

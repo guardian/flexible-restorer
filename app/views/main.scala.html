@@ -16,6 +16,15 @@
         @content
     </div>
 
-    <script src="@routes.Assets.at("/javascripts/application.js")"></script>
+    <script src="@routes.Assets.at("jspm_packages/system.js")"></script>
+    <script src="@routes.Assets.at("config.js")"></script>
+    <script>
+      System
+        .import('javascripts/app/main')
+        .catch(function(err){
+          console.log('System js load error: -->');
+          console.log(err);
+        })
+    </script>
 </body>
 </html>
