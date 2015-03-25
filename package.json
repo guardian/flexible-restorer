@@ -16,5 +16,14 @@
     "handlebars": "^2.0.0",
     "superagent": "^0.21.0",
     "to-array": "^0.1.4"
+  },
+  "jspm": {
+    "directories": {
+      "baseURL": "public"
+    },
+    "devDependencies": {
+      "babel": "npm:babel@^4.7.16",
+      "babel-runtime": "npm:babel-runtime@^4.7.16"
+    }
   }
 }
