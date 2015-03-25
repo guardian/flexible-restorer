@@ -6,15 +6,12 @@
     <meta charset="UTF-8">
     <title>Composer Restorer - @pageTitle</title>
 
-    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("/stylesheets/vendor/bootstrap.min.css")" />
-    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("/stylesheets/vendor/bootstrap-theme.min.css")" />
-    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("/stylesheets/application.css")" />
 
 </head>
-<body>
-    <div class="container">
-        @content
-    </div>
+<body ng-app="restorer">
+  <main ng-view>
+    <!-- Add Loading GFX -->
+  </main>
 
     <script src="@routes.Assets.at("jspm_packages/system.js")"></script>
     <script src="@routes.Assets.at("config.js")"></script>
