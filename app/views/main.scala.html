@@ -5,17 +5,31 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Composer Restorer - @pageTitle</title>
-
-
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("/jspm_packages/github/necolas/normalize.css@3.0.2/normalize.css")" />
+    <style>
+      html, body, .main, .container, .sidebar, .content {
+        height: 100%;
+      }
+      .content {
+        overflow: auto;
+      }
+      .container {
+        overflow: hidden;
+      }
+      .composer-icon object {
+        max-width: 20px;
+      }
+    </style>
 </head>
 <body ng-app="restorer">
-  <main ng-view>
+  <main class="main" ng-view>
     <!-- Add Loading GFX -->
   </main>
 
     <script src="@routes.Assets.at("jspm_packages/system.js")"></script>
     <script src="@routes.Assets.at("config.js")"></script>
     <script>
+      System.baseURL = '/assets';
       System
         .import('javascripts/app/main')
         .catch(function(err){

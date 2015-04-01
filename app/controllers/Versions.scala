@@ -57,12 +57,13 @@ object Versions extends Controller with PanDomainAuthActions {
   }
 
   def getJSONVersionsCollection(contentId: String) = AuthAction {
-
+    val timestamp: String => Option[String] = _.split("/").lift(7)
     val s3                    = new S3
     val draftVersionKeys      = s3.listDraftForId(contentId)
     val draftVersions         = draftVersionKeys.map(Snapshot)
-    val draftVersionsContent  = Json.toJson(draftVersions.map {ss =>
-      (Json.parse(snapShotAsString(s3.getDraftSnapshot(ss.key))))
+    val both = (draftVersionKeys, draftVersions).zipped
+    val draftVersionsContent  = Json.toJson(both.map {(key, ss) =>
+      Map(timestamp(key).get -> (Json.parse(snapShotAsString(s3.getDraftSnapshot(ss.key)))))
     })
 
     Ok(draftVersionsContent)
