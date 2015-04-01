@@ -1,15 +1,22 @@
 System.config({
+  "baseURL": "assets",
   "paths": {
     "*": "*.js",
     "github:*": "jspm_packages/github/*.js",
     "npm:*": "jspm_packages/npm/*.js"
-  },
-  baseURL: 'assets'
+  }
 });
 
 System.config({
   "map": {
+    "angular": "github:angular/bower-angular@1.3.15",
+    "angular-route": "github:angular/bower-angular-route@1.3.15",
+    "bootstrap": "github:twbs/bootstrap@3.3.4",
+    "composer-components": "github:guardian/tools-components@0.4",
+    "css": "github:systemjs/plugin-css@0.1.9",
     "guardian/tools-components": "github:guardian/tools-components@0.4",
+    "necolas/normalize.css": "github:necolas/normalize.css@3.0.2",
+    "svg": "github:cutandpastey/plugin-svg@0.2.0",
     "traceur": "github:jmcriffey/bower-traceur@0.0.87",
     "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.87",
     "github:angular/bower-angular-route@1.3.15": {
@@ -63,6 +70,9 @@ System.config({
     },
     "github:jspm/nodelibs-util@0.1.0": {
       "util": "npm:util@0.10.3"
+    },
+    "github:necolas/normalize.css@3.0.2": {
+      "css": "github:systemjs/plugin-css@0.1.9"
     },
     "github:systemjs/plugin-css@0.1.9": {
       "clean-css": "npm:clean-css@3.1.8",
