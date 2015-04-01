@@ -1,0 +1,43 @@
+<!-- PRELOADER -->
+<div ng-if="isLoading">
+  This is loading
+</div>
+
+<!-- ERROR STATUS -->
+<div ng-if="hasError">
+  Oops we have an error
+</div>
+
+<!-- HEADER -->
+<gu-row skin="header">
+  <gu-column span="2">
+    <gu-row>
+      <!-- COMPOSER ICON -->
+      <gu-column span="2" gu-box="tertiary" skin="header">
+        <gu-icon class="composer-icon" variant="composer-icon"></gu-icon>
+      </gu-column>
+      <!-- PAGE STATUS -->
+      <gu-column flex span="6" >
+        <gu-page-label skin=header>
+          Restorer
+          <gu-page-label-hover>
+            <a href="/">Home</a>
+          </gu-page-label-hover>
+        </gu-page-label>
+      </gu-column>
+      <gu-column span="4" gu-box="tertiary"></gu-column>
+    </gu-row>
+  </gu-column>
+  <!-- MAIN HEADER -->
+  <gu-column span="10" gu-box="tertiary" skin="header"></gu-column>
+</gu-row>
+
+<gu-row class="content">
+  <gu-column class="sidebar" span="3" gu-box="secondary">
+    <!-- SNAPSHOT LIST -->
+    <gu-snapshot-list>
+      <gu-snapshot-list-item ng-repeat="model in models" json-href="#" restore-href="#" created="{{model}}"></gu-snapshot-list-item>
+    </gu-snapshot-list>
+
+  </gu-column>
+</gu-row>
