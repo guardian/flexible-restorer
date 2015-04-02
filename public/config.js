@@ -15,6 +15,7 @@ System.config({
     "composer-components": "github:guardian/tools-components@0.4",
     "css": "github:systemjs/plugin-css@0.1.9",
     "guardian/tools-components": "github:guardian/tools-components@0.4",
+    "moment": "github:moment/moment@2.9.0",
     "necolas/normalize.css": "github:necolas/normalize.css@3.0.2",
     "svg": "github:cutandpastey/plugin-svg@0.2.0",
     "traceur": "github:jmcriffey/bower-traceur@0.0.87",

@@ -36,7 +36,7 @@
   <gu-column class="sidebar" span="3" gu-box="secondary">
     <!-- SNAPSHOT LIST -->
     <gu-snapshot-list>
-      <gu-snapshot-list-item ng-repeat="model in models" json-href="#" restore-href="#" created="{{model}}"></gu-snapshot-list-item>
+      <gu-snapshot-list-item ng-repeat="model in models" json-href="#" restore-href="#" created="{{model.get('timestamp')}}"></gu-snapshot-list-item>
     </gu-snapshot-list>
 
   </gu-column>

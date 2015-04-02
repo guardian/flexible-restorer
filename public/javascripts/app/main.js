@@ -3,7 +3,7 @@ import ngRoute from 'angular-route/angular-route';
 
 import controllers  from './controllers/index';
 import models       from './models/index';
-import collections  from  './colletions/index';
+import collections  from  './collections/index';
 import services     from './services/index';
 
 import components   from 'composer-components';
