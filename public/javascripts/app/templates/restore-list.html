@@ -1,8 +1,3 @@
-<!-- PRELOADER -->
-<div ng-if="isLoading">
-  This is loading
-</div>
-
 <!-- ERROR STATUS -->
 <div ng-if="hasError">
   Oops we have an error
@@ -32,12 +27,41 @@
   <gu-column span="10" gu-box="tertiary" skin="header"></gu-column>
 </gu-row>
 
-<gu-row class="content">
-  <gu-column class="sidebar" span="3" gu-box="secondary">
+<!-- PRELOADER -->
+<div ng-if="isLoading">
+  This is loading
+</div>
+
+<gu-row ng-if="!isLoading" class="content">
+  <gu-column class="sidebar" span="3" gu-box="secondary" ng-controller="SnapshotListInteractionCtrl as ctrl">
     <!-- SNAPSHOT LIST -->
-    <gu-snapshot-list>
-      <gu-snapshot-list-item ng-repeat="model in models" json-href="#" restore-href="#" created="{{model.get('timestamp')}}"></gu-snapshot-list-item>
-    </gu-snapshot-list>
+    <gu-index-list>
+      <gu-index-list-item
+        ng-repeat-start="model in models"
+        index="{{ models.length - $index }}"
+        variant="{{ model.get('activeState') ? 'quaternary' : 'primary' }}">
+        <!-- CONTENT -->
+        <div>
+          <h4>{{ model.getRelativeDate() }}</h4>
+          <h6>{{ model.getCreatedDate() }}</h6>
+        </div>
+
+        <!-- JSON LINK -->
+        <gu-btn ng-if="model.get('activeState')" href="#">JSON</gu-btn>
+
+        <!-- RESTORE LINK -->
+        <gu-btn ng-if="model.get('activeState')" href="#" variant="arrow-right">
+          <gu-icon variant="wrench-disabled"></gu-icon>
+          Restore
+        </gu-btn>
+
+      </gu-index-list-item>
+      <li ng-repeat-end>
+        <gu-row variant="reverse">
+          <gu-icon variant="expand-disabled"></gu-icon>
+        </gu-row>
+      </li>
+    </gu-index-list>
 
   </gu-column>
 </gu-row>

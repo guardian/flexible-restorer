@@ -15,8 +15,9 @@ var restoreListCtrl = restoreListCtrlMod.controller('RestoreListCtrl', [
     $scope.hasError   = false;
 
     SnapshotModels
-      .get($routeParams.contentId)
+      .getCollection($routeParams.contentId)
       .then((collection) => {
+        $scope.isLoading  = false;
         $scope.models = collection.getModels();
       })
       .catch((err) => {

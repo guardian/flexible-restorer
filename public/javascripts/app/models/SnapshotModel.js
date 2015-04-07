@@ -3,7 +3,7 @@ import moment   from 'moment';
 
 var SnapshotModelMod = angular.module('SnapshotModelMod', []);
 
-var SnapshotModel = SnapshotModelMod.service('SnapshotModel', [
+var SnapshotModel = SnapshotModelMod.factory('SnapshotModel', [
   function(){
 
     class SnapshotModel {
@@ -12,7 +12,8 @@ var SnapshotModel = SnapshotModelMod.service('SnapshotModel', [
         var snapshotData = data[timestamp];
         this.data = angular.extend({}, {
           timestamp: timestamp,
-          createdDate: moment(timestamp)
+          createdDate: moment(timestamp),
+          activeState: false
         }, snapshotData);
       }
 

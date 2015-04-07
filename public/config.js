@@ -12,10 +12,10 @@ System.config({
     "angular": "github:angular/bower-angular@1.3.15",
     "angular-route": "github:angular/bower-angular-route@1.3.15",
     "bootstrap": "github:twbs/bootstrap@3.3.4",
-    "composer-components": "github:guardian/tools-components@0.4",
+    "composer-components": "github:guardian/tools-components@0.5",
     "css": "github:systemjs/plugin-css@0.1.9",
-    "guardian/tools-components": "github:guardian/tools-components@0.4",
-    "moment": "github:moment/moment@2.9.0",
+    "mediator": "github:ajacksified/Mediator.js@0.9.9",
+    "moment": "github:moment/moment@2.10.0",
     "necolas/normalize.css": "github:necolas/normalize.css@3.0.2",
     "svg": "github:cutandpastey/plugin-svg@0.2.0",
     "traceur": "github:jmcriffey/bower-traceur@0.0.87",
@@ -23,16 +23,14 @@ System.config({
     "github:angular/bower-angular-route@1.3.15": {
       "angular": "github:angular/bower-angular@1.3.15"
     },
-    "github:guardian/tools-components@0.4": {
+    "github:guardian/tools-components@0.5": {
       "angular": "github:angular/bower-angular@1.3.15",
       "angular-route": "github:angular/bower-angular-route@1.3.15",
       "css": "github:systemjs/plugin-css@0.1.9",
+      "cutandpastey/plugin-svg": "github:cutandpastey/plugin-svg@0.2.0",
       "js-beautify": "npm:js-beautify@1.5.5",
       "json": "github:systemjs/plugin-json@0.1.0",
-      "moment": "npm:moment@2.9.0",
-      "svg": "github:cutandpastey/plugin-svg@0.2.0",
-      "systemjs/plugin-text": "github:systemjs/plugin-text@0.0.2",
-      "text": "github:systemjs/plugin-text@0.0.2"
+      "svg": "github:cutandpastey/plugin-svg@0.2.0"
     },
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
@@ -76,7 +74,7 @@ System.config({
       "css": "github:systemjs/plugin-css@0.1.9"
     },
     "github:systemjs/plugin-css@0.1.9": {
-      "clean-css": "npm:clean-css@3.1.8",
+      "clean-css": "npm:clean-css@3.1.9",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "path": "github:jspm/nodelibs-path@0.1.0"
     },
@@ -98,7 +96,7 @@ System.config({
       "ieee754": "npm:ieee754@1.1.4",
       "is-array": "npm:is-array@1.0.1"
     },
-    "npm:clean-css@3.1.8": {
+    "npm:clean-css@3.1.9": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "commander": "npm:commander@2.6.0",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
@@ -156,9 +154,6 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "minimist": "npm:minimist@0.0.8",
       "path": "github:jspm/nodelibs-path@0.1.0",
-      "process": "github:jspm/nodelibs-process@0.1.1"
-    },
-    "npm:moment@2.9.0": {
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
     "npm:nopt@3.0.1": {

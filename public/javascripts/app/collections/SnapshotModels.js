@@ -4,7 +4,7 @@ import SnapshotCollectionMod from '../services/SnapshotCollectionService';
 
 var SnapshotModelsMod = angular.module('SnapshotModelsMod', ['SnapshotServiceMod']);
 
-var SnapshotModels = SnapshotModelsMod.service('SnapshotModels', [
+var SnapshotModels = SnapshotModelsMod.factory('SnapshotModels', [
   '$q',
   'SnapshotService',
   'SnapshotModel',
@@ -13,6 +13,7 @@ var SnapshotModels = SnapshotModelsMod.service('SnapshotModels', [
     class SnapshotModels {
       constructor(models){
         this.models = models.map((model) => new SnapshotModel.getModel(model)).sort(this.comparator);
+        this.getModelAt(0).set('activeState', true);
       }
 
       comparator(modelA, modelB){
@@ -22,10 +23,14 @@ var SnapshotModels = SnapshotModelsMod.service('SnapshotModels', [
       getModels(){
         return this.models;
       }
+
+      getModelAt(index) {
+        return this.models[index];
+      }
     }
 
     return {
-      get: (id) => {
+      getCollection: (id) => {
         return $q((resolve, reject)=>{
           SnapshotService
             .get(id)
