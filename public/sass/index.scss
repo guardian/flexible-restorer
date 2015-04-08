@@ -1,0 +1,25 @@
+@import "components/snapshot-list.scss";
+
+html, body, .main, .container, .content {
+  height: 100%;
+}
+
+.content {
+  overflow: auto;
+}
+
+.sidebar {
+  min-height: 100%;
+}
+
+.main {
+  overflow: hidden;
+}
+
+.composer-icon object {
+  max-width: 20px;
+}
+
+h6, h4 {
+  margin: 0;
+}

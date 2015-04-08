@@ -35,23 +35,24 @@
 <gu-row ng-if="!isLoading" class="content">
   <gu-column class="sidebar" span="3" gu-box="secondary" ng-controller="SnapshotListInteractionCtrl as ctrl">
     <!-- SNAPSHOT LIST -->
-    <gu-index-list>
+    <gu-index-list class="snapshot-list">
       <gu-index-list-item
         ng-repeat-start="model in models"
         index="{{ models.length - $index }}"
-        variant="{{ model.get('activeState') ? 'quaternary' : 'primary' }}">
+        variant="{{ model.get('activeState') ? 'quaternary' : 'primary' }}"
+        class="snapshot-list__item">
         <!-- CONTENT -->
-        <div>
+        <div class="snapshot-list__item__content">
           <h4>{{ model.getRelativeDate() }}</h4>
           <h6>{{ model.getCreatedDate() }}</h6>
         </div>
 
         <!-- JSON LINK -->
-        <gu-btn ng-if="model.get('activeState')" href="#">JSON</gu-btn>
+        <gu-btn class="snapshot-list__item__json" ng-if="model.get('activeState')" href="#" variant="arrow-right">JSON</gu-btn>
 
         <!-- RESTORE LINK -->
-        <gu-btn ng-if="model.get('activeState')" href="#" variant="arrow-right">
-          <gu-icon variant="wrench-disabled"></gu-icon>
+        <gu-btn class="snapshot-list__item__restore" ng-if="model.get('activeState')" href="#" variant="arrow-right">
+          <gu-icon class="snapshot-list__item__restore__icon" variant="wrench-disabled"></gu-icon>
           Restore
         </gu-btn>
 
