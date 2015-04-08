@@ -1,5 +1,4 @@
 import angular from 'angular';
-import SnapshotServiceMod from '../services/SnapshotCollectionService';
 import SnapshotModelsMod from '../collections/SnapshotModels';
 
 var restoreListCtrlMod = angular.module('RestoreListCtrlMod', []);
@@ -15,14 +14,14 @@ var restoreListCtrl = restoreListCtrlMod.controller('RestoreListCtrl', [
     $scope.hasError   = false;
 
     SnapshotModels
-    .getCollection($routeParams.contentId)
-    .then((collection) => {
-      $scope.isLoading  = false;
-      $scope.models = collection.getModels();
-    })
-    .catch((err) => {
-      $scope.hasError = true;
-    });
+      .getCollection($routeParams.contentId)
+      .then((collection) => {
+        $scope.isLoading  = false;
+        $scope.models = collection.getModels();
+      })
+      .catch((err) => {
+        $scope.hasError = true;
+      });
   }
 ]);
 

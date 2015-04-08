@@ -2,6 +2,8 @@ import angular from 'angular';
 import SnapshotModel from '../models/SnapshotModel';
 import SnapshotCollectionMod from '../services/SnapshotCollectionService';
 
+let cache = {};
+
 var SnapshotModelsMod = angular.module('SnapshotModelsMod', ['SnapshotServiceMod']);
 
 var SnapshotModels = SnapshotModelsMod.factory('SnapshotModels', [
@@ -32,14 +34,24 @@ var SnapshotModels = SnapshotModelsMod.factory('SnapshotModels', [
     return {
       getCollection: (id) => {
         return $q((resolve, reject)=>{
+
+          //resolve with cache if we already have the collection
+          //this also results in collections being singletons within the application
+          if (cache[id]) {
+            resolve(cache[id]);
+            //short circuit out of the function so we dont perform the AJAX request
+            return;
+          }
+
+          //get the data from the server and build the new collections
           SnapshotService
-            .get(id)
-            .success(function(data, status, header, config){
-              resolve(new SnapshotModels(data));
-            })
-            .error(function(data, status, header, config){
-              reject(data)
-            })
+              .get(id)
+              .success(function(data, status, header, config){
+                resolve(new SnapshotModels(data));
+              })
+              .error(function(data, status, header, config){
+                reject(data)
+              });
         })
       }
     }
