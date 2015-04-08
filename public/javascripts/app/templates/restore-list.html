@@ -47,10 +47,11 @@
     <!-- SNAPSHOT LIST -->
     <gu-index-list class="snapshot-list">
       <gu-index-list-item
+                   variant="{{ model.get('activeState') ? 'quaternary' : 'primary' }}"
                    ng-repeat-start="model in models"
                    index="{{ models.length - $index }}"
-                   variant="{{ model.get('activeState') ? 'quaternary' : 'primary' }}"
-                   class="snapshot-list__item">
+                   class="snapshot-list__item"
+                   ng-click="ctrl.onItemClicked(model, models)">
         <!-- CONTENT -->
         <div class="snapshot-list__item__content">
           <h4>{{ model.getRelativeDate() }}</h4>

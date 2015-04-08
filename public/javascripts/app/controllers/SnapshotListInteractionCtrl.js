@@ -6,11 +6,13 @@ var SnapshotListInteractionCtrl = SnapshotListInteractionCtrlMod.controller('Sna
   '$scope',
   function($scope){
 
-    this.onItemClicked = (model) => {
-      console.log('-----------------------');
-      console.log('clicked', model);
-      console.log('-----------------------');
+    this.onItemClicked = (model, collection) => {
+      //toggle the active states
+      var activeModel = collection.find((model)=> model.get('activeState') === true);
+      activeModel.set('activeState', false);
+      model.set('activeState', true);
     }
+
   }
 ]);
 
