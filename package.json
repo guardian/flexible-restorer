@@ -4,7 +4,7 @@
     "postinstall": "jspm -y install",
     "prewatch-sass": "rm -rf ./public/css && mkdir ./public/css",
     "watch-sass": "wr 'npm run build-sass' ./public/sass",
-    "build-sass": "cat ./public/sass/index.scss | node-sass --include-path='./public/sass' > ./public/css/index.css"
+    "build-sass": "./bin/build-sass.js"
   },
   "devDependencies": {
     "autoprefixer": "^5.1.0",
