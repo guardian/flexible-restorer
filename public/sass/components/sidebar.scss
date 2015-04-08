@@ -3,7 +3,7 @@
   min-height: 100%;
   transform: translateZ(0) translateX(-110%);
   transition: transform 1s;
-  transition-delay: .2s;
+  transition-delay: .3s;
 
   &.active{
     transform: translateX(0);

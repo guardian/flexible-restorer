@@ -11,16 +11,22 @@ System.config({
   "map": {
     "angular": "github:angular/bower-angular@1.3.15",
     "angular-route": "github:angular/bower-angular-route@1.3.15",
+    "angular-sanitize": "github:angular/bower-angular-sanitize@1.3.15",
+    "angular/bower-angular-sanitize": "github:angular/bower-angular-sanitize@1.3.15",
     "bootstrap": "github:twbs/bootstrap@3.3.4",
     "composer-components": "github:guardian/tools-components@0.5",
     "css": "github:systemjs/plugin-css@0.1.9",
-    "mediator": "github:ajacksified/Mediator.js@0.9.9",
+    "flatten": "npm:flatten@0.0.1",
+    "mediator": "npm:mediator-js@0.9.9",
     "moment": "github:moment/moment@2.10.0",
     "necolas/normalize.css": "github:necolas/normalize.css@3.0.2",
     "svg": "github:cutandpastey/plugin-svg@0.2.0",
     "traceur": "github:jmcriffey/bower-traceur@0.0.87",
     "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.87",
     "github:angular/bower-angular-route@1.3.15": {
+      "angular": "github:angular/bower-angular@1.3.15"
+    },
+    "github:angular/bower-angular-sanitize@1.3.15": {
       "angular": "github:angular/bower-angular@1.3.15"
     },
     "github:guardian/tools-components@0.5": {
@@ -143,6 +149,10 @@ System.config({
     "npm:events-browserify@0.0.1": {
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
+    "npm:flatten@0.0.1": {
+      "assert": "github:jspm/nodelibs-assert@0.1.0",
+      "util": "github:jspm/nodelibs-util@0.1.0"
+    },
     "npm:https-browserify@0.0.0": {
       "http": "github:jspm/nodelibs-http@1.7.1"
     },
@@ -160,6 +170,9 @@ System.config({
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.1",
       "systemjs-json": "github:systemjs/plugin-json@0.1.0"
+    },
+    "npm:mediator-js@0.9.9": {
+      "process": "github:jspm/nodelibs-process@0.1.1"
     },
     "npm:mkdirp@0.5.0": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",

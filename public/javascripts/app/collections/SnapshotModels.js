@@ -17,7 +17,7 @@ var SnapshotModels = SnapshotModelsMod.factory('SnapshotModels', [
       }
 
       comparator(modelA, modelB){
-        return modelA.get('createdDate').isBefore(modelB.get('createdDate')) ? -1 : 1;
+        return modelA.get('createdDate').isBefore(modelB.get('createdDate')) ? 1 : -1;
       }
 
       getModels(){

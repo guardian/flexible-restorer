@@ -1,5 +1,6 @@
 import angular  from 'angular';
 import moment   from 'moment';
+import flatten from 'flatten';
 
 var SnapshotModelMod = angular.module('SnapshotModelMod', []);
 
@@ -31,6 +32,12 @@ var SnapshotModel = SnapshotModelMod.factory('SnapshotModel', [
 
       getRelativeDate(date = moment()){
         return this.get('createdDate').from(date, true);
+      }
+
+      getHTMLContent(){
+        var content = this.get('preview').blocks.map((block) => block.elements);
+        content = flatten(content);
+        return content.map((element) => element.fields.text || element.fields.html).join('');
       }
     }
 

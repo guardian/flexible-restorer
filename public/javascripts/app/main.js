@@ -1,5 +1,6 @@
 import angular from 'angular';
 import ngRoute from 'angular-route/angular-route';
+import ngSanitize from 'angular-sanitize/angular-sanitize';
 
 import controllers  from './controllers/index';
 import models       from './models/index';
@@ -10,6 +11,7 @@ import components   from 'composer-components';
 
 var restorer = angular.module('restorer', [
   'ngRoute',
+  'ngSanitize',
   'guComponents',
   'restorerControllers',
   'restorerModels',
