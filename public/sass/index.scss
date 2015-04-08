@@ -1,4 +1,6 @@
 @import "components/snapshot-list.scss";
+@import "components/spinner.scss";
+@import "components/sidebar.scss";
 
 html, body, .main, .container, .content {
   height: 100%;
@@ -6,10 +8,6 @@ html, body, .main, .container, .content {
 
 .content {
   overflow: auto;
-}
-
-.sidebar {
-  min-height: 100%;
 }
 
 .main {

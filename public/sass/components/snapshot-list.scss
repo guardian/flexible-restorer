@@ -1,16 +1,12 @@
-.snapshot-list__item:hover {
-
-}
+@import "palette.scss";
 
 .snapshot-list__item__content {
   flex-grow: 3;
   padding: 15px;
   font-weight: 500;
-
-  [variant=quaternary] &{
+  [variant=quaternary] & {
     color: white;
   }
-
   h4 {
     margin-bottom: 5px;
   }

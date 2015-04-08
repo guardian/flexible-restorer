@@ -29,18 +29,28 @@
 
 <!-- PRELOADER -->
 <div ng-if="isLoading">
-  This is loading
+  <div class="spinner">
+    <div class="rect1"></div>
+    <div class="rect2"></div>
+    <div class="rect3"></div>
+    <div class="rect4"></div>
+    <div class="rect5"></div>
+  </div>
 </div>
 
 <gu-row ng-if="!isLoading" class="content">
-  <gu-column class="sidebar" span="3" gu-box="secondary" ng-controller="SnapshotListInteractionCtrl as ctrl">
+  <gu-column  class="sidebar"
+              span="3"
+              gu-box="secondary"
+              ng-class="{'active': !isLoading}"
+              ng-controller="SnapshotListInteractionCtrl as ctrl">
     <!-- SNAPSHOT LIST -->
     <gu-index-list class="snapshot-list">
       <gu-index-list-item
-        ng-repeat-start="model in models"
-        index="{{ models.length - $index }}"
-        variant="{{ model.get('activeState') ? 'quaternary' : 'primary' }}"
-        class="snapshot-list__item">
+                   ng-repeat-start="model in models"
+                   index="{{ models.length - $index }}"
+                   variant="{{ model.get('activeState') ? 'quaternary' : 'primary' }}"
+                   class="snapshot-list__item">
         <!-- CONTENT -->
         <div class="snapshot-list__item__content">
           <h4>{{ model.getRelativeDate() }}</h4>

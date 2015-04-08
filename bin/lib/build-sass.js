@@ -31,7 +31,7 @@ export default () => {
     const sassData = yield pReadFile(restorerSassFile, 'utf8');
 
     //stupidly, node sass has decided to change the api such that sass.render({}, callback)
-    //is no longer valid. Now we have to use the sync methods... idiots
+    //is no longer valid. Now we have to use the sync methods... Idiots
     const sassContent = sass.renderSync({
       data: sassData,
       includePaths: [

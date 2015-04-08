@@ -15,14 +15,14 @@ var restoreListCtrl = restoreListCtrlMod.controller('RestoreListCtrl', [
     $scope.hasError   = false;
 
     SnapshotModels
-      .getCollection($routeParams.contentId)
-      .then((collection) => {
-        $scope.isLoading  = false;
-        $scope.models = collection.getModels();
-      })
-      .catch((err) => {
-        $scope.hasError = true;
-      })
+    .getCollection($routeParams.contentId)
+    .then((collection) => {
+      $scope.isLoading  = false;
+      $scope.models = collection.getModels();
+    })
+    .catch((err) => {
+      $scope.hasError = true;
+    });
   }
 ]);
 
