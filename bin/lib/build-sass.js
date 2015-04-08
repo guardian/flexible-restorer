@@ -35,7 +35,8 @@ export default () => {
     const sassContent = sass.renderSync({
       data: sassData,
       includePaths: [
-        restorerSass
+        restorerSass,
+        componentSassDir
       ]
     }).css;
 
