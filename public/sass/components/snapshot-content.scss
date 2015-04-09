@@ -1,11 +1,8 @@
 .snapshot-content {
-  padding: 20px;
-  transform: translateZ(0) translateX(110%);
+  padding: 2% 15%;
   opacity: 0;
-  transition: transform .4s ease-in-out, opacity .3s ease-in-out;
-  z-index: -1;
+  transition: opacity .1s ease-in-out;
   &.active {
-    transform: translateX(0);
     opacity: 1;
   }
 }

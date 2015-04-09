@@ -18,6 +18,7 @@
   justify-content: center;
   flex-grow: 1;
   margin-right: -3%;
+  transition: opacity .1s ease-in-out;
 }
 
 .snapshot-list__item__restore__icon {
@@ -29,6 +30,7 @@
   align-items: center;
   justify-content: center;
   flex-grow: 1;
+  transition: opacity .1s ease-in-out;
 }
 
 .snapshot-list__item .index-list__item__index {

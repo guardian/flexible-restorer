@@ -9,8 +9,9 @@ var SnapshotContentCtrl = SnapshotContentCtrlMod.controller('SnapshotContentCtrl
   '$sanitize',
   '$routeParams',
   '$timeout',
+  '$element',
   'SnapshotModels',
-  function($scope, $sanitize, $routeParams, $timeout, SnapshotModels){
+  function($scope, $sanitize, $routeParams, $timeout, $element, SnapshotModels){
     //set the initial content
     SnapshotModels
       .getCollection($routeParams.contentId)
@@ -27,7 +28,7 @@ var SnapshotContentCtrl = SnapshotContentCtrlMod.controller('SnapshotContentCtrl
     function displayContent(model) {
       $scope.isSettingContent = true;
       $scope.htmlContent = $sanitize(model.getHTMLContent());
-      $timeout(()=> $scope.isSettingContent = false, 500);
+      $timeout(()=> $scope.isSettingContent = false, 200);
     }
 
   }

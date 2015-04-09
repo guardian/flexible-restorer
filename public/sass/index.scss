@@ -2,17 +2,10 @@
 @import "components/spinner.scss";
 @import "components/sidebar.scss";
 @import "components/snapshot-content.scss";
+@import "components/text.scss";
 
-html, body, .main, .container, .content {
+html, body, .main, .container {
   height: 100%;
-}
-
-.content {
-  overflow: auto;
-}
-
-.main {
-  overflow: hidden;
 }
 
 .composer-icon object {
@@ -21,4 +14,13 @@ html, body, .main, .container, .content {
 
 h6, h4 {
   margin: 0;
+}
+
+.hidden {
+
+  display: none;
+}
+
+.visually-hidden {
+  opacity: 0;
 }
