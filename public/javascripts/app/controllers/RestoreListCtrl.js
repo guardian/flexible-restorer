@@ -18,6 +18,11 @@ var restoreListCtrl = restoreListCtrlMod.controller('RestoreListCtrl', [
       .then((collection) => {
         $scope.isLoading  = false;
         $scope.models = collection.getModels();
+
+        var activeModel = collection.find((data)=> data.activeState);
+        $scope.articleTitle = activeModel.getHeadline();
+        $scope.articleHash = activeModel.get('id');
+
       })
       .catch((err) => {
         $scope.hasError = true;

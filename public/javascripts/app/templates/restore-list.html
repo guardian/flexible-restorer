@@ -8,19 +8,14 @@
   <gu-column span="2">
     <gu-row>
       <!-- COMPOSER ICON -->
-      <gu-column span="2" gu-box="tertiary" skin="header">
+      <gu-column class="center" flex span="2" gu-box="tertiary" skin="header">
         <gu-icon class="composer-icon" variant="composer-icon"></gu-icon>
       </gu-column>
       <!-- PAGE STATUS -->
-      <gu-column flex span="6" >
-        <gu-page-label skin=header>
-          Restorer
-          <gu-page-label-hover>
-            <a href="/">Home</a>
-          </gu-page-label-hover>
-        </gu-page-label>
+      <gu-column class="center" flex span="5" gu-box="tertiary" skin="header">
+        <span class="content-type">Snapshot</span>
       </gu-column>
-      <gu-column span="4" gu-box="tertiary"></gu-column>
+      <gu-column span="5" gu-box="tertiary"></gu-column>
     </gu-row>
   </gu-column>
   <!-- MAIN HEADER -->
@@ -45,16 +40,25 @@
               ng-class="{'active': !isLoading}"
               ng-controller="SnapshotListInteractionCtrl as ctrl">
     <!-- SNAPSHOT LIST -->
+    <h1 class="article-headline">{{ articleTitle }}</h1>
+    <h6 class="article-hash">({{ articleHash }})</h6>
+
+    <gu-row class="snapshot-list-header">
+      <span class="snapshot-list-header__decal">No.</span>
+      <span class="snapshot-list-header__content">Snapped at</span>
+    </gu-row>
+
     <gu-index-list class="snapshot-list">
       <gu-index-list-item variant="{{ model.get('activeState') ? 'quaternary' : 'primary' }}"
+                          class="snapshot-list__item"
                           ng-repeat-start="model in models"
                           index="{{ models.length - $index }}"
-                          class="snapshot-list__item"
+                          ng-class="{ 'item-active': model.get('activeState') }"
                           ng-click="ctrl.onItemClicked(model, models)">
         <!-- CONTENT -->
         <div class="snapshot-list__item__content">
-          <h4>{{ model.getRelativeDate() }}</h4>
-          <h6>{{ model.getCreatedDate() }}</h6>
+          <h6 class="snapshot-list__item__content__relative-date">{{ model.getRelativeDate() }}</h6>
+          <h6 class="snapshot-list__item__content__actual-date">{{ model.getCreatedDate() }}</h6>
         </div>
 
         <!-- JSON LINK -->

@@ -7,9 +7,6 @@
   [variant=quaternary] & {
     color: white;
   }
-  h4 {
-    margin-bottom: 5px;
-  }
 }
 
 .snapshot-list__item__restore {
@@ -35,4 +32,39 @@
 
 .snapshot-list__item .index-list__item__index {
   padding-top: 15px;
+}
+
+.item-active .index-list__item__index {
+  position: relative;
+  &:before {
+    $width: 5px;
+
+    content: ' ';
+    display: inline-block;
+
+    position: absolute;
+    top: 0;
+    left: -$width;
+
+    width: $width;
+    height: 100%;
+
+    background-color: $active;
+  }
+}
+
+.snapshot-list-header {
+  background: $box-tertiary-bg;
+}
+
+.snapshot-list-header__decal {
+  box-sizing: border-box;
+  flex-basis: 46px;
+  max-width: 46px;
+  padding: 5px 10px;
+  border-right: 2px solid $color-400-grey;
+}
+
+.snapshot-list-header__content {
+  padding: 5px 10px;
 }

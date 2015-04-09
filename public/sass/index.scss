@@ -1,3 +1,5 @@
+@import "mixins/center-children";
+
 @import "components/snapshot-list.scss";
 @import "components/spinner.scss";
 @import "components/sidebar.scss";
@@ -23,4 +25,8 @@ h6, h4 {
 
 .visually-hidden {
   opacity: 0;
+}
+
+.center {
+ @include center-children;
 }

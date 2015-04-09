@@ -29,6 +29,10 @@ var SnapshotModels = SnapshotModelsMod.factory('SnapshotModels', [
       getModelAt(index) {
         return this.models[index];
       }
+
+      find(predicate) {
+        return this.models.find((model)=> predicate.call(model, model.data));
+      }
     }
 
     return {
