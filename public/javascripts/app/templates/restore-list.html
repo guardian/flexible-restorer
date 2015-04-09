@@ -91,4 +91,57 @@
               ng-class="{'active': isSettingContent === false}">
   </gu-column>
 
+  <div class="modal center">
+    <gu-box class="modal__content" variant="primary">
+      <!-- MODAL HEADER -->
+      <h1 class="modal__content__title">Before you restore</h1>
+      <p class="modal__content__desc">Currently present in the content</p>
+
+      <!-- PRESENCE -->
+      <gu-row class="modal__content__container">
+        <gu-column span="9">
+          some people
+        </gu-column>
+        <gu-column span="3">
+          <a class="model__content__refresh">
+            <gu-icon variant="expand-active"></gu-icon>
+            Refresh
+          </a>
+        </gu-column>
+      </gu-row>
+
+      <!-- FORM -->
+      <gu-row class="modal__content__container">
+        <gu-column span="12" class="modal__content__form">
+          <h2 class="modal__content__form__header">Make sure that:</h2>
+          <gu-row class="modal__content__form__fieldset">
+            <label for="self-in-content">
+              <input type="checkbox" id="self-in-content" />
+              <span class="checked-decal"></span>
+              <span class="label">You are not in content</span>
+            </label>
+
+          </gu-row>
+          <gu-row class="modal__content__form__fieldset">
+            <label for="else-in-content">
+              <input type="checkbox" id="else-in-content" />
+              <span class="checked-decal"></span>
+              <span class="label">No one else is in the content</span>
+            </label>
+          </gu-row>
+        </gu-column>
+      </gu-row>
+
+      <!-- ACTIONS -->
+      <gu-row variant="reverse" class="modal__content__container">
+        <gu-btn class="modal__content__restore">
+          <gu-icon variant="wrench-disabled"></gu-icon>
+          Restore Version
+        </gu-btn>
+        <gu-btn>Cancel</gu-btn>
+      </gu-row>
+
+    </gu-box>
+  </div>
+
 </gu-row>

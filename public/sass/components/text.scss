@@ -1,3 +1,5 @@
+@import "palette.scss";
+
 // SETUP
 @font-face {
   font-family: "Guardian Agate Sans";
@@ -6,6 +8,8 @@
   font-weight: normal;
   font-style: normal;
 }
+
+
 @font-face {
   font-family: "Guardian Agate Sans";
   src: url("/assets/fonts/GuardianAgateSans1Web-Bold.eot");
@@ -13,6 +17,8 @@
   font-weight: bold;
   font-style: normal;
 }
+
+
 @font-face {
   font-family: "Guardian Egyptian Text";
   src: url("/assets/fonts/GuardianTextEgyptianWeb-Medium.eot");
@@ -21,6 +27,8 @@
   font-style: normal;
   font-stretch: normal;
 }
+
+
 @font-face {
   font-family: "Guardian Egyptian Text";
   src: url("/assets/fonts/GuardianTextEgyptianWeb-Regular.eot");
@@ -29,6 +37,7 @@
   font-style: normal;
   font-stretch: normal;
 }
+
 
 // APPLY THE FONTS
 .content-type {
@@ -85,3 +94,29 @@
   text-transform: uppercase;
 }
 
+.modal__content__title {
+  font-family: "Guardian Agate Sans";
+  font-size: 24px;
+  font-weight: bold;
+  color: $color-650-grey;
+}
+
+.modal__content__desc {
+  font-family: "Guardian Egyptian Text";
+  font-size: 14px;
+  color: $color-650-grey;
+}
+
+.modal__content__form__header {
+  font-family: "Guardian Agate Sans";
+  font-size: 14px;
+  font-weight: bold;
+  color: $color-650-grey;
+}
+
+.modal__content__form label {
+  font-family: "Guardian Agate Sans";
+  font-size: 14px;
+  line-height: 1.5;
+  color: $color-650-grey;
+}
