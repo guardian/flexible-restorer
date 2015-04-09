@@ -55,19 +55,27 @@
                           class="snapshot-list__item"
                           ng-repeat-start="model in models"
                           index="{{ models.length - $index }}"
-                          ng-class="{ 'item-active': model.get('activeState') }"
-                          ng-click="ctrl.onItemClicked(model, models)">
+                          ng-class="{ 'item-active': model.get('activeState') }">
         <!-- CONTENT -->
-        <div class="snapshot-list__item__content">
+        <div  class="snapshot-list__item__content"
+              ng-click="ctrl.onItemClicked(model, models)">
           <h6 class="snapshot-list__item__content__relative-date">{{ model.getRelativeDate() }}</h6>
           <h6 class="snapshot-list__item__content__actual-date">{{ model.getCreatedDate() }}</h6>
         </div>
 
         <!-- JSON LINK -->
-        <gu-btn class="snapshot-list__item__json" ng-class="{ hidden: !model.get('activeState') }" href="#" variant="arrow-right">JSON</gu-btn>
+        <gu-btn class="snapshot-list__item__json"
+                ng-class="{ hidden: !model.get('activeState') }"
+                href="#" variant="arrow-right">
+          JSON
+        </gu-btn>
 
         <!-- RESTORE LINK -->
-        <gu-btn class="snapshot-list__item__restore" ng-class="{ hidden: !model.get('activeState') }" href="#" variant="arrow-right">
+        <gu-btn class="snapshot-list__item__restore"
+                href="#" variant="arrow-right"
+                         ng-class="{ hidden: !model.get('activeState') }"
+                         ng-click="ctrl.onRestoreClicked()">
+
           <gu-icon class="snapshot-list__item__restore__icon" variant="wrench-disabled"></gu-icon>
           Restore
         </gu-btn>
@@ -91,7 +99,9 @@
               ng-class="{'active': isSettingContent === false}">
   </gu-column>
 
-  <div class="modal center">
+  <div  class="modal center"
+        ng-controller="ModalCtrl as ctrl"
+        ng-class="{ 'visually-hidden': !isActive }">
     <gu-box class="modal__content" variant="primary">
       <!-- MODAL HEADER -->
       <h1 class="modal__content__title">Before you restore</h1>
@@ -138,7 +148,7 @@
           <gu-icon variant="wrench-disabled"></gu-icon>
           Restore Version
         </gu-btn>
-        <gu-btn>Cancel</gu-btn>
+        <gu-btn ng-click="ctrl.closeModal()">Cancel</gu-btn>
       </gu-row>
 
     </gu-box>

@@ -20,12 +20,12 @@ h6, h4 {
 }
 
 .hidden {
-
   display: none;
 }
 
 .visually-hidden {
   opacity: 0;
+  pointer-events: none;
 }
 
 .center {

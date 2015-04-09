@@ -25,6 +25,9 @@
   [variant=quaternary] & {
     color: white;
   }
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 // INDEX STYLING
@@ -39,17 +42,13 @@
   position: relative;
   &:before {
     $width: 5px;
-
     content: ' ';
     display: inline-block;
-
     position: absolute;
     top: 0;
     left: -$width;
-
     width: $width;
     height: 100%;
-
     background-color: $active;
   }
 }
