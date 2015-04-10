@@ -23,6 +23,8 @@
 </gu-row>
 
 <!-- PRELOADER -->
+<!-- TODO -> SEPARATE INTO A PARTIAL FOR EASE OF RE-USE -->
+<!-- JP 10/04/15 -->
 <div ng-if="isLoading">
   <div class="spinner">
     <div class="rect1"></div>
@@ -65,18 +67,19 @@
 
         <!-- JSON LINK -->
         <gu-btn class="snapshot-list__item__json"
-                href="#" variant="arrow-right"
-                         ng-class="{ hidden: !model.get('activeState') }"
-                         ng-click="ctrl.onJSONClicked()">
+                href="#"
+                variant="arrow-right"
+                ng-class="{ hidden: !model.get('activeState') }"
+                ng-click="ctrl.onJSONClicked()">
           JSON
         </gu-btn>
 
         <!-- RESTORE LINK -->
         <gu-btn class="snapshot-list__item__restore"
-                href="#" variant="arrow-right"
-                         ng-class="{ hidden: !model.get('activeState') }"
-                         ng-click="ctrl.onRestoreClicked()">
-
+                href="#"
+                variant="arrow-right"
+                ng-class="{ hidden: !model.get('activeState') }"
+                ng-click="ctrl.onRestoreClicked()">
           <gu-icon class="snapshot-list__item__restore__icon" variant="wrench-disabled"></gu-icon>
           Restore
         </gu-btn>
@@ -96,22 +99,30 @@
     </gu-index-list>
 
   </gu-column>
+
+  <!-- CONTENT -->
   <gu-column  class="snapshot-content"
               span="9"
               ng-controller="SnapshotContentCtrl as ctrl"
               ng-class="{'active': isSettingContent === false}">
     <div class="snapshot-content__viewport">
       <gu-row class="snapshot-content__container" ng-class="{ 'show-html': isShowingHtml }">
+
+        <!-- JSON CONTENT -->
         <gu-column class="snapshot-content__container__item--json" span="6">
           <div><pre><code>{{ jsonContent }}</code></pre></div>
         </gu-column>
+
+        <!-- HTML CONTENT -->
         <gu-column span="6" class="snapshot-content__container__item">
           <div ng-bind-html="htmlContent"></div>
         </gu-column>
+
       </gu-row>
     </div>
   </gu-column>
 
+  <!-- MODAL -->
   <!-- INLINE STYLE TO AVOID INITIAL FLASH OF CONTENT WITH THE MODAL -->
   <div style="display: none"
        class="modal center"
@@ -175,6 +186,8 @@
               </gu-row>
 
             </gu-column>
+
+            <!-- LOADER -->
             <gu-column span="6" class="form-loading"  ng-class="{ 'in-active': isLoading }" >
               <div class="spinner">
                 <div class="rect1"></div>

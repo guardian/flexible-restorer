@@ -26,7 +26,7 @@ restorer.config([
 
     $routeProvider.when('/content/:contentId/versions', {
       templateUrl: '/assets/javascripts/app/templates/restore-list.html',
-      controller: 'RestoreListCtrl'
+      controller: 'SnapshotListCtrl'
     })
 
     $locationProvider.html5Mode({
