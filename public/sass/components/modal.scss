@@ -46,7 +46,6 @@ gu-box.modal__content {
 }
 
 .modal__content__container {
-  min-width: 400px;
   padding: 20px 0;
   border-bottom: 1px solid $color-400-grey;
   &:last-child {
@@ -106,4 +105,21 @@ gu-box.modal__content {
 
 .modal__content__btn--close {
   margin-right: 10px;
+}
+
+.modal__content__track {
+  width: 200%;
+}
+
+.modal-form {
+  min-width: 400px;
+  overflow: hidden;
+}
+
+.form-panel, .form-loading {
+  transform: translateX(0);
+  transition: transform .2s ease-in-out;
+  &.in-active {
+    transform: translateX(-100%);
+  }
 }

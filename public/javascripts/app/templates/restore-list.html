@@ -115,57 +115,78 @@
   <!-- INLINE STYLE TO AVOID INITIAL FLASH OF CONTENT WITH THE MODAL -->
   <div style="display: none"
        class="modal center"
-       ng-controller="ModalCtrl as ctrl"
+       ng-controller="ModalCtrl as modalCtrl"
        ng-class="{ 'visually-hidden': !isActive }">
     <gu-box class="modal__content" variant="primary">
-      <!-- MODAL HEADER -->
-      <h1 class="modal__content__title">Before you restore</h1>
-      <p class="modal__content__desc">Currently present in the content</p>
+      <form novalidate class="modal-form" ng-controller="RestoreFormCtrl as formCtrl" ng-submit="formCtrl.onSubmit()">
+        <div class="modal__content__track">
+          <gu-row>
+            <gu-column ng-class="{ 'in-active': isLoading }" class="form-panel" span="6">
 
-      <!-- PRESENCE -->
-      <gu-row class="modal__content__container">
-        <gu-column span="9">
-          some people
-        </gu-column>
-        <gu-column span="3">
-          <a class="model__content__refresh">
-            <gu-icon variant="expand-active"></gu-icon>
-            Refresh
-          </a>
-        </gu-column>
-      </gu-row>
+              <!-- MODAL HEADER -->
+              <gu-row>
+                <gu-column span="12">
+                  <h1 class="modal__content__title">Before you restore</h1>
+                  <p class="modal__content__desc">Currently present in the content</p>
+                </gu-column>
+              </gu-row>
 
-      <!-- FORM -->
-      <gu-row class="modal__content__container">
-        <gu-column span="12" class="modal__content__form">
-          <h2 class="modal__content__form__header">Make sure that:</h2>
-          <gu-row class="modal__content__form__fieldset">
-            <label for="self-in-content">
-              <input type="checkbox" id="self-in-content" />
-              <span class="checked-decal"></span>
-              <span class="label">You are not in content</span>
-            </label>
+              <!-- PRESENCE -->
+              <gu-row class="modal__content__container">
+                <gu-column span="9">
+                  some people
+                </gu-column>
+                <gu-column span="3">
+                  <a class="model__content__refresh">
+                    <gu-icon variant="expand-active"></gu-icon>
+                    Refresh
+                  </a>
+                </gu-column>
+              </gu-row>
 
+              <!-- FORM -->
+              <gu-row class="modal__content__container">
+                <gu-column span="12" class="modal__content__form">
+                  <h2 class="modal__content__form__header">Make sure that:</h2>
+                  <gu-row class="modal__content__form__fieldset">
+                    <label for="self-in-content">
+                      <input type="checkbox" ng-model="selfInContent" name="selfInContent" id="self-in-content" />
+                      <span class="checked-decal"></span>
+                      <span class="label">You are not in content</span>
+                    </label>
+                  </gu-row>
+                  <gu-row class="modal__content__form__fieldset">
+                    <label for="else-in-content">
+                      <input type="checkbox" ng-model="elseInContent" name="elseInContent" id="else-in-content" />
+                      <span class="checked-decal"></span>
+                      <span class="label">No one else is in the content</span>
+                    </label>
+                  </gu-row>
+                </gu-column>
+              </gu-row>
+
+              <!-- ACTIONS -->
+              <gu-row variant="reverse" class="modal__content__container">
+                <gu-btn class="modal__content__btn" type="submit" ng-disabled="!selfInContent || !elseInContent">
+                  <gu-icon variant="wrench-disabled"></gu-icon>
+                  Restore Version
+                </gu-btn>
+                <gu-btn class="modal__content__btn--close" type="reset" ng-click="modalCtrl.closeModal()">Cancel</gu-btn>
+              </gu-row>
+
+            </gu-column>
+            <gu-column span="6" class="form-loading"  ng-class="{ 'in-active': isLoading }" >
+              <div class="spinner">
+                <div class="rect1"></div>
+                <div class="rect2"></div>
+                <div class="rect3"></div>
+                <div class="rect4"></div>
+                <div class="rect5"></div>
+              </div>
+            </gu-column>
           </gu-row>
-          <gu-row class="modal__content__form__fieldset">
-            <label for="else-in-content">
-              <input type="checkbox" id="else-in-content" />
-              <span class="checked-decal"></span>
-              <span class="label">No one else is in the content</span>
-            </label>
-          </gu-row>
-        </gu-column>
-      </gu-row>
-
-      <!-- ACTIONS -->
-      <gu-row variant="reverse" class="modal__content__container">
-        <gu-btn class="modal__content__btn" class="modal__content__restore">
-          <gu-icon variant="wrench-disabled"></gu-icon>
-          Restore Version
-        </gu-btn>
-        <gu-btn class="modal__content__btn--close" ng-click="ctrl.closeModal()">Cancel</gu-btn>
-      </gu-row>
-
+        </div>
+      </form>
     </gu-box>
   </div>
 
