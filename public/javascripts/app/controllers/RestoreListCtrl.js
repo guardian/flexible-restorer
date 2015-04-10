@@ -6,12 +6,14 @@ var restoreListCtrlMod = angular.module('RestoreListCtrlMod', []);
 var restoreListCtrl = restoreListCtrlMod.controller('RestoreListCtrl', [
   '$scope',
   '$routeParams',
+  '$timeout',
   'SnapshotService',
   'SnapshotModels',
-  function($scope, $routeParams, SnapshotService, SnapshotModels){
+  function($scope, $routeParams, $timeout, SnapshotService, SnapshotModels){
 
     $scope.isLoading  = true;
     $scope.hasError   = false;
+    $scope.isSidebarActive = false;
 
     SnapshotModels
       .getCollection($routeParams.contentId)
@@ -22,6 +24,9 @@ var restoreListCtrl = restoreListCtrlMod.controller('RestoreListCtrl', [
         var activeModel = collection.find((data)=> data.activeState);
         $scope.articleTitle = activeModel.getHeadline();
         $scope.articleHash = activeModel.get('id');
+
+        //animate sidebar in
+        $timeout(()=> $scope.isSidebarActive = true, 500);
 
       })
       .catch((err) => {

@@ -37,7 +37,7 @@
   <gu-column  class="sidebar"
               span="3"
               gu-box="secondary"
-              ng-class="{'active': !isLoading}"
+              ng-class="{'active': isSidebarActive}"
               ng-controller="SnapshotListInteractionCtrl as ctrl">
 
     <!-- SNAPSHOT LIST HEADER -->
@@ -86,7 +86,9 @@
       <li class="delta-row" ng-repeat-end ng-mouseover="isActive = true" ng-mouseout="isActive = false">
         <gu-row variant="reverse">
           <gu-icon class="delta-row__icon" variant="expand-disabled"></gu-icon>
-          <span class="delta-row__content" ng-class="{ 'visually-hidden': !isActive }">This is the news</span>
+          <span class="delta-row__content" ng-class="{ 'visually-hidden': !isActive }">
+            {{ model.getRelativeDate( models[$index + 1].get('createdDate') ) }}
+          </span>
         </gu-row>
       </li>
 
