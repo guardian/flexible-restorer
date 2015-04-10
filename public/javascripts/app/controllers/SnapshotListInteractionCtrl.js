@@ -5,35 +5,51 @@ var SnapshotListInteractionCtrlMod = angular.module('SnapshotListInteractionCtrl
 
 var SnapshotListInteractionCtrl = SnapshotListInteractionCtrlMod.controller('SnapshotListInteractionCtrl', [
   '$scope',
-  function($scope){
+  '$timeout',
+  function($scope, $timeout){
 
     this.onItemClicked = (index) => {
-      mediator.publish('snapshot-list:set-active', index);
+      $timeout(() => {
+        mediator.publish('snapshot-list:display-html');
+        mediator.publish('snapshot-list:set-active', index);
+      }, 1);
     }
 
     this.onRestoreClicked = function(){
-      mediator.publish('snapshot-list:display-modal');
+      $timeout(() => mediator.publish('snapshot-list:display-modal'), 1);
     }
 
     this.onJSONClicked = function(){
-      mediator.publish('snapshot-list:display-json');
+      $timeout(() => mediator.publish('snapshot-list:display-json'), 1);
     }
 
     //keypress events
     //todo abstract these into a keyboard interaction controller
     //jp 10-04-15
     window.addEventListener('keydown', function(e){
-      if (e.keyCode === 40) {
-        e.preventDefault();
+      switch(e.keyCode){
+        case 40:
+          e.preventDefault();
         mediator.publish('snapshot-list:increment-active');
-      }
-      else if (e.keyCode === 38) {
-        e.preventDefault();
+        break;
+        case 38:
+          e.preventDefault();
         mediator.publish('snapshot-list:decrement-active');
+        break;
+        case 13:
+          e.preventDefault();
+        mediator.publish('snapshot-list:display-modal');
+        break;
+        case 39:
+          e.preventDefault();
+        mediator.publish('snapshot-list:display-html');
+        break;
+        case 37:
+          e.preventDefault();
+        mediator.publish('snapshot-list:display-json');
+        break;
       }
-      else if (e.keyCode === 13) {
-        mediator.publish('keypress:enter', e);
-      }
+
     });
 
   }

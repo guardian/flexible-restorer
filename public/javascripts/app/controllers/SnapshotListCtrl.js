@@ -62,7 +62,6 @@ var restoreListCtrl = restoreListCtrlMod.controller('SnapshotListCtrl', [
     mediator.subscribe('snapshot-list:decrement-active', function(){
       var activeModel = snapshotCollection.find((data)=> data.activeState);
       var index = snapshotCollection.indexOf(activeModel) -1;
-      console.log(index);
       if (index === -1) {
         index = snapshotCollection.length() - 1;
       }
@@ -71,8 +70,6 @@ var restoreListCtrl = restoreListCtrlMod.controller('SnapshotListCtrl', [
     });
 
     function setActive(activeModel, model) {
-      //display html content
-      mediator.publish('snapshot-list:display-html');
       //set active states
       activeModel.set('activeState', false);
       model.set('activeState', true);

@@ -14,17 +14,24 @@ var ModalCtrl = ModalCtrlMod.controller('ModalCtrl', [
     //remove the inline style which prevents a flash of content
     //if we dont use a timeout the inline style is removed after the sope is parsed
     //this leads to a flash of the modal
-    $timeout(()=>$element.attr('style', {display: 'block'}), 200);
+    $timeout(()=>$element.attr('style', {display: 'block'}), 50);
 
     //APPLICATION EVENTS
     var showModal = this.showModal = function showModal(){
-      $scope.isActive = true;
+      $scope.$apply(() => {
+        $scope.isActive = true;
+      });
+    }
+
+    this.clickCloseModal = function clickCloseModal(){
+      $timeout(closeModal, 1);
     }
 
     var closeModal = this.closeModal = function closeModal(){
-      $scope.isActive = false;
-      $scope.$digest();
-      mediator.publish('snapshot-list:hidden-modal', showModal);
+      $scope.$apply(() => {
+        $scope.isActive = false;
+        mediator.publish('snapshot-list:hidden-modal', showModal);
+      });
     }
 
     mediator.subscribe('snapshot-list:display-modal', showModal);

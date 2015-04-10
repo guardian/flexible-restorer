@@ -17,12 +17,12 @@ var SnapshotContentCtrl = SnapshotContentCtrlMod.controller('SnapshotContentCtrl
 
     //set the initial content
     SnapshotModels
-    .getCollection($routeParams.contentId)
-    .then((collection)=> {
-      displayContent(collection.getModelAt(0));
-    })
-    //TODO setup global error handle
-    .catch((err)=> console.log(err))
+      .getCollection($routeParams.contentId)
+      .then((collection)=> {
+        displayContent(collection.getModelAt(0));
+      })
+      //TODO setup global error handle
+      .catch((err)=> console.log(err))
 
     //wait for the system to imform us of content changes
     mediator.subscribe('snapshot-list:display-content', displayContent);
@@ -34,15 +34,15 @@ var SnapshotContentCtrl = SnapshotContentCtrlMod.controller('SnapshotContentCtrl
       $scope.isSettingContent = true;
       $scope.htmlContent = $sanitize(model.getHTMLContent());
       $scope.jsonContent = model.toJSON();
-      $timeout(()=> $scope.isSettingContent = false, 100);
+      $timeout(()=> $scope.isSettingContent = false, 200);
     }
 
     function displayJSON() {
-      $scope.isShowingHtml = false;
+      $scope.$apply(() => $scope.isShowingHtml = false);
     }
 
     function displayHTML() {
-      $scope.isShowingHtml = true;
+      $scope.$apply(() => $scope.isShowingHtml = true);
     }
 
   }
