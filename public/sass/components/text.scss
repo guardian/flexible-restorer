@@ -46,7 +46,8 @@
   font-size: 18px;
 }
 
-.snapshot-list__item__content__relative-date {
+.snapshot-list__item__content__relative-date,
+.index-list__item__index {
   margin-bottom: 5px;
   font-family: "Guardian Agate Sans";
   font-weight: bold;
@@ -77,6 +78,7 @@
   font-weight: bold;
   font-size: 18px;
   line-height: 23px;
+  margin-bottom: 0;
 }
 
 .article-hash {
@@ -94,6 +96,7 @@
   text-transform: uppercase;
 }
 
+//MODAL
 .modal__content__title {
   font-family: "Guardian Agate Sans";
   font-size: 24px;
@@ -114,9 +117,20 @@
   color: $color-650-grey;
 }
 
+.model__content__refresh {
+  font-family: "Guardian Agate Sans";
+  font-size: 13px;
+}
+
 .modal__content__form label {
   font-family: "Guardian Agate Sans";
   font-size: 14px;
   line-height: 1.5;
   color: $color-650-grey;
+}
+
+.modal__content__btn,
+.modal__content__btn--close {
+  font-family: "Guardian Agate Sans";
+  font-size: 13px;
 }

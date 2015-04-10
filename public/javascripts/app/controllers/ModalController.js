@@ -6,9 +6,15 @@ var ModalCtrlMod = angular.module('ModalCtrlMod', []);
 var ModalCtrl = ModalCtrlMod.controller('ModalCtrl', [
   '$scope',
   '$element',
-  function($scope, $element){
+  '$timeout',
+  function($scope, $element, $timeout){
     //SETUP
     $scope.isActive = false;
+
+    //remove the inline style which prevents a flash of content
+    //if we dont use a timeout the inline style is removed after the sope is parsed
+    //this leads to a flash of the modal
+    $timeout(()=>$element.attr('style', {display: 'block'}), 200);
 
     //DOM EVENTS
     window.addEventListener('keydown', function modalOnKeyDown(e){

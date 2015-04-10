@@ -36,9 +36,18 @@ gu-box.modal__content {
   padding-bottom: 20px;
 }
 
+.modal__content__desc {
+  margin: 0;
+}
+
+.modal__content__form__header {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
 .modal__content__container {
   min-width: 400px;
-  padding: 25px 0;
+  padding: 20px 0;
   border-bottom: 1px solid $color-400-grey;
   &:last-child {
     border-bottom: none;
@@ -90,4 +99,11 @@ gu-box.modal__content {
 
 .modal__content__form__fieldset {
   margin-bottom: 10px;
+  &:last-child {
+    margin-bottom: 0px;
+  }
+}
+
+.modal__content__btn--close {
+  margin-right: 10px;
 }

@@ -18,9 +18,13 @@
 }
 
 // SNAPSHOT LIST
+.snapshot-list {
+  margin-top: 5px;
+}
+
 .snapshot-list__item__content {
   flex-grow: 3;
-  padding: 15px;
+  padding: 10px 15px;
   font-weight: 500;
   [variant=quaternary] & {
     color: white;
@@ -40,6 +44,7 @@
 
 .item-active .index-list__item__index {
   position: relative;
+  margin-bottom: 0;
   &:before {
     $width: 5px;
     content: ' ';

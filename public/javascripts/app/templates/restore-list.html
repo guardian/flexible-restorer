@@ -99,7 +99,8 @@
               ng-class="{'active': isSettingContent === false}">
   </gu-column>
 
-  <div  class="modal center"
+  <!-- INLINE STYLE TO AVOID INITIAL FLASH OF CONTENT WITH THE MODAL -->
+  <div style="display: none"  class="modal center"
         ng-controller="ModalCtrl as ctrl"
         ng-class="{ 'visually-hidden': !isActive }">
     <gu-box class="modal__content" variant="primary">
@@ -144,11 +145,11 @@
 
       <!-- ACTIONS -->
       <gu-row variant="reverse" class="modal__content__container">
-        <gu-btn class="modal__content__restore">
+        <gu-btn class="modal__content__btn" class="modal__content__restore">
           <gu-icon variant="wrench-disabled"></gu-icon>
           Restore Version
         </gu-btn>
-        <gu-btn ng-click="ctrl.closeModal()">Cancel</gu-btn>
+        <gu-btn class="modal__content__btn--close" ng-click="ctrl.closeModal()">Cancel</gu-btn>
       </gu-row>
 
     </gu-box>
