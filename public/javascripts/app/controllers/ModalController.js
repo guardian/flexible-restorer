@@ -28,6 +28,7 @@ var ModalCtrl = ModalCtrlMod.controller('ModalCtrl', [
     }
 
     mediator.subscribe('snapshot-list:display-modal', showModal);
+    mediator.subscribe('snapshot-list:close-modal',   closeModal);
 
     //DOM EVENTS
     window.addEventListener('keydown', function modalOnKeyDown(e){
