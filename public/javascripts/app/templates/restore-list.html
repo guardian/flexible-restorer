@@ -65,8 +65,9 @@
 
         <!-- JSON LINK -->
         <gu-btn class="snapshot-list__item__json"
+                href="#" variant="arrow-right"
                 ng-class="{ hidden: !model.get('activeState') }"
-                href="#" variant="arrow-right">
+                ng-click="ctrl.onJSONClicked()">
           JSON
         </gu-btn>
 
@@ -98,14 +99,22 @@
   <gu-column  class="snapshot-content"
               span="9"
               ng-controller="SnapshotContentCtrl as ctrl"
-              ng-bind-html="htmlContent"
               ng-class="{'active': isSettingContent === false}">
+    <gu-row class="snapshot-content__container" ng-class="{ 'show-html': isShowingHtml }">
+      <gu-column class="snapshot-content__container__item--json" span="6">
+        <div><pre><code>{{ jsonContent }}</code></pre></div>
+      </gu-column>
+      <gu-column span="6" class="snapshot-content__container__item">
+        <div ng-bind-html="htmlContent"></div>
+      </gu-column>
+    </gu-row>
   </gu-column>
 
   <!-- INLINE STYLE TO AVOID INITIAL FLASH OF CONTENT WITH THE MODAL -->
-  <div style="display: none"  class="modal center"
-                              ng-controller="ModalCtrl as ctrl"
-                              ng-class="{ 'visually-hidden': !isActive }">
+  <div style="display: none"
+       class="modal center"
+       ng-controller="ModalCtrl as ctrl"
+      ng-class="{ 'visually-hidden': !isActive }">
     <gu-box class="modal__content" variant="primary">
       <!-- MODAL HEADER -->
       <h1 class="modal__content__title">Before you restore</h1>

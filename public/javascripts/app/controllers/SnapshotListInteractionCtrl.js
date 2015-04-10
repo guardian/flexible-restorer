@@ -9,6 +9,9 @@ var SnapshotListInteractionCtrl = SnapshotListInteractionCtrlMod.controller('Sna
 
     this.onItemClicked = (model, collection) => {
 
+      //inform the content we wish to show html
+      mediator.publish('snapshot-list:display-html');
+
       //if the model is already active... bail out!
       if (model.get('activeState') === true) {
         return;
@@ -25,6 +28,10 @@ var SnapshotListInteractionCtrl = SnapshotListInteractionCtrlMod.controller('Sna
 
     this.onRestoreClicked = function(){
       mediator.publish('snapshot-list:show-modal');
+    }
+
+    this.onJSONClicked = function(){
+      mediator.publish('snapshot-list:display-json');
     }
 
   }

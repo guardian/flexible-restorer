@@ -43,6 +43,15 @@ var SnapshotModel = SnapshotModelMod.factory('SnapshotModel', [
       getHeadline(){
         return this.get('preview').fields.headline;
       }
+
+      toJSON(){
+        var clone = angular.extend({}, this.data);
+        //clear decorated data
+        delete clone.timestamp;
+        delete clone.createdDate;
+        delete clone.activeState;
+        return JSON.stringify(clone, null, 2);
+      }
     }
 
 

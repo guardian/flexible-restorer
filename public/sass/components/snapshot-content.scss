@@ -1,8 +1,27 @@
 .snapshot-content {
-  padding: 2% 15%;
+  overflow: hidden;
   opacity: 0;
   transition: opacity .1s ease-in-out;
   &.active {
     opacity: 1;
   }
+}
+
+.snapshot-content__container {
+  width: 200%;
+  transform: translateX(0);
+  transition: transform .3s ease-in-out;
+  &.show-html {
+    transform: translateX(-50%);
+  }
+}
+
+.snapshot-content__container__item {
+  box-sizing: border-box;
+  padding: 2% 10%;
+}
+
+.snapshot-content__container__item--json {
+  @extend .snapshot-content__container__item;
+  padding: 2% 5%;
 }
