@@ -33,7 +33,8 @@ var ModalCtrl = ModalCtrlMod.controller('ModalCtrl', [
       $scope.isActive = false;
     }
 
-    mediator.subscribe('snapshot-list:show-modal', showModal);
+    mediator.subscribe('snapshot-list:display-modal', showModal);
+
   }
 ]);
 

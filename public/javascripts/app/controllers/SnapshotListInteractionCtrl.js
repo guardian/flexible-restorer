@@ -27,7 +27,7 @@ var SnapshotListInteractionCtrl = SnapshotListInteractionCtrlMod.controller('Sna
     }
 
     this.onRestoreClicked = function(){
-      mediator.publish('snapshot-list:show-modal');
+      mediator.publish('snapshot-list:display-modal');
     }
 
     this.onJSONClicked = function(){

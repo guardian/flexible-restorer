@@ -1,10 +1,14 @@
 .snapshot-content {
-  overflow: hidden;
   opacity: 0;
   transition: opacity .1s ease-in-out;
   &.active {
     opacity: 1;
   }
+}
+
+.snapshot-content__viewport {
+  width: 100%;
+  overflow: hidden;
 }
 
 .snapshot-content__container {
@@ -24,4 +28,6 @@
 .snapshot-content__container__item--json {
   @extend .snapshot-content__container__item;
   padding: 2% 5%;
+  width: 50%;
+  overflow: auto;
 }
