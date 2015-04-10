@@ -7,23 +7,8 @@ var SnapshotListInteractionCtrl = SnapshotListInteractionCtrlMod.controller('Sna
   '$scope',
   function($scope){
 
-    this.onItemClicked = (model, collection) => {
-
-      //inform the content we wish to show html
-      mediator.publish('snapshot-list:display-html');
-
-      //if the model is already active... bail out!
-      if (model.get('activeState') === true) {
-        return;
-      }
-
-      //toggle the active states
-      var activeModel = collection.find((model)=> model.get('activeState') === true);
-      activeModel.set('activeState', false);
-      model.set('activeState', true);
-
-      //tell the application to display content from a model
-      mediator.publish('snapshot-list:display-content', model);
+    this.onItemClicked = (index) => {
+      mediator.publish('snapshot-list:set-active', index);
     }
 
     this.onRestoreClicked = function(){
@@ -33,6 +18,23 @@ var SnapshotListInteractionCtrl = SnapshotListInteractionCtrlMod.controller('Sna
     this.onJSONClicked = function(){
       mediator.publish('snapshot-list:display-json');
     }
+
+    //keypress events
+    //todo abstract these into a keyboard interaction controller
+    //jp 10-04-15
+    window.addEventListener('keydown', function(e){
+      if (e.keyCode === 40) {
+        e.preventDefault();
+        mediator.publish('snapshot-list:increment-active');
+      }
+      else if (e.keyCode === 38) {
+        e.preventDefault();
+        mediator.publish('snapshot-list:decrement-active');
+      }
+      else if (e.keyCode === 13) {
+        mediator.publish('keypress:enter', e);
+      }
+    });
 
   }
 ]);

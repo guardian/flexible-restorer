@@ -34,7 +34,7 @@ var SnapshotContentCtrl = SnapshotContentCtrlMod.controller('SnapshotContentCtrl
       $scope.isSettingContent = true;
       $scope.htmlContent = $sanitize(model.getHTMLContent());
       $scope.jsonContent = model.toJSON();
-      $timeout(()=> $scope.isSettingContent = false, 200);
+      $timeout(()=> $scope.isSettingContent = false, 100);
     }
 
     function displayJSON() {

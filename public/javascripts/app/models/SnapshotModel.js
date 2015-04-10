@@ -37,7 +37,14 @@ var SnapshotModel = SnapshotModelMod.factory('SnapshotModel', [
       getHTMLContent(){
         var content = this.get('preview').blocks.map((block) => block.elements);
         content = flatten(content);
-        return content.map((element) => element.fields.text || element.fields.html).join('');
+        return content.map((element) => {
+          if (element.fields.text) {
+            return element.fields.text;
+          }
+          if (element.fields.html) {
+            return element.fields.html;
+          }
+        }).join('');
       }
 
       getHeadline(){

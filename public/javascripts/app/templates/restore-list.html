@@ -60,7 +60,7 @@
                           ng-class="{ 'item-active': model.get('activeState') }">
         <!-- CONTENT -->
         <div  class="snapshot-list__item__content"
-              ng-click="ctrl.onItemClicked(model, models)">
+              ng-click="ctrl.onItemClicked($index)">
           <h6 class="snapshot-list__item__content__relative-date">{{ model.getRelativeDate() }}</h6>
           <h6 class="snapshot-list__item__content__actual-date">{{ model.getCreatedDate() }}</h6>
         </div>
