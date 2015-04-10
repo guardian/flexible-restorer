@@ -1,4 +1,5 @@
 import angular from 'angular';
+import mediator from '../utils/mediator';
 
 var RestoreFormCtrlMod = angular.module('RestoreFormCtrlMod', []);
 
@@ -10,8 +11,16 @@ var RestoreFormCtrl = RestoreFormCtrlMod.controller('RestoreFormCtrl', [
 
     this.onSubmit = function onRestoreFormSubmit(){
       $scope.isLoading = true;
-      console.log('submit');
     }
+
+    mediator.subscribe('snapshot-list:hidden-modal', resetModalForm);
+
+    function resetModalForm(){
+      $scope.isLoading = false;
+      $scope.selfInContent = false;
+      $scope.elseInContent = false;
+    }
+
   }
 ]);
 
