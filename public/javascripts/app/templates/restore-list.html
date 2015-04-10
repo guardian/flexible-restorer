@@ -83,9 +83,10 @@
       </gu-index-list-item>
 
       <!-- DELTA TIME -->
-      <li ng-repeat-end>
-        <gu-row class="delta-row" variant="reverse">
-          <gu-icon variant="expand-disabled"></gu-icon>
+      <li class="delta-row" ng-repeat-end ng-mouseover="isActive = true" ng-mouseout="isActive = false">
+        <gu-row variant="reverse">
+          <gu-icon class="delta-row__icon" variant="expand-disabled"></gu-icon>
+          <span class="delta-row__content" ng-class="{ 'visually-hidden': !isActive }">This is the news</span>
         </gu-row>
       </li>
 
@@ -101,8 +102,8 @@
 
   <!-- INLINE STYLE TO AVOID INITIAL FLASH OF CONTENT WITH THE MODAL -->
   <div style="display: none"  class="modal center"
-        ng-controller="ModalCtrl as ctrl"
-        ng-class="{ 'visually-hidden': !isActive }">
+                              ng-controller="ModalCtrl as ctrl"
+                              ng-class="{ 'visually-hidden': !isActive }">
     <gu-box class="modal__content" variant="primary">
       <!-- MODAL HEADER -->
       <h1 class="modal__content__title">Before you restore</h1>

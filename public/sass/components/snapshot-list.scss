@@ -20,6 +20,9 @@
 // SNAPSHOT LIST
 .snapshot-list {
   margin-top: 5px;
+  li {
+    list-style: none;
+  }
 }
 
 .snapshot-list__item__content {
@@ -44,7 +47,6 @@
 
 .item-active .index-list__item__index {
   position: relative;
-  margin-bottom: 0;
   &:before {
     $width: 5px;
     content: ' ';
@@ -58,6 +60,13 @@
   }
 }
 
+//This element selector is here due to the load orde of the components' css
+//which always loads last and overrides this selector
+//no matter what :'(
+div.index-list__item__index {
+  margin-bottom: 0;
+}
+
 // RESTORE BUTTON
 .snapshot-list__item__restore {
   display: flex;
@@ -66,6 +75,9 @@
   flex-grow: 1;
   margin-right: -3%;
   transition: opacity .1s ease-in-out;
+  &:before, &:after {
+    border-left: 1px solid $color-400-grey;
+  }
 }
 
 .snapshot-list__item__restore__icon {
@@ -79,4 +91,22 @@
   justify-content: center;
   flex-grow: 1;
   transition: opacity .1s ease-in-out;
+  &:before, &:after {
+    border-left: 1px solid $color-400-grey;
+  }
+}
+
+.delta-row {
+  padding: 5px 0 2px 0;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.delta-row__icon {
+  margin-left: 5px;
+}
+
+.delta-row__content {
+  transition: opacity .2s ease-in-out;
 }
