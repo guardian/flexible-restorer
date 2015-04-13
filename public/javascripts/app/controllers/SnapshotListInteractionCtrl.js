@@ -54,36 +54,36 @@ var SnapshotListInteractionCtrl = SnapshotListInteractionCtrlMod.controller('Sna
       switch(e.keyCode){
         case 40: // DOWN KEY
           if (!$scope.isDisplayingModal) {
-          e.preventDefault();
-          mediator.publish('snapshot-list:increment-active');
-        }
+            e.preventDefault();
+            mediator.publish('snapshot-list:increment-active');
+          }
         break;
         case 38:// UP KEY
           if (!$scope.isDisplayingModal) {
-          e.preventDefault();
-          mediator.publish('snapshot-list:decrement-active');
-        }
+            e.preventDefault();
+            mediator.publish('snapshot-list:decrement-active');
+          }
         break;
         case 13: // ENTER KEY
           if (!$scope.isDisplayingModal) {
-          e.preventDefault();
-          setState('modal');
-          mediator.publish('snapshot-list:display-modal');
-        }
+            e.preventDefault();
+            setState('modal');
+            mediator.publish('snapshot-list:display-modal');
+          }
         break;
         case 37: // LEFT KEY
-          if (!$scope.isDisplayingModal) {
           e.preventDefault();
-          setState('html');
-          mediator.publish('snapshot-list:display-html');
-        }
+          if (!$scope.isDisplayingModal) {
+            setState('html');
+            mediator.publish('snapshot-list:display-html');
+          }
         break;
         case 39: // RIGHT KEY
-          if (!$scope.isDisplayingModal) {
           e.preventDefault();
-          setState('json');
-          mediator.publish('snapshot-list:display-json');
-        }
+          if (!$scope.isDisplayingModal) {
+            setState('json');
+            mediator.publish('snapshot-list:display-json');
+          }
         break;
       }
 
