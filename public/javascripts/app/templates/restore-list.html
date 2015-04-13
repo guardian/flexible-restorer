@@ -26,13 +26,7 @@
 <!-- TODO -> SEPARATE INTO A PARTIAL FOR EASE OF RE-USE -->
 <!-- JP 10/04/15 -->
 <div ng-if="isLoading">
-  <div class="spinner">
-    <div class="rect1"></div>
-    <div class="rect2"></div>
-    <div class="rect3"></div>
-    <div class="rect4"></div>
-    <div class="rect5"></div>
-  </div>
+  <gu-loading-bars></gu-loading-bars>
 </div>
 
 <gu-row ng-if="!isLoading" class="content">
@@ -201,13 +195,7 @@
 
             <!-- LOADER -->
             <gu-column span="6" class="form-loading"  ng-class="{ 'in-active': isLoading }" >
-              <div class="spinner">
-                <div class="rect1"></div>
-                <div class="rect2"></div>
-                <div class="rect3"></div>
-                <div class="rect4"></div>
-                <div class="rect5"></div>
-              </div>
+              <gu-loading-bars></gu-loading-bars>
             </gu-column>
           </gu-row>
         </div>
