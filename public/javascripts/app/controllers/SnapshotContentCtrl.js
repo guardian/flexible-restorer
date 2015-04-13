@@ -17,17 +17,18 @@ var SnapshotContentCtrl = SnapshotContentCtrlMod.controller('SnapshotContentCtrl
 
     //set the initial content
     SnapshotModels
-      .getCollection($routeParams.contentId)
-      .then((collection)=> {
-        displayContent(collection.getModelAt(0));
-      })
-      //TODO setup global error handle
-      .catch((err)=> console.log(err))
+    .getCollection($routeParams.contentId)
+    .then((collection)=> {
+      displayContent(collection.getModelAt(0));
+    })
+    //TODO setup global error handle
+    .catch((err)=> console.log(err))
 
     //wait for the system to imform us of content changes
     mediator.subscribe('snapshot-list:display-content', displayContent);
     mediator.subscribe('snapshot-list:display-json', displayJSON);
     mediator.subscribe('snapshot-list:display-html', displayHTML);
+    mediator.subscribe('snapshot-list:hidden-modal', displayHTML);
 
     //logic for animating and setting content
     function displayContent(model) {

@@ -60,16 +60,22 @@
                           ng-class="{ 'item-active': model.get('activeState') }">
         <!-- CONTENT -->
         <div  class="snapshot-list__item__content"
+              ng-class="{ 'active': model.get('activeState') && isDisplayingHTML }"
               ng-click="ctrl.onItemClicked($index)">
           <h6 class="snapshot-list__item__content__relative-date">{{ model.getRelativeDate() }}</h6>
           <h6 class="snapshot-list__item__content__actual-date">{{ model.getCreatedDate() }}</h6>
         </div>
 
         <!-- JSON LINK -->
+        <!-- DUE TO THE NATURE OF THE HOVER EFFECTS WE NEED TO CANCEL
+             THE BACKGROUND COLOR WHEN THE RESTORE BUTTON IS ACTIVE
+             THIS IS WHY THIS IS THE ONLY BUTTON WITH AN 'in-active' CLASS
+            JP 13/4/15
+        -->
         <gu-btn class="snapshot-list__item__json"
                 href="#"
                 variant="arrow-right"
-                ng-class="{ hidden: !model.get('activeState') }"
+                ng-class="{ hidden: !model.get('activeState'), 'active': isDisplayingJSON, 'in-active': isDisplayingModal }"
                 ng-click="ctrl.onJSONClicked()">
           JSON
         </gu-btn>
@@ -78,7 +84,7 @@
         <gu-btn class="snapshot-list__item__restore"
                 href="#"
                 variant="arrow-right"
-                ng-class="{ hidden: !model.get('activeState') }"
+                ng-class="{ hidden: !model.get('activeState'), 'active': isDisplayingModal }"
                 ng-click="ctrl.onRestoreClicked()">
           <gu-icon class="snapshot-list__item__restore__icon" variant="wrench-disabled"></gu-icon>
           Restore
@@ -138,22 +144,28 @@
               <gu-row>
                 <gu-column span="12">
                   <h1 class="modal__content__title">Before you restore</h1>
-                  <p class="modal__content__desc">Currently present in the content</p>
+                  <!--commented as we are going to add presence support at a later date
+                    jp 13/04/2015
+                    <p class="modal__content__desc">Currently present in the content</p>
+                  -->
                 </gu-column>
               </gu-row>
 
               <!-- PRESENCE -->
-              <gu-row class="modal__content__container">
+              <!--commented as we are going to add presence support at a later date
+                jp 13/04/2015
+                <gu-row class="modal__content__container">
                 <gu-column span="9">
-                  some people
+                some people
                 </gu-column>
                 <gu-column span="3">
-                  <a class="model__content__refresh">
-                    <gu-icon variant="expand-active"></gu-icon>
-                    Refresh
-                  </a>
+                <a class="model__content__refresh">
+                <gu-icon variant="expand-active"></gu-icon>
+                Refresh
+                </a>
                 </gu-column>
-              </gu-row>
+                </gu-row>
+              -->
 
               <!-- FORM -->
               <gu-row class="modal__content__container">
@@ -178,7 +190,7 @@
 
               <!-- ACTIONS -->
               <gu-row variant="reverse" class="modal__content__container">
-                <gu-btn class="modal__content__btn" type="submit" ng-disabled="!selfInContent || !elseInContent">
+                <gu-btn variant="active" class="modal__content__btn" type="submit" ng-disabled="!selfInContent || !elseInContent">
                   <gu-icon variant="wrench-disabled"></gu-icon>
                   Restore Version
                 </gu-btn>
