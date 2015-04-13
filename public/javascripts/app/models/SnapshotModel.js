@@ -1,14 +1,16 @@
 import angular  from 'angular';
 import moment   from 'moment';
 import flatten from 'flatten';
+import BaseModel from 'composer-components/lib/models/BaseModel';
 
 var SnapshotModelMod = angular.module('SnapshotModelMod', []);
 
 var SnapshotModel = SnapshotModelMod.factory('SnapshotModel', [
   function(){
 
-    class SnapshotModel {
+    class SnapshotModel extends BaseModel{
       constructor(data){
+        super();
         var timestamp = Object.keys(data)[0];
         var snapshotData = data[timestamp];
         this.data = angular.extend({}, {
@@ -16,14 +18,6 @@ var SnapshotModel = SnapshotModelMod.factory('SnapshotModel', [
           createdDate: moment(timestamp),
           activeState: false
         }, snapshotData);
-      }
-
-      get(key){
-        return this.data[key];
-      }
-
-      set(key, val) {
-        this.data[key] = val;
       }
 
       getCreatedDate(){

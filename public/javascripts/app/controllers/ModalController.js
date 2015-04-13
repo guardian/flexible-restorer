@@ -27,10 +27,6 @@ var ModalCtrl = ModalCtrlMod.controller('ModalCtrl', [
       });
     };
 
-    this.clickCloseModal = function clickCloseModal(){
-      $timeout(closeModal, 1);
-    };
-
     var closeModal = this.closeModal = function closeModal(){
       safeApply($scope, () => {
         $scope.isActive = false;

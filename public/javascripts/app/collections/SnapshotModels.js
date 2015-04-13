@@ -1,6 +1,7 @@
 import angular from 'angular';
 import SnapshotModel from '../models/SnapshotModel';
 import SnapshotCollectionMod from '../services/SnapshotCollectionService';
+import BaseCollection from 'composer-components/lib/collections/BaseCollection';
 
 let cache = {};
 
@@ -12,34 +13,15 @@ var SnapshotModels = SnapshotModelsMod.factory('SnapshotModels', [
   'SnapshotModel',
   function($q, SnapshotService, SnapshotModel){
 
-    class SnapshotModels {
+    class SnapshotModels extends BaseCollection {
       constructor(models){
+        super();
         this.models = models.map((model) => new SnapshotModel.getModel(model)).sort(this.comparator);
         this.getModelAt(0).set('activeState', true);
       }
 
       comparator(modelA, modelB){
         return modelA.get('createdDate').isBefore(modelB.get('createdDate')) ? 1 : -1;
-      }
-
-      getModels(){
-        return this.models;
-      }
-
-      getModelAt(index) {
-        return this.models[index];
-      }
-
-      find(predicate) {
-        return this.models.find((model)=> predicate.call(model, model.data));
-      }
-
-      indexOf(model) {
-        return this.models.indexOf(model);
-      }
-
-      length() {
-        return this.models.length;
       }
     }
 
