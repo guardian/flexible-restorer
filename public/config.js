@@ -38,17 +38,6 @@ System.config({
       "json": "github:systemjs/plugin-json@0.1.0",
       "svg": "github:cutandpastey/plugin-svg@0.2.0"
     },
-    "github:guardian/tools-components@4": {
-      "angular": "github:angular/bower-angular@1.3.15",
-      "angular-route": "github:angular/bower-angular-route@1.3.15",
-      "css": "github:systemjs/plugin-css@0.1.9",
-      "js-beautify": "npm:js-beautify@1.5.5",
-      "json": "github:systemjs/plugin-json@0.1.0",
-      "moment": "npm:moment@2.10.0",
-      "svg": "github:cutandpastey/plugin-svg@0.2.0",
-      "systemjs/plugin-text": "github:systemjs/plugin-text@0.0.2",
-      "text": "github:systemjs/plugin-text@0.0.2"
-    },
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
     },
@@ -178,9 +167,6 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "minimist": "npm:minimist@0.0.8",
       "path": "github:jspm/nodelibs-path@0.1.0",
-      "process": "github:jspm/nodelibs-process@0.1.1"
-    },
-    "npm:moment@2.10.0": {
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
     "npm:nopt@3.0.1": {
