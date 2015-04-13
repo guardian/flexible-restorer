@@ -71,14 +71,14 @@ var SnapshotListInteractionCtrl = SnapshotListInteractionCtrlMod.controller('Sna
           mediator.publish('snapshot-list:display-modal');
         }
         break;
-        case 39: // RIGHT KEY
+        case 37: // LEFT KEY
           if (!$scope.isDisplayingModal) {
           e.preventDefault();
           setState('html');
           mediator.publish('snapshot-list:display-html');
         }
         break;
-        case 37: // LEFT KEY
+        case 39: // RIGHT KEY
           if (!$scope.isDisplayingModal) {
           e.preventDefault();
           setState('json');

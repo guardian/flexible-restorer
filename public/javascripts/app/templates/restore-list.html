@@ -90,16 +90,16 @@
               ng-controller="SnapshotContentCtrl as ctrl"
               ng-class="{'active': isSettingContent === false}">
     <div class="snapshot-content__viewport">
-      <gu-row class="snapshot-content__container" ng-class="{ 'show-html': isShowingHtml }">
-
-        <!-- JSON CONTENT -->
-        <gu-column class="snapshot-content__container__item--json" span="6">
-          <div><pre><code>{{ jsonContent }}</code></pre></div>
-        </gu-column>
+      <gu-row class="snapshot-content__container" ng-class="{ 'show-json': isShowingJSON }">
 
         <!-- HTML CONTENT -->
-        <gu-column span="6" class="snapshot-content__container__item">
+        <gu-column class="snapshot-content__container__item--json" span="6">
           <div ng-bind-html="htmlContent"></div>
+        </gu-column>
+
+        <!-- JSON CONTENT -->
+        <gu-column span="6" class="snapshot-content__container__item">
+          <div><pre><code>{{ jsonContent }}</code></pre></div>
         </gu-column>
 
       </gu-row>

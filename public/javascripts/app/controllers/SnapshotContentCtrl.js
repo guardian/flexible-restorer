@@ -14,7 +14,7 @@ var SnapshotContentCtrl = SnapshotContentCtrlMod.controller('SnapshotContentCtrl
   'SnapshotModels',
   function($scope, $sanitize, $routeParams, $timeout, $element, SnapshotModels){
 
-    $scope.isShowingHtml = true;
+    $scope.isShowingJSON = false;
 
     //set the initial content
     SnapshotModels
@@ -40,11 +40,11 @@ var SnapshotContentCtrl = SnapshotContentCtrlMod.controller('SnapshotContentCtrl
     }
 
     function displayJSON() {
-      safeApply($scope, () => $scope.isShowingHtml = false);
+      safeApply($scope, () => $scope.isShowingJSON = true);
     }
 
     function displayHTML() {
-      safeApply($scope, () => $scope.isShowingHtml = true);
+      safeApply($scope, () => $scope.isShowingJSON = false);
     }
 
   }
