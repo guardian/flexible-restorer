@@ -12,7 +12,7 @@ var ModalCtrl = ModalCtrlMod.controller('ModalCtrl', [
     $scope.isActive = false;
 
     //remove the inline style which prevents a flash of content
-    //if we dont use a timeout the inline style is removed after the sope is parsed
+    //if we dont use a timeout the inline style is removed after the scope is parsed
     //this leads to a flash of the modal
     $timeout(()=>$element.attr('style', {display: 'block'}), 50);
 
@@ -39,6 +39,7 @@ var ModalCtrl = ModalCtrlMod.controller('ModalCtrl', [
       });
     };
 
+    //SYSTEM EVENTS
     mediator.subscribe('snapshot-list:display-modal', showModal);
     mediator.subscribe('snapshot-list:close-modal',   closeModal);
 
