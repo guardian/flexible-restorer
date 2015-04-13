@@ -1,6 +1,7 @@
 import angular from 'angular';
 import mediator from '../utils/mediator';
 import SnapshotCollectionMod from '../collections/SnapshotModels';
+import safeApply from 'composer-components/lib/utils/safe-apply';
 
 var SnapshotContentCtrlMod = angular.module('SnapshotContentCtrlMod', []);
 
@@ -39,11 +40,11 @@ var SnapshotContentCtrl = SnapshotContentCtrlMod.controller('SnapshotContentCtrl
     }
 
     function displayJSON() {
-      $scope.$apply(() => $scope.isShowingHtml = false);
+      safeApply($scope, () => $scope.isShowingHtml = false);
     }
 
     function displayHTML() {
-      $scope.$apply(() => $scope.isShowingHtml = true);
+      safeApply($scope, () => $scope.isShowingHtml = true);
     }
 
   }

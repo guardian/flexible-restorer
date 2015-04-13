@@ -1,5 +1,6 @@
 import angular from 'angular';
 import mediator from '../utils/mediator';
+import safeApply from 'composer-components/lib/utils/safe-apply';
 
 var ModalCtrlMod = angular.module('ModalCtrlMod', []);
 
@@ -18,7 +19,7 @@ var ModalCtrl = ModalCtrlMod.controller('ModalCtrl', [
 
     //APPLICATION EVENTS
     var showModal = this.showModal = function showModal(){
-      $scope.$apply(() => {
+      safeApply($scope, () => {
         $scope.isActive = true;
         //LOCK THE BODY ELEMENT SO A USER CANNOT
         //SCROLL DOWN THE PAGE WHILST THE MODAL IS OPEN
@@ -31,7 +32,7 @@ var ModalCtrl = ModalCtrlMod.controller('ModalCtrl', [
     };
 
     var closeModal = this.closeModal = function closeModal(){
-      $scope.$apply(() => {
+      safeApply($scope, () => {
         $scope.isActive = false;
         // UNLOCK THE BODY ELEMENT
         angular.element(document.body).css({ height: '100%', overflow: 'visible' });
