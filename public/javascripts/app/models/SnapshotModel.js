@@ -31,7 +31,7 @@ var SnapshotModel = SnapshotModelMod.factory('SnapshotModel', [
       }
 
       getRelativeDate(date = moment()){
-        return this.get('createdDate').from(date, true);
+        return this.get('createdDate').from(date);
       }
 
       getHTMLContent(){
