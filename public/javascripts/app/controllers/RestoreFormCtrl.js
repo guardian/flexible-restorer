@@ -10,8 +10,10 @@ var RestoreFormCtrl = RestoreFormCtrlMod.controller('RestoreFormCtrl', [
     $scope.isLoading = false;
 
     this.onSubmit = function onRestoreFormSubmit(){
+      //PLACEHOLDER
+      //TODO ADD POST JP 13/4/15
       $scope.isLoading = true;
-    }
+    };
 
     mediator.subscribe('snapshot-list:hidden-modal', resetModalForm);
 

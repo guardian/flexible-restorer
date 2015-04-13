@@ -42,6 +42,7 @@ var ModalCtrl = ModalCtrlMod.controller('ModalCtrl', [
 
     //DOM EVENTS
     window.addEventListener('keydown', function modalOnKeyDown(e){
+      //IF A USER PRESSES ESCAPE WE WANT TO CLOSE THE MODAL
       if ($scope.isActive && e.keyCode === 27) {
         closeModal();
       }

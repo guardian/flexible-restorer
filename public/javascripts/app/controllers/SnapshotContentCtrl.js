@@ -18,12 +18,12 @@ var SnapshotContentCtrl = SnapshotContentCtrlMod.controller('SnapshotContentCtrl
 
     //set the initial content
     SnapshotModels
-    .getCollection($routeParams.contentId)
-    .then((collection)=> {
-      displayContent(collection.getModelAt(0));
-    })
-    //TODO setup global error handle
-    .catch((err)=> console.log(err))
+      .getCollection($routeParams.contentId)
+      .then((collection)=> {
+        displayContent(collection.getModelAt(0));
+      })
+      //TODO setup global error handle
+      .catch((err)=> console.log(err))
 
     //wait for the system to imform us of content changes
     mediator.subscribe('snapshot-list:display-content', displayContent);

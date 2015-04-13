@@ -1,0 +1,27 @@
+<!-- HEADER -->
+<gu-row skin="header" ng-include src="'/assets/javascripts/app/templates/partials/header.html'"></gu-row>
+
+<gu-row class="splash-screen">
+  <gu-column  class="splash-screen__container"
+              span="12"
+              gu-box="primary"
+              ng-controller="SearchFormCtrl as formCtrl">
+    <form novalidate name="search"
+          class="splash-screen__container__form center"
+          ng-submit="formCtrl.formSubmit(search)">
+      <label  class="splash-screen__container__form__label">
+        Enter a composer url:
+      </label>
+      <input  class="splash-screen__container__form__input"
+              type="text"
+              ng-required="true"
+              ng-model="search.query"/>
+      <gu-btn class="splash-screen__container__form__submit"
+              type="submit"
+              size="small"
+              ng-disabled="!search.query">
+        Search
+      </gu-btn>
+    </form>
+  </gu-column>
+</gu-row>

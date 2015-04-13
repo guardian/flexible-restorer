@@ -2,9 +2,9 @@ import angular from 'angular';
 import SnapshotModelsMod from '../collections/SnapshotModels';
 import mediator from '../utils/mediator';
 
-var restoreListCtrlMod = angular.module('SnapshotListCtrlMod', []);
+var SnapshotListCtrlMod = angular.module('SnapshotListCtrlMod', []);
 
-var restoreListCtrl = restoreListCtrlMod.controller('SnapshotListCtrl', [
+var SnapshotListCtrl = restoreListCtrlMod.controller('SnapshotListCtrl', [
   '$scope',
   '$routeParams',
   '$timeout',
@@ -19,23 +19,23 @@ var restoreListCtrl = restoreListCtrlMod.controller('SnapshotListCtrl', [
     $scope.isSidebarActive = false;
 
     SnapshotModels
-    .getCollection($routeParams.contentId)
-    .then((collection) => {
-      snapshotCollection = collection;
-      $scope.isLoading  = false;
-      $scope.models = collection.getModels();
+      .getCollection($routeParams.contentId)
+      .then((collection) => {
+        snapshotCollection = collection;
+        $scope.isLoading  = false;
+        $scope.models = collection.getModels();
 
-      var activeModel = collection.find((data)=> data.activeState);
-      $scope.articleTitle = activeModel.getHeadline();
-      $scope.articleHash = activeModel.get('id');
+        var activeModel = collection.find((data)=> data.activeState);
+        $scope.articleTitle = activeModel.getHeadline();
+        $scope.articleHash = activeModel.get('id');
 
-      //animate sidebar in
-      $timeout(()=> $scope.isSidebarActive = true, 500);
+        //animate sidebar in
+        $timeout(()=> $scope.isSidebarActive = true, 500);
 
-    })
-    .catch((err) => {
-      $scope.hasError = true;
-    });
+      })
+      .catch((err) => {
+        $scope.hasError = true;
+      });
 
     //set active model to a specific index
     mediator.subscribe('snapshot-list:set-active', function(index){
@@ -80,4 +80,4 @@ var restoreListCtrl = restoreListCtrlMod.controller('SnapshotListCtrl', [
   }
 ]);
 
-export default restoreListCtrlMod;
+export default SnapshotListCtrlMod;
