@@ -2,7 +2,7 @@ import angular from 'angular';
 
 var SearchFormCtrlMod = angular.module('SearchFormCtrlMod', []);
 
-var SearchFormCtrl = SearchFormCtrlMod.controller('SearchFormCtrl', [
+SearchFormCtrlMod.controller('SearchFormCtrl', [
   '$scope',
   '$location',
   function($scope, $location){

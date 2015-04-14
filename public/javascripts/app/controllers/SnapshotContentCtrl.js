@@ -5,7 +5,7 @@ import safeApply from 'composer-components/lib/utils/safe-apply';
 
 var SnapshotContentCtrlMod = angular.module('SnapshotContentCtrlMod', []);
 
-var SnapshotContentCtrl = SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
+SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
   '$scope',
   '$routeParams',
   '$timeout',

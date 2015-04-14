@@ -3,7 +3,7 @@ import mediator from '../utils/mediator';
 
 var SnapshotListInteractionCtrlMod = angular.module('SnapshotListInteractionCtrlMod', []);
 
-var SnapshotListInteractionCtrl = SnapshotListInteractionCtrlMod.controller('SnapshotListInteractionCtrl', [
+SnapshotListInteractionCtrlMod.controller('SnapshotListInteractionCtrl', [
   '$scope',
   function($scope){
 

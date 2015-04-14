@@ -5,7 +5,7 @@ import BaseModel from 'composer-components/lib/models/BaseModel';
 
 var SnapshotModelMod = angular.module('SnapshotModelMod', []);
 
-var SnapshotModel = SnapshotModelMod.factory('SnapshotModel', [
+SnapshotModelMod.factory('SnapshotModel', [
   function(){
 
     class SnapshotModel extends BaseModel{

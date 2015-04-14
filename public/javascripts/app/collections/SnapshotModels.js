@@ -7,7 +7,7 @@ let cache = {};
 
 var SnapshotModelsMod = angular.module('SnapshotModelsMod', ['SnapshotServiceMod']);
 
-var SnapshotModels = SnapshotModelsMod.factory('SnapshotModels', [
+SnapshotModelsMod.factory('SnapshotModels', [
   '$q',
   'SnapshotService',
   'SnapshotModel',

@@ -2,7 +2,7 @@ import angular from 'angular';
 
 var SnapshotServiceMod = angular.module('SnapshotServiceMod', []);
 
-var SnapshotService = SnapshotServiceMod.service('SnapshotService', [
+SnapshotServiceMod.service('SnapshotService', [
   '$http',
   function($http){
     return {

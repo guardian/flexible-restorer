@@ -3,7 +3,7 @@ import mediator from '../utils/mediator';
 
 var RestoreFormCtrlMod = angular.module('RestoreFormCtrlMod', []);
 
-var RestoreFormCtrl = RestoreFormCtrlMod.controller('RestoreFormCtrl', [
+RestoreFormCtrlMod.controller('RestoreFormCtrl', [
   '$scope',
   function($scope){
 

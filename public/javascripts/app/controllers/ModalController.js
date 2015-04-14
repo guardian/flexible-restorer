@@ -4,7 +4,7 @@ import safeApply from 'composer-components/lib/utils/safe-apply';
 
 var ModalCtrlMod = angular.module('ModalCtrlMod', []);
 
-var ModalCtrl = ModalCtrlMod.controller('ModalCtrl', [
+ModalCtrlMod.controller('ModalCtrl', [
   '$scope',
   '$element',
   '$timeout',
