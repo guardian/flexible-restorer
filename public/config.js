@@ -14,11 +14,11 @@ System.config({
     "angular-sanitize": "github:angular/bower-angular-sanitize@1.3.15",
     "angular/bower-angular-sanitize": "github:angular/bower-angular-sanitize@1.3.15",
     "bootstrap": "github:twbs/bootstrap@3.3.4",
-    "composer-components": "github:guardian/tools-components@0.5",
+    "composer-components": "github:guardian/tools-components@1.0.6",
     "css": "github:systemjs/plugin-css@0.1.9",
     "flatten": "npm:flatten@0.0.1",
     "mediator": "npm:mediator-js@0.9.9",
-    "moment": "github:moment/moment@2.10.0",
+    "moment": "npm:moment@2.10.2",
     "necolas/normalize.css": "github:necolas/normalize.css@3.0.2",
     "svg": "github:cutandpastey/plugin-svg@0.2.0",
     "traceur": "github:jmcriffey/bower-traceur@0.0.87",
@@ -30,6 +30,15 @@ System.config({
       "angular": "github:angular/bower-angular@1.3.15"
     },
     "github:guardian/tools-components@0.5": {
+      "angular": "github:angular/bower-angular@1.3.15",
+      "angular-route": "github:angular/bower-angular-route@1.3.15",
+      "css": "github:systemjs/plugin-css@0.1.9",
+      "cutandpastey/plugin-svg": "github:cutandpastey/plugin-svg@0.2.0",
+      "js-beautify": "npm:js-beautify@1.5.5",
+      "json": "github:systemjs/plugin-json@0.1.0",
+      "svg": "github:cutandpastey/plugin-svg@0.2.0"
+    },
+    "github:guardian/tools-components@1.0.6": {
       "angular": "github:angular/bower-angular@1.3.15",
       "angular-route": "github:angular/bower-angular-route@1.3.15",
       "css": "github:systemjs/plugin-css@0.1.9",
@@ -83,6 +92,9 @@ System.config({
       "clean-css": "npm:clean-css@3.1.9",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "path": "github:jspm/nodelibs-path@0.1.0"
+    },
+    "github:twbs/bootstrap@3.3.4": {
+      "jquery": "github:components/jquery@2.1.3"
     },
     "npm:abbrev@1.0.5": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
@@ -167,6 +179,9 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "minimist": "npm:minimist@0.0.8",
       "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.1"
+    },
+    "npm:moment@2.10.2": {
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
     "npm:nopt@3.0.1": {
