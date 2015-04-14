@@ -18,7 +18,7 @@ System.config({
     "css": "github:systemjs/plugin-css@0.1.9",
     "flatten": "npm:flatten@0.0.1",
     "mediator": "npm:mediator-js@0.9.9",
-    "moment": "github:moment/moment@2.10.0",
+    "moment": "github:moment/moment@2.10.2",
     "necolas/normalize.css": "github:necolas/normalize.css@3.0.2",
     "svg": "github:cutandpastey/plugin-svg@0.2.0",
     "traceur": "github:jmcriffey/bower-traceur@0.0.87",
@@ -83,6 +83,9 @@ System.config({
       "clean-css": "npm:clean-css@3.1.9",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "path": "github:jspm/nodelibs-path@0.1.0"
+    },
+    "github:twbs/bootstrap@3.3.4": {
+      "jquery": "github:components/jquery@2.1.3"
     },
     "npm:abbrev@1.0.5": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
