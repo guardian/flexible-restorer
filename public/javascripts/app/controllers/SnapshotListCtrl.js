@@ -4,7 +4,7 @@ import mediator from '../utils/mediator';
 
 var SnapshotListCtrlMod = angular.module('SnapshotListCtrlMod', []);
 
-var SnapshotListCtrl = restoreListCtrlMod.controller('SnapshotListCtrl', [
+var SnapshotListCtrl = SnapshotListCtrlMod.controller('SnapshotListCtrl', [
   '$scope',
   '$routeParams',
   '$timeout',
