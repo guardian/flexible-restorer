@@ -7,12 +7,11 @@ var SnapshotContentCtrlMod = angular.module('SnapshotContentCtrlMod', []);
 
 var SnapshotContentCtrl = SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
   '$scope',
-  '$sanitize',
   '$routeParams',
   '$timeout',
-  '$element',
+  '$sce',
   'SnapshotModels',
-  function($scope, $sanitize, $routeParams, $timeout, $element, SnapshotModels){
+  function($scope, $routeParams, $timeout, $sce, SnapshotModels){
 
     $scope.isShowingJSON = false;
 
@@ -34,7 +33,7 @@ var SnapshotContentCtrl = SnapshotContentCtrlMod.controller('SnapshotContentCtrl
     //logic for animating and setting content
     function displayContent(model) {
       $scope.isSettingContent = true;
-      $scope.htmlContent = $sanitize(model.getHTMLContent());
+      $scope.htmlContent = $sce.trustAsHtml(model.getHTMLContent());
       $scope.jsonContent = model.toJSON();
       $timeout(()=> $scope.isSettingContent = false, 200);
     }

@@ -16,6 +16,7 @@ System.config({
     "composer-components": "github:guardian/tools-components@1.0.6",
     "css": "github:systemjs/plugin-css@0.1.9",
     "flatten": "npm:flatten@0.0.1",
+    "guardian/scribe-plugin-noting": "github:guardian/scribe-plugin-noting@0.3.29",
     "mediator": "npm:mediator-js@0.9.9",
     "moment": "npm:moment@2.10.2",
     "necolas/normalize.css": "github:necolas/normalize.css@3.0.2",
