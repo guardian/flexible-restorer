@@ -45,13 +45,18 @@ var SnapshotModel = SnapshotModelMod.factory('SnapshotModel', [
         return this.get('preview').fields.headline;
       }
 
+      //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#toJSON_behavior
       toJSON(){
         var clone = angular.extend({}, this.data);
         //clear decorated data
         delete clone.timestamp;
         delete clone.createdDate;
         delete clone.activeState;
-        return JSON.stringify(clone, null, 2);
+        return clone;
+      }
+
+      getJSON(){
+        return JSON.stringify(this, null, 2);
       }
     }
 
