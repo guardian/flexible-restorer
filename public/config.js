@@ -29,15 +29,6 @@ System.config({
     "github:angular/bower-angular-sanitize@1.3.15": {
       "angular": "github:angular/bower-angular@1.3.15"
     },
-    "github:guardian/tools-components@0.5": {
-      "angular": "github:angular/bower-angular@1.3.15",
-      "angular-route": "github:angular/bower-angular-route@1.3.15",
-      "css": "github:systemjs/plugin-css@0.1.9",
-      "cutandpastey/plugin-svg": "github:cutandpastey/plugin-svg@0.2.0",
-      "js-beautify": "npm:js-beautify@1.5.5",
-      "json": "github:systemjs/plugin-json@0.1.0",
-      "svg": "github:cutandpastey/plugin-svg@0.2.0"
-    },
     "github:guardian/tools-components@1.0.6": {
       "angular": "github:angular/bower-angular@1.3.15",
       "angular-route": "github:angular/bower-angular-route@1.3.15",
