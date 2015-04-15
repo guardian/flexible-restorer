@@ -4,10 +4,12 @@ import path from 'path';
 import sass from 'node-sass';
 import fs from 'fs';
 import autoprefixer from 'autoprefixer';
+import mkdirp from 'mkdirp';
 
 const pGlob = Q.denodeify(glob);
 const pReadFile = Q.denodeify(fs.readFile);
 const pWriteFile = Q.denodeify(fs.writeFile);
+const pMkdirP = Q.denodeify(mkdirp);
 
 export default () => {
   return Q.async(function* (){
@@ -28,9 +30,6 @@ export default () => {
     if (!fs.existsSync(restorerSassFile)) {
       throw new Error(`${restorerSassFile} does not exist`);
     }
-    console.log('-----------------------');
-    console.log(restorerSassFile);
-    console.log('-----------------------');
     const sassData = yield pReadFile(restorerSassFile, 'utf8');
 
     //stupidly, node sass has decided to change the api such that sass.render({}, callback)
@@ -46,6 +45,10 @@ export default () => {
     const cssContent = autoprefixer.process(sassContent).css;
     const restorerCssDir = path.resolve(process.cwd(), 'public/css');
     const restorerCssFile = path.resolve(restorerCssDir, 'index.css');
+
+    if (!fs.existsSync(restorerCssDir)) {
+      yield pMkdirP(restorerCssDir);
+    }
 
     yield pWriteFile(restorerCssFile, cssContent, 'utf8');
 
