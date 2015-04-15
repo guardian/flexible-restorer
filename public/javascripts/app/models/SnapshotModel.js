@@ -25,7 +25,7 @@ SnapshotModelMod.factory('SnapshotModel', [
       }
 
       getRelativeDate(date = moment()){
-        return this.get('createdDate').from(date);
+        return this.get('createdDate').from(date, true);
       }
 
       getHTMLContent(){
