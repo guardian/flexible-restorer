@@ -2,6 +2,7 @@
 set -e
 
 npm install
+npm run build-sass
 cat /dev/null | java -XX:+CMSClassUnloadingEnabled -Xmx2g -XX:MaxPermSize=500m -XX:+UseCompressedOops \
     -Xloggc:gc.log -XX:+PrintGCDetails -XX:+PrintGCDateStamps \
     -Dsbt.log.noformat=true \
