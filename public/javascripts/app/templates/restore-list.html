@@ -88,6 +88,7 @@
               ng-controller="SnapshotContentCtrl as ctrl"
               ng-class="{'active': isSettingContent === false}">
     <div class="snapshot-content__viewport">
+      <!-- TODO JP 15/4/15 Replace with accordion from components repo -->
       <gu-row class="snapshot-content__container" ng-class="{ 'show-json': isShowingJSON }">
 
         <!-- HTML CONTENT -->
@@ -105,6 +106,7 @@
   </gu-column>
 
   <!-- MODAL -->
+  <!-- TODO JP 15/4/15 Replace with modal from components repo-->
   <!-- INLINE STYLE TO AVOID INITIAL FLASH OF CONTENT WITH THE MODAL -->
   <div style="display: none"
        class="modal center"
@@ -114,6 +116,7 @@
       <form novalidate class="modal-form" ng-controller="RestoreFormCtrl as formCtrl" ng-submit="formCtrl.onSubmit()">
         <div class="modal__content__track">
           <gu-row>
+            <!-- TODO JP 15/4/15 replace with accordion from components repo -->
             <gu-column ng-class="{ 'in-active': isLoading }" class="form-panel" span="6">
 
               <!-- MODAL HEADER -->
