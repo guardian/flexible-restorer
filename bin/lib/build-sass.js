@@ -28,6 +28,9 @@ export default () => {
     if (!fs.existsSync(restorerSassFile)) {
       throw new Error(`${restorerSassFile} does not exist`);
     }
+    console.log('-----------------------');
+    console.log(restorerSassFile);
+    console.log('-----------------------');
     const sassData = yield pReadFile(restorerSassFile, 'utf8');
 
     //stupidly, node sass has decided to change the api such that sass.render({}, callback)
