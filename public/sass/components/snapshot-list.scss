@@ -35,7 +35,9 @@
     }
   }
   &:hover {
-    color: white;
+    &:not(.item-active){
+      color: white;
+    }
     &:before {
       opacity: 1;
     }
@@ -62,9 +64,6 @@
   z-index: 2;
   [variant=quaternary] & {
     color: white;
-  }
-  &.active {
-    background: darken($color-500-grey, 8%);
   }
   &:hover {
     cursor: pointer;
@@ -103,15 +102,17 @@ div.index-list__item__index {
 }
 
 // RESTORE BUTTON
-.snapshot-list__item__restore {
+a.snapshot-list__item__restore {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-grow: 1;
-  margin-right: -3%;
-  background: none;
-  transition: opacity .1s ease-in-out;
+  background: $box-tertiary-bg;
+  transition: opacity .1s ease-in-out, background-color .2s ease-in-out;
   z-index: 2;
+  &.active, &:hover {
+    background: darken($color-500-grey, 8%);
+  }
 }
 
 .snapshot-list__item__restore__icon {
@@ -119,11 +120,12 @@ div.index-list__item__index {
 }
 
 //JSON BUTTON
-.snapshot-list__item__json {
+a.snapshot-list__item__json {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-grow: 1;
+  background: $box-tertiary-bg;
   transition: opacity .1s ease-in-out;
   z-index: 2;
 }
@@ -131,18 +133,8 @@ div.index-list__item__index {
 //styling the element to get around specificity with components css files
 //these are always loaded last in dev so this is needed
 a.snapshot-list__item__json {
-  background: darken($color-500-grey, 8%);
-  &.active {
-    background: none;
-    &:hover {
-      background: none;
-    }
-  }
-  //when the restore button is highlighted we need to have no background
-  &.in-active {
-    background: none;
-  }
-  &:hover {
+  transition: background-color .2s ease-in-out;
+  &:hover, &.active {
     background: darken($color-500-grey, 8%);
   }
 }

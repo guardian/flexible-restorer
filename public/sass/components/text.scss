@@ -60,10 +60,14 @@
   font-size: 13px;
 }
 
-.snapshot-list__item__json, .snapshot-list__item__restore {
+a.snapshot-list__item__json, a.snapshot-list__item__restore {
   font-family: "Guardian Agate Sans";
   font-weight: normal;
   font-size: 13px;
+  color: $color-650-grey;
+  &.active {
+    color: white;
+  }
 }
 
 .snapshot-content {

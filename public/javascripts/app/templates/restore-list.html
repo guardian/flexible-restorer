@@ -42,7 +42,7 @@
 
     <!-- SNAPSHOT LIST -->
     <gu-index-list class="snapshot-list">
-      <gu-index-list-item variant="{{ model.get('activeState') ? 'quaternary' : 'primary' }}"
+      <gu-index-list-item variant="{{ model.get('activeState') ? 'tertiary' : 'primary' }}"
                           class="snapshot-list__item"
                           ng-repeat-start="model in models"
                           index="{{ models.length - $index }}"
@@ -63,7 +63,7 @@
         -->
         <gu-btn class="snapshot-list__item__json"
                 href="#"
-                variant="arrow-right"
+                variant="light"
                 ng-class="{ hidden: !model.get('activeState'), 'active': isDisplayingJSON, 'in-active': isDisplayingModal }"
                 ng-click="ctrl.onJSONClicked()">
           JSON
@@ -72,7 +72,7 @@
         <!-- RESTORE LINK -->
         <gu-btn class="snapshot-list__item__restore"
                 href="#"
-                variant="arrow-right"
+                variant="light"
                 ng-class="{ hidden: !model.get('activeState'), 'active': isDisplayingModal }"
                 ng-click="ctrl.onRestoreClicked()">
           <gu-icon class="snapshot-list__item__restore__icon" variant="wrench-disabled"></gu-icon>
