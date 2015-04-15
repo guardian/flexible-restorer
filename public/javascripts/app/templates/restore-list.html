@@ -105,12 +105,12 @@
       <gu-row class="snapshot-content__container" ng-class="{ 'show-json': isShowingJSON }">
 
         <!-- HTML CONTENT -->
-        <gu-column class="snapshot-content__container__item--json" span="6">
+        <gu-column class="snapshot-content__container__item" span="6">
           <div ng-bind-html="htmlContent"></div>
         </gu-column>
 
         <!-- JSON CONTENT -->
-        <gu-column span="6" class="snapshot-content__container__item">
+        <gu-column span="6" class="snapshot-content__container__item--json">
           <div><pre><code>{{ jsonContent }}</code></pre></div>
         </gu-column>
 
