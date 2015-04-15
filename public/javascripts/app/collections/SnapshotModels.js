@@ -41,6 +41,10 @@ SnapshotModelsMod.factory('SnapshotModels', [
           SnapshotService
               .get(id)
               .success(function(data, status, header, config){
+                if (data.length === 0) {
+                  reject(new Error('No snapshots recieved from the restorer API'));
+                  return;
+                }
                 resolve(new SnapshotModels(data));
               })
               .error(function(data, status, header, config){

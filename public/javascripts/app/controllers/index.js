@@ -5,6 +5,7 @@ import SnapshotContentCtrlMod from './SnapshotContentCtrl';
 import ModalCtrlMod from './ModalController';
 import RestoreFormCtrlMod from './RestoreFormCtrl';
 import SearchFormCtrlMod from './SearchFormCtrl';
+import ErrorCtrlMod from './ErrorCtrl';
 
 var controllers = angular.module('restorerControllers', [
   'SnapshotListCtrlMod',
@@ -12,7 +13,8 @@ var controllers = angular.module('restorerControllers', [
   'SnapshotContentCtrlMod',
   'ModalCtrlMod',
   'RestoreFormCtrlMod',
-  'SearchFormCtrlMod'
+  'SearchFormCtrlMod',
+  'ErrorCtrlMod'
 ]);
 
 export default controllers;

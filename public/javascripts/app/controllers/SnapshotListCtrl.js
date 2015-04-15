@@ -15,7 +15,6 @@ SnapshotListCtrlMod.controller('SnapshotListCtrl', [
     var snapshotCollection;
 
     $scope.isLoading  = true;
-    $scope.hasError   = false;
     $scope.isSidebarActive = false;
 
     SnapshotModels
@@ -34,7 +33,8 @@ SnapshotListCtrlMod.controller('SnapshotListCtrl', [
 
       })
       .catch((err) => {
-        $scope.hasError = true;
+        $scope.isLoading = false;
+        mediator.publish('error', err);
       });
 
     //set active model to a specific index

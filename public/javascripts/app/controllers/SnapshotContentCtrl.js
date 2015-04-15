@@ -22,7 +22,7 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
         displayContent(collection.getModelAt(0));
       })
       //TODO setup global error handle
-      .catch((err)=> console.log(err))
+      .catch((err)=> mediator.publish('error', err));
 
     //wait for the system to imform us of content changes
     mediator.subscribe('snapshot-list:display-content', displayContent);

@@ -1,6 +1,19 @@
 <!-- ERROR STATUS -->
-<div ng-if="hasError">
-  Oops we have an error
+<div  style="display: none"
+      class="modal center"
+      ng-controller="ErrorCtrl as errorCtrl"
+      ng-class="{ 'visually-hidden': !errorCtrl.hasError }">
+  <gu-box class="modal__content" variant="primary">
+    <gu-row class="modal__content__form__fieldset">
+      <gu-column span="12">
+        <h1 class="modal__content__title">Opps, something went wrong:</h1>
+        {{ errorCtrl.errorContent }}
+      </gu-column>
+    </gu-row>
+    <gu-row variant="reverse" class="modal__content__form__fieldset">
+      <!-- TODO ADD BACK TO COMPOSER BUTTON JP 15/4/15 -->
+    </gu-row>
+  </gu-box>
 </div>
 
 <!-- HEADER -->
