@@ -39,6 +39,8 @@ ModalCtrlMod.controller('ModalCtrl', [
     //SYSTEM EVENTS
     mediator.subscribe('snapshot-list:display-modal', showModal);
     mediator.subscribe('snapshot-list:close-modal',   closeModal);
+    //close the modal when any error occurs
+    mediator.subscribe('error',   closeModal);
 
     //DOM EVENTS
     window.addEventListener('keydown', function modalOnKeyDown(e){
