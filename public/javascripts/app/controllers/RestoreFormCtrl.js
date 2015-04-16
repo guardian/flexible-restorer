@@ -21,7 +21,7 @@ RestoreFormCtrlMod.controller('RestoreFormCtrl', [
         //redirect back to composer
         var env = window.location.origin.split('.')[1];
         var url = (env === 'gutools') ? 'https://composer.gutools.co.uk' : `https://composer.${env}.dev-gutools.co.uk`;
-        window.location.href = `${url}/${$routeParams.contentId}`;
+        window.location.href = `${url}/content/${$routeParams.contentId}`;
       })
       .catch((err) => mediator.publish('error', err));
     };
