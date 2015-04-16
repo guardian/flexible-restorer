@@ -5,7 +5,8 @@ var RestoreFormCtrlMod = angular.module('RestoreFormCtrlMod', []);
 
 RestoreFormCtrlMod.controller('RestoreFormCtrl', [
   '$scope',
-  function($scope){
+  'RestoreService',
+  function($scope, RestoreService){
 
     $scope.isLoading = false;
 
@@ -13,6 +14,7 @@ RestoreFormCtrlMod.controller('RestoreFormCtrl', [
       //PLACEHOLDER
       //TODO ADD POST JP 13/4/15
       $scope.isLoading = true;
+      RestoreService.restore();
     };
 
     mediator.subscribe('snapshot-list:hidden-modal', resetModalForm);
