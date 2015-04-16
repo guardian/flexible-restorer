@@ -19,6 +19,7 @@ ModalCtrlMod.controller('ModalCtrl', [
 
     //APPLICATION EVENTS
     var showModal = this.showModal = function showModal(){
+      window.scroll(0, 0);
       safeApply($scope, () => {
         $scope.isActive = true;
         //LOCK THE BODY ELEMENT SO A USER CANNOT
