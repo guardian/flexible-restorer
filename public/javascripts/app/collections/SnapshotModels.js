@@ -17,7 +17,6 @@ SnapshotModelsMod.factory('SnapshotModels', [
       constructor(models){
         super();
         this.models = models.map((model) => new SnapshotModel.getModel(model)).sort(this.comparator);
-        this.getModelAt(0).set('activeState', true);
       }
 
       comparator(modelA, modelB){
@@ -45,7 +44,8 @@ SnapshotModelsMod.factory('SnapshotModels', [
                   reject(new Error('There are no snapshots available for this piece of content'));
                   return;
                 }
-                resolve(new SnapshotModels(data));
+                cache[id] = new SnapshotModels(data)
+                resolve(cache[id]);
               })
               .error(function(data, status, header, config){
                 reject(data)

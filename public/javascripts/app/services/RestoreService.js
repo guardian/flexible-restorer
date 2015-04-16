@@ -13,7 +13,7 @@ var RestoreService = RestoreServiceMod.service('RestoreService', [
     function getRestoreUrl(contentId){
       var env = window.location.origin.split('.')[1];
       var url = (env === 'gutools') ? 'https://composer.gutools.co.uk' : `https://composer.${env}.dev-gutools.co.uk`;
-      return `${url}/api/restorer/content/${contentId}`
+      return `${url}/api/restorer/content/${contentId}`;
     }
 
     return {
@@ -25,7 +25,7 @@ var RestoreService = RestoreServiceMod.service('RestoreService', [
           SnapshotModels.getCollection(contentId)
             .then((collection) => {
               //get model
-              var model = collection.find((data)=> !!data.activeState);
+              var model = collection.find((data)=> data.activeState);
               //make the request
               $http({
                 url: restoreUrl,

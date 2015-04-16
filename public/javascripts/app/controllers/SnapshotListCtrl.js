@@ -21,6 +21,7 @@ SnapshotListCtrlMod.controller('SnapshotListCtrl', [
       .getCollection($routeParams.contentId)
       .then((collection) => {
         snapshotCollection = collection;
+        snapshotCollection.getModelAt(0).set('activeState', true);
         $scope.isLoading  = false;
         $scope.models = collection.getModels();
 
