@@ -5,8 +5,9 @@ var RestoreFormCtrlMod = angular.module('RestoreFormCtrlMod', []);
 
 RestoreFormCtrlMod.controller('RestoreFormCtrl', [
   '$scope',
+  '$routeParams',
   'RestoreService',
-  function($scope, RestoreService){
+  function($scope, $routeParams, RestoreService){
 
     $scope.isLoading = false;
 
@@ -20,7 +21,7 @@ RestoreFormCtrlMod.controller('RestoreFormCtrl', [
         //redirect back to composer
         var env = window.location.origin.split('.')[1];
         var url = (env === 'gutools') ? 'https://composer.gutools.co.uk' : `https://composer.${env}.dev-gutools.co.uk`;
-        window.location.href = `${url}/${contentId}`;
+        window.location.href = `${url}/${$routeParams.contentId}`;
       })
       .catch((err) => mediator.publish('error', err));
     };
