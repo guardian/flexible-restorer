@@ -35,9 +35,9 @@ var RestoreService = RestoreServiceMod.service('RestoreService', [
                 headers: {
                   'Content-Type': 'application/json;charset=utf-8'
                 },
-                success: (data) => resolve(data),
-                error: (data) => reject(data)
-              });
+              })
+              .success((data)=> resolve(data))
+              .error((err)=> reject(err));
             });
         });
       }
