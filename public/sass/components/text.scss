@@ -1,0 +1,145 @@
+@import "palette.scss";
+
+// SETUP
+@font-face {
+  font-family: "Guardian Agate Sans";
+  src: url("/assets/fonts/GuardianAgateSans1Web-Regular.eot");
+  src: url("/assets/fonts/GuardianAgateSans1Web-Regular.eot?#iefix") format("embedded-opentype"), url("/assets/fonts/GuardianAgateSans1Web-Regular.woff") format("woff"), url("/assets/fonts/GuardianAgateSans1Web-Regular.ttf") format("truetype"), url("/assets/fonts/GuardianAgateSans1Web-Regular.svg#GuardianAgateSans1Web-Regular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: "Guardian Agate Sans";
+  src: url("/assets/fonts/GuardianAgateSans1Web-Bold.eot");
+  src: url("/assets/fonts/GuardianAgateSans1Web-Bold.eot?#iefix") format("embedded-opentype"), url("/assets/fonts/GuardianAgateSans1Web-Bold.woff") format("woff"), url("/assets/fonts/GuardianAgateSans1Web-Bold.ttf") format("truetype"), url("/assets/fonts/GuardianAgateSans1Web-Bold.svg#GuardianAgateSans-Bold") format("svg");
+  font-weight: bold;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: "Guardian Egyptian Text";
+  src: url("/assets/fonts/GuardianTextEgyptianWeb-Medium.eot");
+  src: url("/assets/fonts/GuardianTextEgyptianWeb-Medium.eot?#iefix") format("embedded-opentype"), url("/assets/fonts/GuardianTextEgyptianWeb-Medium.woff") format("woff"), url("/assets/fonts/GuardianTextEgyptianWeb-Medium.ttf") format("truetype"), url("/assets/fonts/GuardianTextEgyptianWeb-Medium.svg#GuardianEgyptianText-Medium") format("svg");
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+}
+
+
+@font-face {
+  font-family: "Guardian Egyptian Text";
+  src: url("/assets/fonts/GuardianTextEgyptianWeb-Regular.eot");
+  src: url("/assets/fonts/GuardianTextEgyptianWeb-Regular.eot?#iefix") format("embedded-opentype"), url("/assets/fonts/GuardianTextEgyptianWeb-Regular.woff") format("woff"), url("/assets/fonts/GuardianTextEgyptianWeb-Regular.ttf") format("truetype"), url("/assets/fonts/GuardianTextEgyptianWeb-Regular.svg#GuardianEgyptianText-Medium") format("svg");
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+}
+
+
+// APPLY THE FONTS
+.content-type {
+  font-family: "Guardian Egyptian Text";
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.snapshot-list__item__content__relative-date,
+.index-list__item__index {
+  margin-bottom: 5px;
+  font-family: "Guardian Agate Sans";
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.snapshot-list__item__content__actual-date {
+  font-family: "Guardian Agate Sans";
+  font-weight: normal;
+  font-size: 13px;
+}
+
+a.snapshot-list__item__json, a.snapshot-list__item__restore {
+  font-family: "Guardian Agate Sans";
+  font-weight: normal;
+  font-size: 13px;
+  color: $color-650-grey;
+  &.active {
+    color: white;
+  }
+}
+
+.snapshot-content {
+  font-family: "Guardian Egyptian Text";
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.article-headline {
+  font-family: "Guardian Egyptian Text";
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 23px;
+  margin-bottom: 0;
+}
+
+.article-hash {
+  margin-bottom: 20px;
+  font-family: "Guardian Agate Sans";
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.snapshot-list-header {
+  font-family: "Guardian Agate Sans";
+  font-weight: bold;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+//MODAL
+.modal__content__title {
+  font-family: "Guardian Agate Sans";
+  font-size: 24px;
+  font-weight: bold;
+  color: $color-650-grey;
+}
+
+.modal__content__desc {
+  font-family: "Guardian Egyptian Text";
+  font-size: 14px;
+  color: $color-650-grey;
+}
+
+.modal__content__form__header {
+  font-family: "Guardian Agate Sans";
+  font-size: 14px;
+  font-weight: bold;
+  color: $color-650-grey;
+}
+
+.model__content__refresh {
+  font-family: "Guardian Agate Sans";
+  font-size: 13px;
+}
+
+.modal__content__form label {
+  font-family: "Guardian Agate Sans";
+  font-size: 14px;
+  line-height: 1.5;
+  color: $color-650-grey;
+}
+
+.modal__content__btn,
+.modal__content__btn--close {
+  font-family: "Guardian Agate Sans";
+  font-size: 13px;
+}
+
+.delta-row__content {
+  font-family: "Guardian Agate Sans";
+  font-size: 12px;
+}

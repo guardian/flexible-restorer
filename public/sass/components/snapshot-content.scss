@@ -1,0 +1,36 @@
+.snapshot-content {
+  opacity: 0;
+  transition: opacity .1s ease-in-out;
+  &.active {
+    opacity: 1;
+  }
+}
+
+.snapshot-content__viewport {
+  width: 100%;
+  overflow: hidden;
+}
+
+.snapshot-content__container {
+  width: 200%;
+  transition: transform .3s ease-in-out;
+  transform: translateX(0);
+  &.show-json {
+    transform: translateX(-50%);
+  }
+}
+
+.snapshot-content__container__item {
+  box-sizing: border-box;
+  padding: 2% 10%;
+}
+
+.snapshot-content__container__item--json {
+  @extend .snapshot-content__container__item;
+  padding: 2% 5%;
+  width: 50%;
+  overflow: auto;
+  & code {
+    word-wrap: break-word;
+  }
+}

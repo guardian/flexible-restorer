@@ -1,0 +1,204 @@
+<!-- ERROR STATUS -->
+<div  style="display: none"
+      class="modal center"
+      ng-controller="ErrorCtrl as errorCtrl"
+      ng-class="{ 'visually-hidden': !errorCtrl.hasError }">
+  <gu-box class="modal__content" variant="primary">
+    <gu-row class="modal__content__form__fieldset">
+      <gu-column span="12">
+        <h1 class="modal__content__title">Ooops, something went wrong</h1>
+        {{ errorCtrl.errorContent }}
+      </gu-column>
+    </gu-row>
+    <gu-row variant="reverse" class="modal__content__form__fieldset">
+      <!-- TODO ADD BACK TO COMPOSER BUTTON JP 15/4/15 -->
+    </gu-row>
+  </gu-box>
+</div>
+
+<!-- HEADER -->
+<gu-row skin="header" ng-include src="'/assets/javascripts/app/templates/partials/header.html'"></gu-row>
+
+<!-- PRELOADER -->
+<div ng-if="isLoading">
+  <gu-loading-bars></gu-loading-bars>
+</div>
+
+<gu-row ng-if="!isLoading" class="content">
+  <gu-column  class="sidebar"
+              span="3"
+              gu-box="secondary"
+              ng-class="{'active': isSidebarActive}"
+              ng-controller="SnapshotListInteractionCtrl as ctrl">
+
+    <!-- SNAPSHOT LIST HEADER -->
+    <h1 class="article-headline">{{ articleTitle }}</h1>
+    <h6 class="article-hash">({{ articleHash }})</h6>
+
+    <gu-row class="snapshot-list-header">
+      <span class="snapshot-list-header__decal">No.</span>
+      <span class="snapshot-list-header__content">Snapped at</span>
+    </gu-row>
+
+    <!-- SNAPSHOT LIST -->
+    <gu-index-list class="snapshot-list">
+      <gu-index-list-item variant="{{ model.get('activeState') ? 'tertiary' : 'primary' }}"
+                          class="snapshot-list__item"
+                          ng-repeat-start="model in models"
+                          index="{{ models.length - $index }}"
+                          ng-class="{ 'item-active': model.get('activeState') }">
+        <!-- CONTENT -->
+        <div  class="snapshot-list__item__content"
+              ng-class="{ 'active': model.get('activeState') && isDisplayingHTML }"
+              ng-click="ctrl.onItemClicked($index)">
+          <h6 class="snapshot-list__item__content__relative-date">{{ model.getRelativeDate() }} ago</h6>
+          <h6 class="snapshot-list__item__content__actual-date">{{ model.getCreatedDate() }}</h6>
+        </div>
+
+        <!-- JSON LINK -->
+        <!-- DUE TO THE NATURE OF THE HOVER EFFECTS WE NEED TO CANCEL
+             THE BACKGROUND COLOR WHEN THE RESTORE BUTTON IS ACTIVE
+             THIS IS WHY THIS IS THE ONLY BUTTON WITH AN 'in-active' CLASS
+            JP 13/4/15
+        -->
+        <gu-btn class="snapshot-list__item__json"
+                href="#"
+                variant="light"
+                ng-class="{ hidden: !model.get('activeState'), 'active': isDisplayingJSON, 'in-active': isDisplayingModal }"
+                ng-click="ctrl.onJSONClicked()">
+          JSON
+        </gu-btn>
+
+        <!-- RESTORE LINK -->
+        <gu-btn class="snapshot-list__item__restore"
+                href="#"
+                variant="light"
+                ng-class="{ hidden: !model.get('activeState'), 'active': isDisplayingModal }"
+                ng-click="ctrl.onRestoreClicked()">
+          <gu-icon class="snapshot-list__item__restore__icon" variant="wrench-disabled"></gu-icon>
+          Restore
+        </gu-btn>
+
+      </gu-index-list-item>
+
+      <!-- DELTA TIME -->
+      <li class="delta-row" ng-repeat-end ng-mouseover="isActive = true" ng-mouseout="isActive = false">
+        <gu-row variant="reverse">
+          <gu-icon class="delta-row__icon" variant="expand-disabled"></gu-icon>
+          <span class="delta-row__content" ng-class="{ 'visually-hidden': !isActive }">
+            {{ model.getRelativeDate( models[$index + 1].get('createdDate') ) }}
+          </span>
+        </gu-row>
+      </li>
+
+    </gu-index-list>
+
+  </gu-column>
+
+  <!-- CONTENT -->
+  <gu-column  class="snapshot-content"
+              span="9"
+              ng-controller="SnapshotContentCtrl as ctrl"
+              ng-class="{'active': isSettingContent === false}">
+    <div class="snapshot-content__viewport">
+      <!-- TODO JP 15/4/15 Replace with accordion from components repo -->
+      <gu-row class="snapshot-content__container" ng-class="{ 'show-json': isShowingJSON }">
+
+        <!-- HTML CONTENT -->
+        <gu-column class="snapshot-content__container__item" span="6">
+          <div ng-bind-html="htmlContent"></div>
+        </gu-column>
+
+        <!-- JSON CONTENT -->
+        <gu-column span="6" class="snapshot-content__container__item--json">
+          <div><pre><code>{{ jsonContent }}</code></pre></div>
+        </gu-column>
+
+      </gu-row>
+    </div>
+  </gu-column>
+
+  <!-- MODAL -->
+  <!-- TODO JP 15/4/15 Replace with modal from components repo-->
+  <!-- INLINE STYLE TO AVOID INITIAL FLASH OF CONTENT WITH THE MODAL -->
+  <div style="display: none"
+       class="modal center"
+       ng-controller="ModalCtrl as modalCtrl"
+       ng-class="{ 'visually-hidden': !isActive }">
+    <gu-box class="modal__content" variant="primary">
+      <form novalidate class="modal-form" ng-controller="RestoreFormCtrl as formCtrl" ng-submit="formCtrl.onSubmit()">
+        <div class="modal__content__track">
+          <gu-row>
+            <!-- TODO JP 15/4/15 replace with accordion from components repo -->
+            <gu-column ng-class="{ 'in-active': isLoading }" class="form-panel" span="6">
+
+              <!-- MODAL HEADER -->
+              <gu-row>
+                <gu-column span="12">
+                  <h1 class="modal__content__title">Before you restore</h1>
+                  <!--commented as we are going to add presence support at a later date
+                    jp 13/04/2015
+                    <p class="modal__content__desc">Currently present in the content</p>
+                  -->
+                </gu-column>
+              </gu-row>
+
+              <!-- PRESENCE -->
+              <!--commented as we are going to add presence support at a later date
+                jp 13/04/2015
+                <gu-row class="modal__content__container">
+                <gu-column span="9">
+                some people
+                </gu-column>
+                <gu-column span="3">
+                <a class="model__content__refresh">
+                <gu-icon variant="expand-active"></gu-icon>
+                Refresh
+                </a>
+                </gu-column>
+                </gu-row>
+              -->
+
+              <!-- FORM -->
+              <gu-row class="modal__content__container">
+                <gu-column span="12" class="modal__content__form">
+                  <h2 class="modal__content__form__header">Make sure that:</h2>
+                  <gu-row class="modal__content__form__fieldset">
+                    <label for="self-in-content">
+                      <input type="checkbox" ng-model="selfInContent" name="selfInContent" id="self-in-content" />
+                      <span class="checked-decal"></span>
+                      <span class="label">You are not in content</span>
+                    </label>
+                  </gu-row>
+                  <gu-row class="modal__content__form__fieldset">
+                    <label for="else-in-content">
+                      <input type="checkbox" ng-model="elseInContent" name="elseInContent" id="else-in-content" />
+                      <span class="checked-decal"></span>
+                      <span class="label">No one else is in the content</span>
+                    </label>
+                  </gu-row>
+                </gu-column>
+              </gu-row>
+
+              <!-- ACTIONS -->
+              <gu-row variant="reverse" class="modal__content__container">
+                <gu-btn variant="active" class="modal__content__btn" type="submit" ng-disabled="!selfInContent || !elseInContent">
+                  <gu-icon variant="wrench-disabled"></gu-icon>
+                  Restore Version
+                </gu-btn>
+                <gu-btn class="modal__content__btn--close" type="reset" ng-click="modalCtrl.closeModal()">Cancel</gu-btn>
+              </gu-row>
+
+            </gu-column>
+
+            <!-- LOADER -->
+            <gu-column span="6" class="form-loading"  ng-class="{ 'in-active': isLoading }" >
+              <gu-loading-bars></gu-loading-bars>
+            </gu-column>
+          </gu-row>
+        </div>
+      </form>
+    </gu-box>
+  </div>
+
+</gu-row>

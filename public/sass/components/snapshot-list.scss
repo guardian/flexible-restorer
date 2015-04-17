@@ -1,0 +1,156 @@
+@import "palette.scss";
+
+// SNAPSHOT LIST HEADER
+.snapshot-list-header {
+  background: $box-tertiary-bg;
+}
+
+.snapshot-list-header__decal {
+  box-sizing: border-box;
+  flex-basis: 46px;
+  max-width: 46px;
+  padding: 5px 10px;
+  border-right: 2px solid $color-400-grey;
+}
+
+.snapshot-list-header__content {
+  padding: 5px 10px;
+}
+
+// SNAPSHOT LIST
+.snapshot-list {
+  margin-top: 5px;
+  li {
+    list-style: none;
+  }
+}
+
+.snapshot-list__item {
+  position: relative;
+  overflow: hidden;
+  &.item-active {
+    overflow: visible;
+    &:before {
+      display: none;
+    }
+  }
+  &:hover {
+    &:not(.item-active){
+      color: white;
+    }
+    &:before {
+      opacity: 1;
+    }
+  }
+  &:before {
+    content: ' ';
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: $color-500-grey;
+    opacity: 0;
+    transition: transform .2s ease-in-out, opacity .2s ease-in;
+    z-index: 1;
+  }
+}
+
+.snapshot-list__item__content {
+  flex-grow: 3;
+  padding: 10px 15px;
+  font-weight: 500;
+  z-index: 2;
+  [variant=quaternary] & {
+    color: white;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+// INDEX STYLING
+// --------
+// | 1 | <-- that bit
+// --------
+.snapshot-list__item .index-list__item__index {
+  padding-top: 10px;
+  z-index: 2;
+}
+
+.item-active .index-list__item__index {
+  position: relative;
+  &:before {
+    $width: 5px;
+    content: ' ';
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: -$width;
+    width: $width;
+    height: 100%;
+    background-color: $active;
+  }
+}
+
+//This element selector is here due to the load order of the components' css
+//which always loads last and overrides this selector
+//no matter what :'(
+div.index-list__item__index {
+  margin-bottom: 0;
+}
+
+// RESTORE BUTTON
+a.snapshot-list__item__restore {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  background: $box-tertiary-bg;
+  transition: opacity .1s ease-in-out, background-color .2s ease-in-out;
+  z-index: 2;
+  &.active, &:hover {
+    background: darken($color-500-grey, 8%);
+  }
+}
+
+.snapshot-list__item__restore__icon {
+  margin-right: 5px;
+}
+
+//JSON BUTTON
+a.snapshot-list__item__json {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  background: $box-tertiary-bg;
+  transition: opacity .1s ease-in-out;
+  z-index: 2;
+}
+
+//styling the element to get around specificity with components css files
+//these are always loaded last in dev so this is needed
+a.snapshot-list__item__json {
+  transition: background-color .2s ease-in-out;
+  &:hover, &.active {
+    background: darken($color-500-grey, 8%);
+  }
+}
+
+.delta-row {
+  padding: 5px 0 2px 0;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.delta-row__icon {
+  margin-left: 5px;
+}
+
+.delta-row__content {
+  transition: opacity .2s ease-in-out;
+  line-height: 1.4;
+}

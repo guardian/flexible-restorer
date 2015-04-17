@@ -1,0 +1,125 @@
+@import "palette.scss";
+
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  transition: opacity .2s ease-in;
+  &:before {
+    content: ' ';
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    opacity: .2;
+    z-index: 1;
+  }
+}
+
+//needed to use element selector as components css is loaded last
+//as such pox-primary padding overrides
+gu-box.modal__content {
+  z-index: 2;
+  padding: 40px 30px 20px 30px;
+  box-shadow: 15px 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.modal__content__title {
+  margin: 0;
+  padding: 0;
+  padding-bottom: 20px;
+}
+
+.modal__content__desc {
+  margin: 0;
+}
+
+.modal__content__form__header {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.modal__content__container {
+  padding: 20px 0;
+  border-bottom: 1px solid $color-400-grey;
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.modal__content__restore {
+  margin-left: 10px;
+}
+
+.modal__content__form {
+  .label {
+    position: relative;
+    top: -5px;
+  }
+  & label {
+    position: relative;
+  }
+  & .checked-decal {
+    pointer-events: none;
+    position: absolute;
+    top: -4px;
+    left: 2px;
+    font-size: 22px;
+    color: green;
+    opacity: 0;
+    transition: opacity .2s ease-in-out;
+    &:before {
+      content: '\2713';
+    }
+  }
+}
+
+.modal__content__form input {
+  //reset
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  border: 1px solid #9a9a9a;
+  &:checked + .checked-decal {
+    opacity: 1;
+  }
+  &:focus {
+    outline: 0;
+  }
+}
+
+.modal__content__form__fieldset {
+  margin-bottom: 10px;
+  &:last-child {
+    margin-bottom: 0px;
+  }
+}
+
+.modal__content__btn--close {
+  margin-right: 10px;
+}
+
+.modal__content__track {
+  width: 200%;
+}
+
+.modal-form {
+  min-width: 400px;
+  overflow: hidden;
+}
+
+.form-panel, .form-loading {
+  transform: translateX(0);
+  transition: transform .2s ease-in-out;
+  &.in-active {
+    transform: translateX(-100%);
+  }
+}

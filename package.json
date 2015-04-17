@@ -1,20 +1,50 @@
 {
   "name": "composer-restorer",
   "scripts": {
-    "postinstall": "mkdir -p public/javascripts public/stylesheets/vendor && cp node_modules/bootstrap/dist/css/* $_ && npm run bundle",
-    "bundle": "browserify -t browserify-handlebars app/assets/javascripts/index.js -o public/javascripts/application.js",
-    "watch-js": "watchify -t browserify-handlebars app/assets/javascripts/index.js -o public/javascripts/application.js",
-    "watch": "npm run watch-js"
+    "postinstall": "jspm install -y && npm run build",
+    "prewatch-sass": "rm -rf ./public/css && mkdir ./public/css && npm run build-sass",
+    "watch-sass": "wr 'npm run build-sass' ./public/sass",
+    "build-sass": "./bin/build-sass.js",
+    "build": "npm run build-sass"
   },
   "devDependencies": {
+    "autoprefixer": "^5.1.0",
+    "babel": "^5.0.10",
     "browserify": "^6.3.2",
-    "watchify": "^2.1.1"
+    "glob": "^5.0.3",
+    "mkdirp": "^0.5.0",
+    "node-sass": "^2.1.1",
+    "q": "^1.2.0",
+    "watchify": "^2.1.1",
+    "wr": "^1.3.1"
   },
   "dependencies": {
-    "bootstrap": "^3.3.1",
-    "browserify-handlebars": "^1.0.0",
-    "handlebars": "^2.0.0",
-    "superagent": "^0.21.0",
-    "to-array": "^0.1.4"
+    "jspm": "^0.15.0-beta"
+  },
+  "jspm": {
+    "directories": {
+      "baseURL": "public"
+    },
+    "dependencies": {
+      "angular": "github:angular/bower-angular@^1.3.15",
+      "angular-route": "github:angular/bower-angular-route@^1.3.15",
+      "angular-sanitize": "github:angular/bower-angular-sanitize@^1.3.15",
+      "angular/bower-angular-sanitize": "github:angular/bower-angular-sanitize@^1.3.15",
+      "bootstrap": "github:twbs/bootstrap@^3.3.1",
+      "composer-components": "github:guardian/tools-components@^1.0.6",
+      "css": "github:systemjs/plugin-css@^0.1.7",
+      "flatten": "npm:flatten@^0.0.1",
+      "guardian/scribe-plugin-noting": "github:guardian/scribe-plugin-noting@^0.3.29",
+      "mediator": "npm:mediator-js@^0.9.9",
+      "moment": "npm:moment@^2.10.2",
+      "necolas/normalize.css": "github:necolas/normalize.css@3.0.2",
+      "svg": "github:cutandpastey/plugin-svg@^0.2.0"
+    },
+    "devDependencies": {
+      "babel": "npm:babel@^4.7.16",
+      "babel-runtime": "npm:babel-runtime@^4.7.16",
+      "traceur": "github:jmcriffey/bower-traceur@0.0.87",
+      "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.87"
+    }
   }
 }
