@@ -10,7 +10,7 @@
   flex-basis: 46px;
   max-width: 46px;
   padding: 5px 10px;
-  border-right: 2px solid $color-400-grey;
+  border-right: 1px solid $color-400-grey;
 }
 
 .snapshot-list-header__content {
@@ -110,6 +110,7 @@ a.snapshot-list__item__restore {
   background: $box-tertiary-bg;
   transition: opacity .1s ease-in-out, background-color .2s ease-in-out;
   z-index: 2;
+  border-left: 1px solid #bdbdbd;
   &.active, &:hover {
     background: darken($color-500-grey, 8%);
   }
