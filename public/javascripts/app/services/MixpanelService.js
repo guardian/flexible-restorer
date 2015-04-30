@@ -14,7 +14,10 @@ MixpanelServiceMod.service('MixpanelService', [
   function($q, UserService){
     //setup mixpanel
     var mixpanel = window.mixpanel;
-    mixpanel.init('7008e860730c1d848e998faa5e779490', {}, 'restorer');
+    //The api_host forces the use of the mixpanel https endpoints
+    mixpanel.init('7008e860730c1d848e998faa5e779490', {
+      api_host: "https://api.mixpanel.com"
+    }, 'restorer');
 
     //get the current user so that we can register it with mixpanel
     var hasUser = $q((resolve, reject)=>{
