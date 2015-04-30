@@ -64,7 +64,7 @@ SnapshotListInteractionCtrlMod.controller('SnapshotListInteractionCtrl', [
             mediator.publish('snapshot-list:decrement-active');
           }
         break;
-        case 13: // ENTER KEY
+        case 14: // ENTER KEY
           if (!$scope.isDisplayingModal) {
             e.preventDefault();
             setState('modal');
