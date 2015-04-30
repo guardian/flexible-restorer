@@ -25,7 +25,7 @@ MixpanelServiceMod.service('MixpanelService', [
           var userID = hash(user.email);
           mixpanel.restorer.identify(userID);
           //setup the user
-          mixpanel.restorer.peoplei.set({
+          mixpanel.restorer.people.set({
             '$first_name': user.firstName,
             '$last_name': user.lastName,
             '$email': user.email
