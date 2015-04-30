@@ -6,11 +6,6 @@ import md5 from 'md5';
 
 const hash = md5.md5;
 
-console.log('-----------------------');
-console.log(hash);
-console.log('-----------------------');
-
-
 var MixpanelServiceMod = angular.module('MixpanelServiceMod', ['UserServiceMod']);
 
 MixpanelServiceMod.service('MixpanelService', [
