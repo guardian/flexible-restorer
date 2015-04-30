@@ -6,9 +6,7 @@ SnapshotServiceMod.service('SnapshotService', [
   '$http',
   function($http){
     return {
-      get: (id) => {
-        return $http.get(`/api/1/versions/${id}`);
-      }
+      get: (id) => $http.get(`/api/1/versions/${id}`)
     }
   }
 ]);

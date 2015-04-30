@@ -10,7 +10,8 @@ SnapshotListCtrlMod.controller('SnapshotListCtrl', [
   '$timeout',
   'SnapshotService',
   'SnapshotModels',
-  function($scope, $routeParams, $timeout, SnapshotService, SnapshotModels){
+  'MixpanelService',
+  function($scope, $routeParams, $timeout, SnapshotService, SnapshotModels, MixpanelService){
 
     var snapshotCollection;
 
@@ -74,6 +75,7 @@ SnapshotListCtrlMod.controller('SnapshotListCtrl', [
       //set active states
       activeModel.set('activeState', false);
       model.set('activeState', true);
+      mediator.publish('mixpanel:view-snapshot', model.getJSON());
       //place the content
       $timeout(()=> mediator.publish('snapshot-list:display-content', model), 1);
     }
