@@ -45,6 +45,18 @@ SnapshotListInteractionCtrlMod.controller('SnapshotListInteractionCtrl', [
       mediator.publish('snapshot-list:display-json');
     };
 
+    window.addEventListener('copy', function(e){
+      // get the selected content
+      var selection = window.getSelection();
+      var range = selection.getRangeAt(0);
+      var content = range.cloneContents();
+      var div = document.createElement('div');
+      div.appendChild(content);
+      content = div.innerHTML;
+      //send it off
+      mediator.publish('mixpanel:copy-content', content);
+    })
+
     //keypress events
     //todo abstract these into a keyboard interaction controller
     //jp 10-04-15
@@ -85,20 +97,6 @@ SnapshotListInteractionCtrlMod.controller('SnapshotListInteractionCtrl', [
             mediator.publish('snapshot-list:display-json');
           }
         break;
-        case 67:
-          //if this is a copy to clipboard action
-          if (e.ctrlKey || e.metaKey) {
-            // get the selected content
-            var selection = window.getSelection();
-            var range = selection.getRangeAt(0);
-            var content = range.cloneContents();
-            var div = document.createElement('div');
-            div.appendChild(content);
-            content = div.innerHTML;
-            //send it off
-            mediator.publish('mixpanel:copy-content', content);
-          }
-        break
       }
 
     });
