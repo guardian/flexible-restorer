@@ -40,4 +40,8 @@ restorer.config([
   }
 ]);
 
+//We use thr un block within the main bootstrap file
+//to require in GLOBAL deps.
+restorer.run(['MixpanelService', function(){}])
+
 export default restorer;

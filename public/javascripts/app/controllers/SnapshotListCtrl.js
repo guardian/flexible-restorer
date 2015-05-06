@@ -10,8 +10,7 @@ SnapshotListCtrlMod.controller('SnapshotListCtrl', [
   '$timeout',
   'SnapshotService',
   'SnapshotModels',
-  'MixpanelService',
-  function($scope, $routeParams, $timeout, SnapshotService, SnapshotModels, MixpanelService){
+  function($scope, $routeParams, $timeout, SnapshotService, SnapshotModels){
 
     var snapshotCollection;
 
