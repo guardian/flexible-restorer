@@ -1,6 +1,6 @@
 package com.gu.restorer.helpers
 
-import org.slf4j.{Marker, LoggerFactory}
+import org.slf4j.LoggerFactory
 
 
 trait Loggable {
