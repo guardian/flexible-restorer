@@ -8,8 +8,9 @@ import scala.collection.JavaConverters._
 import org.joda.time.DateTime
 import play.api.libs.json.Json
 import config._
+import com.gu.restorer.helpers.Loggable
 
-class S3 {
+class S3 extends Loggable {
   import play.api.Play.current
   lazy val config = RestorerConfig
 
@@ -32,6 +33,7 @@ class S3 {
 
   private def listSnapshots(bucket: String, id: Option[String] = None): List[String] = {
     val request = new ListObjectsRequest().withBucketName(bucket)
+    info("Getting snapshots on: %s for id: %s ".format(bucket, id))
     val requestWithId = id.map { i =>
       val key = idToKey(i)
       request.withPrefix(key)
@@ -54,7 +56,7 @@ class S3 {
 
 
   def saveItem(bucket: String, id: String, item: String): PutObjectResult = {
-
+    info("Saving item to: %s with id: %s".format(bucket, id))
     if(!s3Client.doesBucketExist(bucket)) {
       s3Client.createBucket(bucket, Region.EU_Ireland)
     }

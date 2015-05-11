@@ -6,6 +6,8 @@ version := "0.0.1"
 
 libraryDependencies ++= Seq(
   "com.gu" %% "pan-domain-auth-play" % "0.2.6",
+  "net.logstash.logback" % "logstash-logback-encoder" % "4.1",
+  "org.slf4j" % "slf4j-api" % "1.7.10",
   ws
 )
 
