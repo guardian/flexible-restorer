@@ -46,7 +46,8 @@ MixpanelServiceMod.service('MixpanelService', [
     mediator.subscribe('mixpanel:view-snapshot', (modelData)=>{
       hasUser.then(()=> {
         var trackingData = {
-          'contentId': modelData.get('id')
+          'contentId': modelData.get('id'),
+          'snapshotTime': modelData.get('timestamp')
         };
         mixpanel.restorer.track('view-snapshot', trackingData);
       });
@@ -55,7 +56,8 @@ MixpanelServiceMod.service('MixpanelService', [
     mediator.subscribe('mixpanel:restore-snapshot', (modelData)=> {
       hasUser.then(() => {
         var trackingData = {
-          'contentId': modelData.get('id')
+          'contentId': modelData.get('id'),
+          'snapshotTime': modelData.get('timestamp')
         };
         mixpanel.restorer.track('restore-snapshot', trackingData);
       });
