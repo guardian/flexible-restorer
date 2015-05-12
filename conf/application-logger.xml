@@ -31,7 +31,7 @@
 
         <!-- encoder is required -->
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-            <customFields>{"stage":"${APP_ENV}","app":"restorer", "stack":"composer"}</customFields>
+            <customFields>{"stage":"${STAGE}","app":"restorer", "stack":"composer"}</customFields>
         </encoder>
     </appender>
 
