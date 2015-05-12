@@ -4,6 +4,7 @@ import play.api.mvc._
 import scala.concurrent.Future
 import com.gu.restorer.helpers.Loggable
 import scala.concurrent.ExecutionContext.Implicits.global
+import play.api.libs.json._
 
 object Login extends Controller with PanDomainAuthActions with Loggable {
 
@@ -18,4 +19,9 @@ object Login extends Controller with PanDomainAuthActions with Loggable {
   def authError(message: String) = Action.async { implicit request =>
     Future(Forbidden(views.html.Login.authError(message)))
   }
+
+  def user() = AuthAction { implicit request =>
+    Ok(request.user.toJson).as(JSON)
+  }
+
 }
