@@ -19,7 +19,9 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
     SnapshotModels
       .getCollection($routeParams.contentId)
       .then((collection)=> {
-        displayContent(collection.getModelAt(0));
+        var model = collection.getModelAt(0);
+        displayContent(model);
+        mediator.publish('mixpanel:view-snapshot', model);
       })
       //TODO setup global error handle
       .catch((err)=> mediator.publish('error', err));
