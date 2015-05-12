@@ -26,6 +26,7 @@ var RestoreService = RestoreServiceMod.service('RestoreService', [
             .then((collection) => {
               //get model
               var model = collection.find((data)=> data.activeState);
+              mediator.publish('mixpanel:restore-snapshot', model.getJSON());
               //make the request
               $http({
                 url: restoreUrl,
