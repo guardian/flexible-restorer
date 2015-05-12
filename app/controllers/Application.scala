@@ -4,7 +4,7 @@ import play.Logger
 import play.api.mvc._
 
 import scala.concurrent.Future
-
+import com.gu.restorer.helpers.Loggable
 import play.api.data._
 import play.api.data.Forms._
 
@@ -32,7 +32,7 @@ trait PanDomainAuthActions extends AuthActions {
 }
 
 
-object Application extends Controller with PanDomainAuthActions {
+object Application extends Controller with PanDomainAuthActions with Loggable {
 
   lazy val composer = RestorerConfig.composerDomain
 

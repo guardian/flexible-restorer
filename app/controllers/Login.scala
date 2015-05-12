@@ -2,10 +2,11 @@ package controllers
 
 import play.api.mvc._
 import scala.concurrent.Future
+import com.gu.restorer.helpers.Loggable
 import scala.concurrent.ExecutionContext.Implicits.global
 import play.api.libs.json._
 
-object Login extends Controller with PanDomainAuthActions {
+object Login extends Controller with PanDomainAuthActions with Loggable {
 
   def oauthCallback = Action.async { implicit request =>
     processGoogleCallback()

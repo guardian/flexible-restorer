@@ -10,8 +10,9 @@ import helpers.CORSable
 
 import models.Template
 import config.RestorerConfig.corsableDomains
+import com.gu.restorer.helpers.Loggable
 
-object Templates extends Controller with PanDomainAuthActions {
+object Templates extends Controller with PanDomainAuthActions with Loggable {
 
   def index = CORSable(corsableDomains: _*) {
     Action {

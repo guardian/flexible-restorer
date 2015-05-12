@@ -5,6 +5,7 @@ import org.joda.time.DateTime
 import play.api.mvc._
 import play.api.libs.json._
 import scala.collection.JavaConversions._
+import com.gu.restorer.helpers.Loggable
 
 import s3.S3
 
@@ -14,7 +15,7 @@ case class Snapshot(key: String) {
   lazy val savedAt: DateTime = new DateTime(key.split("/").last)
 }
 
-object Versions extends Controller with PanDomainAuthActions {
+object Versions extends Controller with PanDomainAuthActions with Loggable {
   // List versions
   def index(contentId: String) = AuthAction {
     val s3 = new S3
