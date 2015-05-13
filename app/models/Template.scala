@@ -43,10 +43,10 @@ object Template extends Loggable {
     val req = s3.objectRequest(bucket)
     val objects = s3.getObjects(req).getObjectSummaries.asScala.toList
     val keys = objects.map(x => x.getKey())
-    val results = keys.map(s3.getObject(_, bucket))
+    val results = keys.map(s3.getObjectContents(_, bucket))
     info("fetching all templates from: %s".format(bucket))
     results.map({ x =>
-      val json = Json.parse(Source.fromInputStream(x.getObjectContent(), "UTF-8").mkString)
+      val json = Json.parse(x)
       TemplateSummary(
         (json \ "title").as[String],
         (json \ "dateCreated").as[String])
@@ -55,8 +55,8 @@ object Template extends Loggable {
 
   def retrieve(id: String) = {
     info("retrieving template with id: %s".format(id))
-    val result = s3.getObject(id, bucket)
-    val json = Json.parse(Source.fromInputStream(result.getObjectContent(), "UTF-8").mkString)
+    val result = s3.getObjectContents(id, bucket)
+    val json = Json.parse(result)
     Template(
         (json \ "title").as[String],
         (json \ "dateCreated").as[String],
