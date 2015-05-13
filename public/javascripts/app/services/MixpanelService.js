@@ -45,19 +45,27 @@ MixpanelServiceMod.service('MixpanelService', [
 
     mediator.subscribe('mixpanel:view-snapshot', (modelData)=>{
       hasUser.then(()=> {
-        mixpanel.restorer.track('view-snapshot', modelData);
+        var trackingData = {
+          'contentId': modelData.get('id'),
+          'snapshotTime': modelData.get('timestamp')
+        };
+        mixpanel.restorer.track('view-snapshot', trackingData);
       });
     });
 
     mediator.subscribe('mixpanel:restore-snapshot', (modelData)=> {
       hasUser.then(() => {
-        mixpanel.restorer.track('restore-snapshot', modelData);
+        var trackingData = {
+          'contentId': modelData.get('id'),
+          'snapshotTime': modelData.get('timestamp')
+        };
+        mixpanel.restorer.track('restore-snapshot', trackingData);
       });
     });
 
     mediator.subscribe('mixpanel:copy-content', (content)=> {
       hasUser.then(() => {
-        mixpanel.restorer.track('copy-content', content);
+        mixpanel.restorer.track('copy-content');
       });
     });
   }
