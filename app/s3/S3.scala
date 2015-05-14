@@ -9,6 +9,7 @@ import org.joda.time.DateTime
 import play.api.libs.json.Json
 import config._
 import com.gu.restorer.helpers.Loggable
+import scala.io.Source
 
 class S3 extends Loggable {
   import play.api.Play.current
@@ -24,11 +25,21 @@ class S3 extends Loggable {
       new AmazonS3Client(new DefaultAWSCredentialsProviderChain())
     }
 
-  val getLiveSnapshot: String => S3Object = getObject(_, liveBucket)
-  val getDraftSnapshot: String => S3Object = getObject(_, draftBucket)
+  def getLiveSnapshot(key: String): String = getObjectContents(key, liveBucket)
+  def getDraftSnapshot(key: String): String = getObjectContents(key, draftBucket)
 
-  def getObject(key: String, bucketName: String): S3Object = {
+  private def getObject(key: String, bucketName: String): S3Object = {
     s3Client.getObject(new GetObjectRequest(bucketName, key))
+  }
+
+  // Get object contents and ensure stream is closed
+  def getObjectContents(key: String, bucketName: String): String = {
+    val obj = getObject(key, bucketName)
+    try {
+      Source.fromInputStream(obj.getObjectContent, "UTF-8").mkString
+    } finally {
+      obj.close()
+    }
   }
 
   private def listSnapshots(bucket: String, id: Option[String] = None): List[String] = {
