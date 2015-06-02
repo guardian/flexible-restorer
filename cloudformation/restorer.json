@@ -323,7 +323,23 @@
           "UnhealthyThreshold": "2",
           "Interval": "10",
           "Timeout": "5"
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Stage",
+            "Value": {
+              "Ref": "Stage"
+            }
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible"
+          },
+          {
+            "Key": "App",
+            "Value": "restorer"
+          }
+        ]
       }
     },
     "AutoscalingGroup": {
