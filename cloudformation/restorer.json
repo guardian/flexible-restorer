@@ -50,37 +50,31 @@
           "CODE": {
             "lowercase": "code",
             "desiredCapacity": 1,
-            "minSize": 1,
             "maxSize": 2
           },
           "RELEASE": {
             "lowercase": "release",
             "desiredCapacity": 1,
-            "minSize": 1,
             "maxSize": 2
           },
           "QA": {
             "lowercase": "qa",
             "desiredCapacity": 1,
-            "minSize": 1,
             "maxSize": 2
           },
           "TEST": {
             "lowercase": "test",
             "desiredCapacity": 1,
-            "minSize": 1,
             "maxSize": 2
           },
           "CODE": {
             "lowercase": "code",
             "desiredCapacity": 1,
-            "minSize": 1,
             "maxSize": 2
           },
           "PROD": {
             "lowercase": "prod",
             "desiredCapacity": 2,
-            "minSize": 2,
             "maxSize": 4
           }
       }
@@ -377,7 +371,7 @@
         "AvailabilityZones": {"Fn::GetAZs": ""},
         "VPCZoneIdentifier": {"Ref": "PrivateVpcSubnets"},
         "LaunchConfigurationName": {"Ref": "RestorerLaunchConfig"},
-        "MinSize": { "Fn::FindInMap" : [ "EnvironmentMap", { "Ref" : "Stage" }, "minSize"]},
+        "MinSize": { "Fn::FindInMap" : [ "EnvironmentMap", { "Ref" : "Stage" }, "desiredCapacity"]},
         "MaxSize": { "Fn::FindInMap" : [ "EnvironmentMap", { "Ref" : "Stage" }, "maxSize"]},
         "DesiredCapacity": { "Fn::FindInMap" : [ "EnvironmentMap", { "Ref" : "Stage" }, "desiredCapacity"]},
         "HealthCheckType": "ELB",
