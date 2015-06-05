@@ -74,6 +74,7 @@ SnapshotListCtrlMod.controller('SnapshotListCtrl', [
       //set active states
       activeModel.set('activeState', false);
       model.set('activeState', true);
+      mediator.publish('mixpanel:view-snapshot', model);
       //place the content
       $timeout(()=> mediator.publish('snapshot-list:display-content', model), 1);
     }

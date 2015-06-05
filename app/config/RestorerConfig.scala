@@ -48,7 +48,7 @@ object RestorerConfig extends AwsInstanceTags {
   val accessKey: Option[String] = config.getString("AWS_ACCESS_KEY")
   val secretKey: Option[String] = config.getString("AWS_SECRET_KEY")
   val creds = AWSCredentials(accessKey, secretKey)
-
+  
   val pandomainKey: Option[String] = config.getString("pandomain.aws.key")
   val pandomainSecret: Option[String] = config.getString("pandomain.aws.secret")
   val pandomainCreds = AWSCredentials(pandomainKey, pandomainSecret)

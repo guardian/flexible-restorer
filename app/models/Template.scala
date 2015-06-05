@@ -7,14 +7,14 @@ import scala.io.Source
 
 import s3._
 import config.RestorerConfig
-
+import com.gu.restorer.helpers.Loggable
 /* Template is just strings. We repreent the contentRaw as an enormous string
  * so we don't have to copy any models over or anything
  * */
 case class Template(title: String, dateCreated: String, contents: String)
 case class TemplateSummary(title: String, dateCreated: String)
 
-object Template {
+object Template extends Loggable {
 
   lazy val bucket: String = RestorerConfig.templatesBucket
 
@@ -43,9 +43,10 @@ object Template {
     val req = s3.objectRequest(bucket)
     val objects = s3.getObjects(req).getObjectSummaries.asScala.toList
     val keys = objects.map(x => x.getKey())
-    val results = keys.map(s3.getObject(_, bucket))
+    val results = keys.map(s3.getObjectContents(_, bucket))
+    info("fetching all templates from: %s".format(bucket))
     results.map({ x =>
-      val json = Json.parse(Source.fromInputStream(x.getObjectContent(), "UTF-8").mkString)
+      val json = Json.parse(x)
       TemplateSummary(
         (json \ "title").as[String],
         (json \ "dateCreated").as[String])
@@ -53,8 +54,9 @@ object Template {
   }
 
   def retrieve(id: String) = {
-    val result = s3.getObject(id, bucket)
-    val json = Json.parse(Source.fromInputStream(result.getObjectContent(), "UTF-8").mkString)
+    info("retrieving template with id: %s".format(id))
+    val result = s3.getObjectContents(id, bucket)
+    val json = Json.parse(result)
     Template(
         (json \ "title").as[String],
         (json \ "dateCreated").as[String],
