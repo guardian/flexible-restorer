@@ -1,6 +1,6 @@
 import com.typesafe.sbt.packager.Keys._
 
-name := "composer-restorer"
+name := "restorer"
 
 version := "0.0.1"
 

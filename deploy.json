@@ -1,9 +1,8 @@
 {
-  "defaultStacks": ["composer"],
+  "defaultStacks": ["flexible"],
   "packages": {
     "restorer" : {
       "type": "autoscaling",
-      "fileName": "composer-restorer",
       "data": {
         "bucket": "composer-dist",
         "publicReadAcl": false
@@ -14,7 +13,8 @@
       "fileName": "cloudformation",
       "data": {
         "templatePath": "restorer.json",
-        "cloudFormationStackName": "Restorer"
+        "cloudFormationStackName": "Restorer",
+        "prependStackToCloudFormationStackName": false
       }
     }
   },

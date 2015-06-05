@@ -20,18 +20,18 @@
     },
     "VpcId": {
       "Description": "ID of the VPC onto which to launch the application eg. vpc-1234abcd",
-      "Type": "String",
-      "Default": "vpc-143ef571"
+      "Type": "AWS::EC2::VPC::Id",
+      "Default": "vpc-381fa95d"
     },
     "PublicVpcSubnets": {
       "Description": "Subnets to use in VPC for public internet-facing ELB eg. subnet-abcd1234",
-      "Type": "CommaDelimitedList",
-      "Default": "subnet-101f9875, subnet-4f17bb38, subnet-90d414c9"
+      "Type": "List<AWS::EC2::Subnet::Id>",
+      "Default": "subnet-c3620fa6,subnet-2b37bd5c,subnet-3667c86f"
     },
     "PrivateVpcSubnets": {
       "Description": "Subnets to use in VPC for private EC2 instances eg. subnet-abcd1234",
-      "Type": "CommaDelimitedList",
-      "Default": "subnet-131f9876, subnet-4e17bb39, subnet-93d414ca"
+      "Type": "List<AWS::EC2::Subnet::Id>",
+      "Default": "subnet-c2620fa7,subnet-2a37bd5d,subnet-2967c870"
     },
     "GuardianIP": {
       "Description": "Ip range for the office",
@@ -47,14 +47,37 @@
       }
     },
       "EnvironmentMap": {
-          "CODE": {"lowercase": "code"},
-          "RELEASE": {"lowercase": "release"},
-          "QA": {"lowercase": "qa"},
-          "TEST": {"lowercase": "test"},
-          "CODE": {"lowercase": "code"},
-          "PROD": {"lowercase": "prod"}
+          "CODE": {
+            "lowercase": "code",
+            "desiredCapacity": 1,
+            "maxSize": 2
+          },
+          "RELEASE": {
+            "lowercase": "release",
+            "desiredCapacity": 1,
+            "maxSize": 2
+          },
+          "QA": {
+            "lowercase": "qa",
+            "desiredCapacity": 1,
+            "maxSize": 2
+          },
+          "TEST": {
+            "lowercase": "test",
+            "desiredCapacity": 1,
+            "maxSize": 2
+          },
+          "CODE": {
+            "lowercase": "code",
+            "desiredCapacity": 1,
+            "maxSize": 2
+          },
+          "PROD": {
+            "lowercase": "prod",
+            "desiredCapacity": 2,
+            "maxSize": 4
+          }
       }
-
   },
   "Resources": {
     "RestorerRole": {
@@ -74,26 +97,6 @@
         "Path": "/"
       }
     },
-      "TemplatesS3Bucket" : {
-          "Type" : "AWS::S3::Bucket",
-          "Properties" : {
-              "AccessControl" : "Private",
-              "BucketName" :   {
-                  "Fn::Join": [
-                      "",
-                      [
-                          "composer-templates-",
-                          { "Fn::FindInMap" :
-                            [ "EnvironmentMap",
-                              { "Ref" : "Stage" },
-                              "lowercase"]
-                          }
-                      ]
-                  ]
-              }
-          },
-          "DeletionPolicy" : "Retain"
-      },
     "RestorerDescribeEC2Policy": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
@@ -343,7 +346,23 @@
           "UnhealthyThreshold": "2",
           "Interval": "10",
           "Timeout": "5"
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Stage",
+            "Value": {
+              "Ref": "Stage"
+            }
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible"
+          },
+          {
+            "Key": "App",
+            "Value": "restorer"
+          }
+        ]
       }
     },
     "AutoscalingGroup": {
@@ -352,9 +371,9 @@
         "AvailabilityZones": {"Fn::GetAZs": ""},
         "VPCZoneIdentifier": {"Ref": "PrivateVpcSubnets"},
         "LaunchConfigurationName": {"Ref": "RestorerLaunchConfig"},
-        "MinSize": "1",
-        "MaxSize": "2",
-        "DesiredCapacity": "1",
+        "MinSize": { "Fn::FindInMap" : [ "EnvironmentMap", { "Ref" : "Stage" }, "desiredCapacity"]},
+        "MaxSize": { "Fn::FindInMap" : [ "EnvironmentMap", { "Ref" : "Stage" }, "maxSize"]},
+        "DesiredCapacity": { "Fn::FindInMap" : [ "EnvironmentMap", { "Ref" : "Stage" }, "desiredCapacity"]},
         "HealthCheckType": "ELB",
         "HealthCheckGracePeriod": 900,
         "LoadBalancerNames": [{"Ref": "RestorerLoadBalancer"}],
@@ -368,7 +387,7 @@
           },
           {
             "Key": "Stack",
-            "Value": "composer",
+            "Value": "flexible",
             "PropagateAtLaunch": "true"
           },
           {
@@ -397,22 +416,22 @@
               }
             },
             "files": {
-              "/etc/init/composer-restorer.conf": {
+              "/etc/init/restorer.conf": {
                 "source": { "Fn::Join" : ["", [
-                  "https://s3-eu-west-1.amazonaws.com/composer-dist/composer/",
+                  "https://s3-eu-west-1.amazonaws.com/composer-dist/flexible/",
                   { "Ref": "Stage" },
-                  "/composer-restorer/composer-restorer.conf"
+                  "/restorer/restorer.conf"
                 ]]},
                 "authentication": "distributionAuthentication"
               },
-              "/home/restorer/composer-restorer.tgz": {
+              "/home/restorer/restorer.tgz": {
                 "source": {
                   "Fn::Join": [
                     "",
                     [
-                      "https://s3-eu-west-1.amazonaws.com/composer-dist/composer/",
+                      "https://s3-eu-west-1.amazonaws.com/composer-dist/flexible/",
                       {"Ref": "Stage"},
-                      "/composer-restorer/composer-restorer.tgz"
+                      "/restorer/restorer.tgz"
                     ]
                   ]
                 },
@@ -458,10 +477,10 @@
                 {"Ref": "AWS::Region"},
                 " || error_exit 'Failed to run cfn-init'\n",
                 "mkdir /home/restorer/logs\n",
-                "(cd /home/restorer; tar xvzf composer-restorer.tgz)\n",
+                "(cd /home/restorer; tar xvzf restorer.tgz)\n",
                 "chown -R restorer /home/restorer\n",
                 "chgrp -R restorer /home/restorer\n",
-                "start composer-restorer\n"
+                "start restorer\n"
               ]
             ]
           }
