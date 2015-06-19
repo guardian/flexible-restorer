@@ -21,7 +21,7 @@ SnapshotModelMod.factory('SnapshotModel', [
       }
 
       getCreatedDate(){
-        return this.get('createdDate').format('h:mm:ss D MMMM YYYY');
+        return this.get('createdDate').format('HH:mm:ss D MMMM YYYY');
       }
 
       getRelativeDate(date = moment()){
