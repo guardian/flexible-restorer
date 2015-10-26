@@ -14,15 +14,17 @@ import scala.language.postfixOps
 object Permissions extends PermissionsProvider {
   val app = "composer-restorer"
 
-  val stage = RestorerConfig.stage match { case "PROD" => "PROD"; case _ => "CODE" }
-
   val isEnabled = RestorerConfig.usePermissionsService
 
-  implicit def config = PermissionsConfig(
-    app = app,
-    all = all,
-    s3BucketPrefix = stage
-  )
+  implicit def config = {
+    val stage = if (RestorerConfig.stage == "PROD") "PROD" else "CODE"
+
+    PermissionsConfig(
+      app = app,
+      all = all,
+      s3BucketPrefix = stage
+    )
+  }
 
   val RestoreContent = Permission("restore_content", app, PermissionDenied)
 
