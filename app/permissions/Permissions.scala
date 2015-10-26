@@ -2,6 +2,7 @@ package permissions
 
 import com.gu.editorial.permissions.client._
 import com.gu.pandomainauth.model.AuthenticatedUser
+import config.RestorerConfig
 
 import scala.concurrent.Await
 import scala.concurrent.duration._
@@ -13,9 +14,12 @@ import scala.language.postfixOps
 object Permissions extends PermissionsProvider {
   val app = "composer-restorer"
 
+  val stage = RestorerConfig.stage match { case "PROD" => "PROD"; case _ => "CODE" }
+
   implicit def config = PermissionsConfig(
     app = app,
-    all = all
+    all = all,
+    s3BucketPrefix = stage
   )
 
   val RestoreContent = Permission("restore_content", app, PermissionDenied)
