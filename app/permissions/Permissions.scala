@@ -16,6 +16,8 @@ object Permissions extends PermissionsProvider {
 
   val stage = RestorerConfig.stage match { case "PROD" => "PROD"; case _ => "CODE" }
 
+  val isEnabled = RestorerConfig.usePermissionsService
+
   implicit def config = PermissionsConfig(
     app = app,
     all = all,
@@ -29,7 +31,13 @@ object Permissions extends PermissionsProvider {
   private val timeout = 2000 millis
 
   def hasAccess(user: AuthenticatedUser): Boolean = {
-    implicit val permsUser = PermissionsUser(user.user.email)
-    Await.result(getEither(RestoreContent).map(_.isRight), timeout)
+    if (isEnabled) {
+      implicit val permsUser = PermissionsUser(user.user.email)
+      Await.result(getEither(RestoreContent).map(_.isRight), timeout)
+
+    } else {
+      // read from whitelist
+      RestorerConfig.whitelistMembers.contains(user.user.email)
+    }
   }
 }
