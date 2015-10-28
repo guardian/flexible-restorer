@@ -1,5 +1,6 @@
 package controllers
 
+import permissions.Permissions
 import play.Logger
 import play.api.mvc._
 
@@ -16,9 +17,9 @@ import config.RestorerConfig
 import com.amazonaws.auth.BasicAWSCredentials
 
 trait PanDomainAuthActions extends AuthActions {
-  override def validateUser(authedUser: AuthenticatedUser): Boolean = {
-    RestorerConfig.whitelistMembers.contains(authedUser.user.email) && authedUser.multiFactor
-  }
+  override def validateUser(authedUser: AuthenticatedUser): Boolean =
+    authedUser.multiFactor && Permissions.hasAccess(authedUser)
+
 
   override def showUnauthedMessage(message: String)(implicit request: RequestHeader): Result = {
     Results.Redirect(controllers.routes.Login.authError(message))
