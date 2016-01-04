@@ -8,3 +8,6 @@ test:
     - sbt test
   post:
     - sbt riffRaffArtifact
+
+general:
+  - "target/riffraff"
