@@ -1,0 +1,4 @@
+dependencies:
+  pre:
+    - npm install -g jspm
+    - jspm config registries.github.auth $JSPM_GITHUB_AUTH_TOKEN
