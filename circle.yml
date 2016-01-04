@@ -10,4 +10,5 @@ test:
     - sbt riffRaffArtifact
 
 general:
-  - "target/riffraff"
+  artifacts:
+    - "target/riffraff"
