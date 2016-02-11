@@ -7,11 +7,10 @@ general:
   artifacts:
     - "target/riffraff/artifacts.zip"
 dependencies:
-  pre:
+  override:
     - npm install -g jspm
     - jspm config registries.github.auth $JSPM_GITHUB_AUTH_TOKEN
     - npm install
-  override:
     - sbt compile
 test:
   override:
