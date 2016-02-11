@@ -16,4 +16,4 @@ test:
   override:
     - sbt test
   post:
-    - sbt riffRaffArtifact
+    - sbt riffRaffUpload
