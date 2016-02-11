@@ -26,6 +26,6 @@ lazy val mainProject = project.in(file("."))
     riffRaffPackageType := (packageZipTarball in config("universal")).value,
     riffRaffArtifactResources ++= Seq(
       riffRaffPackageType.value -> s"packages/${name.value}/${name.value}.tgz",
-      baseDirectory.value / "cloudformation" / "presence.json" ->
-        "packages/cloudformation/presence.json"
+      baseDirectory.value / "cloudformation" / "restorer.json" ->
+        "packages/cloudformation/restorer.json"
     ))
