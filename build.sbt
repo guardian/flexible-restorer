@@ -1,3 +1,5 @@
+import com.typesafe.sbt.packager.Keys._
+
 name := "restorer"
 
 version := "0.0.1"
@@ -8,8 +10,6 @@ libraryDependencies ++= Seq(
   "com.gu" %% "editorial-permissions-client" % "0.2",
   ws
 )
-
-scalaVersion := "2.11.6"
 
 lazy val mainProject = project.in(file("."))
   .enablePlugins(PlayScala, RiffRaffArtifact)
