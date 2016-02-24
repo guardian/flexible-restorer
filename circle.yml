@@ -15,5 +15,7 @@ dependencies:
 test:
   override:
     - sbt test
-  post:
-    - sbt riffRaffUpload
+deployment:
+  riffraff_upload:
+    commands:
+      - sbt riffRaffUpload
