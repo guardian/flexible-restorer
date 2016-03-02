@@ -11,7 +11,7 @@ object SharedSecretAuthAction extends ActionBuilder[Request] {
 
   val devmode = true
   val cookieName = "restorer-secret"
-  val sharedKey = RestorerConfig.apiSharedSecret.getOrElse("changeme").getBytes
+  val sharedKey = RestorerConfig.apiSharedSecret.getBytes
 
   val mask = Math.pow(2, 16).toLong - 1
 
