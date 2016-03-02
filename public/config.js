@@ -27,8 +27,8 @@ System.config({
     "normalize.css": "npm:normalize.css@3.0.3",
     "svg": "github:cutandpastey/plugin-svg@0.2.0",
     "systemjs-plugin-css": "npm:systemjs-plugin-css@0.1.20",
-    "traceur": "github:jmcriffey/bower-traceur@0.0.87",
-    "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.87",
+    "traceur": "github:jmcriffey/bower-traceur@0.0.88",
+    "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.88",
     "github:angular/bower-angular-route@1.3.15": {
       "angular": "github:angular/bower-angular@1.3.15"
     },
@@ -87,9 +87,6 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "path": "github:jspm/nodelibs-path@0.1.0"
     },
-    "github:twbs/bootstrap@3.3.4": {
-      "jquery": "github:components/jquery@2.1.3"
-    },
     "npm:abbrev@1.0.5": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
       "util": "github:jspm/nodelibs-util@0.1.0"
@@ -105,12 +102,6 @@ System.config({
     },
     "npm:bootstrap@3.3.6": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
-      "path": "github:jspm/nodelibs-path@0.1.0",
-      "process": "github:jspm/nodelibs-process@0.1.2"
-    },
-    "npm:bootstrap@4.0.0-alpha.2": {
-      "fs": "github:jspm/nodelibs-fs@0.1.2",
-      "jquery": "npm:jquery@3.0.0-beta1",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
@@ -166,9 +157,6 @@ System.config({
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
     "npm:ini@1.3.3": {
-      "process": "github:jspm/nodelibs-process@0.1.2"
-    },
-    "npm:jquery@3.0.0-beta1": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:js-beautify@1.5.5": {
