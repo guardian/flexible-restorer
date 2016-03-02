@@ -14,7 +14,10 @@
       "data": {
         "templatePath": "restorer.json",
         "cloudFormationStackName": "Restorer",
-        "prependStackToCloudFormationStackName": false
+        "prependStackToCloudFormationStackName": false,
+        "templateParameters": {
+          "AMI": "ami-6b50e218"
+        }
       }
     }
   },
