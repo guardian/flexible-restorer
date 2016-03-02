@@ -37,6 +37,15 @@
       "Description": "Ip range for the office",
       "Type": "String",
       "Default": "77.91.248.0/21"
+    },
+    "AMI": {
+      "Description": "AMI id from the machine-images repo",
+      "Type": "AWS::EC2::Image::Id"
+    },
+    "GithubTeamName": {
+      "Description": "Github team name, used for giving ssh access to members of the team.",
+      "Type": "String",
+      "Default": "Editorial-Tools-SSHAccess"
     }
   },
   "Mappings": {
@@ -123,6 +132,22 @@
               "Effect": "Allow",
               "Action": ["s3:GetObject"],
               "Resource": ["arn:aws:s3:::composer-dist/*"]
+            }
+          ]
+        },
+        "Roles": [{"Ref": "RestorerRole"}]
+      }
+    },
+    "RestorerGetSSHPolicy": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "RestorerGetSSHPolicy",
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": ["s3:GetObject"],
+              "Resource": ["arn:aws:s3:::github-team-keys/*"]
             }
           ]
         },
@@ -432,14 +457,6 @@
               }
             },
             "files": {
-              "/etc/init/restorer.conf": {
-                "source": { "Fn::Join" : ["", [
-                  "https://s3-eu-west-1.amazonaws.com/composer-dist/flexible/",
-                  { "Ref": "Stage" },
-                  "/restorer/restorer.conf"
-                ]]},
-                "authentication": "distributionAuthentication"
-              },
                 "/etc/gu/restorer-secrets.conf": {
                     "source": { "Fn::Join" : ["", [
                         "https://s3-eu-west-1.amazonaws.com/composer-dist/flexible/",
@@ -447,27 +464,14 @@
                         "/restorer/restorer-secrets.conf"
                     ]]},
                     "authentication": "distributionAuthentication"
-                },
-              "/home/restorer/restorer.tgz": {
-                "source": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "https://s3-eu-west-1.amazonaws.com/composer-dist/flexible/",
-                      {"Ref": "Stage"},
-                      "/restorer/restorer.tgz"
-                    ]
-                  ]
-                },
-                "authentication": "distributionAuthentication"
-              }
+                }
             }
           }
         }
       },
       "Properties": {
         "KeyName": {"Ref": "KeyName"},
-        "ImageId": "ami-f4b11183",
+        "ImageId": {"Ref": "AMI"},
         "SecurityGroups": [
           {"Ref": "AppServerSecurityGroup"},
           {"Ref": "SSHSecurityGroup"},
@@ -481,30 +485,16 @@
               "",
               [
                 "#!/bin/bash -ev\n",
-                "apt-get -y update\n",
-                "locale-gen en_GB.UTF-8\n",
-                "apt-get -y install openjdk-7-jre-headless\n",
-                "apt-get -y install python-setuptools\n",
-                "apt-get -y install unzip\n",
-                "wget -P /root https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz",
-                "\n",
-                "mkdir -p /root/aws-cfn-bootstrap-latest",
-                "\n",
-                "tar xvfz /root/aws-cfn-bootstrap-latest.tar.gz --strip-components=1 -C /root/aws-cfn-bootstrap-latest",
-                "\n",
-                "easy_install /root/aws-cfn-bootstrap-latest/",
-                "\n",
-                "cfn-init -s ",
-                {"Ref": "AWS::StackId"},
-                " -r RestorerLaunchConfig ",
-                "  --region ",
-                {"Ref": "AWS::Region"},
-                " || error_exit 'Failed to run cfn-init'\n",
-                "mkdir /home/restorer/logs\n",
-                "(cd /home/restorer; tar xvzf restorer.tgz)\n",
-                "chown -R restorer /home/restorer\n",
-                "chgrp -R restorer /home/restorer\n",
-                "start restorer\n"
+                { "Fn::Join": [ "",
+                  ["/opt/features/ssh-keys/initialise-keys-and-cron-job.sh -b github-team-keys -t ", {"Ref":"GithubTeamName"}, " -l || true\n"]
+                ]},
+                  "/opt/features/native-packager/install.sh -b composer-dist -t tgz -s\n",
+                  "cfn-init -s ",
+                  {"Ref": "AWS::StackId"},
+                  " -r RestorerLaunchConfig ",
+                  "  --region ",
+                  {"Ref": "AWS::Region"},
+                  "\n"
               ]
             ]
           }
