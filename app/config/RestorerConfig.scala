@@ -59,7 +59,7 @@ object RestorerConfig extends AwsInstanceTags {
   val usePermissionsService: Boolean = config.getBoolean("permissions.enabled").getOrElse(true)
 
   lazy val apiSharedSecret: String = config.getString("api.sharedsecret") match {
-    Some(x) => x
-    None => throw new RuntimeException(s"No config value for: api.sharedsecret")
+    case Some(x) => x
+    case None => throw new RuntimeException(s"No config value for: api.sharedsecret")
   }
 }
