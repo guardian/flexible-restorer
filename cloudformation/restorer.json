@@ -440,6 +440,14 @@
                 ]]},
                 "authentication": "distributionAuthentication"
               },
+                "/etc/gu/restorer-secrets.conf": {
+                    "source": { "Fn::Join" : ["", [
+                        "https://s3-eu-west-1.amazonaws.com/composer-dist/flexible/",
+                        { "Ref": "Stage" },
+                        "/restorer/restorer-secrets.conf"
+                    ]]},
+                    "authentication": "distributionAuthentication"
+                },
               "/home/restorer/restorer.tgz": {
                 "source": {
                   "Fn::Join": [
