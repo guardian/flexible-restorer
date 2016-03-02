@@ -4,10 +4,16 @@ name := "restorer"
 
 version := "0.0.1"
 
+val awsSdkVersion = "1.10.56"
+
 libraryDependencies ++= Seq(
-  "com.gu" %% "pan-domain-auth-play" % "0.2.6",
+  "com.gu" %% "pan-domain-auth-play" % "0.2.11",
   "net.logstash.logback" % "logstash-logback-encoder" % "4.1",
-  "com.gu" %% "editorial-permissions-client" % "0.2",
+  // 0.3 doesn't have this dependency but is only targetted at 2.11
+  "com.gu" %% "editorial-permissions-client" % "0.2" exclude("com.amazonaws", "aws-java-sdk"),
+  "com.amazonaws" % "aws-java-sdk-s3" % awsSdkVersion,
+  "com.amazonaws" % "aws-java-sdk-ec2" % awsSdkVersion,
+  "com.amazonaws" % "aws-java-sdk-cloudwatch" % awsSdkVersion,
   ws
 )
 
