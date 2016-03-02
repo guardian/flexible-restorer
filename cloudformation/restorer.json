@@ -138,6 +138,22 @@
         "Roles": [{"Ref": "RestorerRole"}]
       }
     },
+    "RestorerGetSSHPolicy": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "RestorerGetSSHPolicy",
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": ["s3:GetObject"],
+              "Resource": ["arn:aws:s3:::github-team-keys/*"]
+            }
+          ]
+        },
+        "Roles": [{"Ref": "RestorerRole"}]
+      }
+    },
     "PanDomainPolicy": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
@@ -444,7 +460,7 @@
                 { "Fn::Join": [ "",
                   ["/opt/features/ssh-keys/initialise-keys-and-cron-job.sh -b github-team-keys -t ", {"Ref":"GithubTeamName"}, " -l || true\n"]
                 ]},
-                "/opt/features/native-packager/install.sh -b composer-dist -s\n"
+                "/opt/features/native-packager/install.sh -b composer-dist -t tgz -s\n"
               ]
             ]
           }
