@@ -13,9 +13,11 @@ object RestorerConfig extends AwsInstanceTags {
     case None => "DEV" // default to dev stage
   }
 
-  val liveBucket: String = "composer-snapshots-live-" + stage.toLowerCase()
-  val draftBucket: String = "composer-snapshots-draft-" + stage.toLowerCase()
-  val templatesBucket: String = "composer-templates-" + stage.toLowerCase()
+  lazy val bucketStage = config.getString("bucketStageOverride").getOrElse(stage)
+
+  val liveBucket: String = "composer-snapshots-live-" + bucketStage.toLowerCase()
+  val draftBucket: String = "composer-snapshots-draft-" + bucketStage.toLowerCase()
+  val templatesBucket: String = "composer-templates-" + bucketStage.toLowerCase()
 
   val domain: String = stage match {
     case "PROD" => "gutools.co.uk"
