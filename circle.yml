@@ -7,10 +7,18 @@ general:
   artifacts:
     - "target/riffraff/artifacts.zip"
 dependencies:
-  override:
+  cache_directories:
+    - "~/.jspm"
+    - "~/.sbt"
+    - "target/resolution-cache"
+    - "target/streams"
+    - "project/target/resolution-cache"
+    - "project/target/streams"
+  pre:
     - npm install -g jspm
     - jspm config registries.github.auth $JSPM_GITHUB_AUTH_TOKEN
     - npm install
+  override:
     - sbt compile
 test:
   override:
