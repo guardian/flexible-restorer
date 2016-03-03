@@ -50,6 +50,7 @@ object Versions extends Controller with PanDomainAuthActions with Loggable {
   }
 
   def getJSONVersionsCollection(contentId: String) = AuthAction {
+    logger.info(s"Getting JSON versions for $contentId")
     val timestamp: String => Option[String] = _.split("/").lift(7)
     val s3                    = new S3
     val draftVersionKeys      = s3.listDraftForId(contentId)

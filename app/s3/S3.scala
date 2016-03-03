@@ -42,7 +42,7 @@ class S3 extends Loggable {
 
   private def listSnapshots(bucket: String, id: Option[String] = None): List[String] = {
     val request = new ListObjectsRequest().withBucketName(bucket)
-    logger.info("Getting snapshots on: %s for id: %s ".format(bucket, id))
+    logger.info(s"Looking for snapshots of $id in $bucket")
     val requestWithId = id.map { i =>
       val key = S3.idToKey(i)
       logger.info(s"Using prefix $key")
