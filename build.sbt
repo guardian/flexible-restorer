@@ -15,7 +15,8 @@ libraryDependencies ++= Seq(
   "com.amazonaws" % "aws-java-sdk-s3" % awsSdkVersion,
   "com.amazonaws" % "aws-java-sdk-ec2" % awsSdkVersion,
   "com.amazonaws" % "aws-java-sdk-cloudwatch" % awsSdkVersion,
-  ws
+  ws,
+  "org.scalatest" %% "scalatest" % "2.2.6" % Test
 )
 
 lazy val mainProject = project.in(file("."))

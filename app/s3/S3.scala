@@ -9,6 +9,12 @@ import config._
 import helpers.Loggable
 import scala.io.Source
 
+object S3 {
+  // helpers to make the objects more manageable
+  val idToKey: String => String = s =>
+    s.substring(0, 6).split("").mkString("", "/", "/") + s
+}
+
 class S3 extends Loggable {
   import play.api.Play.current
   lazy val config = RestorerConfig
@@ -44,7 +50,8 @@ class S3 extends Loggable {
     val request = new ListObjectsRequest().withBucketName(bucket)
     logger.info("Getting snapshots on: %s for id: %s ".format(bucket, id))
     val requestWithId = id.map { i =>
-      val key = idToKey(i)
+      val key = S3.idToKey(i)
+      logger.info(s"Using prefix $key")
       request.withPrefix(key)
     }.getOrElse(request)
     val objects = s3Client.listObjects(requestWithId)
@@ -57,12 +64,6 @@ class S3 extends Loggable {
 
   val listLiveForId: String => List[String] = id => listSnapshots(liveBucket, Some(id))
   val listDraftForId: String => List[String] = id => listSnapshots(draftBucket, Some(id))
-
-  // helpers to make the objects more manageable
-  private val getId: String => Option[String] = _.split("/").lift(6)
-  private val idToKey: String => String = s =>
-    s.substring(0, 6).split("").mkString("/").substring(1) + "/" + s
-
 
   def saveItem(bucket: String, id: String, item: String): PutObjectResult = {
     logger.info("Saving item to: %s with id: %s".format(bucket, id))
