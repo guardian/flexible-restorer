@@ -1,6 +1,5 @@
 package s3
 
-import com.amazonaws.auth.DefaultAWSCredentialsProviderChain
 import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.model._
 import java.io.ByteArrayInputStream
@@ -22,12 +21,7 @@ class S3 extends Loggable {
   lazy val draftBucket: String = config.draftBucket
   lazy val liveBucket: String = config.liveBucket
 
-  val s3Client =
-    config.creds.map { c =>
-      new AmazonS3Client(c.awsApiCreds)
-    } getOrElse {
-      new AmazonS3Client(new DefaultAWSCredentialsProviderChain())
-    }
+  val s3Client = new AmazonS3Client(config.creds)
 
   def getLiveSnapshot(key: String): String = getObjectContents(key, liveBucket)
   def getDraftSnapshot(key: String): String = getObjectContents(key, draftBucket)

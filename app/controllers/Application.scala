@@ -27,9 +27,7 @@ trait PanDomainAuthActions extends AuthActions {
   override def authCallbackUrl: String = RestorerConfig.hostName + "/oauthCallback"
   override lazy val domain: String = RestorerConfig.domain
 
-  override def awsCredentialsProvider: AWSCredentialsProvider = RestorerConfig.pandomainCreds
-    .map(_.awsApiCredProvider)
-    .getOrElse(new DefaultAWSCredentialsProviderChain())
+  override def awsCredentialsProvider: AWSCredentialsProvider = RestorerConfig.creds
 }
 
 
