@@ -14,7 +14,7 @@ import com.gu.pandomainauth.action.AuthActions
 import com.gu.pandomainauth.model.AuthenticatedUser
 import helpers.CORSable
 import config.RestorerConfig
-import com.amazonaws.auth.BasicAWSCredentials
+import com.amazonaws.auth.{DefaultAWSCredentialsProviderChain, AWSCredentialsProvider, BasicAWSCredentials}
 
 trait PanDomainAuthActions extends AuthActions {
   override def validateUser(authedUser: AuthenticatedUser): Boolean =
@@ -29,7 +29,9 @@ trait PanDomainAuthActions extends AuthActions {
   override def authCallbackUrl: String = RestorerConfig.hostName + "/oauthCallback"
   override lazy val domain: String = RestorerConfig.domain
 
-  override lazy val awsCredentials = RestorerConfig.pandomainCreds.map(_.awsApiCreds)
+  override def awsCredentialsProvider: AWSCredentialsProvider = RestorerConfig.pandomainCreds
+    .map(_.awsApiCredProvider)
+    .getOrElse(new DefaultAWSCredentialsProviderChain())
 }
 
 

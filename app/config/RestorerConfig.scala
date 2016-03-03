@@ -2,6 +2,7 @@ package config
 
 import _root_.aws.AwsInstanceTags
 import com.amazonaws.auth.BasicAWSCredentials
+import com.amazonaws.internal.StaticCredentialsProvider
 import play.api.Play.current
 import play.api._
 
@@ -10,7 +11,8 @@ object RestorerConfig extends AwsInstanceTags {
   // we use the two sets of parameters here so that the secretKey doesn't
   // end up in the case class's toString and other methods
   case class AWSCredentials(accessKey:String)(val secretKey:String) {
-    lazy val awsApiCreds = new BasicAWSCredentials(accessKey, secretKey)
+    val awsApiCreds = new BasicAWSCredentials(accessKey, secretKey)
+    val awsApiCredProvider = new StaticCredentialsProvider(awsApiCreds)
   }
   object AWSCredentials {
     def apply(accessKey: Option[String], secretKey: Option[String]): Option[AWSCredentials] = for {
