@@ -1,8 +1,9 @@
 package config
 
 import _root_.aws.AwsInstanceTags
-import com.amazonaws.auth.BasicAWSCredentials
+import com.amazonaws.auth.{DefaultAWSCredentialsProviderChain, BasicAWSCredentials}
 import com.amazonaws.internal.StaticCredentialsProvider
+import helpers.KinesisAppenderConfig
 import play.api.Play.current
 import play.api._
 
@@ -59,4 +60,9 @@ object RestorerConfig extends AwsInstanceTags {
   lazy val whitelistMembers: Set[String] = config.getStringSeq("whitelist.members").getOrElse(Nil).toSet
 
   val usePermissionsService: Boolean = config.getBoolean("permissions.enabled").getOrElse(true)
+
+  // Logging
+  lazy val loggingConfig = for {
+    stream <- config.getString("logging.stream")
+  } yield KinesisAppenderConfig(stream, new DefaultAWSCredentialsProviderChain())
 }

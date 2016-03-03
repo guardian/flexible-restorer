@@ -1,13 +1,12 @@
 package models
 
 import play.api.libs.json._
-import org.joda.time.format.ISODateTimeFormat
 import scala.collection.JavaConverters._
-import scala.io.Source
 
 import s3._
 import config.RestorerConfig
-import com.gu.restorer.helpers.Loggable
+import helpers.Loggable
+
 /* Template is just strings. We repreent the contentRaw as an enormous string
  * so we don't have to copy any models over or anything
  * */
@@ -44,7 +43,7 @@ object Template extends Loggable {
     val objects = s3.getObjects(req).getObjectSummaries.asScala.toList
     val keys = objects.map(x => x.getKey())
     val results = keys.map(s3.getObjectContents(_, bucket))
-    info("fetching all templates from: %s".format(bucket))
+    logger.info("fetching all templates from: %s".format(bucket))
     results.map({ x =>
       val json = Json.parse(x)
       TemplateSummary(
@@ -54,7 +53,7 @@ object Template extends Loggable {
   }
 
   def retrieve(id: String) = {
-    info("retrieving template with id: %s".format(id))
+    logger.info("retrieving template with id: %s".format(id))
     val result = s3.getObjectContents(id, bucket)
     val json = Json.parse(result)
     Template(

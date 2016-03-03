@@ -1,14 +1,12 @@
 package s3
 
-import com.amazonaws.auth.{BasicAWSCredentials, DefaultAWSCredentialsProviderChain}
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain
 import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.model._
 import java.io.ByteArrayInputStream
 import scala.collection.JavaConverters._
-import org.joda.time.DateTime
-import play.api.libs.json.Json
 import config._
-import com.gu.restorer.helpers.Loggable
+import helpers.Loggable
 import scala.io.Source
 
 class S3 extends Loggable {
@@ -44,7 +42,7 @@ class S3 extends Loggable {
 
   private def listSnapshots(bucket: String, id: Option[String] = None): List[String] = {
     val request = new ListObjectsRequest().withBucketName(bucket)
-    info("Getting snapshots on: %s for id: %s ".format(bucket, id))
+    logger.info("Getting snapshots on: %s for id: %s ".format(bucket, id))
     val requestWithId = id.map { i =>
       val key = idToKey(i)
       request.withPrefix(key)
@@ -67,7 +65,7 @@ class S3 extends Loggable {
 
 
   def saveItem(bucket: String, id: String, item: String): PutObjectResult = {
-    info("Saving item to: %s with id: %s".format(bucket, id))
+    logger.info("Saving item to: %s with id: %s".format(bucket, id))
     if(!s3Client.doesBucketExist(bucket)) {
       s3Client.createBucket(bucket, Region.EU_Ireland)
     }

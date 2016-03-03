@@ -1,15 +1,11 @@
 package controllers
 
-import com.amazonaws.services.s3.model.S3Object
 import org.joda.time.DateTime
 import play.api.mvc._
 import play.api.libs.json._
-import scala.collection.JavaConversions._
-import com.gu.restorer.helpers.Loggable
+import helpers.Loggable
 
 import s3.S3
-
-import scala.io.Source
 
 case class Snapshot(key: String) {
   lazy val savedAt: DateTime = new DateTime(key.split("/").last)

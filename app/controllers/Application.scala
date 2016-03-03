@@ -1,11 +1,9 @@
 package controllers
 
 import permissions.Permissions
-import play.Logger
 import play.api.mvc._
 
-import scala.concurrent.Future
-import com.gu.restorer.helpers.Loggable
+import helpers.Loggable
 import play.api.data._
 import play.api.data.Forms._
 
@@ -14,7 +12,7 @@ import com.gu.pandomainauth.action.AuthActions
 import com.gu.pandomainauth.model.AuthenticatedUser
 import helpers.CORSable
 import config.RestorerConfig
-import com.amazonaws.auth.{DefaultAWSCredentialsProviderChain, AWSCredentialsProvider, BasicAWSCredentials}
+import com.amazonaws.auth.{DefaultAWSCredentialsProviderChain, AWSCredentialsProvider}
 
 trait PanDomainAuthActions extends AuthActions {
   override def validateUser(authedUser: AuthenticatedUser): Boolean =
@@ -53,7 +51,7 @@ object Application extends Controller with PanDomainAuthActions with Loggable {
       .split("/").last.trim // get the id
 
     urlForm.bindFromRequest.fold(
-      {errorForm => Redirect(controllers.routes.Application.index)},
+      {errorForm => Redirect(controllers.routes.Application.index())},
       {url => Redirect(controllers.routes.Versions.index(extractContentId(url)))}
     )
   }

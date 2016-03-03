@@ -3,11 +3,11 @@
     <contextName>application</contextName>
 
     <appender name="LOGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${application.home}/logs/application.log</file>
+        <file>${application.home}/logs/restorer.log</file>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
             <fileNamePattern>
-                ${application.home}/logs/application.log.%i
+                ${application.home}/logs/restorer.log.%i
             </fileNamePattern>
             <minIndex>1</minIndex>
             <maxIndex>100</maxIndex>
@@ -16,23 +16,6 @@
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
             <maxFileSize>50MB</maxFileSize>
         </triggeringPolicy>
-
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-        </encoder>
-    </appender>
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-        </encoder>
-    </appender>
-
-    <appender name="STASH_TCP" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <remoteHost>${elk_host}</remoteHost>
-        <port>${elk_port}</port>
-
-        <!-- encoder is required -->
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-            <customFields>{"stage":"${STAGE}","app":"restorer", "stack":"composer"}</customFields>
-        </encoder>
     </appender>
 
     <logger name="com.gu.restorer" level="INFO"/>
@@ -41,9 +24,7 @@
     <logger name="application" level="DEBUG" />
 
     <root level="INFO">
-        <appender-ref ref="STDOUT" />
         <appender-ref ref="LOGFILE" />
-        <appender-ref ref="STASH_TCP" />
     </root>
 
 </configuration>
