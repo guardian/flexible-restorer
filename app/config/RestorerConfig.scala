@@ -51,4 +51,9 @@ object RestorerConfig extends AwsInstanceTags {
   lazy val loggingConfig = for {
     stream <- config.getString("logging.stream")
   } yield KinesisAppenderConfig(stream, new DefaultAWSCredentialsProviderChain())
+
+  lazy val apiSharedSecret: String = config.getString("api.sharedsecret") match {
+    case Some(x) => x
+    case None => throw new RuntimeException(s"No config value for: api.sharedsecret")
+  }
 }
