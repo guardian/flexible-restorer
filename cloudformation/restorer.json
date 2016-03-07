@@ -463,6 +463,34 @@
     },
     "RestorerLaunchConfig": {
       "Type": "AWS::AutoScaling::LaunchConfiguration",
+      "Metadata": {
+        "AWS::CloudFormation::Authentication": {
+          "distributionAuthentication": {
+            "type": "S3",
+            "roleName": {"Ref": "RestorerRole"},
+            "buckets": ["composer-dist"]
+          }
+        },
+        "AWS::CloudFormation::Init": {
+          "config": {
+            "users": {
+              "restorer": {
+                "homeDir": "/home/restorer"
+              }
+            },
+            "files": {
+                "/etc/gu/restorer-secrets.conf": {
+                    "source": { "Fn::Join" : ["", [
+                        "https://s3-eu-west-1.amazonaws.com/composer-dist/flexible/",
+                        { "Ref": "Stage" },
+                        "/restorer/restorer-secrets.conf"
+                    ]]},
+                    "authentication": "distributionAuthentication"
+                }
+            }
+          }
+        }
+      },
       "Properties": {
         "KeyName": {"Ref": "KeyName"},
         "ImageId": {"Ref": "AMI"},
@@ -482,7 +510,13 @@
                 { "Fn::Join": [ "",
                   ["/opt/features/ssh-keys/initialise-keys-and-cron-job.sh -b github-team-keys -t ", {"Ref":"GithubTeamName"}, " -l || true\n"]
                 ]},
-                "/opt/features/native-packager/install.sh -b composer-dist -t tgz -s\n"
+                  "/opt/features/native-packager/install.sh -b composer-dist -t tgz -s\n",
+                  "cfn-init -s ",
+                  {"Ref": "AWS::StackId"},
+                  " -r RestorerLaunchConfig ",
+                  "  --region ",
+                  {"Ref": "AWS::Region"},
+                  "\n"
               ]
             ]
           }

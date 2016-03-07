@@ -30,3 +30,11 @@ the JS.
 npm run watch
 ```
 
+# Credentials
+
+To access the *local* instance of Restorer:
+
+* Get [Composer credentials from Janus](https://janus.gutools.co.uk/credentials?permissionId=composer-dev)
+* Add these same credentials also as *default* to your `.aws/credentials`
+* Make sure you have `restore_content` permission on [CODE environment](https://permissions.code.dev-gutools.co.uk/admin)
+* Log in to [CODE Workflow](https://workflow.code.dev-gutools.co.uk/dashboard)

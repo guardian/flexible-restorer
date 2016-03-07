@@ -63,4 +63,13 @@ object Versions extends Controller with PanDomainAuthActions with Loggable {
     Ok(draftVersionsContent)
   }
 
+
+  case class VersionCount(id: String, versionCount: Int)
+  object VersionCount { implicit val jsonFormats = Json.format[VersionCount]}
+  def availableVersionsCount(contentId: String) = SharedSecretAuthAction {
+    val s3 = new S3
+    val count = VersionCount(contentId, s3.listDraftForId(contentId).size)
+    Ok(Json.toJson(count))
+  }
+
 }
