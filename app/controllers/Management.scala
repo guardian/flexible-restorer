@@ -21,7 +21,6 @@ object Management extends Controller with PanDomainAuthActions {
       |Snapshots draft bucket: ${RestorerConfig.draftBucket}
       |Snapshots live bucket: ${RestorerConfig.liveBucket}
       |Credentials: ${RestorerConfig.creds}
-      |Pandomain Credentials: ${RestorerConfig.pandomainCreds}
       """.stripMargin
 
     Ok(info)

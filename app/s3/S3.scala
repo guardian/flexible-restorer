@@ -1,15 +1,18 @@
 package s3
 
-import com.amazonaws.auth.{BasicAWSCredentials, DefaultAWSCredentialsProviderChain}
 import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.model._
 import java.io.ByteArrayInputStream
 import scala.collection.JavaConverters._
-import org.joda.time.DateTime
-import play.api.libs.json.Json
 import config._
-import com.gu.restorer.helpers.Loggable
+import helpers.Loggable
 import scala.io.Source
+
+object S3 {
+  // helpers to make the objects more manageable
+  val idToKey: String => String = s =>
+    s.substring(0, 6).split("").mkString("", "/", "/") + s
+}
 
 class S3 extends Loggable {
   import play.api.Play.current
@@ -18,12 +21,7 @@ class S3 extends Loggable {
   lazy val draftBucket: String = config.draftBucket
   lazy val liveBucket: String = config.liveBucket
 
-  val s3Client =
-    config.creds.map { c =>
-      new AmazonS3Client(c.awsApiCreds)
-    } getOrElse {
-      new AmazonS3Client(new DefaultAWSCredentialsProviderChain())
-    }
+  val s3Client = new AmazonS3Client(config.creds)
 
   def getLiveSnapshot(key: String): String = getObjectContents(key, liveBucket)
   def getDraftSnapshot(key: String): String = getObjectContents(key, draftBucket)
@@ -44,9 +42,10 @@ class S3 extends Loggable {
 
   private def listSnapshots(bucket: String, id: Option[String] = None): List[String] = {
     val request = new ListObjectsRequest().withBucketName(bucket)
-    info("Getting snapshots on: %s for id: %s ".format(bucket, id))
+    logger.info(s"Looking for snapshots of $id in $bucket")
     val requestWithId = id.map { i =>
-      val key = idToKey(i)
+      val key = S3.idToKey(i)
+      logger.info(s"Using prefix $key")
       request.withPrefix(key)
     }.getOrElse(request)
     val objects = s3Client.listObjects(requestWithId)
@@ -60,14 +59,8 @@ class S3 extends Loggable {
   val listLiveForId: String => List[String] = id => listSnapshots(liveBucket, Some(id))
   val listDraftForId: String => List[String] = id => listSnapshots(draftBucket, Some(id))
 
-  // helpers to make the objects more manageable
-  private val getId: String => Option[String] = _.split("/").lift(6)
-  private val idToKey: String => String = s =>
-    s.substring(0, 6).split("").mkString("/").substring(1) + "/" + s
-
-
   def saveItem(bucket: String, id: String, item: String): PutObjectResult = {
-    info("Saving item to: %s with id: %s".format(bucket, id))
+    logger.info("Saving item to: %s with id: %s".format(bucket, id))
     if(!s3Client.doesBucketExist(bucket)) {
       s3Client.createBucket(bucket, Region.EU_Ireland)
     }

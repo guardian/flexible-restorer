@@ -1,32 +1,23 @@
 package config
 
 import _root_.aws.AwsInstanceTags
-import com.amazonaws.auth.BasicAWSCredentials
+import com.amazonaws.auth.profile.ProfileCredentialsProvider
+import com.amazonaws.auth.{InstanceProfileCredentialsProvider, AWSCredentialsProviderChain, DefaultAWSCredentialsProviderChain, BasicAWSCredentials}
+import helpers.KinesisAppenderConfig
 import play.api.Play.current
-import play.api._
 
 object RestorerConfig extends AwsInstanceTags {
-
-  // we use the two sets of parameters here so that the secretKey doesn't
-  // end up in the case class's toString and other methods
-  case class AWSCredentials(accessKey:String)(val secretKey:String) {
-    lazy val awsApiCreds = new BasicAWSCredentials(accessKey, secretKey)
-  }
-  object AWSCredentials {
-    def apply(accessKey: Option[String], secretKey: Option[String]): Option[AWSCredentials] = for {
-      ak <- accessKey
-      sk <- secretKey
-    } yield AWSCredentials(ak)(sk)
-  }
 
   lazy val stage: String = readTag("Stage") match {
     case Some(value) => value
     case None => "DEV" // default to dev stage
   }
 
-  val liveBucket: String = "composer-snapshots-live-" + stage.toLowerCase()
-  val draftBucket: String = "composer-snapshots-draft-" + stage.toLowerCase()
-  val templatesBucket: String = "composer-templates-" + stage.toLowerCase()
+  lazy val bucketStage = config.getString("bucketStageOverride").getOrElse(stage)
+
+  val liveBucket: String = "composer-snapshots-live-" + bucketStage.toLowerCase()
+  val draftBucket: String = "composer-snapshots-draft-" + bucketStage.toLowerCase()
+  val templatesBucket: String = "composer-templates-" + bucketStage.toLowerCase()
 
   val domain: String = stage match {
     case "PROD" => "gutools.co.uk"
@@ -45,18 +36,21 @@ object RestorerConfig extends AwsInstanceTags {
 
   lazy val config = play.api.Play.configuration
 
-  val accessKey: Option[String] = config.getString("AWS_ACCESS_KEY")
-  val secretKey: Option[String] = config.getString("AWS_SECRET_KEY")
-  val creds = AWSCredentials(accessKey, secretKey)
-
-  val pandomainKey: Option[String] = config.getString("pandomain.aws.key")
-  val pandomainSecret: Option[String] = config.getString("pandomain.aws.secret")
-  val pandomainCreds = AWSCredentials(pandomainKey, pandomainSecret)
+  val profile: String = config.getString("profile").getOrElse("composer")
+  val creds = new AWSCredentialsProviderChain(
+    new ProfileCredentialsProvider(profile),
+    new InstanceProfileCredentialsProvider
+  )
 
   // Permissions
   lazy val whitelistMembers: Set[String] = config.getStringSeq("whitelist.members").getOrElse(Nil).toSet
 
   val usePermissionsService: Boolean = config.getBoolean("permissions.enabled").getOrElse(true)
+
+  // Logging
+  lazy val loggingConfig = for {
+    stream <- config.getString("logging.stream")
+  } yield KinesisAppenderConfig(stream, new DefaultAWSCredentialsProviderChain())
 
   lazy val apiSharedSecret: String = config.getString("api.sharedsecret") match {
     case Some(x) => x
