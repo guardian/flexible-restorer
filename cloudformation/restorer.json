@@ -56,13 +56,13 @@
       "EnvironmentMap": {
           "CODE": {
             "lowercase": "code",
-            "desiredCapacity": 1,
-            "maxSize": 2
+            "desiredCapacity": 3,
+            "maxSize": 6
           },
           "PROD": {
             "lowercase": "prod",
-            "desiredCapacity": 2,
-            "maxSize": 4
+            "desiredCapacity": 3,
+            "maxSize": 6
           }
       }
   },
