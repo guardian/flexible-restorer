@@ -46,36 +46,14 @@
       "Description": "Github team name, used for giving ssh access to members of the team.",
       "Type": "String",
       "Default": "Editorial-Tools-SSHAccess"
+    },
+    "CertificateArn": {
+      "Description": "ARN of the SSL certificate for this service",
+      "Type": "String"
     }
   },
   "Mappings": {
-    "SSLCertificateId": {
-      "Environment": {
-        "CODE": "arn:aws:iam::743583969668:server-certificate/sites.code.dev-gutools.co.uk-exp2023-08-15",
-        "PROD": "arn:aws:iam::743583969668:server-certificate/star.gutools.co.uk-exp2018-11-17"
-      }
-    },
       "EnvironmentMap": {
-          "CODE": {
-            "lowercase": "code",
-            "desiredCapacity": 1,
-            "maxSize": 2
-          },
-          "RELEASE": {
-            "lowercase": "release",
-            "desiredCapacity": 1,
-            "maxSize": 2
-          },
-          "QA": {
-            "lowercase": "qa",
-            "desiredCapacity": 1,
-            "maxSize": 2
-          },
-          "TEST": {
-            "lowercase": "test",
-            "desiredCapacity": 1,
-            "maxSize": 2
-          },
           "CODE": {
             "lowercase": "code",
             "desiredCapacity": 1,
@@ -394,13 +372,7 @@
             "LoadBalancerPort": "443",
             "InstancePort": "9000",
             "Protocol": "HTTPS",
-            "SSLCertificateId": {
-              "Fn::FindInMap": [
-                "SSLCertificateId",
-                "Environment",
-                {"Ref": "Stage"}
-              ]
-            }
+            "SSLCertificateId": {"Ref": "CertificateArn"}
           }
         ],
         "HealthCheck": {
