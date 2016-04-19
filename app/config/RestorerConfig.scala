@@ -29,7 +29,7 @@ object RestorerConfig extends AwsInstanceTags {
 
   val hostName: String = "https://composer-restorer." + domain
 
-  val validPreProductionEnvironments = Set("release", "code", "qa", "local")
+  val validPreProductionEnvironments = Seq("release", "code", "qa", "local")
 
   val corsableDomains = RestorerConfig.stage match {
     case "PROD" | "DEV" => Seq(RestorerConfig.composerDomain)
