@@ -31,15 +31,4 @@ object Permissions extends PermissionsProvider {
   val all = Seq(RestoreContent)
 
   private val timeout = 2000 millis
-
-  def hasAccess(user: AuthenticatedUser): Boolean = {
-    if (isEnabled) {
-      implicit val permsUser = PermissionsUser(user.user.email)
-      Await.result(getEither(RestoreContent).map(_.isRight), timeout)
-
-    } else {
-      // read from whitelist
-      RestorerConfig.whitelistMembers.contains(user.user.email)
-    }
-  }
 }
