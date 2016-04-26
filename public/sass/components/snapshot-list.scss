@@ -17,6 +17,10 @@
   padding: 5px 10px;
 }
 
+.snapshot-list-header__status {
+  padding: 5px 10px;
+}
+
 // SNAPSHOT LIST
 .snapshot-list {
   margin-top: 5px;
@@ -58,6 +62,19 @@
 }
 
 .snapshot-list__item__content {
+  flex-grow: 3;
+  padding: 10px 15px;
+  font-weight: 500;
+  z-index: 2;
+  [variant=quaternary] & {
+    color: white;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.snapshot-list__item__status {
   flex-grow: 3;
   padding: 10px 15px;
   font-weight: 500;
