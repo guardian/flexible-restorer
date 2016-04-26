@@ -37,7 +37,9 @@
 
     <gu-row class="snapshot-list-header">
       <span class="snapshot-list-header__decal">No.</span>
-      <span class="snapshot-list-header__content">Snapped at</span>
+      <span class="snapshot-list-header__content">Snapped at &amp; last modified</span>
+      <span class="snapshot-list-header__status">Status</span>
+
     </gu-row>
 
     <!-- SNAPSHOT LIST -->
@@ -53,6 +55,14 @@
               ng-click="ctrl.onItemClicked($index)">
           <h6 class="snapshot-list__item__content__relative-date">{{ model.getRelativeDate() }} ago</h6>
           <h6 class="snapshot-list__item__content__actual-date">{{ model.getCreatedDate() }}</h6>
+        </div>
+
+        <div class="snapshot-list__item__status">
+            {{ model.isPublished() }}
+        </div>
+
+        <div class="snapshot-list__item__status">
+            {{ model.getPublishedState() }}
         </div>
 
         <!-- JSON LINK -->

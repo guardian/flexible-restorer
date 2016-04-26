@@ -24,6 +24,28 @@ SnapshotModelMod.factory('SnapshotModel', [
         return this.get('createdDate').format('HH:mm:ss D MMMM YYYY');
       }
 
+      isPublished() {
+          return this.get('published');
+      }
+
+      getPublishedState() {
+          const changeDetails = this.get('contentChangeDetails');
+          const publishedDetails = changeDetails.published;
+          const published = this.get('published');
+          const lastMajorRevisionPublished = changeDetails.lastMajorRevisionPublished;
+
+
+          if (published && (publishedDetails.date === lastMajorRevisionPublished.date)) {
+              return 'Published';
+          }
+
+          if (!published && !!publishedDetails) {
+              return "Taken down";
+          }
+
+
+      }
+
       getRelativeDate(date = moment()){
         return this.get('createdDate').from(date, true);
       }
