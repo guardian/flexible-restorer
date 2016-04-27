@@ -24,13 +24,15 @@
 .snapshot-content__container__item {
   box-sizing: border-box;
   padding: 2% 10%;
-  font-family: AgateSans;
+  font-family: "Guardian Agate Sans";
+  height: 1000px;
 }
 
 .snapshot-content__container__item--json {
   @extend .snapshot-content__container__item;
   padding: 2% 5%;
   width: 50%;
+  height: 1000px;
   overflow: auto;
   & code {
     word-wrap: break-word;

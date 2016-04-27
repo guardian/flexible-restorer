@@ -16,6 +16,8 @@
 
 .snapshot-list-header__content {
   padding: 5px 10px;
+  flex-basis: 175px;
+  border-right: 1px solid $color-400-grey;
 }
 
 .snapshot-list-header__status {
@@ -64,8 +66,8 @@
 }
 
 .snapshot-list__item__content {
-  flex-grow: 3;
   padding: 10px 15px;
+  flex-basis: 165px;
   font-weight: 500;
   z-index: 2;
   border-right: 1px solid $color-400-grey;
@@ -104,7 +106,6 @@
   position: absolute;
   right: 0%;
   height: 4.5em;
-
   font-weight: 500;
   z-index: 2;
   [variant=quaternary] & {
