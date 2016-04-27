@@ -87,6 +87,16 @@
   }
 }
 
+.snapshot-list__item__status--left {
+    float: left;
+    min-width: 40%;
+}
+
+.snapshot-list__item__status--right {
+    float: right;
+    min-width: 50%;
+}
+
 .snapshot-list__item__buttons {
   flex-grow: 3;
   font-weight: 500;

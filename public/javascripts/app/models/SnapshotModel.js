@@ -32,8 +32,15 @@ SnapshotModelMod.factory('SnapshotModel', [
           const changeDetails = this.get('contentChangeDetails');
           const publishedDetails = changeDetails.published;
           const published = this.get('published');
+          const settings = this.get('preview').settings;
+
           const lastMajorRevisionPublished = changeDetails.lastMajorRevisionPublished;
 
+
+          if (!!settings && !!settings.embargoedUntil) {
+              const time = moment(settings.embargoedUntil);
+              return "Embargoed until " + time.format("ddd D MMMM YYYY");
+          }
 
           if (published && (publishedDetails.date === lastMajorRevisionPublished.date)) {
               return 'Published';
@@ -43,7 +50,26 @@ SnapshotModelMod.factory('SnapshotModel', [
               return "Taken down";
           }
 
+      }
 
+      getSettingsInfo() {
+          const settings = this.get('preview').settings;
+          // flex stores strings not booleans so we need to convert
+          // them all over
+          const commentable = (settings.commentable === "true");
+          const legallySensitive = (settings.legallySensitive === "false");
+          const type = this.get('type');
+          const liveBloggingNow = (settings.liveBloggingNow === "true");
+          const isLive = (type === "liveblog") && liveBloggingNow;
+
+          const settings = {
+              commentable: commentable,
+              legallySensitive: legallySensitive,
+              isLive: isLive,
+              type: type:
+          };
+
+          return settings;
       }
 
       getRelativeDate(date = moment()){

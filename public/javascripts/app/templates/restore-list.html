@@ -63,7 +63,7 @@
              ng-show="(!model.get('activeState') && !hovered) || (model.get('activeState') && !hovered) || (hovered && !model.get('activeState'))">
             <div class="snapshot-list__item__status--left"
                  ng-click="ctrl.onItemClicked($index)">
-                {{ model.isPublished() }}
+                {{ model.getSettingsInfo() }}
             </div>
 
             <div class="snapshot-list__item__status--right"
