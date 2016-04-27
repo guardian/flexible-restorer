@@ -4,6 +4,7 @@
   &.active {
     opacity: 1;
   }
+  max-height: 1500px;
 }
 
 .snapshot-content__viewport {
@@ -23,6 +24,7 @@
 .snapshot-content__container__item {
   box-sizing: border-box;
   padding: 2% 10%;
+  font-family: AgateSans;
 }
 
 .snapshot-content__container__item--json {
@@ -33,4 +35,24 @@
   & code {
     word-wrap: break-word;
   }
+}
+
+.snapshot-content__furniture {
+    border-bottom: 1px solid rgba(162, 160, 160, 0.49);
+}
+
+.snapshot-content__furniture__item {
+    padding: 2%;
+
+    .snapshot-content__furniture__item--header {
+        font-family: AgateSans;
+        font-weight: bold;
+        color: #333333;
+    }
+
+    .snapshot-content__furniture__item--content {
+        font-family: AgateSans;
+        font-weight: normal;
+        color: #333333;
+    }
 }

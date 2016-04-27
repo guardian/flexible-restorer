@@ -124,6 +124,27 @@
               ng-controller="SnapshotContentCtrl as ctrl"
               ng-class="{'active': isSettingContent === false}">
     <div class="snapshot-content__viewport">
+
+        <div class="snapshot-content__furniture">
+            <gu-row class="snapshot-content__furniture__item">
+                <h4 class="snapshot-content__furniture__item--header">
+                    Headline
+                </h4>
+                <p class="snapshot-content__furniture__item--content">
+                    {{ headline }}
+                </p>
+            </gu-row>
+
+            <gu-row class="snapshot-content__furniture__item">
+                <h4 class="snapshot-content__furniture__item--header">
+                    Standfirst
+                </h4>
+                <p class="snapshot-content__furniture__item--content">
+                    {{ standfirst }}
+                </p>
+            </gu-row>
+        </div>
+
       <!-- TODO JP 15/4/15 Replace with accordion from components repo -->
       <gu-row class="snapshot-content__container" ng-class="{ 'show-json': isShowingJSON }">
 

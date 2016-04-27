@@ -52,6 +52,14 @@ SnapshotModelMod.factory('SnapshotModel', [
 
       }
 
+      getHeadline() {
+          return this.get("preview").fields.headline;
+      }
+
+      getStandfirst() {
+          return this.get("preview").fields.standfirst;
+      }
+
       getSettingsInfo() {
           const settings = this.get('preview').settings;
           // flex stores strings not booleans so we need to convert
@@ -62,14 +70,14 @@ SnapshotModelMod.factory('SnapshotModel', [
           const liveBloggingNow = (settings.liveBloggingNow === "true");
           const isLive = (type === "liveblog") && liveBloggingNow;
 
-          const settings = {
+          const retSettings = {
               commentable: commentable,
               legallySensitive: legallySensitive,
               isLive: isLive,
-              type: type:
+              type: type
           };
 
-          return settings;
+          return retSettings;
       }
 
       getRelativeDate(date = moment()){
