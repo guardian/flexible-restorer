@@ -33,7 +33,7 @@
 
     <!-- SNAPSHOT LIST HEADER -->
     <h1 class="article-headline">{{ articleTitle }}</h1>
-    <h6 class="article-hash">Composer ID: {{ articleHash }}</h6>
+    <h6 class="article-hash">({{ articleHash }})</h6>
 
     <gu-row class="snapshot-list-header">
       <span class="snapshot-list-header__decal">No.</span>
@@ -60,14 +60,22 @@
         </div>
 
         <div class="snapshot-list__item__status"
+             ng-click="ctrl.onItemClicked($index)"
              ng-show="(!model.get('activeState') && !hovered) || (model.get('activeState') && !hovered) || (hovered && !model.get('activeState'))">
             <div class="snapshot-list__item__status--left"
                  ng-click="ctrl.onItemClicked($index)">
-                {{ model.getSettingsInfo() }}
+
+                <span class="snapshot-list__item__settings--live"
+                      ng-show="model.getSettingsInfo().isLive && model.getSettingsInfo().type === 'liveblog'">
+                    Live
+                </span>
+
+                <!-- {{ model.getSettingsInfo() }} -->
             </div>
 
             <div class="snapshot-list__item__status--right"
-                 ng-click="ctrl.onItemClicked($index)">
+                 ng-click="ctrl.onItemClicked($index)"
+                 ng-show="!!model.getPublishedState()">
                 {{ model.getPublishedState() }}
 
             </div>

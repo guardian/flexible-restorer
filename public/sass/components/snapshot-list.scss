@@ -33,6 +33,7 @@
 .snapshot-list__item {
   position: relative;
   overflow: hidden;
+  min-height: 60px;
   &.item-active {
     overflow: visible;
     &:before {
@@ -67,6 +68,7 @@
   padding: 10px 15px;
   font-weight: 500;
   z-index: 2;
+  border-right: 1px solid $color-400-grey;
   [variant=quaternary] & {
     color: white;
   }
@@ -99,6 +101,9 @@
 }
 
 .snapshot-list__item__buttons {
+  position: absolute;
+  right: 0%;
+  height: 4.5em;
   flex-grow: 3;
   font-weight: 500;
   z-index: 2;
