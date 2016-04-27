@@ -25,14 +25,14 @@
   box-sizing: border-box;
   padding: 2% 10%;
   font-family: "Guardian Agate Sans";
-  height: 1000px;
+  height: 53.5em;;
 }
 
 .snapshot-content__container__item--json {
   @extend .snapshot-content__container__item;
   padding: 2% 5%;
   width: 50%;
-  height: 1000px;
+  height: 53.5em;;
   overflow: auto;
   & code {
     word-wrap: break-word;
@@ -47,13 +47,13 @@
     padding: 2%;
 
     .snapshot-content__furniture__item--header {
-        font-family: "Guardian Agate Sans";;
+        font-family: "Guardian Agate Sans";
         font-weight: bold;
         color: $color-650-grey;
     }
 
     .snapshot-content__furniture__item--content {
-        font-family: "Guardian Agate Sans";;
+        font-family: "Guardian Agate Sans";
         font-weight: normal;
         color: $color-650-grey;
     }
