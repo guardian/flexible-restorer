@@ -116,6 +116,15 @@
   }
 }
 
+.snapshot-list__item__settings__legally-sensitive {
+    padding: 0;
+    text-align: center;
+    height: 15px;
+    margin-bottom: 5px;
+    width: 17px;
+    background: url(../images/legalcheck-grey-14.svg) center center no-repeat;
+}
+
 .snapshot-list__item__settings__comments--off {
     width: 36px;
 }

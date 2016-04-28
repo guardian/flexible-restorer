@@ -70,6 +70,10 @@
                     Live
                 </div>
 
+                <div class="snapshot-list__item__settings__legally-sensitive"
+                     ng-show="model.isLegallySensitive()">
+                </div>
+
                 <div class="snapshot-list__item__settings__comments--on"
                      ng-show="model.commentsEnabled().on">
                     <div class="snapshot-list__item__settings__comments--on-image">

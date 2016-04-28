@@ -64,19 +64,24 @@ SnapshotModelMod.factory('SnapshotModel', [
           const settings = this.get('preview').settings;
           // flex stores strings not booleans so we need to convert
           // them all over
-
-          const legallySensitive = (settings.legallySensitive === "false");
           const type = this.get('type');
           const liveBloggingNow = (settings.liveBloggingNow === "true");
           const isLive = (type === "liveblog") && liveBloggingNow;
 
           const retSettings = {
-              legallySensitive: legallySensitive,
               isLive: isLive,
               type: type
           };
 
           return retSettings;
+      }
+
+      isLegallySensitive() {
+          const settings = this.get('preview').settings;
+          const legallySensitive = settings.legallySensitive;
+
+
+          return legallySensitive === "true";
       }
 
       commentsEnabled() {
