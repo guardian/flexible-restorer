@@ -116,6 +116,39 @@
   }
 }
 
+.snapshot-list__item__settings__comments--off {
+    width: 36px;
+}
+
+.snapshot-list__item__settings__comments--on {
+    width: 32px;
+}
+
+.snapshot-list__item__settings__comments--text {
+    float: right;
+    font-size: 10px;
+    text-transform: uppercase;
+}
+
+.snapshot-list__item__settings__comments--on-image {
+    padding: 0;
+    float: left;
+    text-align: center;
+    height: 15px;
+    width: 16px;
+    background: url(../images/comment-green-14.svg) center center no-repeat;
+}
+
+.snapshot-list__item__settings__comments--off-image {
+    padding: 0;
+    float: left;
+    text-align: center;
+    height: 15px;
+    width: 16px;
+    background: url(../images/comment-grey-14.svg) center center no-repeat;
+}
+
+
 // INDEX STYLING
 // --------
 // | 1 | <-- that bit

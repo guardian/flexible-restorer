@@ -64,20 +64,31 @@ SnapshotModelMod.factory('SnapshotModel', [
           const settings = this.get('preview').settings;
           // flex stores strings not booleans so we need to convert
           // them all over
-          const commentable = (settings.commentable === "true");
+
           const legallySensitive = (settings.legallySensitive === "false");
           const type = this.get('type');
           const liveBloggingNow = (settings.liveBloggingNow === "true");
           const isLive = (type === "liveblog") && liveBloggingNow;
 
           const retSettings = {
-              commentable: commentable,
               legallySensitive: legallySensitive,
               isLive: isLive,
               type: type
           };
 
           return retSettings;
+      }
+
+      commentsEnabled() {
+          const settings = this.get('preview').settings;
+          const commentable = settings.commentable;
+
+          let ret = {
+              defined: commentable,
+              on: (commentable === "true")
+          };
+
+          return ret;
       }
 
       getRelativeDate(date = moment()){

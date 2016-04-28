@@ -65,12 +65,29 @@
             <div class="snapshot-list__item__status--left"
                  ng-click="ctrl.onItemClicked($index)">
 
-                <span class="snapshot-list__item__settings--live"
+                <div class="snapshot-list__item__settings--live"
                       ng-show="model.getSettingsInfo().isLive && model.getSettingsInfo().type === 'liveblog'">
                     Live
-                </span>
+                </div>
 
-                <!-- {{ model.getSettingsInfo() }} -->
+                <div class="snapshot-list__item__settings__comments--on"
+                     ng-show="model.commentsEnabled().on">
+                    <div class="snapshot-list__item__settings__comments--on-image">
+                    </div>
+                    <div class="snapshot-list__item__settings__comments--text">
+                        on
+                    </div>
+                </div>
+
+                <div class="snapshot-list__item__settings__comments--off"
+                     ng-show="model.commentsEnabled().defined && !model.commentsEnabled().on">
+                    <div class="snapshot-list__item__settings__comments--off-image">
+                    </div>
+                    <div class="snapshot-list__item__settings__comments--text">
+                        off
+                    </div>
+                </div>
+
             </div>
 
             <div class="snapshot-list__item__status--right"
