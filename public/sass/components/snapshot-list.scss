@@ -129,6 +129,13 @@
     background: url(../images/legalcheck-grey-14.svg) center center no-repeat;
 }
 
+.snapshot-list__item__settings__live {
+    text-transform: uppercase;
+    font-size: 10px;
+    margin-bottom: 1px;
+    font-weight: bold;
+}
+
 .snapshot-list__item__settings__comments--off {
     width: 36px;
 }
@@ -137,11 +144,12 @@
     width: 32px;
 }
 
-.snapshot-list__item__settings__comments--text {
+.snapshot-list__item__settings__content--text {
     float: right;
     font-size: 10px;
     text-transform: uppercase;
 }
+
 
 .snapshot-list__item__settings__comments--on-image {
     padding: 0;
