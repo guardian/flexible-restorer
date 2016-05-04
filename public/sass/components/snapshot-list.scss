@@ -3,6 +3,7 @@
 // SNAPSHOT LIST HEADER
 .snapshot-list-header {
   background: $box-tertiary-bg;
+  font-size: 12px;
 }
 
 .snapshot-list-header__decal {
@@ -14,6 +15,12 @@
 }
 
 .snapshot-list-header__content {
+  padding: 5px 10px;
+  flex-basis: 175px;
+  border-right: 1px solid $color-400-grey;
+}
+
+.snapshot-list-header__status {
   padding: 5px 10px;
 }
 
@@ -28,6 +35,7 @@
 .snapshot-list__item {
   position: relative;
   overflow: hidden;
+  min-height: 60px;
   &.item-active {
     overflow: visible;
     &:before {
@@ -58,8 +66,50 @@
 }
 
 .snapshot-list__item__content {
-  flex-grow: 3;
   padding: 10px 15px;
+  flex-basis: 165px;
+  font-weight: 500;
+  z-index: 2;
+  border-right: 1px solid $color-400-grey;
+  [variant=quaternary] & {
+    color: white;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.snapshot-list__item__status {
+  flex-grow: 3;
+  font-size: small;
+  z-index: 2;
+  [variant=quaternary] & {
+    color: white;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.snapshot-list__item__status--left {
+    float: left;
+    min-width: 34%;
+    height: 3.1em;
+    padding: 10px 15px;
+}
+
+.snapshot-list__item__status--right {
+    float: right;
+    min-width: 35%;
+    height: 3.1em;
+    padding: 10px 15px;
+    border-left: 1px solid $color-400-grey;
+}
+
+.snapshot-list__item__buttons {
+  position: absolute;
+  right: 0%;
+  height: 4.5em;
   font-weight: 500;
   z-index: 2;
   [variant=quaternary] & {
@@ -69,6 +119,56 @@
     cursor: pointer;
   }
 }
+
+.snapshot-list__item__settings__legally-sensitive {
+    padding: 0;
+    text-align: center;
+    height: 15px;
+    margin-bottom: 5px;
+    width: 17px;
+    background: url(../images/legalcheck-grey-14.svg) center center no-repeat;
+}
+
+.snapshot-list__item__settings__live {
+    text-transform: uppercase;
+    font-size: 10px;
+    margin-bottom: 1px;
+    font-weight: bold;
+}
+
+.snapshot-list__item__settings__comments--off {
+    width: 36px;
+}
+
+.snapshot-list__item__settings__comments--on {
+    width: 32px;
+}
+
+.snapshot-list__item__settings__content--text {
+    float: right;
+    font-size: 10px;
+    text-transform: uppercase;
+}
+
+
+.snapshot-list__item__settings__comments--on-image {
+    padding: 0;
+    float: left;
+    text-align: center;
+    height: 15px;
+    width: 16px;
+    background: url(../images/comment-green-14.svg) center center no-repeat;
+}
+
+.snapshot-list__item__settings__comments--off-image {
+    padding: 0;
+    float: left;
+    text-align: center;
+    height: 15px;
+    width: 16px;
+    background: url(../images/comment-grey-14.svg) center center no-repeat;
+}
+
 
 // INDEX STYLING
 // --------
@@ -105,6 +205,9 @@ div.index-list__item__index {
 // RESTORE BUTTON
 a.snapshot-list__item__restore {
   display: flex;
+  float: right;
+  width: 50%;
+  height: 4.5em;
   align-items: center;
   justify-content: center;
   flex-grow: 1;
@@ -124,6 +227,9 @@ a.snapshot-list__item__restore {
 //JSON BUTTON
 a.snapshot-list__item__json {
   display: flex;
+  float: left;
+  height: 4.5em;
+  width: 50%;
   align-items: center;
   justify-content: center;
   flex-grow: 1;

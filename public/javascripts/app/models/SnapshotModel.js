@@ -24,6 +24,78 @@ SnapshotModelMod.factory('SnapshotModel', [
         return this.get('createdDate').format('HH:mm:ss D MMMM YYYY');
       }
 
+      isPublished() {
+          return this.get('published');
+      }
+
+      getPublishedState() {
+          const changeDetails = this.get('contentChangeDetails');
+          const publishedDetails = changeDetails.published;
+          const published = this.get('published');
+          const settings = this.get('preview').settings;
+
+          const lastMajorRevisionPublished = changeDetails.lastMajorRevisionPublished;
+
+
+          if (!!settings && !!settings.embargoedUntil) {
+              const time = moment(settings.embargoedUntil);
+              return "Embargoed until " + time.format("ddd D MMMM YYYY");
+          }
+
+          if (published && (publishedDetails.date === lastMajorRevisionPublished.date)) {
+              return 'Published';
+          }
+
+          if (!published && !!publishedDetails) {
+              return "Taken down";
+          }
+
+      }
+
+      getHeadline() {
+          return this.get("preview").fields.headline;
+      }
+
+      getStandfirst() {
+          return this.get("preview").fields.standfirst;
+      }
+
+      getSettingsInfo() {
+          const settings = this.get('preview').settings;
+          // flex stores strings not booleans so we need to convert
+          // them all over
+          const type = this.get('type');
+          const liveBloggingNow = (settings.liveBloggingNow === "true");
+          const isLive = (type === "liveblog") && liveBloggingNow;
+
+          const retSettings = {
+              isLive: isLive,
+              type: type
+          };
+
+          return retSettings;
+      }
+
+      isLegallySensitive() {
+          const settings = this.get('preview').settings;
+          const legallySensitive = settings.legallySensitive;
+
+
+          return legallySensitive === "true";
+      }
+
+      commentsEnabled() {
+          const settings = this.get('preview').settings;
+          const commentable = settings.commentable;
+
+          let ret = {
+              defined: commentable,
+              on: (commentable === "true")
+          };
+
+          return ret;
+      }
+
       getRelativeDate(date = moment()){
         return this.get('createdDate').from(date, true);
       }
