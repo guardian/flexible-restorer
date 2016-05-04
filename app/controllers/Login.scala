@@ -4,6 +4,7 @@ import play.api.mvc._
 import scala.concurrent.Future
 import helpers.Loggable
 import scala.concurrent.ExecutionContext.Implicits.global
+import permissions.Permissions._
 
 object Login extends Controller with PanDomainAuthActions with Loggable {
 
@@ -21,6 +22,11 @@ object Login extends Controller with PanDomainAuthActions with Loggable {
 
   def user() = AuthAction { implicit request =>
     Ok(request.user.toJson).as(JSON)
+  }
+
+  def permissions() = AuthAction { implicit request =>
+    val permissions = s"""{\"restoreContent\" : ${hasAccess(request.user)}}"""
+    Ok(permissions).as(JSON)
   }
 
 }

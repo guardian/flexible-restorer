@@ -33,4 +33,5 @@ GET            /management/info                            controllers.Managemen
 # API
 GET           /api/1/versions/:contentId                   controllers.Versions.getJSONVersionsCollection(contentId: String)
 GET           /api/1/user                                  controllers.Login.user
+GET           /api/1/user/permissions                      controllers.Login.permissions
 GET           /api/1/version-count/:contentId              controllers.Versions.availableVersionsCount(contentId: String)
