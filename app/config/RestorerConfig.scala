@@ -45,8 +45,6 @@ object RestorerConfig extends AwsInstanceTags {
   )
 
   // Permissions
-  lazy val whitelistMembers: Set[String] = config.getStringSeq("whitelist.members").getOrElse(Nil).toSet
-
   val usePermissionsService: Boolean = config.getBoolean("permissions.enabled").getOrElse(true)
 
   // Logging
