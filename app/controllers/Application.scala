@@ -15,9 +15,8 @@ import config.RestorerConfig
 import com.amazonaws.auth.{DefaultAWSCredentialsProviderChain, AWSCredentialsProvider}
 
 trait PanDomainAuthActions extends AuthActions {
-  override def validateUser(authedUser: AuthenticatedUser): Boolean =
-    authedUser.multiFactor
 
+  override def validateUser(authedUser: AuthenticatedUser): Boolean = authedUser.multiFactor
 
   override def showUnauthedMessage(message: String)(implicit request: RequestHeader): Result = {
     Results.Redirect(controllers.routes.Login.authError(message))

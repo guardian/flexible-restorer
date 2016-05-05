@@ -37,6 +37,8 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
       $scope.isSettingContent = true;
       $scope.htmlContent = $sce.trustAsHtml(model.getHTMLContent());
       $scope.jsonContent = model.getJSON();
+      $scope.headline = model.getHeadline();
+      $scope.standfirst = model.getStandfirst();
       $timeout(()=> $scope.isSettingContent = false, 200);
     }
 

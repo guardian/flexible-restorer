@@ -26,18 +26,20 @@
 
 <gu-row ng-if="!isLoading" class="content">
   <gu-column  class="sidebar"
-              span="3"
+              span="4"
               gu-box="secondary"
               ng-class="{'active': isSidebarActive}"
               ng-controller="SnapshotListInteractionCtrl as ctrl">
 
     <!-- SNAPSHOT LIST HEADER -->
     <h1 class="article-headline">{{ articleTitle }}</h1>
-    <h6 class="article-hash">Composer ID: {{ articleHash }}</h6>
+    <h6 class="article-hash">({{ articleHash }})</h6>
 
     <gu-row class="snapshot-list-header">
       <span class="snapshot-list-header__decal">No.</span>
-      <span class="snapshot-list-header__content">Snapped at</span>
+      <span class="snapshot-list-header__content">Snapped at &amp; last modified</span>
+      <span class="snapshot-list-header__status">Status</span>
+
     </gu-row>
 
     <!-- SNAPSHOT LIST -->
@@ -45,6 +47,8 @@
       <gu-index-list-item variant="{{ model.get('activeState') ? 'tertiary' : 'primary' }}"
                           class="snapshot-list__item"
                           ng-repeat-start="model in models"
+                          ng-mouseenter="hovered=true"
+                          ng-mouseleave="hovered=false"
                           index="{{ models.length - $index }}"
                           ng-class="{ 'item-active': model.get('activeState') }">
         <!-- CONTENT -->
@@ -55,18 +59,57 @@
           <h6 class="snapshot-list__item__content__actual-date">{{ model.getCreatedDate() }}</h6>
         </div>
 
+        <div class="snapshot-list__item__status"
+             ng-click="ctrl.onItemClicked($index)"
+             ng-show="(!model.get('activeState') && !hovered) || (model.get('activeState') && !hovered) || (hovered && !model.get('activeState'))">
+            <div class="snapshot-list__item__status--left"
+                 ng-click="ctrl.onItemClicked($index)">
+
+                <div class="snapshot-list__item__settings__legally-sensitive"
+                     ng-show="model.isLegallySensitive()">
+                </div>
+
+                <div class="snapshot-list__item__settings__comments--on"
+                     ng-show="model.commentsEnabled().on">
+                    <div class="snapshot-list__item__settings__comments--on-image">
+                    </div>
+                    <div class="snapshot-list__item__settings--text">
+                        on
+                    </div>
+                </div>
+
+                <div class="snapshot-list__item__settings__comments--off"
+                     ng-show="model.commentsEnabled().defined && !model.commentsEnabled().on">
+                    <div class="snapshot-list__item__settings__comments--off-image">
+                    </div>
+                    <div class="snapshot-list__item__settings--text">
+                        off
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="snapshot-list__item__status--right"
+                 ng-click="ctrl.onItemClicked($index)"
+                 ng-show="!!model.getPublishedState()">
+                &nbsp;
+            </div>
+        </div>
+
+        <div class="snapshot-list__item__buttons"
+             ng-show="model.get('activeState') && hovered">
         <!-- JSON LINK -->
         <!-- DUE TO THE NATURE OF THE HOVER EFFECTS WE NEED TO CANCEL
              THE BACKGROUND COLOR WHEN THE RESTORE BUTTON IS ACTIVE
              THIS IS WHY THIS IS THE ONLY BUTTON WITH AN 'in-active' CLASS
-            JP 13/4/15
-        -->
+             JP 13/4/15
+           -->
         <gu-btn class="snapshot-list__item__json"
                 href="#"
                 variant="light"
                 ng-class="{ hidden: !model.get('activeState'), 'active': isDisplayingJSON, 'in-active': isDisplayingModal }"
                 ng-click="ctrl.onJSONClicked()">
-          JSON
+            JSON
         </gu-btn>
 
         <!-- RESTORE LINK -->
@@ -75,9 +118,12 @@
                 variant="light"
                 ng-class="{ hidden: !model.get('activeState'), 'active': isDisplayingModal }"
                 ng-click="ctrl.onRestoreClicked()">
-          <gu-icon class="snapshot-list__item__restore__icon" variant="wrench-disabled"></gu-icon>
-          Restore
+            <gu-icon class="snapshot-list__item__restore__icon" variant="wrench-disabled"></gu-icon>
+            Restore
         </gu-btn>
+
+
+        </div>
 
       </gu-index-list-item>
 
@@ -97,10 +143,31 @@
 
   <!-- CONTENT -->
   <gu-column  class="snapshot-content"
-              span="9"
+              span="8"
               ng-controller="SnapshotContentCtrl as ctrl"
               ng-class="{'active': isSettingContent === false}">
     <div class="snapshot-content__viewport">
+
+        <div class="snapshot-content__furniture">
+            <gu-row class="snapshot-content__furniture__item">
+                <h4 class="snapshot-content__furniture__item--header">
+                    Headline
+                </h4>
+                <p class="snapshot-content__furniture__item--content">
+                    {{ headline }}
+                </p>
+            </gu-row>
+
+            <gu-row class="snapshot-content__furniture__item">
+                <h4 class="snapshot-content__furniture__item--header">
+                    Standfirst
+                </h4>
+                <p class="snapshot-content__furniture__item--content">
+                    {{ standfirst }}
+                </p>
+            </gu-row>
+        </div>
+
       <!-- TODO JP 15/4/15 Replace with accordion from components repo -->
       <gu-row class="snapshot-content__container" ng-class="{ 'show-json': isShowingJSON }">
 

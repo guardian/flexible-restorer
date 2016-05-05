@@ -73,6 +73,7 @@ SnapshotListCtrlMod.controller('SnapshotListCtrl', [
     function setActive(activeModel, model) {
       //set active states
       activeModel.set('activeState', false);
+        console.log("setting active to something");
       model.set('activeState', true);
       mediator.publish('mixpanel:view-snapshot', model);
       //place the content
