@@ -21,9 +21,10 @@ MixpanelServiceMod.service('MixpanelService', [
 
     //get the current user so that we can register it with mixpanel
     var hasUser = $q((resolve, reject)=>{
-      UserService
-        .get()
-        .success((user)=> {
+      const userMaybe = UserService.get();
+
+      userMaybe
+        .then((user)=> {
           //setup a user profile on mixpanel
           var userID = hash(user.email);
           mixpanel.restorer.identify(userID);
@@ -36,7 +37,7 @@ MixpanelServiceMod.service('MixpanelService', [
           //resolve so we can track
           resolve(user)
         })
-        .error((err) => {
+        .catch((err) => {
           //send the error via the mediator
           mediator.publish('error', err);
           reject(err);
