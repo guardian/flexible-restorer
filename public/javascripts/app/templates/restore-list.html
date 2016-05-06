@@ -33,7 +33,11 @@
 
     <!-- SNAPSHOT LIST HEADER -->
     <h1 class="article-headline">{{ articleTitle }}</h1>
-    <h6 class="article-hash">({{ articleHash }})</h6>
+    <h6 class="article-hash">
+        (<a href="{{articleURL}}" target="_blank">
+            {{ articleHash }}
+        </a>)
+    </h6>
 
     <gu-row class="snapshot-list-header">
       <span class="snapshot-list-header__decal">No.</span>
