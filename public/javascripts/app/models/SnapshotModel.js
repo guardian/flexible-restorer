@@ -31,18 +31,23 @@ SnapshotModelMod.factory('SnapshotModel', [
       getPublishedState() {
           const changeDetails = this.get('contentChangeDetails');
           const publishedDetails = changeDetails.published;
+          const lastModified = changeDetails.lastModified;
           const published = this.get('published');
           const settings = this.get('preview').settings;
-
           const lastMajorRevisionPublished = changeDetails.lastMajorRevisionPublished;
+          const scheduledLaunchDate = this.get('scheduledLaunchDate');
 
+          if (!!scheduledLaunchDate) {
+              const time = moment(scheduledLaunchDate);
+              return "Scheduled  " + time.format("ddd D MMMM YYYY");
+          }
 
           if (!!settings && !!settings.embargoedUntil) {
               const time = moment(settings.embargoedUntil);
               return "Embargoed until " + time.format("ddd D MMMM YYYY");
           }
 
-          if (published && (publishedDetails.date === lastMajorRevisionPublished.date)) {
+          if (published) {
               return 'Published';
           }
 

@@ -93,16 +93,15 @@
 
 .snapshot-list__item__status--left {
     float: left;
-    min-width: 34%;
     height: 3.1em;
-    padding: 10px 15px;
+    padding: 10px 5px;
 }
 
 .snapshot-list__item__status--right {
     float: right;
-    min-width: 35%;
+    width: 45%;
     height: 3.1em;
-    padding: 10px 15px;
+    padding: 10px 5px;
     border-left: 1px solid $color-400-grey;
 }
 
