@@ -28,7 +28,7 @@ SnapshotListCtrlMod.controller('SnapshotListCtrl', [
         var activeModel = collection.find((data)=> data.activeState);
         $scope.articleTitle = activeModel.getHeadline();
         $scope.articleHash = activeModel.get('id');
-
+        $scope.articleURL = [__COMPOSER_DOMAIN__, "content", $scope.articleHash].join("/");
         //animate sidebar in
         $timeout(()=> $scope.isSidebarActive = true, 500);
 

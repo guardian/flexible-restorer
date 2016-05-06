@@ -1,4 +1,4 @@
-@(pageTitle:String)(content:Html)
+@(pageTitle:String, composerDomain: String)(content:Html)
 
 <!DOCTYPE html>
 <html>
@@ -24,6 +24,10 @@
         .catch(function(err){
           console.error(err);
         })
+
+     window.__COMPOSER_DOMAIN__ = "@composerDomain";
+    </script>
+
     </script>
 </body>
 </html>

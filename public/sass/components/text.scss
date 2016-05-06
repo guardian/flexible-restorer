@@ -91,6 +91,11 @@ a.snapshot-list__item__json, a.snapshot-list__item__restore {
   font-weight: normal;
   font-size: 13px;
   line-height: 18px;
+
+  a {
+      text-decoration: none;
+      color: #2ea3eb;
+  }
 }
 
 .snapshot-list-header {
