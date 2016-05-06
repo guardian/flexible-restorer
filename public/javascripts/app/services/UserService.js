@@ -3,7 +3,7 @@ import angular from 'angular';
 var UserServiceMod = angular.module('UserServiceMod', []);
 
 UserServiceMod.service('UserService', [
-  '$http'
+  '$http',
   function($http) {
     return {
       get: () => {
