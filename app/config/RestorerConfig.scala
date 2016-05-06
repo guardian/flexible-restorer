@@ -44,9 +44,6 @@ object RestorerConfig extends AwsInstanceTags {
     new InstanceProfileCredentialsProvider
   )
 
-  // Permissions
-  val usePermissionsService: Boolean = config.getBoolean("permissions.enabled").getOrElse(true)
-
   // Logging
   lazy val loggingConfig = for {
     stream <- config.getString("logging.stream")

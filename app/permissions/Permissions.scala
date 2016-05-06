@@ -1,7 +1,7 @@
 package permissions
 
 import com.gu.editorial.permissions.client._
-import com.gu.pandomainauth.model.AuthenticatedUser
+import com.gu.pandomainauth.model.{User, AuthenticatedUser}
 import config.RestorerConfig
 
 import scala.concurrent.Await
@@ -13,8 +13,6 @@ import scala.language.postfixOps
  */
 object Permissions extends PermissionsProvider {
   val app = "composer-restorer"
-
-  val isEnabled = RestorerConfig.usePermissionsService
 
   implicit def config = {
     val stage = if (RestorerConfig.stage == "PROD") "PROD" else "CODE"
@@ -31,4 +29,9 @@ object Permissions extends PermissionsProvider {
   val all = Seq(RestoreContent)
 
   private val timeout = 2000 millis
+
+  def hasAccess(user: User): Boolean = {
+    implicit val permsUser = PermissionsUser(user.email)
+    Await.result(getEither(RestoreContent).map(_.isRight), timeout)
+  }
 }
