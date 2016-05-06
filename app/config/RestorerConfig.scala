@@ -13,7 +13,9 @@ object RestorerConfig extends AwsInstanceTags {
     case None => "DEV" // default to dev stage
   }
 
-  lazy val bucketStage = config.getString("bucketStageOverride").getOrElse(stage)
+  lazy val defaultBucketStage = if(stage == "DEV") "CODE" else stage
+
+  lazy val bucketStage = config.getString("bucketStageOverride").getOrElse(defaultBucketStage)
 
   val liveBucket: String = "composer-snapshots-live-" + bucketStage.toLowerCase()
   val draftBucket: String = "composer-snapshots-draft-" + bucketStage.toLowerCase()
