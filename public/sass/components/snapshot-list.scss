@@ -82,6 +82,7 @@
 .snapshot-list__item__status {
   flex-grow: 3;
   font-size: small;
+  font-family: "Guardian Agate Sans";
   z-index: 2;
   [variant=quaternary] & {
     color: white;
@@ -145,7 +146,7 @@
 
 .snapshot-list__item__settings__content--text {
     float: right;
-    font-size: 10px;
+    font-size: 12px;
     text-transform: uppercase;
 }
 
