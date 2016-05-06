@@ -1,5 +1,6 @@
 package controllers
 
+import config.RestorerConfig
 import org.joda.time.DateTime
 import play.api.mvc._
 import play.api.libs.json._
@@ -26,9 +27,9 @@ object Versions extends Controller with PanDomainAuthActions with Loggable {
         (Json.parse(s3.getDraftSnapshot(ss.key)) \ "preview" \ "fields" \ "headline").asOpt[String]
       }
 
-      Ok(views.html.Versions.index(contentId, draftVersions, headline getOrElse ""))
+      Ok(views.html.Versions.index(contentId, draftVersions, headline getOrElse "", RestorerConfig.composerDomain))
     } else {
-      Ok(views.html.Versions.index(contentId, draftVersions, ""))
+      Ok(views.html.Versions.index(contentId, draftVersions, "", ""))
     }
 
   }

@@ -1,9 +1,9 @@
-@(contentId: String, draftSnapshots: List[Snapshot], headline: String)
+@(contentId: String, draftSnapshots: List[Snapshot], headline: String, composerDomain: String)
 
 @import views.html.Versions._
 
 
-@main("Versions") {
+@main("Versions", composerDomain) {
     <h2>@headline <em>(@contentId)</em></h2>
     <div id="notification-success" class="alert alert-success hidden"></div>
     <div id="notification-failure" class="alert alert-danger hidden"></div>
