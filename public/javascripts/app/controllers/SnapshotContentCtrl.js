@@ -64,6 +64,10 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
       }
   }
 
+      this.restoreContent = function() {
+          mediator.publish('snapshot-list:display-modal');
+      }
+
   }
 
 ]);
