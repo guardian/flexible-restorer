@@ -25,7 +25,8 @@
   box-sizing: border-box;
   padding: 2% 10%;
   font-family: "Guardian Agate Sans";
-  height: 53.5em;;
+  height: 53.5em;
+  overflow: scroll;
 }
 
 .snapshot-content__container__item--json {
