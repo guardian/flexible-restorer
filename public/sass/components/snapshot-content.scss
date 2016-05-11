@@ -40,7 +40,7 @@
 }
 
 .snapshot-content__furniture {
-    border-bottom: 1px solid rgba(162, 160, 160, 0.49);
+    @include thin-bottom-border;
 }
 
 .snapshot-content__furniture__item {
@@ -63,4 +63,18 @@
     display: flex;
     padding: 2% 5%;
     justify-content: flex-end;
+    space-between: 1rem;
+    @include thin-bottom-border;
+}
+
+.snapshot-content__actions--button {
+    display: flex;
+    height: 2.5rem;
+    margin-right: 1rem;
+    align-items: center;
+    justify-content: center;
+    background: $box-tertiary-bg;
+    & :last-child {
+        margin-right: 0;
+    }
 }
