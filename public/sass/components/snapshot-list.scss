@@ -107,8 +107,7 @@
 }
 
 .snapshot-list__item__buttons {
-  position: absolute;
-  right: 0%;
+  display: flex;
   height: 4.5em;
   font-weight: 500;
   z-index: 2;
@@ -205,8 +204,6 @@ div.index-list__item__index {
 // RESTORE BUTTON
 a.snapshot-list__item__restore {
   display: flex;
-  float: right;
-  width: 50%;
   height: 4.5em;
   align-items: center;
   justify-content: center;
@@ -226,10 +223,7 @@ a.snapshot-list__item__restore {
 
 //JSON BUTTON
 a.snapshot-list__item__json {
-  display: flex;
-  float: left;
   height: 4.5em;
-  width: 50%;
   align-items: center;
   justify-content: center;
   flex-grow: 1;
@@ -262,4 +256,9 @@ a.snapshot-list__item__json {
 .delta-row__content {
   transition: opacity .2s ease-in-out;
   line-height: 1.4;
+}
+
+.snapshot-list__item__information {
+  display: flex;
+  justify-content: flex-end;
 }

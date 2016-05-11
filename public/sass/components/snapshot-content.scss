@@ -58,3 +58,9 @@
         color: $color-650-grey;
     }
 }
+
+.snapshot-content__actions {
+    display: flex;
+    padding: 2% 5%;
+    justify-content: flex-end;
+}
