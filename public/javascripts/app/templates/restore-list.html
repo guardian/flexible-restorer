@@ -99,37 +99,6 @@
                             {{model.getPublishedState()}}
                         </div>
                     </div>
-
-                    <div class="snapshot-list__item__buttons"
-                         ng-show="model.get('activeState') && hovered">
-                        <!-- JSON LINK -->
-                        <!-- DUE TO THE NATURE OF THE HOVER EFFECTS WE NEED TO CANCEL
-                             THE BACKGROUND COLOR WHEN THE RESTORE BUTTON IS ACTIVE
-                             THIS IS WHY THIS IS THE ONLY BUTTON WITH AN 'in-active' CLASS
-                             JP 13/4/15
-                           -->
-                        <gu-btn class="snapshot-list__item__json"
-                                href="#"
-                                variant="light"
-                                ng-class="{ hidden: !model.get('activeState'), 'active': isDisplayingJSON, 'in-active': isDisplayingModal }"
-                                ng-click="ctrl.onJSONClicked()">
-                            JSON
-                        </gu-btn>
-
-                        <!-- RESTORE LINK -->
-                        <div ng-if="isAbleToRestore()">
-                            <gu-btn class="snapshot-list__item__restore"
-                                    href="#"
-                                    variant="light"
-                                    ng-class="{ hidden: !model.get('activeState'), 'active': isDisplayingModal }"
-                                    ng-click="ctrl.onRestoreClicked()">
-                                <gu-icon class="snapshot-list__item__restore__icon" variant="wrench-disabled"></gu-icon>
-                                Restore
-                            </gu-btn>
-                        </div>
-
-
-                    </div>
                 </div>
 
             </gu-index-list-item>
@@ -159,7 +128,7 @@
                 <gu-btn class="snapshot-content__actions--button"
                 ng-click="ctrl.restoreContent()"
                 ng-if="ctrl.canRestore">
-                    <gu-icon class="snapshot-list__item__restore__icon" variant="wrench-disabled"></gu-icon>
+                    <gu-icon class="snapshot-content__actions__restore__icon" variant="wrench-disabled"></gu-icon>
                     Restore
                 </gu-btn>
                 <gu-btn class="snapshot-content__actions--button"

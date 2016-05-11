@@ -33,18 +33,6 @@ SnapshotListInteractionCtrlMod.controller('SnapshotListInteractionCtrl', [
       mediator.publish('snapshot-list:set-active', index);
     };
 
-    // DISPLAY MODAL
-    this.onRestoreClicked = function(){
-      setState('modal');
-      mediator.publish('snapshot-list:display-modal');
-    };
-
-    // DISPLAY JSON VIEW
-    this.onJSONClicked = function(){
-      setState('json');
-      mediator.publish('snapshot-list:display-json');
-    };
-
     window.addEventListener('copy', function(e){
       // get the selected content
       var selection = window.getSelection();
