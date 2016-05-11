@@ -11,10 +11,21 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
   '$timeout',
   '$sce',
   'SnapshotModels',
-  function($scope, $routeParams, $timeout, $sce, SnapshotModels){
+    'UserService',
+  function($scope, $routeParams, $timeout, $sce, SnapshotModels, UserService){
 
     $scope.isShowingJSON = false;
-      $scope.displayButtonLabel = "JSON";
+    $scope.displayButtonLabel = "JSON";
+    $scope.canRestore =  UserService.get().then((user) => {
+        if(user.permissions && user.permissions.restoreContent) {
+          return true;
+        }
+        return false;
+    }).catch ((err) => {
+        //send the error via the mediator
+        mediator.publish('error', err);
+        return false;
+    });
 
     //set the initial content
     SnapshotModels

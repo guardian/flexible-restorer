@@ -157,7 +157,8 @@
 
             <gu-row class="snapshot-content__actions">
                 <gu-btn class="snapshot-content__actions--button"
-                ng-click="ctrl.restoreContent()">
+                ng-click="ctrl.restoreContent()"
+                ng-if="ctrl.canRestore">
                     <gu-icon class="snapshot-list__item__restore__icon" variant="wrench-disabled"></gu-icon>
                     Restore
                 </gu-btn>
