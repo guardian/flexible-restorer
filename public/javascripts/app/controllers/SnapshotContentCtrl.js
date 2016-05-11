@@ -14,6 +14,7 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
   function($scope, $routeParams, $timeout, $sce, SnapshotModels){
 
     $scope.isShowingJSON = false;
+      $scope.displayButtonLabel = "JSON";
 
     //set the initial content
     SnapshotModels
@@ -49,6 +50,19 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
     function displayHTML() {
       safeApply($scope, () => $scope.isShowingJSON = false);
     }
+
+  this.toggleJSON = function() {
+      if ($scope.isShowingJSON) {
+          mediator.publish('snapshot-list:display-html');
+          $scope.isShowingJSON = false;
+          $scope.displayButtonLabel = "JSON";
+
+      } else {
+          mediator.publish('snapshot-list:display-json');
+          $scope.isShowingJSON = true;
+          $scope.displayButtonLabel = "TEXT";
+      }
+  }
 
   }
 

@@ -156,7 +156,8 @@
         <div class="snapshot-content__viewport">
 
             <gu-row class="snapshot-content__actions">
-                <gu-btn class="snapshot-content__actions--button">JSON</gu-btn>
+                <gu-btn class="snapshot-content__actions--button"
+                ng-click="ctrl.toggleJSON()">{{displayButtonLabel}}</gu-btn>
             </gu-row>
 
             <div class="snapshot-content__furniture">
