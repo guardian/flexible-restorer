@@ -16,15 +16,16 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
 
     $scope.isShowingJSON = false;
     $scope.displayButtonLabel = "JSON";
-    $scope.canRestore =  UserService.get().then((user) => {
-        if(user.permissions && user.permissions.restoreContent) {
-          return true;
+    $scope.canRestore =  false;
+
+    UserService.get().then((user) => {
+        if(user.permissions && user.permissions.restoreContent && user.permissions.restoreContent === true) {
+          $scope.canRestore = true;
         }
-        return false;
     }).catch ((err) => {
         //send the error via the mediator
+        console.log('error', err);
         mediator.publish('error', err);
-        return false;
     });
 
     //set the initial content
