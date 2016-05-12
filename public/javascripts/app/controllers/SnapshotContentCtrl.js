@@ -11,9 +11,22 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
   '$timeout',
   '$sce',
   'SnapshotModels',
-  function($scope, $routeParams, $timeout, $sce, SnapshotModels){
+    'UserService',
+  function($scope, $routeParams, $timeout, $sce, SnapshotModels, UserService){
 
     $scope.isShowingJSON = false;
+    $scope.displayButtonLabel = "JSON";
+    $scope.canRestore =  false;
+
+    UserService.get().then((user) => {
+        if(user.permissions && user.permissions.restoreContent && user.permissions.restoreContent === true) {
+          $scope.canRestore = true;
+        }
+    }).catch ((err) => {
+        //send the error via the mediator
+        console.log('error', err);
+        mediator.publish('error', err);
+    });
 
     //set the initial content
     SnapshotModels
@@ -49,6 +62,23 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
     function displayHTML() {
       safeApply($scope, () => $scope.isShowingJSON = false);
     }
+
+  this.toggleJSON = function() {
+      if ($scope.isShowingJSON) {
+          mediator.publish('snapshot-list:display-html');
+          $scope.isShowingJSON = false;
+          $scope.displayButtonLabel = "JSON";
+
+      } else {
+          mediator.publish('snapshot-list:display-json');
+          $scope.isShowingJSON = true;
+          $scope.displayButtonLabel = "TEXT";
+      }
+  }
+
+      this.restoreContent = function() {
+          mediator.publish('snapshot-list:display-modal');
+      }
 
   }
 

@@ -41,7 +41,7 @@
 }
 
 .snapshot-content__furniture {
-    border-bottom: 1px solid rgba(162, 160, 160, 0.49);
+    @include thin-bottom-border;
 }
 
 .snapshot-content__furniture__item {
@@ -58,4 +58,28 @@
         font-weight: normal;
         color: $color-650-grey;
     }
+}
+
+.snapshot-content__actions {
+    display: flex;
+    padding: 2% 5%;
+    justify-content: flex-end;
+    space-between: 1rem;
+    @include thin-bottom-border;
+}
+
+.snapshot-content__actions--button {
+    display: flex;
+    height: 2.5rem;
+    margin-right: 1rem;
+    align-items: center;
+    justify-content: center;
+    background: $box-tertiary-bg;
+    & :last-child {
+        margin-right: 0;
+    }
+}
+
+.snapshot-content__actions__restore__icon {
+    margin-right: 5px;
 }
