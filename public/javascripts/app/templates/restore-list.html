@@ -59,8 +59,8 @@
                 <div class="snapshot-list__item__content"
                      ng-class="{ 'active': model.get('activeState') && isDisplayingHTML }"
                      ng-click="ctrl.onItemClicked($index)">
-                    <h6 class="snapshot-list__item__content__relative-date">{{ model.getRelativeDate() }} ago</h6>
                     <h6 class="snapshot-list__item__content__actual-date">{{ model.getCreatedDate() }}</h6>
+                    <h6 class="snapshot-list__item__content__relative-date">{{ model.getRelativeDate() }} ago</h6>
                 </div>
                 <div class="snapshot-list__item__information">
                     <div class="snapshot-list__item__status"
@@ -107,7 +107,7 @@
             <li class="delta-row" ng-repeat-end ng-mouseover="isActive = true" ng-mouseout="isActive = false">
                 <gu-row variant="reverse">
                     <gu-icon class="delta-row__icon" variant="expand-disabled"></gu-icon>
-          <span class="delta-row__content" ng-class="{ 'visually-hidden': !isActive }">
+          <span class="delta-row__content">
             {{ model.getRelativeDate( models[$index + 1].get('createdDate') ) }}
           </span>
                 </gu-row>
