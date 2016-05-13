@@ -10,8 +10,11 @@ import scala.io.Source
 
 object S3 {
   // helpers to make the objects more manageable
-  val idToKey: String => String = s =>
-    s.substring(0, 6).split("").mkString("", "/", "/") + s
+  val idToKey: String => String = s => {
+    val prefix = s.substring(0, 6).split("").mkString("/")
+    val cleanPrefix = if(prefix.startsWith("/")) prefix.substring(1) else prefix
+    s"$cleanPrefix/$s"
+  }
 }
 
 class S3 extends Loggable {
@@ -48,8 +51,12 @@ class S3 extends Loggable {
       logger.info(s"Using prefix $key")
       request.withPrefix(key)
     }.getOrElse(request)
-    val objects = s3Client.listObjects(requestWithId)
-    objects.getObjectSummaries.asScala.map(x => x.getKey).toList
+
+    val listing = s3Client.listObjects(requestWithId)
+
+    val objects = listing.getObjectSummaries.asScala.map(x => x.getKey).toList
+    logger.info(s"Found ${objects.size} versions")
+    objects
   }
 
   val getObjects: ListObjectsRequest => ObjectListing = s3Client.listObjects(_)
