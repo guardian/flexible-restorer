@@ -12,7 +12,6 @@ ErrorCtrlMod.controller('ErrorCtrl', [
         this.errorContent = '';
 
         mediator.subscribe('error', (err) => {
-            //TODO JP 15/4/15 ADD CS LOGGING HERE
             this.hasError = true;
             this.errorContent = err.message;
             $log.error(err.message);
