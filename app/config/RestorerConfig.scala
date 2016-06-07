@@ -2,7 +2,7 @@ package config
 
 import _root_.aws.AwsInstanceTags
 import com.amazonaws.auth.profile.ProfileCredentialsProvider
-import com.amazonaws.auth.{InstanceProfileCredentialsProvider, AWSCredentialsProviderChain, DefaultAWSCredentialsProviderChain, BasicAWSCredentials}
+import com.amazonaws.auth.{AWSCredentialsProviderChain, DefaultAWSCredentialsProviderChain, InstanceProfileCredentialsProvider}
 import helpers.KinesisAppenderConfig
 import play.api.Play.current
 
@@ -17,9 +17,7 @@ object RestorerConfig extends AwsInstanceTags {
 
   lazy val bucketStage = config.getString("bucketStageOverride").getOrElse(defaultBucketStage)
 
-  val liveBucket: String = "composer-snapshots-live-" + bucketStage.toLowerCase()
-  val draftBucket: String = "composer-snapshots-draft-" + bucketStage.toLowerCase()
-  val templatesBucket: String = "composer-templates-" + bucketStage.toLowerCase()
+  val snapshotBucket: String = "flexible-snapshots-" + bucketStage.toLowerCase()
 
   val domain: String = stage match {
     case "PROD" => "gutools.co.uk"

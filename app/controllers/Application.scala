@@ -39,18 +39,11 @@ class Application extends Controller with PanDomainAuthActions with Loggable {
   )
 
   def index = AuthAction {
-    Ok(views.html.Application.index())
+    Ok(views.html.main("Composer Restorer", RestorerConfig.composerDomain))
   }
 
-  def find = AuthAction { implicit request =>
-    def extractContentId(url: String) = url
-      .split('#').head // remove any hash fragment, e.g. referring to live blog posts
-      .split("/").last.trim // get the id
-
-    urlForm.bindFromRequest.fold(
-      {errorForm => Redirect(controllers.routes.Application.index())},
-      {url => Redirect(controllers.routes.Versions.index(extractContentId(url)))}
-    )
+  def versionIndex(contentId: String) = AuthAction {
+    Ok(views.html.main(s"Composer Restorer - Versions of $contentId", RestorerConfig.composerDomain))
   }
 
   def preflight(routes: String) = CORSable(RestorerConfig.corsableDomains: _*) {
@@ -62,5 +55,4 @@ class Application extends Controller with PanDomainAuthActions with Loggable {
         CORSable.CORS_ALLOW_HEADERS -> requestedHeaders.getOrElse(""))
     }
   }
-
 }

@@ -1,4 +1,4 @@
-@(pageTitle:String, composerDomain: String)(content:Html)
+@(pageTitle:String, composerDomain: String)
 
 <!DOCTYPE html>
 <html>
@@ -11,9 +11,9 @@
     <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/fav-versions-32.png")" />
 </head>
 <body ng-app="restorer">
-  <main class="main" ng-view>
+    <main class="main" ng-view>
     <!-- Add Loading GFX -->
-  </main>
+    </main>
 
     <script src="@routes.Assets.at("jspm_packages/system.js")"></script>
     <script src="@routes.Assets.at("config.js")"></script>
@@ -23,11 +23,9 @@
         .import('javascripts/app/main')
         .catch(function(err){
           console.error(err);
-        })
+        });
 
      window.__COMPOSER_DOMAIN__ = "@composerDomain";
-    </script>
-
     </script>
 </body>
 </html>

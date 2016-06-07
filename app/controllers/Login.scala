@@ -17,7 +17,7 @@ class Login extends Controller with PanDomainAuthActions with Loggable {
   }
 
   def authError(message: String) = Action.async { implicit request =>
-    Future(Forbidden(views.html.Login.authError(message)))
+    Future(Forbidden(views.html.authError(message)))
   }
 
   def user() = AuthAction { implicit request =>

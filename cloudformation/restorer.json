@@ -12,10 +12,7 @@
       "Type": "String",
       "AllowedValues": [
         "PROD",
-        "CODE",
-        "QA",
-        "RELEASE",
-        "TEST"
+        "CODE"
       ]
     },
     "VpcId": {
@@ -178,30 +175,11 @@
                   "Fn::Join": [
                     "",
                     [
-                      "arn:aws:s3:::composer-snapshots-draft-",
-                      { "Fn::FindInMap" : [ "EnvironmentMap", { "Ref" : "Stage" }, "lowercase"]}
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:s3:::composer-snapshots-live-",
-                      { "Fn::FindInMap" : [ "EnvironmentMap", { "Ref" : "Stage" }, "lowercase"]}
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:s3:::composer-templates-",
+                      "arn:aws:s3:::flexible-snapshots-",
                       { "Fn::FindInMap" : [ "EnvironmentMap", { "Ref" : "Stage" }, "lowercase"]}
                     ]
                   ]
                 }
-
               ]
             },
             {
@@ -212,30 +190,11 @@
                   "Fn::Join": [
                     "",
                     [
-                      "arn:aws:s3:::composer-snapshots-draft-",
-                      { "Fn::FindInMap" : [ "EnvironmentMap", { "Ref" : "Stage" }, "lowercase"]}
-                    , "/*"]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:s3:::composer-snapshots-live-",
-                      { "Fn::FindInMap" : [ "EnvironmentMap", { "Ref" : "Stage" }, "lowercase"]}
-                    , "/*"]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:s3:::composer-templates-",
+                      "arn:aws:s3:::flexible-snapshots-",
                       { "Fn::FindInMap" : [ "EnvironmentMap", { "Ref" : "Stage" }, "lowercase"]}
                     , "/*"]
                   ]
                 }
-
               ]
             }
           ]

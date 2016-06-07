@@ -15,9 +15,7 @@ class Management extends Controller with PanDomainAuthActions {
       s"""
       |Hostname: ${RestorerConfig.hostName}
       |Composer Domain: ${RestorerConfig.composerDomain}
-      |Templates Bucket: ${RestorerConfig.templatesBucket}
-      |Snapshots draft bucket: ${RestorerConfig.draftBucket}
-      |Snapshots live bucket: ${RestorerConfig.liveBucket}
+      |Snapshots bucket: ${RestorerConfig.snapshotBucket}
       |Credentials: ${RestorerConfig.creds}
       """.stripMargin
 
