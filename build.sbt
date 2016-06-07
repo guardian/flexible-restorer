@@ -1,17 +1,16 @@
-import com.typesafe.sbt.packager.Keys._
-
 name := "restorer"
 
-version := "0.0.1"
+version := "1.0.0"
 
-val awsSdkVersion = "1.10.56"
+scalaVersion in ThisBuild := "2.11.8"
+
+val awsSdkVersion = "1.11.5"
 
 libraryDependencies ++= Seq(
   "com.gu" %% "pan-domain-auth-play" % "0.2.11",
   "net.logstash.logback" % "logstash-logback-encoder" % "4.6",
   "com.gu" % "kinesis-logback-appender" % "1.2.0",
-  // 0.3 doesn't have this dependency but is only targetted at 2.11
-  "com.gu" %% "editorial-permissions-client" % "0.2" exclude("com.amazonaws", "aws-java-sdk"),
+  "com.gu" %% "editorial-permissions-client" % "0.3",
   "com.amazonaws" % "aws-java-sdk-s3" % awsSdkVersion,
   "com.amazonaws" % "aws-java-sdk-ec2" % awsSdkVersion,
   "com.amazonaws" % "aws-java-sdk-cloudwatch" % awsSdkVersion,
@@ -25,7 +24,7 @@ lazy val mainProject = project.in(file("."))
   .settings(
     // Never interested in the version number in the artifact name
     name in Universal := normalizedName.value,
-    riffRaffPackageName := s"editorial-tools:${name.value}",
+    riffRaffPackageName := s"editorial-tools:flexible:${name.value}",
     riffRaffManifestProjectName := riffRaffPackageName.value,
     riffRaffBuildIdentifier :=  Option(System.getenv("CIRCLE_BUILD_NUM")).getOrElse("dev"),
     riffRaffUploadArtifactBucket := Option("riffraff-artifact"),

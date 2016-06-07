@@ -11,10 +11,10 @@ $ npm install
 ## Starting the app
 ```
 $ sbt
-[composer-restorer] $ run
+[restorer] $ run
 ```
 
-The app will then be accessible locally at: https://composer-restorer.local.dev-gutools.co.uk/
+The app will then be accessible locally at: https://restorer.local.dev-gutools.co.uk/
 
 ## Developing
 

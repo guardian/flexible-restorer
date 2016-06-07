@@ -12,7 +12,7 @@ case class Snapshot(key: String) {
   lazy val savedAt: DateTime = new DateTime(key.split("/").last)
 }
 
-object Versions extends Controller with PanDomainAuthActions with Loggable {
+class Versions extends Controller with PanDomainAuthActions with Loggable {
   // List versions
   def index(contentId: String) = AuthAction {
     val s3 = new S3

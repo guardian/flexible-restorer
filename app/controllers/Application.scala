@@ -22,7 +22,7 @@ trait PanDomainAuthActions extends AuthActions {
     Results.Redirect(controllers.routes.Login.authError(message))
   }
 
-  override lazy val system: String = "composer-restorer"
+  override lazy val system: String = "restorer"
   override def authCallbackUrl: String = RestorerConfig.hostName + "/oauthCallback"
   override lazy val domain: String = RestorerConfig.domain
 
@@ -30,7 +30,7 @@ trait PanDomainAuthActions extends AuthActions {
 }
 
 
-object Application extends Controller with PanDomainAuthActions with Loggable {
+class Application extends Controller with PanDomainAuthActions with Loggable {
 
   lazy val composer = RestorerConfig.composerDomain
 

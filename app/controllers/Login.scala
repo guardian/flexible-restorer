@@ -6,7 +6,7 @@ import helpers.Loggable
 import scala.concurrent.ExecutionContext.Implicits.global
 import permissions.Permissions._
 
-object Login extends Controller with PanDomainAuthActions with Loggable {
+class Login extends Controller with PanDomainAuthActions with Loggable {
 
   def oauthCallback = Action.async { implicit request =>
     processGoogleCallback()

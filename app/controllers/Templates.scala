@@ -11,7 +11,7 @@ import helpers.CORSable
 import models.Template
 import config.RestorerConfig.corsableDomains
 
-object Templates extends Controller with PanDomainAuthActions {
+class Templates extends Controller with PanDomainAuthActions {
 
   def index = CORSable(corsableDomains: _*) {
     Action {

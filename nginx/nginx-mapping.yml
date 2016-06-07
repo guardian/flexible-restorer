@@ -1,5 +1,5 @@
-name: composer-restorer
+name: restorer
 mappings:
-  - prefix: composer-restorer
+  - prefix: restorer
     port: 9000
     path: /

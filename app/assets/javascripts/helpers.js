@@ -1,8 +1,8 @@
 // Get the environment from the URL.
 //
 // Assumes the URL looks something like:
-// 'https://composer-restorer.local.dev-gutools.co.uk/' (test environment) or
-// 'https://composer-restorer.dev-gutools.co.uk/' (production environment).
+// 'https://restorer.local.dev-gutools.co.uk/' (test environment) or
+// 'https://restorer.gutools.co.uk/' (production environment).
 function getEnvironment() {
     var env = window.location.origin.split('.')[1];
     return env === 'gutools' ? 'production' : env;
