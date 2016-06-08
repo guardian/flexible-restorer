@@ -10,32 +10,20 @@ var RestoreService = RestoreServiceMod.service('RestoreService', [
   'SnapshotModels',
   function($http, $routeParams, $q, SnapshotModels){
 
-    function getRestoreUrl(contentId){
-      var env = window.location.origin.split('.')[1];
-      var url = (env === 'gutools') ? 'https://composer.gutools.co.uk' : `https://composer.${env}.dev-gutools.co.uk`;
-      return `${url}/api/restorer/content/${contentId}`;
-    }
-
     return {
       restore: () => {
         var contentId = $routeParams.contentId;
-        var restoreUrl = getRestoreUrl(contentId);
         return $q((resolve, reject) => {
           //get collection
           SnapshotModels.getCollection(contentId)
             .then((collection) => {
               //get model
-              var model = collection.find((data)=> data.activeState);
+              var model = collection.find((data) => data.activeState);
               mediator.publish('mixpanel:restore-snapshot', model);
               //make the request
               $http({
-                url: restoreUrl,
-                method: 'PUT',
-                data: model.getJSON(),
-                withCredentials: true,
-                headers: {
-                  'Content-Type': 'application/json;charset=utf-8'
-                },
+                url: `/api/1/restore/${contentId}/${model.get('timestamp')}`,
+                method: 'POST'
               })
               .success((data)=> resolve(data))
               .error((err)=> reject(err));

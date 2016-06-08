@@ -22,3 +22,4 @@ GET           /api/1/versions/:contentId                   controllers.Versions.
 GET           /api/1/user                                  controllers.Login.user
 GET           /api/1/user/permissions                      controllers.Login.permissions
 GET           /api/1/version-count/:contentId              controllers.Versions.availableVersionsCount(contentId: String)
+POST          /api/1/restore/:contentId/:timestamp         controllers.Versions.restore(contentId: String, timestamp: String)

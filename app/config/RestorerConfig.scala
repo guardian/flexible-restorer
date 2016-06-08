@@ -27,6 +27,8 @@ class RestorerConfig(config: Configuration) extends AwsInstanceTags {
 
   val composerDomain: String = "https://composer." + domain
 
+  val flexibleApi: String = s"http://api.$bucketStage.flexible.gudiscovery.:8080"
+
   val hostName: String = "https://restorer." + domain
 
   val validPreProductionEnvironments = Seq("code", "local")
