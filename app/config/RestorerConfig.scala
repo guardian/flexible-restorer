@@ -4,20 +4,20 @@ import _root_.aws.AwsInstanceTags
 import com.amazonaws.auth.profile.ProfileCredentialsProvider
 import com.amazonaws.auth.{AWSCredentialsProviderChain, DefaultAWSCredentialsProviderChain, InstanceProfileCredentialsProvider}
 import helpers.KinesisAppenderConfig
-import play.api.Play.current
+import play.api.Configuration
 
-object RestorerConfig extends AwsInstanceTags {
+class RestorerConfig(config: Configuration) extends AwsInstanceTags {
 
   lazy val stage: String = readTag("Stage") match {
     case Some(value) => value
     case None => "DEV" // default to dev stage
   }
 
-  lazy val defaultBucketStage = if(stage == "DEV") "CODE" else stage
+  lazy val defaultBucketStage = if (stage == "DEV") "CODE" else stage
 
   lazy val bucketStage = config.getString("bucketStageOverride").getOrElse(defaultBucketStage)
 
-  val snapshotBucket: String = "flexible-snapshots-" + bucketStage.toLowerCase()
+  val snapshotBucket: String = "flexible-snapshotter-" + bucketStage.toLowerCase()
 
   val domain: String = stage match {
     case "PROD" => "gutools.co.uk"
@@ -29,14 +29,12 @@ object RestorerConfig extends AwsInstanceTags {
 
   val hostName: String = "https://restorer." + domain
 
-  val validPreProductionEnvironments = Seq("release", "code", "qa", "local")
+  val validPreProductionEnvironments = Seq("code", "local")
 
-  val corsableDomains = RestorerConfig.stage match {
-    case "PROD" | "DEV" => Seq(RestorerConfig.composerDomain)
+  val corsableDomains = stage match {
+    case "PROD" | "DEV" => Seq(composerDomain)
     case _ => validPreProductionEnvironments.map(x => s"https://composer.$x.dev-gutools.co.uk")
   }
-
-  lazy val config = play.api.Play.configuration
 
   val profile: String = config.getString("profile").getOrElse("composer")
   val creds = new AWSCredentialsProviderChain(

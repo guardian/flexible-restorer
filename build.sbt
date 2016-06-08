@@ -7,7 +7,7 @@ scalaVersion in ThisBuild := "2.11.8"
 val awsSdkVersion = "1.11.5"
 
 libraryDependencies ++= Seq(
-  "com.gu" %% "pan-domain-auth-play" % "0.2.11",
+  "com.gu" %% "pan-domain-auth-play_2-5" % "0.2.14",
   "net.logstash.logback" % "logstash-logback-encoder" % "4.6",
   "com.gu" % "kinesis-logback-appender" % "1.2.0",
   "com.gu" %% "editorial-permissions-client" % "0.3",
@@ -22,6 +22,7 @@ lazy val mainProject = project.in(file("."))
   .enablePlugins(PlayScala, RiffRaffArtifact)
   .settings(Defaults.coreDefaultSettings: _*)
   .settings(
+    routesGenerator := InjectedRoutesGenerator,
     // Never interested in the version number in the artifact name
     name in Universal := normalizedName.value,
     riffRaffPackageName := s"editorial-tools:flexible:${name.value}",
@@ -35,4 +36,5 @@ lazy val mainProject = project.in(file("."))
       riffRaffPackageType.value -> s"packages/${name.value}/${name.value}.tgz",
       baseDirectory.value / "cloudformation" / "restorer.json" ->
         "packages/cloudformation/restorer.json"
-    ))
+    )
+  )

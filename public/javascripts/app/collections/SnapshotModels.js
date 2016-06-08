@@ -44,7 +44,7 @@ SnapshotModelsMod.factory('SnapshotModels', [
                   reject(new Error('There are no snapshots available for this piece of content'));
                   return;
                 }
-                cache[id] = new SnapshotModels(data)
+                cache[id] = new SnapshotModels(data);
                 resolve(cache[id]);
               })
               .error(function(data, status, header, config){

@@ -8,12 +8,10 @@ import helpers.Loggable
 import scala.collection.JavaConverters._
 import scala.io.Source
 
-class S3 extends Loggable {
-  lazy val config = RestorerConfig
+case class Snapshot(timestamp: String, key: String)
 
+class S3(config: RestorerConfig, s3Client: AmazonS3Client) extends Loggable {
   lazy val snapshotBucket: String = config.snapshotBucket
-
-  val s3Client = new AmazonS3Client(config.creds)
 
   def getSnapshot(key: String): String = getObjectContents(key, snapshotBucket)
 
@@ -31,15 +29,21 @@ class S3 extends Loggable {
     }
   }
 
-  private def listSnapshots(bucket: String, id: String): List[String] = {
+  private val TimestampRegEx = """[0-9a-f]{24}/(.*).json""".r
+  private val timestampFromKey: String => Option[String] = {
+    case TimestampRegEx(timestamp) => Some(timestamp)
+    case _ => None
+  }
+
+  private def listSnapshots(bucket: String, id: String): List[Snapshot] = {
     logger.info(s"Looking for snapshots of $id in $bucket")
     val request = new ListObjectsRequest().withBucketName(bucket).withPrefix(id)
     val listing = s3Client.listObjects(request)
 
-    val objects = listing.getObjectSummaries.asScala.map(x => x.getKey).toList
-    logger.info(s"Found ${objects.size} versions")
-    objects
+    val objectKeys = listing.getObjectSummaries.asScala.map(x => x.getKey).toList
+    logger.info(s"Found ${objectKeys.size} versions")
+    objectKeys.flatMap { k => timestampFromKey(k).map(Snapshot(_, k)) }
   }
 
-  val listForId: String => List[String] = id => listSnapshots(snapshotBucket, id)
+  val listForId: String => List[Snapshot] = id => listSnapshots(snapshotBucket, id)
 }

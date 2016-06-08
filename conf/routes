@@ -4,7 +4,7 @@
 
 # Angular app
 GET            /                                           controllers.Application.index
-GET            /content/:contentId/versions/version        controllers.Application.versionIndex(contentId:String)
+GET            /content/:contentId/versions                controllers.Application.versionIndex(contentId:String)
 
 # Panda / Google auth
 GET            /oauthCallback                              controllers.Login.oauthCallback

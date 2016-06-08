@@ -18,6 +18,7 @@ System.config({
     "css": "github:systemjs/plugin-css@0.1.9",
     "flatten": "npm:flatten@0.0.1",
     "guardian/scribe-plugin-noting": "github:guardian/scribe-plugin-noting@0.3.29",
+    "lodash.get": "npm:lodash.get@4.3.0",
     "md5": "npm:blueimp-md5@1.1.0",
     "mediator": "npm:mediator-js@0.9.9",
     "mixpanel": "github:mixpanel/mixpanel-js@2.4.2",
@@ -45,10 +46,10 @@ System.config({
       "svg": "github:cutandpastey/plugin-svg@0.2.0"
     },
     "github:jspm/nodelibs-assert@0.1.0": {
-      "assert": "npm:assert@1.3.0"
+      "assert": "npm:assert@1.4.1"
     },
     "github:jspm/nodelibs-buffer@0.1.0": {
-      "buffer": "npm:buffer@3.1.2"
+      "buffer": "npm:buffer@3.6.0"
     },
     "github:jspm/nodelibs-events@0.1.0": {
       "events-browserify": "npm:events-browserify@0.0.1"
@@ -71,7 +72,7 @@ System.config({
       "path-browserify": "npm:path-browserify@0.0.0"
     },
     "github:jspm/nodelibs-process@0.1.2": {
-      "process": "npm:process@0.11.2"
+      "process": "npm:process@0.11.3"
     },
     "github:jspm/nodelibs-stream@0.1.0": {
       "stream-browserify": "npm:stream-browserify@1.0.0"
@@ -97,7 +98,10 @@ System.config({
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:assert@1.3.0": {
+    "npm:assert@1.4.1": {
+      "assert": "github:jspm/nodelibs-assert@0.1.0",
+      "buffer": "github:jspm/nodelibs-buffer@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2",
       "util": "npm:util@0.10.3"
     },
     "npm:bootstrap@3.3.6": {
@@ -105,10 +109,13 @@ System.config({
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:buffer@3.1.2": {
+    "npm:buffer@3.6.0": {
       "base64-js": "npm:base64-js@0.0.8",
-      "ieee754": "npm:ieee754@1.1.4",
-      "is-array": "npm:is-array@1.0.1"
+      "child_process": "github:jspm/nodelibs-child_process@0.1.0",
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "ieee754": "npm:ieee754@1.1.6",
+      "isarray": "npm:isarray@1.0.0",
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:clean-css@3.1.9": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
@@ -168,6 +175,16 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.0"
     },
+    "npm:lodash._basetostring@4.12.0": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:lodash._stringtopath@4.8.0": {
+      "lodash._basetostring": "npm:lodash._basetostring@4.12.0",
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:lodash.get@4.3.0": {
+      "lodash._stringtopath": "npm:lodash._stringtopath@4.8.0"
+    },
     "npm:mediator-js@0.9.9": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
@@ -197,7 +214,7 @@ System.config({
     "npm:path-browserify@0.0.0": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:process@0.11.2": {
+    "npm:process@0.11.3": {
       "assert": "github:jspm/nodelibs-assert@0.1.0"
     },
     "npm:punycode@1.3.2": {
