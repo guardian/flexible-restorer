@@ -2,36 +2,23 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Content finder
+# Angular app
 GET            /                                           controllers.Application.index
-POST           /find                                       controllers.Application.find
+GET            /content/:contentId/versions                controllers.Application.versionIndex(contentId:String)
 
+# Panda / Google auth
 GET            /oauthCallback                              controllers.Login.oauthCallback
 GET            /authError                                  controllers.Login.authError(message: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET            /assets/*file                               controllers.Assets.at(path="/public", file)
 
-
-# Versions
-GET            /content/:contentId/versions/version        controllers.Versions.show(contentId: String, isLive: Boolean, versionId: String)
-GET            /content/:contentId/versions/version/readable        controllers.Versions.showReadable(contentId: String, isLive: Boolean, versionId: String)
-GET            /content/:contentId/versions                controllers.Versions.index(contentId: String)
-
-
-# Templates
-GET            /templates                                  controllers.Templates.index
-GET            /templates/:title                           controllers.Templates.getTemplate(title: String)
-POST           /templates/createTemplate                   controllers.Templates.saveTemplate
-
-OPTIONS        /*all                                       controllers.Application.preflight(all: String)
-
 # Health check
 GET            /management/healthcheck                     controllers.Management.healthCheck
 GET            /management/info                            controllers.Management.info
 
 # API
-GET           /api/1/versions/:contentId                   controllers.Versions.getJSONVersionsCollection(contentId: String)
+GET           /api/1/versions/:contentId                   controllers.Versions.versions(contentId: String)
 GET           /api/1/user                                  controllers.Login.user
 GET           /api/1/user/permissions                      controllers.Login.permissions
 GET           /api/1/version-count/:contentId              controllers.Versions.availableVersionsCount(contentId: String)

@@ -1,10 +1,10 @@
 package controllers
 
-import play.api.mvc._
-import scala.concurrent.ExecutionContext.Implicits.global
 import config.RestorerConfig
+import play.api.libs.ws.WSClient
+import play.api.mvc._
 
-class Management extends Controller with PanDomainAuthActions {
+class Management(val config:RestorerConfig, override val wsClient: WSClient) extends Controller with PanDomainAuthActions {
 
   def healthCheck = Action {
     Ok("Ok")
@@ -13,12 +13,10 @@ class Management extends Controller with PanDomainAuthActions {
   def info = AuthAction {
     val info =
       s"""
-      |Hostname: ${RestorerConfig.hostName}
-      |Composer Domain: ${RestorerConfig.composerDomain}
-      |Templates Bucket: ${RestorerConfig.templatesBucket}
-      |Snapshots draft bucket: ${RestorerConfig.draftBucket}
-      |Snapshots live bucket: ${RestorerConfig.liveBucket}
-      |Credentials: ${RestorerConfig.creds}
+      |Hostname: ${config.hostName}
+      |Composer Domain: ${config.composerDomain}
+      |Snapshots bucket: ${config.snapshotBucket}
+      |Credentials: ${config.creds}
       """.stripMargin
 
     Ok(info)

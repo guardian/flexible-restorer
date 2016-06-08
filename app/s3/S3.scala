@@ -2,32 +2,18 @@ package s3
 
 import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.model._
-import java.io.ByteArrayInputStream
-import scala.collection.JavaConverters._
 import config._
 import helpers.Loggable
+
+import scala.collection.JavaConverters._
 import scala.io.Source
 
-object S3 {
-  // helpers to make the objects more manageable
-  val idToKey: String => String = s => {
-    val prefix = s.substring(0, 6).split("").mkString("/")
-    val cleanPrefix = if(prefix.startsWith("/")) prefix.substring(1) else prefix
-    s"$cleanPrefix/$s"
-  }
-}
+case class Snapshot(timestamp: String, key: String)
 
-class S3 extends Loggable {
-  import play.api.Play.current
-  lazy val config = RestorerConfig
+class S3(config: RestorerConfig, s3Client: AmazonS3Client) extends Loggable {
+  lazy val snapshotBucket: String = config.snapshotBucket
 
-  lazy val draftBucket: String = config.draftBucket
-  lazy val liveBucket: String = config.liveBucket
-
-  val s3Client = new AmazonS3Client(config.creds)
-
-  def getLiveSnapshot(key: String): String = getObjectContents(key, liveBucket)
-  def getDraftSnapshot(key: String): String = getObjectContents(key, draftBucket)
+  def getSnapshot(key: String): String = getObjectContents(key, snapshotBucket)
 
   private def getObject(key: String, bucketName: String): S3Object = {
     s3Client.getObject(new GetObjectRequest(bucketName, key))
@@ -43,39 +29,21 @@ class S3 extends Loggable {
     }
   }
 
-  private def listSnapshots(bucket: String, id: Option[String] = None): List[String] = {
-    val request = new ListObjectsRequest().withBucketName(bucket)
+  private val TimestampRegEx = """[0-9a-f]{24}/(.*).json""".r
+  private val timestampFromKey: String => Option[String] = {
+    case TimestampRegEx(timestamp) => Some(timestamp)
+    case _ => None
+  }
+
+  private def listSnapshots(bucket: String, id: String): List[Snapshot] = {
     logger.info(s"Looking for snapshots of $id in $bucket")
-    val requestWithId = id.map { i =>
-      val key = S3.idToKey(i)
-      logger.info(s"Using prefix $key")
-      request.withPrefix(key)
-    }.getOrElse(request)
+    val request = new ListObjectsRequest().withBucketName(bucket).withPrefix(id)
+    val listing = s3Client.listObjects(request)
 
-    val listing = s3Client.listObjects(requestWithId)
-
-    val objects = listing.getObjectSummaries.asScala.map(x => x.getKey).toList
-    logger.info(s"Found ${objects.size} versions")
-    objects
+    val objectKeys = listing.getObjectSummaries.asScala.map(x => x.getKey).toList
+    logger.info(s"Found ${objectKeys.size} versions")
+    objectKeys.flatMap { k => timestampFromKey(k).map(Snapshot(_, k)) }
   }
 
-  val getObjects: ListObjectsRequest => ObjectListing = s3Client.listObjects(_)
-  val objectRequest: String => ListObjectsRequest =
-    new ListObjectsRequest().withBucketName(_)
-
-  val listLiveForId: String => List[String] = id => listSnapshots(liveBucket, Some(id))
-  val listDraftForId: String => List[String] = id => listSnapshots(draftBucket, Some(id))
-
-  def saveItem(bucket: String, id: String, item: String): PutObjectResult = {
-    logger.info("Saving item to: %s with id: %s".format(bucket, id))
-    if(!s3Client.doesBucketExist(bucket)) {
-      s3Client.createBucket(bucket, Region.EU_Ireland)
-    }
-
-    val contentLength = item.getBytes().length
-    val metaData = new ObjectMetadata()
-    metaData.setContentType("application/json; charset=utf-8")
-    metaData.setContentLength(contentLength)
-    s3Client.putObject(bucket, id, new ByteArrayInputStream(item.getBytes()), metaData)
-  }
+  val listForId: String => List[Snapshot] = id => listSnapshots(snapshotBucket, id)
 }

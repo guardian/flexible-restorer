@@ -1,12 +1,16 @@
 package controllers
 
-import play.api.mvc._
-import scala.concurrent.Future
+import config.RestorerConfig
 import helpers.Loggable
-import scala.concurrent.ExecutionContext.Implicits.global
-import permissions.Permissions._
+import permissions.Permissions
+import play.api.libs.ws.WSClient
+import play.api.mvc._
 
-class Login extends Controller with PanDomainAuthActions with Loggable {
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+
+class Login(permissionsClient: Permissions, val config: RestorerConfig, override val wsClient: WSClient)
+  extends Controller with PanDomainAuthActions with Loggable {
 
   def oauthCallback = Action.async { implicit request =>
     processGoogleCallback()
@@ -17,7 +21,7 @@ class Login extends Controller with PanDomainAuthActions with Loggable {
   }
 
   def authError(message: String) = Action.async { implicit request =>
-    Future(Forbidden(views.html.Login.authError(message)))
+    Future(Forbidden(views.html.authError(message)))
   }
 
   def user() = AuthAction { implicit request =>
@@ -25,7 +29,7 @@ class Login extends Controller with PanDomainAuthActions with Loggable {
   }
 
   def permissions() = AuthAction { implicit request =>
-    val permissions = s"""{\"restoreContent\" : ${hasAccess(request.user)}}"""
+    val permissions = s"""{\"restoreContent\" : ${permissionsClient.hasAccess(request.user)}}"""
     Ok(permissions).as(JSON)
   }
 

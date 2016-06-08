@@ -1,20 +1,20 @@
 package controllers
 
-import permissions.Permissions
+import helpers.Loggable
+import play.api.data.Forms._
+import play.api.data._
+import play.api.libs.ws.WSClient
 import play.api.mvc._
 
-import helpers.Loggable
-import play.api.data._
-import play.api.data.Forms._
-
 // Pan domain
+import com.amazonaws.auth.AWSCredentialsProvider
 import com.gu.pandomainauth.action.AuthActions
 import com.gu.pandomainauth.model.AuthenticatedUser
-import helpers.CORSable
 import config.RestorerConfig
-import com.amazonaws.auth.{DefaultAWSCredentialsProviderChain, AWSCredentialsProvider}
+import helpers.CORSable
 
 trait PanDomainAuthActions extends AuthActions {
+  def config:RestorerConfig
 
   override def validateUser(authedUser: AuthenticatedUser): Boolean = authedUser.multiFactor
 
@@ -23,37 +23,30 @@ trait PanDomainAuthActions extends AuthActions {
   }
 
   override lazy val system: String = "restorer"
-  override def authCallbackUrl: String = RestorerConfig.hostName + "/oauthCallback"
-  override lazy val domain: String = RestorerConfig.domain
+  override def authCallbackUrl: String = config.hostName + "/oauthCallback"
+  override lazy val domain: String = config.domain
 
-  override def awsCredentialsProvider: AWSCredentialsProvider = RestorerConfig.creds
+  override def awsCredentialsProvider: AWSCredentialsProvider = config.creds
 }
 
 
-class Application extends Controller with PanDomainAuthActions with Loggable {
+class Application(val config:RestorerConfig, override val wsClient: WSClient) extends Controller with PanDomainAuthActions with Loggable {
 
-  lazy val composer = RestorerConfig.composerDomain
+  lazy val composer = config.composerDomain
 
   val urlForm = Form(
     "url" -> nonEmptyText
   )
 
   def index = AuthAction {
-    Ok(views.html.Application.index())
+    Ok(views.html.main("Composer Restorer", config.composerDomain))
   }
 
-  def find = AuthAction { implicit request =>
-    def extractContentId(url: String) = url
-      .split('#').head // remove any hash fragment, e.g. referring to live blog posts
-      .split("/").last.trim // get the id
-
-    urlForm.bindFromRequest.fold(
-      {errorForm => Redirect(controllers.routes.Application.index())},
-      {url => Redirect(controllers.routes.Versions.index(extractContentId(url)))}
-    )
+  def versionIndex(contentId: String) = AuthAction {
+    Ok(views.html.main(s"Composer Restorer - Versions of $contentId", config.composerDomain))
   }
 
-  def preflight(routes: String) = CORSable(RestorerConfig.corsableDomains: _*) {
+  def preflight(routes: String) = CORSable(config.corsableDomains: _*) {
     Action { implicit req =>
       val requestedHeaders = req.headers.get("Access-Control-Request-Headers")
 
@@ -62,5 +55,4 @@ class Application extends Controller with PanDomainAuthActions with Loggable {
         CORSable.CORS_ALLOW_HEADERS -> requestedHeaders.getOrElse(""))
     }
   }
-
 }

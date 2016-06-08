@@ -1,6 +1,7 @@
 import angular  from 'angular';
 import moment   from 'moment';
 import flatten from 'flatten';
+import lodash_get from 'lodash.get';
 import BaseModel from 'composer-components/lib/models/BaseModel';
 
 var SnapshotModelMod = angular.module('SnapshotModelMod', []);
@@ -11,13 +12,15 @@ SnapshotModelMod.factory('SnapshotModel', [
     class SnapshotModel extends BaseModel{
       constructor(data){
         super();
-        var timestamp = Object.keys(data)[0];
-        var snapshotData = data[timestamp];
-        this.data = angular.extend({}, {
+        var timestamp = data.timestamp;
+        var snapshotData = data.snapshot;
+        this.data = {
           timestamp: timestamp,
           createdDate: moment(timestamp),
-          activeState: false
-        }, snapshotData);
+          activeState: false,
+          snapshot: snapshotData.data,
+          metadata: snapshotData.metadata
+        };
       }
 
       getCreatedDate(){
@@ -25,17 +28,14 @@ SnapshotModelMod.factory('SnapshotModel', [
       }
 
       isPublished() {
-          return this.get('published');
+          return this.get('snapshot.published');
       }
 
       getPublishedState() {
-          const changeDetails = this.get('contentChangeDetails');
-          const publishedDetails = changeDetails.published;
-          const lastModified = changeDetails.lastModified;
-          const published = this.get('published');
-          const settings = this.get('preview').settings;
-          const lastMajorRevisionPublished = changeDetails.lastMajorRevisionPublished;
-          const scheduledLaunchDate = this.get('scheduledLaunchDate');
+          const publishedDetails = this.get('snapshot.contentChangeDetails.published');
+          const published = this.get('snapshot.published');
+          const settings = this.get('snapshot.preview.settings');
+          const scheduledLaunchDate = this.get('snapshot.scheduledLaunchDate');
 
           if (!!scheduledLaunchDate) {
               const time = moment(scheduledLaunchDate);
@@ -58,18 +58,18 @@ SnapshotModelMod.factory('SnapshotModel', [
       }
 
       getHeadline() {
-          return this.get("preview").fields.headline;
+          return this.get("snapshot.preview.fields.headline");
       }
 
       getStandfirst() {
-          return this.get("preview").fields.standfirst;
+          return this.get("snapshot.preview.fields.standfirst");
       }
 
       getSettingsInfo() {
-          const settings = this.get('preview').settings;
+          const settings = this.get('snapshot.preview.settings');
           // flex stores strings not booleans so we need to convert
           // them all over
-          const type = this.get('type');
+          const type = this.get('snapshot.type');
           const liveBloggingNow = (settings.liveBloggingNow === "true");
           const isLive = (type === "liveblog") && liveBloggingNow;
 
@@ -82,16 +82,12 @@ SnapshotModelMod.factory('SnapshotModel', [
       }
 
       isLegallySensitive() {
-          const settings = this.get('preview').settings;
-          const legallySensitive = settings.legallySensitive;
-
-
+          const legallySensitive = this.get('snapshot.preview.settings.legallySensitive');
           return legallySensitive === "true";
       }
 
       commentsEnabled() {
-          const settings = this.get('preview').settings;
-          const commentable = settings.commentable;
+          const commentable = this.get('snapshot.preview.settings.commentable');
 
           let ret = {
               defined: commentable,
@@ -106,7 +102,7 @@ SnapshotModelMod.factory('SnapshotModel', [
       }
 
       getHTMLContent(){
-        var content = this.get('preview').blocks.map((block) => block.elements);
+        var content = this.get('snapshot.preview').blocks.map((block) => block.elements);
         content = flatten(content);
         return content.map((element) => {
           if (element.fields.text) {
@@ -119,7 +115,11 @@ SnapshotModelMod.factory('SnapshotModel', [
       }
 
       getHeadline(){
-        return this.get('preview').fields.headline;
+        return this.get('snapshot.preview.fields.headline');
+      }
+
+      get(key){
+          return lodash_get(this.data, key);
       }
 
       //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#toJSON_behavior
