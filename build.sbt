@@ -25,6 +25,7 @@ lazy val mainProject = project.in(file("."))
     routesGenerator := InjectedRoutesGenerator,
     // Never interested in the version number in the artifact name
     name in Universal := normalizedName.value,
+    topLevelDirectory in Universal := Some(normalizedName.value),
     riffRaffPackageName := s"editorial-tools:flexible:${name.value}",
     riffRaffManifestProjectName := riffRaffPackageName.value,
     riffRaffBuildIdentifier :=  Option(System.getenv("CIRCLE_BUILD_NUM")).getOrElse("dev"),
