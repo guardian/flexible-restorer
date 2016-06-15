@@ -4,12 +4,16 @@
   &.active {
     opacity: 1;
   }
-  max-height: 1500px;
+  height: calc(100vh - 46px);
+  overflow: hidden;
 }
 
 .snapshot-content__viewport {
   width: 100%;
   overflow: hidden;
+  display: flex;
+  flex-flow: column;
+  max-height: 100%;
 }
 
 .snapshot-content__container {
@@ -19,22 +23,20 @@
   &.show-json {
     transform: translateX(-50%);
   }
+  flex-grow: 1;
 }
 
 .snapshot-content__container__item {
   box-sizing: border-box;
   padding: 2% 10%;
   font-family: "Guardian Agate Sans";
-  height: 53.5em;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .snapshot-content__container__item--json {
   @extend .snapshot-content__container__item;
   padding: 2% 5%;
   width: 50%;
-  height: 53.5em;;
-  overflow: scroll;
   & code {
     word-wrap: break-word;
   }
@@ -65,6 +67,7 @@
     padding: 2% 5%;
     justify-content: flex-end;
     space-between: 1rem;
+    flex-shrink: 0;
     @include thin-bottom-border;
 }
 

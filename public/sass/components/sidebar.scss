@@ -8,6 +8,6 @@
   &.active {
     transform: translateX(0);
   }
-  overflow: scroll;
-  height: 53.5em;;
+  overflow: auto;
+  height: calc(100vh - 46px);
 }
