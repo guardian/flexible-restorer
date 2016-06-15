@@ -3,6 +3,10 @@
     border-right: 0px!important;
 }
 
+.row[skin=header] {
+    flex-shrink: 0;
+}
+
 .composer-icon-box {
     padding: 0;
     width: 50px;
