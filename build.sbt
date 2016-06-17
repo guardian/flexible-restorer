@@ -7,7 +7,7 @@ scalaVersion in ThisBuild := "2.11.8"
 val awsSdkVersion = "1.11.5"
 
 libraryDependencies ++= Seq(
-  "com.gu" %% "pan-domain-auth-play_2-5" % "0.2.14",
+  "com.gu" %% "pan-domain-auth-play_2-5" % "0.3.0",
   "net.logstash.logback" % "logstash-logback-encoder" % "4.6",
   "com.gu" % "kinesis-logback-appender" % "1.2.0",
   "com.gu" %% "editorial-permissions-client" % "0.3",
