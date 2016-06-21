@@ -40,7 +40,7 @@ SnapshotIdModelsMod.factory('SnapshotIdModels', [
                     SnapshotService
                         .getList(id)
                         .success(function(data, status, header, config){
-                            if (data.length === 0) {
+                            if (!Array.isArray(data) || data.length === 0) {
                                 reject(new Error('There are no snapshots available for this piece of content'));
                                 return;
                             }
