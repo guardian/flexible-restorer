@@ -9,6 +9,7 @@ import play.api.libs.json.{JsValue, Json}
 
 import scala.collection.JavaConverters._
 import scala.io.Source
+import scala.util.control.NonFatal
 
 class S3(config: RestorerConfig, s3Client: AmazonS3Client) extends Loggable {
   lazy val snapshotBucket: String = config.snapshotBucket
@@ -32,6 +33,9 @@ class S3(config: RestorerConfig, s3Client: AmazonS3Client) extends Loggable {
     } catch {
       case e:AmazonS3Exception if e.getErrorCode == "NoSuchKey" =>
         Left("Object doesn't exist")
+      case NonFatal(e) =>
+        logger.warn("Unexpected error whilst getting object", e)
+        Left(s"Couldn't retrieve object: ${e.getMessage}")
     }
   }
 
