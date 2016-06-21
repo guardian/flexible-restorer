@@ -86,6 +86,7 @@ SnapshotIdModelMod.factory('SnapshotIdModel', [
                     return "Taken down";
                 }
 
+                return "";
             }
 
             getRelativeDate(date = moment()){
