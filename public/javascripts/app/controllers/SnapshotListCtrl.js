@@ -1,5 +1,5 @@
 import angular from 'angular';
-import SnapshotModelsMod from '../collections/SnapshotModels';
+import SnapshotIdModelsMod from '../collections/SnapshotIdModels';
 import mediator from '../utils/mediator';
 
 var SnapshotListCtrlMod = angular.module('SnapshotListCtrlMod', []);
@@ -9,15 +9,15 @@ SnapshotListCtrlMod.controller('SnapshotListCtrl', [
   '$routeParams',
   '$timeout',
   'SnapshotService',
-  'SnapshotModels',
-  function($scope, $routeParams, $timeout, SnapshotService, SnapshotModels){
+  'SnapshotIdModels',
+  function($scope, $routeParams, $timeout, SnapshotService, SnapshotIdModels){
 
     var snapshotCollection;
 
     $scope.isLoading  = true;
     $scope.isSidebarActive = false;
 
-    SnapshotModels
+    SnapshotIdModels
       .getCollection($routeParams.contentId)
       .then((collection) => {
         snapshotCollection = collection;
@@ -27,11 +27,10 @@ SnapshotListCtrlMod.controller('SnapshotListCtrl', [
 
         var activeModel = collection.find((data)=> data.activeState);
         $scope.articleTitle = activeModel.getHeadline();
-        $scope.articleHash = activeModel.get('id');
+        $scope.articleHash = activeModel.getContentId();
         $scope.articleURL = [__COMPOSER_DOMAIN__, "content", $scope.articleHash].join("/");
         //animate sidebar in
         $timeout(()=> $scope.isSidebarActive = true, 500);
-
       })
       .catch((err) => {
         $scope.isLoading = false;
@@ -77,7 +76,9 @@ SnapshotListCtrlMod.controller('SnapshotListCtrl', [
       model.set('activeState', true);
       mediator.publish('mixpanel:view-snapshot', model);
       //place the content
-      $timeout(()=> mediator.publish('snapshot-list:display-content', model), 1);
+      $timeout(()=>
+          mediator.publish('snapshot-list:load-content', model.getContentId(), model.getTimestamp()), 10
+      );
     }
 
   }

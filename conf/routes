@@ -18,7 +18,8 @@ GET            /management/healthcheck                     controllers.Managemen
 GET            /management/info                            controllers.Management.info
 
 # API
-GET           /api/1/versions/:contentId                   controllers.Versions.versions(contentId: String)
+GET           /api/1/versionList/:contentId                controllers.Versions.versionList(contentId: String)
+GET           /api/1/version/:contentId/:timestamp                controllers.Versions.show(contentId: String, timestamp: String)
 GET           /api/1/user                                  controllers.Login.user
 GET           /api/1/user/permissions                      controllers.Login.permissions
 GET           /api/1/version-count/:contentId              controllers.Versions.availableVersionsCount(contentId: String)

@@ -5,8 +5,7 @@ import com.amazonaws.services.s3.model._
 import config._
 import helpers.Loggable
 import models.{Snapshot, SnapshotId}
-import play.api.data.validation.ValidationError
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.{JsValue, Json}
 
 import scala.collection.JavaConverters._
 import scala.io.Source
@@ -14,29 +13,46 @@ import scala.io.Source
 class S3(config: RestorerConfig, s3Client: AmazonS3Client) extends Loggable {
   lazy val snapshotBucket: String = config.snapshotBucket
 
-  def getRawSnapshot(snapshotId: SnapshotId): String = getObjectContents(snapshotId.key, snapshotBucket)
+  def getRawSnapshot(snapshotId: SnapshotId): Either[String, String] = getObjectContentRaw(snapshotId.key, snapshotBucket)
 
-  def getSnapshot(snapshotId: SnapshotId): Either[Seq[(JsPath, Seq[ValidationError])], Snapshot] = {
-    val obj = getObject(snapshotId.key, snapshotBucket)
-    try {
-      val json = Json.parse(obj.getObjectContent)
-      Json.fromJson[Snapshot](json).asEither
-    } finally {
-      obj.close()
+  def getSnapshot(snapshotId: SnapshotId): Either[String, Snapshot] = {
+    getObjectContentJson(snapshotId.key, snapshotBucket).right.map { json =>
+      Snapshot(snapshotId, json)
     }
   }
 
-  private def getObject(key: String, bucketName: String): S3Object = {
-    s3Client.getObject(new GetObjectRequest(bucketName, key))
+  def getRawSnapshotInfo(snapshotId: SnapshotId): Either[String, String] = getObjectContentRaw(snapshotId.infoKey, snapshotBucket)
+
+  def getSnapshotInfo(snapshotId: SnapshotId): Either[String, JsValue] =
+    getObjectContentJson(snapshotId.infoKey, snapshotBucket)
+
+  private def getObject(key: String, bucketName: String): Either[String, S3Object] = {
+    try {
+      Right(s3Client.getObject(new GetObjectRequest(bucketName, key)))
+    } catch {
+      case e:AmazonS3Exception if e.getErrorCode == "NoSuchKey" =>
+        Left("Object doesn't exist")
+    }
   }
 
   // Get object contents and ensure stream is closed
-  def getObjectContents(key: String, bucketName: String): String = {
-    val obj = getObject(key, bucketName)
-    try {
-      Source.fromInputStream(obj.getObjectContent, "UTF-8").mkString
-    } finally {
-      obj.close()
+  private def getObjectContentRaw(key: String, bucketName: String): Either[String, String] = {
+    getObject(key, bucketName).right.map { obj =>
+      try {
+        Source.fromInputStream(obj.getObjectContent, "UTF-8").mkString
+      } finally {
+        obj.close()
+      }
+    }
+  }
+
+  private def getObjectContentJson(key: String, bucketName: String): Either[String, JsValue] = {
+    getObject(key, snapshotBucket).right.map { obj =>
+      try {
+        Json.parse(obj.getObjectContent)
+      } finally {
+        obj.close()
+      }
     }
   }
 
@@ -47,7 +63,7 @@ class S3(config: RestorerConfig, s3Client: AmazonS3Client) extends Loggable {
 
     val objectKeys = listing.getObjectSummaries.asScala.map(x => x.getKey).toList
     logger.info(s"Found ${objectKeys.size} versions")
-    objectKeys.flatMap { k => SnapshotId.fromKey(k) }
+    objectKeys.flatMap { k => SnapshotId.fromKey(k) }.distinct
   }
 
   val listForId: String => List[SnapshotId] = id => listSnapshots(snapshotBucket, id)

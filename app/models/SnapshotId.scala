@@ -1,14 +1,19 @@
 package models
 
+import play.api.libs.json.Json
+
 case class SnapshotId(contentId: String, timestamp: String) {
   lazy val key = s"$contentId/$timestamp.json"
-  override def toString = key
+  lazy val infoKey = s"$contentId/$timestamp.info.json"
 }
+
 object SnapshotId {
-  private val SnapshotRegEx = """([0-9a-f]{24})/(.*).json""".r
+  private val SnapshotRegEx = """([0-9a-f]{24})/(.*?).(info.)?json""".r
 
   def fromKey: String => Option[SnapshotId] = {
-    case SnapshotRegEx(contentId, timestamp) => Some(SnapshotId(contentId, timestamp))
+    case SnapshotRegEx(contentId, timestamp, _) => Some(SnapshotId(contentId, timestamp))
     case _ => None
   }
+
+  implicit val formats = Json.format[SnapshotId]
 }

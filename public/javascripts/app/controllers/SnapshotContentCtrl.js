@@ -1,6 +1,6 @@
 import angular from 'angular';
 import mediator from '../utils/mediator';
-import SnapshotCollectionMod from '../collections/SnapshotModels';
+import SnapshotCollectionMod from '../collections/SnapshotIdModels';
 import safeApply from 'composer-components/lib/utils/safe-apply';
 
 var SnapshotContentCtrlMod = angular.module('SnapshotContentCtrlMod', []);
@@ -10,9 +10,10 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
   '$routeParams',
   '$timeout',
   '$sce',
-  'SnapshotModels',
+  'SnapshotIdModels',
+    'SnapshotModels',
     'UserService',
-  function($scope, $routeParams, $timeout, $sce, SnapshotModels, UserService){
+  function($scope, $routeParams, $timeout, $sce, SnapshotIdModels, SnapshotModels, UserService){
 
     $scope.isShowingJSON = false;
     $scope.displayButtonLabel = "JSON";
@@ -29,21 +30,33 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
     });
 
     //set the initial content
-    SnapshotModels
+    SnapshotIdModels
       .getCollection($routeParams.contentId)
       .then((collection)=> {
         var model = collection.getModelAt(0);
-        displayContent(model);
+        loadContent(model.getContentId(), model.getTimestamp());
         mediator.publish('mixpanel:view-snapshot', model);
       })
       //TODO setup global error handle
       .catch((err)=> mediator.publish('error', err));
 
     //wait for the system to imform us of content changes
-    mediator.subscribe('snapshot-list:display-content', displayContent);
+    mediator.subscribe('snapshot-list:load-content', loadContent);
+    //mediator.subscribe('snapshot-list:display-content', displayContent);
     mediator.subscribe('snapshot-list:display-json', displayJSON);
     mediator.subscribe('snapshot-list:display-html', displayHTML);
     mediator.subscribe('snapshot-list:hidden-modal', displayHTML);
+
+      //logic for animating and setting content
+      function loadContent(contentId, timestamp) {
+          SnapshotModels
+              .getSnapshot(contentId, timestamp)
+              .then((model) => {
+                  displayContent(model)
+              })
+              .catch((err) => mediator.publish('error', err));
+
+      }
 
     //logic for animating and setting content
     function displayContent(model) {
@@ -56,25 +69,26 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
     }
 
     function displayJSON() {
-      safeApply($scope, () => $scope.isShowingJSON = true);
+      safeApply($scope, () => {
+          $scope.isShowingJSON = true;
+          $scope.displayButtonLabel = "TEXT";
+      });
     }
 
     function displayHTML() {
-      safeApply($scope, () => $scope.isShowingJSON = false);
+      safeApply($scope, () => {
+          $scope.isShowingJSON = false;
+          $scope.displayButtonLabel = "JSON";
+      });
     }
 
   this.toggleJSON = function() {
       if ($scope.isShowingJSON) {
           mediator.publish('snapshot-list:display-html');
-          $scope.isShowingJSON = false;
-          $scope.displayButtonLabel = "JSON";
-
       } else {
           mediator.publish('snapshot-list:display-json');
-          $scope.isShowingJSON = true;
-          $scope.displayButtonLabel = "TEXT";
       }
-  }
+  };
 
       this.restoreContent = function() {
           mediator.publish('snapshot-list:display-modal');

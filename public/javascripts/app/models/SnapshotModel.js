@@ -10,51 +10,18 @@ SnapshotModelMod.factory('SnapshotModel', [
   function(){
 
     class SnapshotModel extends BaseModel{
-      constructor(data){
+      constructor(timestamp, snapshotData){
         super();
-        var timestamp = data.timestamp;
-        var snapshotData = data.snapshot;
         this.data = {
           timestamp: timestamp,
           createdDate: moment(timestamp),
           activeState: false,
-          snapshot: snapshotData.data,
-          metadata: snapshotData.metadata
+          snapshot: snapshotData
         };
       }
 
       getCreatedDate(){
         return this.get('createdDate').format('HH:mm:ss D MMMM YYYY');
-      }
-
-      isPublished() {
-          return this.get('snapshot.published');
-      }
-
-      getPublishedState() {
-          const publishedDetails = this.get('snapshot.contentChangeDetails.published');
-          const published = this.get('snapshot.published');
-          const settings = this.get('snapshot.preview.settings');
-          const scheduledLaunchDate = this.get('snapshot.scheduledLaunchDate');
-
-          if (!!scheduledLaunchDate) {
-              const time = moment(scheduledLaunchDate);
-              return "Scheduled  " + time.format("ddd D MMMM YYYY");
-          }
-
-          if (!!settings && !!settings.embargoedUntil) {
-              const time = moment(settings.embargoedUntil);
-              return "Embargoed until " + time.format("ddd D MMMM YYYY");
-          }
-
-          if (published) {
-              return 'Published';
-          }
-
-          if (!published && !!publishedDetails) {
-              return "Taken down";
-          }
-
       }
 
       getHeadline() {
@@ -63,42 +30,6 @@ SnapshotModelMod.factory('SnapshotModel', [
 
       getStandfirst() {
           return this.get("snapshot.preview.fields.standfirst");
-      }
-
-      getSettingsInfo() {
-          const settings = this.get('snapshot.preview.settings');
-          // flex stores strings not booleans so we need to convert
-          // them all over
-          const type = this.get('snapshot.type');
-          const liveBloggingNow = (settings.liveBloggingNow === "true");
-          const isLive = (type === "liveblog") && liveBloggingNow;
-
-          const retSettings = {
-              isLive: isLive,
-              type: type
-          };
-
-          return retSettings;
-      }
-
-      isLegallySensitive() {
-          const legallySensitive = this.get('snapshot.preview.settings.legallySensitive');
-          return legallySensitive === "true";
-      }
-
-      commentsEnabled() {
-          const commentable = this.get('snapshot.preview.settings.commentable');
-
-          let ret = {
-              defined: commentable,
-              on: (commentable === "true")
-          };
-
-          return ret;
-      }
-
-      getRelativeDate(date = moment()){
-        return this.get('createdDate').from(date, true);
       }
 
       getHTMLContent(){
@@ -129,6 +60,7 @@ SnapshotModelMod.factory('SnapshotModel', [
         delete clone.timestamp;
         delete clone.createdDate;
         delete clone.activeState;
+        delete clone.snapshot;
         return clone;
       }
 
@@ -139,7 +71,7 @@ SnapshotModelMod.factory('SnapshotModel', [
 
 
     return {
-      getModel: (data)=> new SnapshotModel(data)
+      getModel: (timestamp, data)=> new SnapshotModel(timestamp, data)
     }
   }
 ]);
