@@ -8,22 +8,22 @@
         "publicReadAcl": false
       }
     },
-    "restorer-cloudformation" : {
-      "type": "cloud-formation",
-      "fileName": "cloudformation",
+    "ami-update": {
+      "type": "ami-cloudformation-parameter",
       "data": {
-        "templatePath": "restorer.json",
-        "cloudFormationStackName": "Restorer",
-        "prependStackToCloudFormationStackName": false,
-        "templateParameters": {
-          "AMI": "ami-6b50e218"
-        }
+          "cloudFormationStackName": "Flexible-Snapshotter",
+          "prependStackToCloudFormationStackName": false,
+          "amiParameter": "AMI",
+          "amiTags": {
+              "ImageName": "ubuntu-wily-java8",
+              "Branch": "master"
+          }
       }
     }
   },
   "recipes": {
     "default": {
-      "depends": ["restorer-cloudformation", "artifactUploadOnly", "deployOnly"]
+      "depends": ["ami-update", "artifactUploadOnly", "deployOnly"]
     },
 
     "deployOnly": {
@@ -34,8 +34,8 @@
       "actionsBeforeApp": ["restorer2.uploadArtifacts"]
     },
 
-    "restorer-cloudformation": {
-      "actions": ["restorer-cloudformation.updateStack"]
+    "ami-update": {
+      "actions": ["ami-update.update"]
     }
   }
 }
