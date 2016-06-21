@@ -16,6 +16,8 @@ libraryDependencies ++= Seq(
   "com.amazonaws" % "aws-java-sdk-s3" % awsSdkVersion,
   "com.amazonaws" % "aws-java-sdk-ec2" % awsSdkVersion,
   "com.amazonaws" % "aws-java-sdk-cloudwatch" % awsSdkVersion,
+  "com.amazonaws" % "aws-java-sdk-kinesis" % awsSdkVersion,
+  "com.amazonaws" % "aws-java-sdk-sts" % awsSdkVersion,
   ws,
   "org.scalatest" %% "scalatest" % "2.2.6" % Test
 )
