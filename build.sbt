@@ -4,6 +4,8 @@ version := "1.0.0"
 
 scalaVersion in ThisBuild := "2.11.8"
 
+scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Xfatal-warnings")
+
 val awsSdkVersion = "1.11.5"
 
 libraryDependencies ++= Seq(
