@@ -14,8 +14,8 @@ SnapshotIdModelMod.factory('SnapshotIdModel', [
                 // contentId: String, timestamp: String
                 var contentId = data.contentId;
                 var timestamp = data.timestamp;
-                var metadata = data.metadata;
-                var summary = data.summary;
+                var metadata = data.info.metadata;
+                var summary = data.info.summary;
                 this.data = {
                     timestamp: timestamp,
                     contentId: contentId,

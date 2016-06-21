@@ -27,8 +27,8 @@ class Versions(val config: RestorerConfig, s3Helper: S3, override val wsClient: 
     val snapshots = s3Helper.listForId(contentId)
     val snapshotsWithMetadata = snapshots.map { snapshotId =>
       val identifier = Json.toJson(snapshotId).asInstanceOf[JsObject]
-      val info = s3Helper.getSnapshotInfo(snapshotId).right.map(_.asInstanceOf[JsObject])
-      info.fold(_ => identifier, json => identifier ++ json)
+      val info: JsValue = s3Helper.getSnapshotInfo(snapshotId).right.toOption.getOrElse(JsObject(Nil))
+      identifier ++ Json.obj("info" -> info)
     }
     Ok(Json.toJson(snapshotsWithMetadata))
   }
