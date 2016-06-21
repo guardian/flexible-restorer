@@ -1,4 +1,4 @@
-name := "restorer"
+name := "restorer2"
 
 version := "1.0.0"
 
