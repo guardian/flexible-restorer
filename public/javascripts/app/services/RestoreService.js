@@ -7,22 +7,22 @@ var RestoreService = RestoreServiceMod.service('RestoreService', [
   '$http',
   '$routeParams',
   '$q',
-  'SnapshotModels',
-  function($http, $routeParams, $q, SnapshotModels){
+  'SnapshotIdModels',
+  function($http, $routeParams, $q, SnapshotIdModels){
 
     return {
       restore: () => {
         var contentId = $routeParams.contentId;
         return $q((resolve, reject) => {
           //get collection
-          SnapshotModels.getCollection(contentId)
+          SnapshotIdModels.getCollection(contentId)
             .then((collection) => {
               //get model
               var model = collection.find((data) => data.activeState);
               mediator.publish('mixpanel:restore-snapshot', model);
               //make the request
               $http({
-                url: `/api/1/restore/${contentId}/${model.get('timestamp')}`,
+                url: `/api/1/restore/${contentId}/${model.getTimestamp()}`,
                 method: 'POST'
               })
               .success((data)=> resolve(data))

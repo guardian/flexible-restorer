@@ -2,30 +2,35 @@ package controllers
 
 import config.RestorerConfig
 import helpers.Loggable
-import models.{SnapshotId, Version, VersionCount}
+import models.{SnapshotId, VersionCount}
 import play.api.libs.json._
 import play.api.libs.ws.WSClient
 import play.api.mvc._
 import s3.S3
 
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+import scala.language.postfixOps
 
 class Versions(val config: RestorerConfig, s3Helper: S3, override val wsClient: WSClient)
   extends Controller with PanDomainAuthActions with Loggable {
   // Show a specific version
   def show(contentId: String, timestamp: String) = AuthAction {
     val snapshot = s3Helper.getRawSnapshot(SnapshotId(contentId, timestamp))
-    Ok(snapshot).as(JSON)
+    snapshot match {
+      case Right(ss) => Ok(ss).as(JSON)
+      case Left(error) => NotFound(error)
+    }
   }
 
-  def versions(contentId: String) = AuthAction {
-    logger.info(s"Getting JSON versions for $contentId")
+  def versionList(contentId: String) = AuthAction {
     val snapshots = s3Helper.listForId(contentId)
-    val versions = snapshots.map{ s =>
-      Version(s.timestamp, Json.parse(s3Helper.getRawSnapshot(s)))
+    val snapshotsWithMetadata = snapshots.map { snapshotId =>
+      val identifier = Json.toJson(snapshotId).asInstanceOf[JsObject]
+      val info: JsValue = s3Helper.getSnapshotInfo(snapshotId).right.toOption.getOrElse(JsObject(Nil))
+      identifier ++ Json.obj("info" -> info)
     }
-    Ok(Json.toJson(versions))
+    Ok(Json.toJson(snapshotsWithMetadata))
   }
 
   def availableVersionsCount(contentId: String) = AuthAction {

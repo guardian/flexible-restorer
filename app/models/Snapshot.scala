@@ -1,8 +1,5 @@
 package models
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.JsValue
 
-case class Snapshot(data: JsValue, metadata: SnapshotMetadata)
-object Snapshot {
-  implicit val formats = Json.format[Snapshot]
-}
+case class Snapshot(id: SnapshotId, data: JsValue)
