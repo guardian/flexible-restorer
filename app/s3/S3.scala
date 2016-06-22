@@ -34,7 +34,7 @@ class S3(config: RestorerConfig, s3Client: AmazonS3Client) extends Loggable {
       case e:AmazonS3Exception if e.getErrorCode == "NoSuchKey" =>
         Left("Object doesn't exist")
       case NonFatal(e) =>
-        logger.warn("Unexpected error whilst getting object $bucketName:$key", e)
+        logger.warn(s"Unexpected error whilst getting object $bucketName:$key", e)
         Left(s"Couldn't retrieve object: ${e.getMessage}")
     }
   }
