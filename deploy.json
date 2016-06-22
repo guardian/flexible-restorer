@@ -11,7 +11,7 @@
     "ami-update": {
       "type": "ami-cloudformation-parameter",
       "data": {
-          "cloudFormationStackName": "Flexible-Snapshotter",
+          "cloudFormationStackName": "Flexible-Restorer",
           "prependStackToCloudFormationStackName": false,
           "amiParameter": "AMI",
           "amiTags": {
