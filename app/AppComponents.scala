@@ -3,19 +3,24 @@ import com.amazonaws.regions.{Region, Regions}
 import com.amazonaws.services.s3.AmazonS3Client
 import config.RestorerConfig
 import controllers._
-import helpers.{LogStash, Loggable}
+import helpers.{HSTSFilter, LogStash, Loggable}
 import permissions.Permissions
 import play.api.ApplicationLoader.Context
 import play.api.libs.ws.ahc.AhcWSComponents
+import play.api.mvc.EssentialFilter
 import play.api.routing.Router
 import play.api.{BuiltInComponentsFromContext, LoggerConfigurator, Mode}
 import s3.S3
 import router.Routes
 
+import scala.concurrent.ExecutionContext.Implicits.{global => globalExecutionContext}
+
 class AppComponents(context: Context) extends BuiltInComponentsFromContext(context) with AhcWSComponents with Loggable {
   LoggerConfigurator(context.environment.classLoader).foreach {
     _.configure(context.environment)
   }
+
+  override lazy val httpFilters: Seq[EssentialFilter] = Seq(new HSTSFilter()(materializer, globalExecutionContext))
 
   val restorerConfig = new RestorerConfig(configuration)
 
