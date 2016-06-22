@@ -12,7 +12,7 @@ import scala.io.Source
 import scala.util.control.NonFatal
 
 class S3(config: RestorerConfig, s3Client: AmazonS3Client) extends Loggable {
-  lazy val snapshotBucket: String = config.snapshotBucket
+  val snapshotBucket: String = config.snapshotBucket
 
   def getRawSnapshot(snapshotId: SnapshotId): Either[String, String] = getObjectContentRaw(snapshotId.key, snapshotBucket)
 
@@ -34,7 +34,7 @@ class S3(config: RestorerConfig, s3Client: AmazonS3Client) extends Loggable {
       case e:AmazonS3Exception if e.getErrorCode == "NoSuchKey" =>
         Left("Object doesn't exist")
       case NonFatal(e) =>
-        logger.warn("Unexpected error whilst getting object", e)
+        logger.warn("Unexpected error whilst getting object $bucketName:$key", e)
         Left(s"Couldn't retrieve object: ${e.getMessage}")
     }
   }
@@ -51,7 +51,7 @@ class S3(config: RestorerConfig, s3Client: AmazonS3Client) extends Loggable {
   }
 
   private def getObjectContentJson(key: String, bucketName: String): Either[String, JsValue] = {
-    getObject(key, snapshotBucket).right.map { obj =>
+    getObject(key, bucketName).right.map { obj =>
       try {
         Json.parse(obj.getObjectContent)
       } finally {
