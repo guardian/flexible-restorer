@@ -2,17 +2,21 @@ import com.amazonaws.auth.DefaultAWSCredentialsProviderChain
 import com.amazonaws.regions.{Region, Regions}
 import com.amazonaws.services.s3.AmazonS3Client
 import config.RestorerConfig
-import play.api.ApplicationLoader.Context
-import play.api.{BuiltInComponentsFromContext, Mode}
-import play.api.routing.Router
-import s3.S3
 import controllers._
 import helpers.{LogStash, Loggable}
 import permissions.Permissions
+import play.api.ApplicationLoader.Context
 import play.api.libs.ws.ahc.AhcWSComponents
+import play.api.routing.Router
+import play.api.{BuiltInComponentsFromContext, LoggerConfigurator, Mode}
+import s3.S3
 import router.Routes
 
 class AppComponents(context: Context) extends BuiltInComponentsFromContext(context) with AhcWSComponents with Loggable {
+  LoggerConfigurator(context.environment.classLoader).foreach {
+    _.configure(context.environment)
+  }
+
   val restorerConfig = new RestorerConfig(configuration)
 
   if (context.environment.mode == Mode.Prod) restorerConfig.loggingConfig.foreach(LogStash.init)
