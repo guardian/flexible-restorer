@@ -1,7 +1,7 @@
 System.config({
+  baseURL: "/assets",
   defaultJSExtensions: true,
   transpiler: "traceur",
-  baseURL: '/assets',
   paths: {
     "github:*": "jspm_packages/github/*",
     "npm:*": "jspm_packages/npm/*"
@@ -20,7 +20,7 @@ System.config({
     "flatten": "npm:flatten@0.0.1",
     "guardian/scribe-plugin-noting": "github:guardian/scribe-plugin-noting@0.3.29",
     "lodash.get": "npm:lodash.get@4.3.0",
-    "md5": "npm:blueimp-md5@1.1.0",
+    "md5": "npm:blueimp-md5@2.3.0",
     "mediator": "npm:mediator-js@0.9.9",
     "mixpanel": "github:mixpanel/mixpanel-js@2.4.2",
     "mixpanel-browser": "npm:mixpanel-browser@2.7.2",
