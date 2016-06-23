@@ -5,7 +5,8 @@
     "prewatch-sass": "rm -rf ./public/css && mkdir ./public/css && npm run build-sass",
     "watch-sass": "wr 'npm run build-sass' ./public/sass",
     "build-sass": "./bin/build-sass.js",
-    "build": "npm run build-sass"
+    "build": "npm run build-sass",
+    "bundle": "jspm bundle javascripts/app/main --inject --minify"
   },
   "devDependencies": {
     "autoprefixer": "^5.1.0",

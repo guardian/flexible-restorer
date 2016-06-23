@@ -4,7 +4,8 @@ import UserServiceMod from './UserService';
 import mixpanel from 'mixpanel';
 import md5 from 'md5';
 
-const hash = md5.md5;
+// TODO - restore after jspm update
+// const hash = md5.md5;
 
 var MixpanelServiceMod = angular.module('MixpanelServiceMod', ['UserServiceMod']);
 
@@ -26,8 +27,9 @@ MixpanelServiceMod.service('MixpanelService', [
       userMaybe
         .then((user)=> {
           //setup a user profile on mixpanel
-          var userID = hash(user.email);
-          mixpanel.restorer.identify(userID);
+          // TODO - restore this after jspm update?
+          //var userID = hash(user.email);
+          mixpanel.restorer.identify(user.email);
           //setup the user
           mixpanel.restorer.people.set({
             '$first_name': user.firstName,
