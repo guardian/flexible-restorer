@@ -1,6 +1,6 @@
 machine:
   node:
-    version: 0.12.0
+    version: 4.4.5
   java:
       version: oraclejdk8
 general:
@@ -15,9 +15,10 @@ dependencies:
     - "project/target/resolution-cache"
     - "project/target/streams"
   pre:
-    - npm install -g jspm
-    - jspm config registries.github.auth $JSPM_GITHUB_AUTH_TOKEN
+    - npm install jspm
+    - node_modules/.bin/jspm config registries.github.auth $JSPM_GITHUB_AUTH_TOKEN
     - npm install
+    - npm run bundle
   override:
     - sbt compile
 test:

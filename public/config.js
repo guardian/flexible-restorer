@@ -1,25 +1,26 @@
 System.config({
-  "transpiler": "traceur",
-  "paths": {
-    "*": "*.js",
-    "github:*": "jspm_packages/github/*.js",
-    "npm:*": "jspm_packages/npm/*.js"
-  }
-});
+  baseURL: "/assets",
+  defaultJSExtensions: true,
+  transpiler: "traceur",
+  paths: {
+    "github:*": "jspm_packages/github/*",
+    "npm:*": "jspm_packages/npm/*"
+  },
 
-System.config({
-  "map": {
+  map: {
     "angular": "github:angular/bower-angular@1.3.15",
     "angular-route": "github:angular/bower-angular-route@1.3.15",
     "angular-sanitize": "github:angular/bower-angular-sanitize@1.3.15",
     "angular/bower-angular-sanitize": "github:angular/bower-angular-sanitize@1.3.15",
+    "babel": "npm:babel@4.7.16",
+    "babel-runtime": "npm:babel-runtime@4.7.16",
     "bootstrap": "npm:bootstrap@3.3.6",
     "composer-components": "github:guardian/tools-components@1.0.6",
     "css": "github:systemjs/plugin-css@0.1.9",
     "flatten": "npm:flatten@0.0.1",
     "guardian/scribe-plugin-noting": "github:guardian/scribe-plugin-noting@0.3.29",
     "lodash.get": "npm:lodash.get@4.3.0",
-    "md5": "npm:blueimp-md5@1.1.0",
+    "md5": "npm:blueimp-md5@2.3.0",
     "mediator": "npm:mediator-js@0.9.9",
     "mixpanel": "github:mixpanel/mixpanel-js@2.4.2",
     "mixpanel-browser": "npm:mixpanel-browser@2.7.2",
@@ -28,8 +29,8 @@ System.config({
     "normalize.css": "npm:normalize.css@3.0.3",
     "svg": "github:cutandpastey/plugin-svg@0.2.0",
     "systemjs-plugin-css": "npm:systemjs-plugin-css@0.1.20",
-    "traceur": "github:jmcriffey/bower-traceur@0.0.88",
-    "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.88",
+    "traceur": "github:jmcriffey/bower-traceur@0.0.93",
+    "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.93",
     "github:angular/bower-angular-route@1.3.15": {
       "angular": "github:angular/bower-angular@1.3.15"
     },
@@ -103,6 +104,9 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "util": "npm:util@0.10.3"
+    },
+    "npm:babel-runtime@4.7.16": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:bootstrap@3.3.6": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
@@ -227,10 +231,8 @@ System.config({
       "inherits": "npm:inherits@2.0.1",
       "isarray": "npm:isarray@0.0.1",
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "stream": "github:jspm/nodelibs-stream@0.1.0",
       "stream-browserify": "npm:stream-browserify@1.0.0",
-      "string_decoder": "npm:string_decoder@0.10.31",
-      "util": "github:jspm/nodelibs-util@0.1.0"
+      "string_decoder": "npm:string_decoder@0.10.31"
     },
     "npm:source-map@0.1.43": {
       "amdefine": "npm:amdefine@0.1.0",
@@ -258,4 +260,3 @@ System.config({
     }
   }
 });
-

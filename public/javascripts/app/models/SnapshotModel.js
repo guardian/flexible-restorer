@@ -45,10 +45,6 @@ SnapshotModelMod.factory('SnapshotModel', [
         }).join('');
       }
 
-      getHeadline(){
-        return this.get('snapshot.preview.fields.headline');
-      }
-
       get(key){
           return lodash_get(this.data, key);
       }
@@ -72,7 +68,7 @@ SnapshotModelMod.factory('SnapshotModel', [
 
     return {
       getModel: (timestamp, data)=> new SnapshotModel(timestamp, data)
-    }
+    };
   }
 ]);
 

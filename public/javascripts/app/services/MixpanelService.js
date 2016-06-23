@@ -4,8 +4,6 @@ import UserServiceMod from './UserService';
 import mixpanel from 'mixpanel';
 import md5 from 'md5';
 
-const hash = md5.md5;
-
 var MixpanelServiceMod = angular.module('MixpanelServiceMod', ['UserServiceMod']);
 
 MixpanelServiceMod.service('MixpanelService', [
@@ -26,7 +24,7 @@ MixpanelServiceMod.service('MixpanelService', [
       userMaybe
         .then((user)=> {
           //setup a user profile on mixpanel
-          var userID = hash(user.email);
+          var userID = md5(user.email);
           mixpanel.restorer.identify(userID);
           //setup the user
           mixpanel.restorer.people.set({
