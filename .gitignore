@@ -22,3 +22,5 @@ public/stylesheets/vendor
 public/jspm_packages
 node_modules/
 public/css
+public/build.js
+public/build.js.map
