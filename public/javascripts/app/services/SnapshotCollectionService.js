@@ -8,7 +8,7 @@ SnapshotServiceMod.service('SnapshotService', [
     return {
       get: (id) => $http.get(`/api/1/versions/${id}`),
       getList: (id) => $http.get(`/api/1/versionList/${id}`),
-      getSnapshot: (contentId, timestamp) => $http.get(`/api/1/version/${contentId}/${timestamp}`)
+      getSnapshot: (systemId, contentId, timestamp) => $http.get(`/api/1/version/${systemId}/${contentId}/${timestamp}`)
     }
   }
 ]);

@@ -13,10 +13,10 @@ SnapshotModelsMod.factory('SnapshotModels', [
   function($q, SnapshotService, SnapshotModel){
 
     return {
-      getSnapshot: (contentId, timestamp) => {
+      getSnapshot: (systemId, contentId, timestamp) => {
         return $q((resolve, reject)=>{
 
-          var key = `${contentId}/${timestamp}`;
+          var key = `${systemId}/${contentId}/${timestamp}`;
 
           //resolve with cache if we already have the collection
           //this also results in collections being singletons within the application
@@ -28,9 +28,9 @@ SnapshotModelsMod.factory('SnapshotModels', [
 
           //get the data from the server and build the new collections
           SnapshotService
-              .getSnapshot(contentId, timestamp)
+              .getSnapshot(systemId, contentId, timestamp)
               .success(function(data, status, header, config){
-                  contentCache[key] = new SnapshotModel.getModel(timestamp, data);
+                  contentCache[key] = new SnapshotModel.getModel(systemId, timestamp, data);
                 resolve(contentCache[key]);
               })
               .error(function(data, status, header, config){

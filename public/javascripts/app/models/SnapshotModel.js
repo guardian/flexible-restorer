@@ -10,9 +10,10 @@ SnapshotModelMod.factory('SnapshotModel', [
   function(){
 
     class SnapshotModel extends BaseModel{
-      constructor(timestamp, snapshotData){
+      constructor(systemId, timestamp, snapshotData){
         super();
         this.data = {
+          systemId: systemId,
           timestamp: timestamp,
           createdDate: moment(timestamp),
           activeState: false,
@@ -67,7 +68,7 @@ SnapshotModelMod.factory('SnapshotModel', [
 
 
     return {
-      getModel: (timestamp, data)=> new SnapshotModel(timestamp, data)
+      getModel: (systemId, timestamp, data) => new SnapshotModel(systemId, timestamp, data)
     };
   }
 ]);

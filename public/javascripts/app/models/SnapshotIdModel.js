@@ -12,11 +12,13 @@ SnapshotIdModelMod.factory('SnapshotIdModel', [
             constructor(data){
                 super();
                 // contentId: String, timestamp: String
+                var systemId = data.systemId;
                 var contentId = data.contentId;
                 var timestamp = data.timestamp;
                 var metadata = data.info.metadata;
                 var summary = data.info.summary;
                 this.data = {
+                    systemId: systemId,
                     timestamp: timestamp,
                     contentId: contentId,
                     createdDate: moment(timestamp),
@@ -28,6 +30,10 @@ SnapshotIdModelMod.factory('SnapshotIdModel', [
 
             getCreatedDate(){
                 return this.get('createdDate').format('HH:mm:ss D MMMM YYYY');
+            }
+
+            getSystemId() {
+                return this.get('systemId')
             }
 
             getContentId() {

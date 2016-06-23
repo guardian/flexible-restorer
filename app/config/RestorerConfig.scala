@@ -18,6 +18,7 @@ class RestorerConfig(config: Configuration) extends AwsInstanceTags {
   lazy val bucketStage = config.getString("bucketStageOverride").getOrElse(defaultBucketStage)
 
   val snapshotBucket: String = "flexible-snapshotter-" + bucketStage.toLowerCase()
+  val secondarySnapshotBucket: String = "flexible-secondary-snapshotter-" + bucketStage.toLowerCase()
 
   val domain: String = stage match {
     case "PROD" => "gutools.co.uk"

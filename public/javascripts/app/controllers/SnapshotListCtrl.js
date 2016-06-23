@@ -77,7 +77,7 @@ SnapshotListCtrlMod.controller('SnapshotListCtrl', [
       mediator.publish('mixpanel:view-snapshot', model);
       //place the content
       $timeout(()=>
-          mediator.publish('snapshot-list:load-content', model.getContentId(), model.getTimestamp()), 10
+          mediator.publish('snapshot-list:load-content', model.getSystemId(), model.getContentId(), model.getTimestamp()), 10
       );
     }
 

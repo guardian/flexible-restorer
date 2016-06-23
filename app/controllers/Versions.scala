@@ -6,17 +6,16 @@ import models.{SnapshotId, VersionCount}
 import play.api.libs.json._
 import play.api.libs.ws.WSClient
 import play.api.mvc._
-import s3.S3
+import s3.SnapshotStore
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 import scala.language.postfixOps
 
-class Versions(val config: RestorerConfig, s3Helper: S3, override val wsClient: WSClient)
+class Versions(val config: RestorerConfig, snapshotStores: Map[String, SnapshotStore], override val wsClient: WSClient)
   extends Controller with PanDomainAuthActions with Loggable {
   // Show a specific version
-  def show(contentId: String, timestamp: String) = AuthAction {
-    val snapshot = s3Helper.getRawSnapshot(SnapshotId(contentId, timestamp))
+  def show(systemId: String, contentId: String, timestamp: String) = AuthAction {
+    val store = snapshotStores(systemId)
+    val snapshot = store.getRawSnapshot(SnapshotId(contentId, timestamp))
     snapshot match {
       case Right(ss) => Ok(ss).as(JSON)
       case Left(error) => NotFound(error)
@@ -24,33 +23,20 @@ class Versions(val config: RestorerConfig, s3Helper: S3, override val wsClient: 
   }
 
   def versionList(contentId: String) = AuthAction {
-    val snapshots = s3Helper.listForId(contentId)
-    val snapshotsWithMetadata = snapshots.map { snapshotId =>
-      val identifier = Json.toJson(snapshotId).asInstanceOf[JsObject]
-      val info: JsValue = s3Helper.getSnapshotInfo(snapshotId).right.toOption.getOrElse(JsObject(Nil))
-      identifier ++ Json.obj("info" -> info)
+    val snapshotsWithMetadata = snapshotStores.flatMap { case (systemId, store) =>
+      val snapshots = store.listForId(contentId)
+      snapshots.map { snapshotId =>
+        val identifier = Json.toJson(snapshotId).asInstanceOf[JsObject]
+        val info: JsValue = store.getSnapshotInfo(snapshotId).right.toOption.getOrElse(JsObject(Nil))
+        identifier ++ Json.obj("systemId" -> systemId, "info" -> info)
+      }
     }
     Ok(Json.toJson(snapshotsWithMetadata))
   }
 
   def availableVersionsCount(contentId: String) = AuthAction {
-    val count = VersionCount(contentId, s3Helper.listForId(contentId).size)
+    val storeCounts: Iterable[Int] = snapshotStores.values.map(_.listForId(contentId).size)
+    val count = VersionCount(contentId, storeCounts.sum)
     Ok(Json.toJson(count))
-  }
-
-  def restore(contentId: String, timestamp: String) = AuthAction.async {
-    val snapshotId = SnapshotId(contentId, timestamp)
-    s3Helper.getSnapshot(snapshotId) match {
-      case Left(error) =>
-        Future.successful(InternalServerError(s"Error whilst getting snapshot from store: $error"))
-      case Right(snapshot) =>
-        // now push this snapshot into the API
-        wsClient.url(s"${config.flexibleApi}/restorer/content/$contentId").put(snapshot.data).map { response =>
-          response.status match {
-            case 204 => NoContent
-            case other => Status(other)(response.body)
-          }
-        }
-    }
   }
 }

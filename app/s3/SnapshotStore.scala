@@ -11,9 +11,7 @@ import scala.collection.JavaConverters._
 import scala.io.Source
 import scala.util.control.NonFatal
 
-class S3(config: RestorerConfig, s3Client: AmazonS3Client) extends Loggable {
-  val snapshotBucket: String = config.snapshotBucket
-
+class SnapshotStore(snapshotBucket: String, s3Client: AmazonS3Client) extends Loggable {
   def getRawSnapshot(snapshotId: SnapshotId): Either[String, String] = getObjectContentRaw(snapshotId.key, snapshotBucket)
 
   def getSnapshot(snapshotId: SnapshotId): Either[String, Snapshot] = {
