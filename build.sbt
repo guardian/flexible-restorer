@@ -1,4 +1,4 @@
-name := "restorer"
+name := "restorer2"
 
 version := "1.0.0"
 
@@ -16,6 +16,8 @@ libraryDependencies ++= Seq(
   "com.amazonaws" % "aws-java-sdk-s3" % awsSdkVersion,
   "com.amazonaws" % "aws-java-sdk-ec2" % awsSdkVersion,
   "com.amazonaws" % "aws-java-sdk-cloudwatch" % awsSdkVersion,
+  "com.amazonaws" % "aws-java-sdk-kinesis" % awsSdkVersion,
+  "com.amazonaws" % "aws-java-sdk-sts" % awsSdkVersion,
   ws,
   "org.scalatest" %% "scalatest" % "2.2.6" % Test
 )
@@ -36,8 +38,8 @@ lazy val mainProject = project.in(file("."))
     riffRaffManifestBranch := Option(System.getenv("CIRCLE_BRANCH")).getOrElse("dev"),
     riffRaffPackageType := (packageZipTarball in config("universal")).value,
     riffRaffArtifactResources ++= Seq(
-      riffRaffPackageType.value -> s"packages/${name.value}/${name.value}.tgz",
-      baseDirectory.value / "cloudformation" / "restorer.json" ->
-        "packages/cloudformation/restorer.json"
-    )
+      riffRaffPackageType.value -> s"packages/${name.value}/${name.value}.tgz"
+    ),
+    sources in (Compile,doc) := Seq.empty,
+    publishArtifact in (Compile, packageDoc) := false
   )
