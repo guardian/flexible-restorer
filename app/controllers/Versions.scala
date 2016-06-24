@@ -6,7 +6,7 @@ import models.{SnapshotId, VersionCount}
 import play.api.libs.json._
 import play.api.libs.ws.WSClient
 import play.api.mvc._
-import s3.SnapshotStore
+import logic.SnapshotStore
 
 import scala.language.postfixOps
 

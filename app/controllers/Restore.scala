@@ -4,7 +4,7 @@ import config.RestorerConfig
 import models.SnapshotId
 import play.api.libs.ws.WSClient
 import play.api.mvc.Controller
-import s3.SnapshotStore
+import logic.SnapshotStore
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

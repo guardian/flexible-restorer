@@ -10,7 +10,7 @@ import play.api.libs.ws.ahc.AhcWSComponents
 import play.api.mvc.EssentialFilter
 import play.api.routing.Router
 import play.api.{BuiltInComponentsFromContext, LoggerConfigurator, Mode}
-import s3.SnapshotStore
+import logic.SnapshotStore
 import router.Routes
 
 import scala.concurrent.ExecutionContext.Implicits.{global => globalExecutionContext}

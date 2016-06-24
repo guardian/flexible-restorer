@@ -1,4 +1,4 @@
-package s3
+package logic
 
 import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.model._
