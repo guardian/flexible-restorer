@@ -58,11 +58,12 @@ SnapshotModelMod.factory('SnapshotModel', [
         delete clone.createdDate;
         delete clone.activeState;
         delete clone.snapshot;
+        delete clone.systemId;
         return clone;
       }
 
       getJSON(){
-        return JSON.stringify(this, null, 2);
+        return JSON.stringify(this.get('snapshot'), null, 2);
       }
     }
 
