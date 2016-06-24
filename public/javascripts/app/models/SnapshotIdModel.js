@@ -48,6 +48,10 @@ SnapshotIdModelMod.factory('SnapshotIdModel', [
                 return this.get('summary.preview.fields.headline')
             }
 
+            getRevisionId() {
+                return this.get('summary.contentChangeDetails.revision')
+            }
+
             getSnapshotReason() {
                 return this.get('metadata.reason')
             }

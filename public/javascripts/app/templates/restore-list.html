@@ -53,13 +53,13 @@
                                 ng-repeat-start="model in models"
                                 ng-mouseenter="hovered=true"
                                 ng-mouseleave="hovered=false"
-                                index="{{ models.length - $index }}"
+                                index="{{ model.getRevisionId() || (models.length - $index) }}"
                                 ng-class="{ 'item-active': model.get('activeState') }">
                 <!-- CONTENT -->
                 <div class="snapshot-list__item__content"
                      ng-class="{ 'active': model.get('activeState') && isDisplayingHTML }"
                      ng-click="ctrl.onItemClicked($index)">
-                    <h6 class="snapshot-list__item__content__relative-date">{{ model.getSnapshotReason() }}</h6>
+                    <h6 class="snapshot-list__item__content__reason"><strong>{{ model.getSystemId() }}</strong> {{ model.getSnapshotReason() }}</h6>
                     <h6 class="snapshot-list__item__content__actual-date">{{ model.getCreatedDate() }}</h6>
                     <h6 class="snapshot-list__item__content__relative-date">{{ model.getRelativeDate() }} ago</h6>
 
