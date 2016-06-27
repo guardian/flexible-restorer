@@ -2,58 +2,60 @@ package logic
 
 import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.model._
-import config._
 import helpers.Loggable
-import models.{Snapshot, SnapshotId}
+import models.{Attempt, AttemptError, Snapshot, SnapshotId}
 import play.api.libs.json.{JsValue, Json}
 
 import scala.collection.JavaConverters._
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.io.Source
 import scala.util.control.NonFatal
 
 class SnapshotStore(snapshotBucket: String, s3Client: AmazonS3Client) extends Loggable {
-  def getRawSnapshot(snapshotId: SnapshotId): Either[String, String] = getObjectContentRaw(snapshotId.key, snapshotBucket)
+  def getRawSnapshot(snapshotId: SnapshotId) = getObjectContentRaw(snapshotId.key, snapshotBucket)
 
-  def getSnapshot(snapshotId: SnapshotId): Either[String, Snapshot] = {
-    getObjectContentJson(snapshotId.key, snapshotBucket).right.map { json =>
-      Snapshot(snapshotId, json)
-    }
+  def getSnapshot(snapshotId: SnapshotId): Attempt[Option[Snapshot]] = {
+    getObjectContentJson(snapshotId.key, snapshotBucket).map { _.map(Snapshot(snapshotId, _)) }
   }
 
-  def getRawSnapshotInfo(snapshotId: SnapshotId): Either[String, String] = getObjectContentRaw(snapshotId.infoKey, snapshotBucket)
+  def getRawSnapshotInfo(snapshotId: SnapshotId) = getObjectContentRaw(snapshotId.infoKey, snapshotBucket)
 
-  def getSnapshotInfo(snapshotId: SnapshotId): Either[String, JsValue] =
+  def getSnapshotInfo(snapshotId: SnapshotId): Attempt[Option[JsValue]] =
     getObjectContentJson(snapshotId.infoKey, snapshotBucket)
 
-  private def getObject(key: String, bucketName: String): Either[String, S3Object] = {
+  private def getObject(key: String, bucketName: String): Attempt[Option[S3Object]] = {
     try {
-      Right(s3Client.getObject(new GetObjectRequest(bucketName, key)))
+      Attempt.Right(Some(s3Client.getObject(new GetObjectRequest(bucketName, key))))
     } catch {
       case e:AmazonS3Exception if e.getErrorCode == "NoSuchKey" =>
-        Left("Object doesn't exist")
+        Attempt.Right(None)
       case NonFatal(e) =>
         logger.warn(s"Unexpected error whilst getting object $bucketName:$key", e)
-        Left(s"Couldn't retrieve object: ${e.getMessage}")
+        Attempt.Left(AttemptError(s"Couldn't retrieve object: ${e.getMessage}"))
     }
   }
 
   // Get object contents and ensure stream is closed
-  private def getObjectContentRaw(key: String, bucketName: String): Either[String, String] = {
-    getObject(key, bucketName).right.map { obj =>
-      try {
-        Source.fromInputStream(obj.getObjectContent, "UTF-8").mkString
-      } finally {
-        obj.close()
+  private def getObjectContentRaw(key: String, bucketName: String): Attempt[Option[String]] = {
+    getObject(key, bucketName).map {
+      _.map { obj =>
+        try {
+          Source.fromInputStream(obj.getObjectContent, "UTF-8").mkString
+        } finally {
+          obj.close()
+        }
       }
     }
   }
 
-  private def getObjectContentJson(key: String, bucketName: String): Either[String, JsValue] = {
-    getObject(key, bucketName).right.map { obj =>
-      try {
-        Json.parse(obj.getObjectContent)
-      } finally {
-        obj.close()
+  private def getObjectContentJson(key: String, bucketName: String): Attempt[Option[JsValue]] = {
+    getObject(key, bucketName).map {
+      _.map { obj =>
+        try {
+          Json.parse(obj.getObjectContent)
+        } finally {
+          obj.close()
+        }
       }
     }
   }

@@ -2,36 +2,47 @@ package controllers
 
 import config.RestorerConfig
 import helpers.Loggable
-import models.{SnapshotId, VersionCount}
+import logic.SnapshotStore
+import models.{Attempt, SnapshotId, VersionCount}
 import play.api.libs.json._
 import play.api.libs.ws.WSClient
 import play.api.mvc._
-import logic.SnapshotStore
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.language.postfixOps
 
 class Versions(val config: RestorerConfig, snapshotStores: Map[String, SnapshotStore], override val wsClient: WSClient)
   extends Controller with PanDomainAuthActions with Loggable {
   // Show a specific version
-  def show(systemId: String, contentId: String, timestamp: String) = AuthAction {
+  def show(systemId: String, contentId: String, timestamp: String) = AuthAction.async {
     val store = snapshotStores(systemId)
     val snapshot = store.getRawSnapshot(SnapshotId(contentId, timestamp))
-    snapshot match {
-      case Right(ss) => Ok(ss).as(JSON)
-      case Left(error) => NotFound(error)
-    }
+    snapshot.fold(
+      { failure => InternalServerError(failure.toString) },
+      {
+        case Some(ss) => Ok(ss).as(JSON)
+        case None => NotFound
+      }
+    )
   }
 
-  def versionList(contentId: String) = AuthAction {
-    val snapshotsWithMetadata = snapshotStores.flatMap { case (systemId, store) =>
+  def versionList(contentId: String) = AuthAction.async {
+    val snapshotsWithMetadata = Attempt.successfulAttempts(snapshotStores.toList.flatMap { case (systemId, store) =>
       val snapshots = store.listForId(contentId)
       snapshots.map { snapshotId =>
         val identifier = Json.toJson(snapshotId).asInstanceOf[JsObject]
-        val info: JsValue = store.getSnapshotInfo(snapshotId).right.toOption.getOrElse(JsObject(Nil))
-        identifier ++ Json.obj("systemId" -> systemId, "info" -> info)
+        val info: Attempt[JsValue] =
+          for (
+            snapshotInfo <- store.getSnapshotInfo(snapshotId)
+          ) yield {
+            snapshotInfo.getOrElse(JsObject(Nil))
+          }
+        info.map { infoJson =>
+          identifier ++ Json.obj("systemId" -> systemId, "info" -> infoJson)
+        }
       }
-    }
-    Ok(Json.toJson(snapshotsWithMetadata))
+    })
+    snapshotsWithMetadata.fold(errors => InternalServerError(errors.toString), snapshots => Ok(Json.toJson(snapshots)))
   }
 
   def availableVersionsCount(contentId: String) = AuthAction {

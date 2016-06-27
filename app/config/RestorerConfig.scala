@@ -13,6 +13,8 @@ class RestorerConfig(config: Configuration) extends AwsInstanceTags {
     case None => "DEV" // default to dev stage
   }
 
+  lazy val stack = readTag("Stack").getOrElse("flexible")
+
   lazy val defaultBucketStage = if (stage == "DEV") "CODE" else stage
 
   lazy val bucketStage = config.getString("bucketStageOverride").getOrElse(defaultBucketStage)
@@ -20,22 +22,16 @@ class RestorerConfig(config: Configuration) extends AwsInstanceTags {
   val snapshotBucket: String = "flexible-snapshotter-" + bucketStage.toLowerCase()
   val secondarySnapshotBucket: String = "flexible-secondary-snapshotter-" + bucketStage.toLowerCase()
 
-  val domain: String = stage match {
-    case "PROD" => "gutools.co.uk"
-    case "DEV" => "local.dev-gutools.co.uk"
-    case x => x.toLowerCase() + ".dev-gutools.co.uk"
-  }
+  val domain: String = RestorerConfig.domainFromStage(stage)
 
-  val composerDomain: String = "https://composer." + domain
-
-  val flexibleApi: String = s"http://api.$bucketStage.flexible.gudiscovery.:8080"
+  val flexibleStack = FlexibleStack(stack, stage)
 
   val hostName: String = "https://restorer." + domain
 
   val validPreProductionEnvironments = Seq("code", "local")
 
   val corsableDomains = stage match {
-    case "PROD" | "DEV" => Seq(composerDomain)
+    case "PROD" | "DEV" => Seq(flexibleStack.composerPrefix)
     case _ => validPreProductionEnvironments.map(x => s"https://composer.$x.dev-gutools.co.uk")
   }
 
@@ -53,5 +49,15 @@ class RestorerConfig(config: Configuration) extends AwsInstanceTags {
   lazy val apiSharedSecret: String = config.getString("api.sharedsecret") match {
     case Some(x) => x
     case None => throw new RuntimeException(s"No config value for: api.sharedsecret")
+  }
+}
+
+object RestorerConfig {
+  def domainFromStage(stage: String): String = {
+    stage match {
+      case "PROD" => "gutools.co.uk"
+      case "DEV" => "local.dev-gutools.co.uk"
+      case x => x.toLowerCase() + ".dev-gutools.co.uk"
+    }
   }
 }
