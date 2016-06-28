@@ -1,7 +1,7 @@
 import angular from 'angular';
 import SnapshotIdModel from '../models/SnapshotIdModel';
 import SnapshotCollectionMod from '../services/SnapshotCollectionService';
-import BaseCollection from 'composer-components/lib/collections/BaseCollection';
+import BaseCollection from './BaseCollection';
 
 let listCache = {};
 

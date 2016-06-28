@@ -7,7 +7,7 @@ import models       from './models/index';
 import collections  from  './collections/index';
 import services     from './services/index';
 
-import components   from 'composer-components';
+import components   from './lib/gu-components';
 
 var restorer = angular.module('restorer', [
   'ngRoute',

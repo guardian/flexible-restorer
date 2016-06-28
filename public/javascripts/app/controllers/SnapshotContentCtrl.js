@@ -1,7 +1,7 @@
 import angular from 'angular';
 import mediator from '../utils/mediator';
 import SnapshotCollectionMod from '../collections/SnapshotIdModels';
-import safeApply from 'composer-components/lib/utils/safe-apply';
+import safeApply from '../utils/safe-apply';
 
 var SnapshotContentCtrlMod = angular.module('SnapshotContentCtrlMod', []);
 

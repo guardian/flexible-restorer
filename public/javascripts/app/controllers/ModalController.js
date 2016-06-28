@@ -1,6 +1,6 @@
 import angular from 'angular';
 import mediator from '../utils/mediator';
-import safeApply from 'composer-components/lib/utils/safe-apply';
+import safeApply from '../utils/safe-apply';
 
 var ModalCtrlMod = angular.module('ModalCtrlMod', []);
 
