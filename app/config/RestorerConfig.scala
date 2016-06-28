@@ -23,9 +23,6 @@ class RestorerConfig(config: Configuration) extends AwsInstanceTags {
 
   val stackName = readTag("Stack").getOrElse("flexible")
 
-  val snapshotBucket = "flexible-snapshotter-" + effectiveStage.toLowerCase()
-  val secondarySnapshotBucket = "flexible-secondary-snapshotter-" + effectiveStage.toLowerCase()
-
   val allStacks = List(
     FlexibleStack(stackName, effectiveStage),
     FlexibleStack(s"$stackName-secondary", effectiveStage)
