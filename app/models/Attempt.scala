@@ -17,6 +17,13 @@ case class Attempt[A] private (underlying: Future[Either[AttemptErrors, A]]) {
     }
   }
 
+  def recoverWith(f: AttemptErrors => Attempt[A])(implicit ec: ExecutionContext): Attempt[A] = Attempt {
+    asFuture.flatMap {
+      case Left(e) => f(e).asFuture
+      case Right(a) => Future.successful(Right(a))
+    }
+  }
+
   def fold[B](failure: AttemptErrors => B, success: A => B)(implicit ec: ExecutionContext): Future[B] = {
     asFuture.map(_.fold(failure, success))
   }

@@ -23,10 +23,22 @@ class RestorerConfig(config: Configuration) extends AwsInstanceTags {
 
   val stackName = readTag("Stack").getOrElse("flexible")
 
+  val localStack: Option[FlexibleStack] = if (readTag("Stage").isEmpty)
+    Some(FlexibleStack(
+      "DEV:flexible",
+      "Local Flexible Content",
+      "flexible",
+      "DEV",
+      false,
+      "http://localhost:9082/api",
+      "https://composer.local.dev-gutools.co.uk",
+      "not-applicable"))
+  else None
+
   val allStacks = List(
     FlexibleStack(stackName, effectiveStage),
     FlexibleStack(s"$stackName-secondary", effectiveStage)
-  )
+  ) ++ localStack
 
   val sourceStacks = allStacks.filter(_.stage == effectiveStage)
 
