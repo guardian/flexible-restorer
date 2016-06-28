@@ -1,7 +1,7 @@
 import angular  from 'angular';
 import moment   from 'moment';
 import lodash_get from 'lodash.get';
-import BaseModel from 'composer-components/lib/models/BaseModel';
+import BaseModel from './BaseModel';
 
 var SnapshotIdModelMod = angular.module('SnapshotIdModelMod', []);
 
