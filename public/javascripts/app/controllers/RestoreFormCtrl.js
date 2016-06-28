@@ -33,12 +33,10 @@ RestoreFormCtrlMod.controller('RestoreFormCtrl', [
             RestoreService
                 .getDestinations($routeParams.contentId)
                 .then((destinations)=> {
-                    debugger;
                     $scope.destinations = destinations;
                     SnapshotIdModels.getCollection($routeParams.contentId)
                         .then((collection) => {
                             //get model
-                            debugger;
                             var model = collection.find((data) => data.activeState);
                             var systemId = model.getSystemId();
                             var destination = destinations.find((d) => d.systemId == systemId);
