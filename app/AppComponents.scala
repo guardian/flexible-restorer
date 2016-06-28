@@ -26,7 +26,7 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
 
   if (context.environment.mode == Mode.Prod) restorerConfig.loggingConfig.foreach(LogStash.init)
 
-  val awsCredsProvider = new DefaultAWSCredentialsProviderChain()
+  val awsCredsProvider = restorerConfig.creds
   val region = Region getRegion Regions.fromName(configuration.getString("aws.region") getOrElse "eu-west-1")
   val s3Client: AmazonS3Client = new AmazonS3Client(awsCredsProvider).withRegion(region)
 
