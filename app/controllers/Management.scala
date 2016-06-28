@@ -14,7 +14,7 @@ class Management(val config:RestorerConfig, override val wsClient: WSClient) ext
     val info =
       s"""
       |Hostname: ${config.hostName}
-      |Composer Domain: ${config.flexibleStack.composerPrefix}
+      |Composer Domains: ${config.allStacks.map(_.composerPrefix).mkString(", ")}
       |Snapshots bucket: ${config.snapshotBucket}
       |Credentials: ${config.creds}
       """.stripMargin

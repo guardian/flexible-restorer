@@ -1,13 +1,22 @@
 package logic
 
-import config.FlexibleStack
-import models.{Attempt, AttemptError, Snapshot}
+import models.{Attempt, AttemptError, FlexibleStack, Snapshot}
 import play.api.libs.ws.WSClient
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
-class FlexibleApi(stack: FlexibleStack, wsClient: WSClient) {
-  def restore(contentId: String, snapshot: Snapshot): Attempt[String] = {
+class FlexibleApi(wsClient: WSClient) {
+  def latestRevision(stack: FlexibleStack, contentId: String): Future[Option[Long]] = {
+    wsClient.url(s"${stack.apiPrefix}/content/$contentId/changeDetails").get().map { response =>
+      response.status match {
+        case 200 => (response.json \ "data" \ "revision").asOpt[Long]
+        case _ => None
+      }
+    }
+  }
+
+  def restore(stack: FlexibleStack, contentId: String, snapshot: Snapshot): Attempt[String] = {
     val attempt = Attempt.Async.Right(wsClient.url(s"${stack.apiPrefix}/restorer/content/$contentId").put(snapshot.data))
     attempt.flatMap { response =>
       response.status match {

@@ -2,7 +2,7 @@ package controllers
 
 import config.RestorerConfig
 import helpers.Loggable
-import logic.SnapshotStore
+import logic.SnapshotApi
 import models.{Attempt, SnapshotId, VersionCount}
 import play.api.libs.json._
 import play.api.libs.ws.WSClient
@@ -11,12 +11,13 @@ import play.api.mvc._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.language.postfixOps
 
-class Versions(val config: RestorerConfig, snapshotStores: Map[String, SnapshotStore], override val wsClient: WSClient)
+class Versions(val config: RestorerConfig, snapshotApi: SnapshotApi, override val wsClient: WSClient)
+
   extends Controller with PanDomainAuthActions with Loggable {
   // Show a specific version
   def show(systemId: String, contentId: String, timestamp: String) = AuthAction.async {
-    val store = snapshotStores(systemId)
-    val snapshot = store.getRawSnapshot(SnapshotId(contentId, timestamp))
+    val stack = config.stackFromId(systemId)
+    val snapshot = snapshotApi.getRawSnapshot(stack.snapshotBucket, SnapshotId(contentId, timestamp))
     snapshot.fold(
       { failure => InternalServerError(failure.toString) },
       {
@@ -27,18 +28,18 @@ class Versions(val config: RestorerConfig, snapshotStores: Map[String, SnapshotS
   }
 
   def versionList(contentId: String) = AuthAction.async {
-    val snapshotsWithMetadata = Attempt.successfulAttempts(snapshotStores.toList.flatMap { case (systemId, store) =>
-      val snapshots = store.listForId(contentId)
+    val snapshotsWithMetadata = Attempt.successfulAttempts(config.sourceStacks.flatMap { case stack =>
+      val snapshots = snapshotApi.listForId(stack.snapshotBucket, contentId)
       snapshots.map { snapshotId =>
         val identifier = Json.toJson(snapshotId).asInstanceOf[JsObject]
         val info: Attempt[JsValue] =
           for (
-            snapshotInfo <- store.getSnapshotInfo(snapshotId)
+            snapshotInfo <- snapshotApi.getSnapshotInfo(stack.snapshotBucket, snapshotId)
           ) yield {
             snapshotInfo.getOrElse(JsObject(Nil))
           }
         info.map { infoJson =>
-          identifier ++ Json.obj("systemId" -> systemId, "info" -> infoJson)
+          identifier ++ Json.obj("systemId" -> stack.id, "info" -> infoJson)
         }
       }
     })
@@ -46,7 +47,9 @@ class Versions(val config: RestorerConfig, snapshotStores: Map[String, SnapshotS
   }
 
   def availableVersionsCount(contentId: String) = AuthAction {
-    val storeCounts: Iterable[Int] = snapshotStores.values.map(_.listForId(contentId).size)
+    val storeCounts = config.sourceStacks.map{ stack =>
+      snapshotApi.listForId(stack.snapshotBucket, contentId).size
+    }
     val count = VersionCount(contentId, storeCounts.sum)
     Ok(Json.toJson(count))
   }

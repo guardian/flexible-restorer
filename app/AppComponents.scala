@@ -10,7 +10,7 @@ import play.api.libs.ws.ahc.AhcWSComponents
 import play.api.mvc.EssentialFilter
 import play.api.routing.Router
 import play.api.{BuiltInComponentsFromContext, LoggerConfigurator, Mode}
-import logic.{FlexibleApi, SnapshotStore}
+import logic.{FlexibleApi, SnapshotApi}
 import router.Routes
 
 import scala.concurrent.ExecutionContext.Implicits.{global => globalExecutionContext}
@@ -30,22 +30,18 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
   val region = Region getRegion Regions.fromName(configuration.getString("aws.region") getOrElse "eu-west-1")
   val s3Client: AmazonS3Client = new AmazonS3Client(awsCredsProvider).withRegion(region)
 
-  val snapshotStores = Map(
-    "primary" -> new SnapshotStore(restorerConfig.snapshotBucket, s3Client),
-    "secondary" -> new SnapshotStore(restorerConfig.secondarySnapshotBucket, s3Client)
-  )
-
   val permissionsClient = new Permissions(restorerConfig, awsCredsProvider)
   val permissionsConfig = permissionsClient.config
   logger.info(s"Permissions object initialised with config: $permissionsConfig")
 
-  val flexibleApi = new FlexibleApi(restorerConfig.flexibleStack, wsClient)
+  val snapshotApi = new SnapshotApi(s3Client)
+  val flexibleApi = new FlexibleApi(wsClient)
 
   val applicationController = new Application(restorerConfig, wsClient)
   val loginController = new Login(permissionsClient, restorerConfig, wsClient)
   val managementController = new Management(restorerConfig, wsClient)
-  val versionsController = new Versions(restorerConfig, snapshotStores, wsClient)
-  val restoreController = new Restore(snapshotStores, flexibleApi, restorerConfig, wsClient)
+  val versionsController = new Versions(restorerConfig, snapshotApi, wsClient)
+  val restoreController = new Restore(snapshotApi, flexibleApi, restorerConfig, wsClient)
 
   def router: Router = new Routes(
     httpErrorHandler,

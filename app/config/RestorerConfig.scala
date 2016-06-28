@@ -4,36 +4,43 @@ import _root_.aws.AwsInstanceTags
 import com.amazonaws.auth.profile.ProfileCredentialsProvider
 import com.amazonaws.auth.{AWSCredentialsProviderChain, DefaultAWSCredentialsProviderChain, InstanceProfileCredentialsProvider}
 import helpers.KinesisAppenderConfig
+import models.FlexibleStack
 import play.api.Configuration
 
 class RestorerConfig(config: Configuration) extends AwsInstanceTags {
 
-  lazy val stage: String = readTag("Stage") match {
+  lazy val stage = readTag("Stage") match {
     case Some(value) => value
     case None => "DEV" // default to dev stage
   }
+  lazy val effectiveStage = readTag("Stage") match {
+    case Some(value) => value
+    case None => "CODE" // use CODE when in development mode
+  }
 
-  lazy val stack = readTag("Stack").getOrElse("flexible")
+  val domain = RestorerConfig.domainFromStage(stage)
+  val effectiveDomain = RestorerConfig.domainFromStage(effectiveStage)
 
-  lazy val defaultBucketStage = if (stage == "DEV") "CODE" else stage
+  val stackName = readTag("Stack").getOrElse("flexible")
 
-  lazy val bucketStage = config.getString("bucketStageOverride").getOrElse(defaultBucketStage)
+  val snapshotBucket = "flexible-snapshotter-" + effectiveStage.toLowerCase()
+  val secondarySnapshotBucket = "flexible-secondary-snapshotter-" + effectiveStage.toLowerCase()
 
-  val snapshotBucket: String = "flexible-snapshotter-" + bucketStage.toLowerCase()
-  val secondarySnapshotBucket: String = "flexible-secondary-snapshotter-" + bucketStage.toLowerCase()
+  val allStacks = List(
+    FlexibleStack(stackName, effectiveStage),
+    FlexibleStack(s"$stackName-secondary", effectiveStage)
+  )
 
-  val domain: String = RestorerConfig.domainFromStage(stage)
+  val sourceStacks = allStacks.filter(_.stage == effectiveStage)
 
-  val flexibleStack = FlexibleStack(stack, stage)
+  val stacksById = allStacks.map(s => s.id -> s).toMap
+  val stackFromId = stacksById.apply _
 
   val hostName: String = "https://restorer." + domain
 
   val validPreProductionEnvironments = Seq("code", "local")
 
-  val corsableDomains = stage match {
-    case "PROD" | "DEV" => Seq(flexibleStack.composerPrefix)
-    case _ => validPreProductionEnvironments.map(x => s"https://composer.$x.dev-gutools.co.uk")
-  }
+  val corsableDomains = allStacks.map(_.composerPrefix)
 
   val profile: String = config.getString("profile").getOrElse("composer")
   val creds = new AWSCredentialsProviderChain(
@@ -45,11 +52,6 @@ class RestorerConfig(config: Configuration) extends AwsInstanceTags {
   lazy val loggingConfig = for {
     stream <- config.getString("logging.stream")
   } yield KinesisAppenderConfig(stream, new DefaultAWSCredentialsProviderChain())
-
-  lazy val apiSharedSecret: String = config.getString("api.sharedsecret") match {
-    case Some(x) => x
-    case None => throw new RuntimeException(s"No config value for: api.sharedsecret")
-  }
 }
 
 object RestorerConfig {

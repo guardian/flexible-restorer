@@ -177,7 +177,6 @@
     </gu-column>
 
     <!-- MODAL -->
-    <!-- TODO JP 15/4/15 Replace with modal from components repo-->
     <!-- INLINE STYLE TO AVOID INITIAL FLASH OF CONTENT WITH THE MODAL -->
     <div style="display: none"
          class="modal center"
@@ -188,7 +187,6 @@
                   ng-submit="formCtrl.onSubmit()">
                 <div class="modal__content__track">
                     <gu-row>
-                        <!-- TODO JP 15/4/15 replace with accordion from components repo -->
                         <gu-column ng-class="{ 'in-active': isLoading }" class="form-panel" span="6">
 
                             <!-- MODAL HEADER -->
@@ -236,6 +234,15 @@
                                                    id="else-in-content"/>
                                             <span class="checked-decal"></span>
                                             <span class="label">No one else is in the content</span>
+                                        </label>
+                                    </gu-row>
+                                    <gu-row>
+                                        <label for="destination">
+                                            <select id="destination" name="destination"
+                                                    ng-model="selectedDestination"
+                                                    ng-options="dest.displayName for dest in destinations"
+                                                    ng-change="setRestoreSystem">
+                                            </select>
                                         </label>
                                     </gu-row>
                                 </gu-column>

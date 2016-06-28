@@ -11,17 +11,19 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.io.Source
 import scala.util.control.NonFatal
 
-class SnapshotStore(snapshotBucket: String, s3Client: AmazonS3Client) extends Loggable {
-  def getRawSnapshot(snapshotId: SnapshotId) = getObjectContentRaw(snapshotId.key, snapshotBucket)
+class SnapshotApi(s3Client: AmazonS3Client) extends Loggable {
+  def listForId(bucket: String, id: String): List[SnapshotId] = listSnapshots(bucket, id)
 
-  def getSnapshot(snapshotId: SnapshotId): Attempt[Option[Snapshot]] = {
-    getObjectContentJson(snapshotId.key, snapshotBucket).map { _.map(Snapshot(snapshotId, _)) }
+  def getRawSnapshot(bucket: String, snapshotId: SnapshotId) = getObjectContentRaw(snapshotId.key, bucket)
+
+  def getSnapshot(bucket: String, snapshotId: SnapshotId): Attempt[Option[Snapshot]] = {
+    getObjectContentJson(snapshotId.key, bucket).map { _.map(Snapshot(snapshotId, _)) }
   }
 
-  def getRawSnapshotInfo(snapshotId: SnapshotId) = getObjectContentRaw(snapshotId.infoKey, snapshotBucket)
+  def getRawSnapshotInfo(bucket: String, snapshotId: SnapshotId) = getObjectContentRaw(snapshotId.infoKey, bucket)
 
-  def getSnapshotInfo(snapshotId: SnapshotId): Attempt[Option[JsValue]] =
-    getObjectContentJson(snapshotId.infoKey, snapshotBucket)
+  def getSnapshotInfo(bucket: String, snapshotId: SnapshotId): Attempt[Option[JsValue]] =
+    getObjectContentJson(snapshotId.infoKey, bucket)
 
   private def getObject(key: String, bucketName: String): Attempt[Option[S3Object]] = {
     try {
@@ -69,6 +71,4 @@ class SnapshotStore(snapshotBucket: String, s3Client: AmazonS3Client) extends Lo
     logger.info(s"Found ${objectKeys.size} versions")
     objectKeys.flatMap { k => SnapshotId.fromKey(k) }.distinct
   }
-
-  val listForId: String => List[SnapshotId] = id => listSnapshots(snapshotBucket, id)
 }
