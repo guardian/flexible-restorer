@@ -9,7 +9,8 @@ case class Destination(
   stack: String,
   composerPrefix: String,
   isSecondary: Boolean,
-  revision: Option[Long]
+  revision: Option[Long],
+  available: Boolean
 )
 
 object Destination {

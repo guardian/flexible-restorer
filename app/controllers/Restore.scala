@@ -2,16 +2,21 @@ package controllers
 
 import com.gu.pandomainauth.model.{User => PandaUser}
 import config.RestorerConfig
+import helpers.Loggable
+import logic.{FlexibleApi, SnapshotApi}
 import models._
+import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
 import play.api.mvc.{Controller, Result}
-import logic.{FlexibleApi, SnapshotApi}
-import play.api.libs.json.Json
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.duration._
+import scala.concurrent.{Await, Future}
+import scala.language.postfixOps
+import scala.util.control.NonFatal
 
-class Restore(snapshotApi: SnapshotApi, flexibleApi: FlexibleApi, val config: RestorerConfig, val wsClient: WSClient) extends Controller with PanDomainAuthActions {
+class Restore(snapshotApi: SnapshotApi, flexibleApi: FlexibleApi, val config: RestorerConfig, val wsClient: WSClient)
+  extends Controller with PanDomainAuthActions with Loggable {
 
   def userFromPandaUser(user: PandaUser) = User(user.firstName, user.lastName, user.email)
 
@@ -32,10 +37,16 @@ class Restore(snapshotApi: SnapshotApi, flexibleApi: FlexibleApi, val config: Re
 
   def restoreDestinations(contentId: String) = AuthAction.async {
     val destinations = config.allStacks.map { stack =>
-      val latestRevision = flexibleApi.latestRevision(stack, contentId)
+      val latestRevision = Await.ready(flexibleApi.latestRevision(stack, contentId), 5 seconds)
       latestRevision.map { revision =>
         Destination(stack.id, stack.displayName, stack.stage, stack.stack,
-          stack.composerPrefix, stack.isSecondary, revision)
+          stack.composerPrefix, stack.isSecondary, revision, available = true)
+      } recover {
+        // if we fail to talk to the stack's API for any reason then provide a destination with available set to false
+        case NonFatal(e) =>
+          logger.warn(s"Couldn't communicate with Flexible stack at ${stack.apiPrefix}", e)
+          Destination(stack.id, stack.displayName, stack.stage, stack.stack,
+            stack.composerPrefix, stack.isSecondary, None, available = false)
       }
     }
     Future.sequence(destinations).map(d => Ok(Json.toJson(d)))
