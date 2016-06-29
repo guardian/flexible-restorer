@@ -3,7 +3,6 @@ import icons        from './icons/index';
 import box          from './box/index';
 import dropdown     from './dropdown/index';
 import grid         from './grid/index';
-import indexList     from './index-list/index';
 import btn          from './btn/index';
 import status       from './status/index';
 import pageLabel    from './page-label/index';
@@ -18,7 +17,6 @@ var components = angular.module('guComponents', [
   'guBox',
   'guDropdown',
   'guPageLabel',
-  'guIndexList',
   'guLoadingBars',
   'guAccordion'
 ]);
