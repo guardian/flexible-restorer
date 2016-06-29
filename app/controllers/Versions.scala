@@ -39,7 +39,14 @@ class Versions(val config: RestorerConfig, snapshotApi: SnapshotApi, override va
             snapshotInfo.getOrElse(JsObject(Nil))
           }
         info.map { infoJson =>
-          identifier ++ Json.obj("systemId" -> stack.id, "info" -> infoJson)
+          identifier ++ Json.obj(
+            "system" -> Json.obj(
+              "id" -> stack.id,
+              "isSecondary" -> stack.isSecondary,
+              "composerPrefix" -> stack.composerPrefix
+            ),
+            "info" -> infoJson
+          )
         }
       }
     })

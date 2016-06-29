@@ -12,13 +12,13 @@ SnapshotIdModelMod.factory('SnapshotIdModel', [
             constructor(data){
                 super();
                 // contentId: String, timestamp: String
-                var systemId = data.systemId;
+                var system = data.system;
                 var contentId = data.contentId;
                 var timestamp = data.timestamp;
                 var metadata = data.info.metadata;
                 var summary = data.info.summary;
                 this.data = {
-                    systemId: systemId,
+                    system: system,
                     timestamp: timestamp,
                     contentId: contentId,
                     createdDate: moment(timestamp),
@@ -33,7 +33,11 @@ SnapshotIdModelMod.factory('SnapshotIdModel', [
             }
 
             getSystemId() {
-                return this.get('systemId')
+                return this.get('system.id')
+            }
+
+            isSecondary() {
+                return this.get('system.isSecondary');
             }
 
             getContentId() {
