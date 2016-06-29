@@ -9,7 +9,6 @@ import status       from './status/index';
 import pageLabel    from './page-label/index';
 import loadingBars  from './loading-bars/index';
 import accordion    from './accordion/index';
-import modal        from './modal/index';
 
 var components = angular.module('guComponents', [
   'guIcons',
@@ -21,7 +20,6 @@ var components = angular.module('guComponents', [
   'guPageLabel',
   'guIndexList',
   'guLoadingBars',
-  'guModal',
   'guAccordion'
 ]);
 
