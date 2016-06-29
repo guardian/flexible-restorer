@@ -11,7 +11,10 @@ case class Destination(
   isSecondary: Boolean,
   revision: Option[Long],
   available: Boolean
-)
+) {
+  def withApiStatus(revision: Option[Long], available: Boolean): Destination =
+    this.copy(revision = revision, available = available)
+}
 
 object Destination {
   implicit val formats = Json.format[Destination]

@@ -1,5 +1,7 @@
 package controllers
 
+import java.util.concurrent.TimeoutException
+
 import com.gu.pandomainauth.model.{User => PandaUser}
 import config.RestorerConfig
 import helpers.Loggable
@@ -37,16 +39,21 @@ class Restore(snapshotApi: SnapshotApi, flexibleApi: FlexibleApi, val config: Re
 
   def restoreDestinations(contentId: String) = AuthAction.async {
     val destinations = config.allStacks.map { stack =>
-      val latestRevision = Await.ready(flexibleApi.latestRevision(stack, contentId), 5 seconds)
-      latestRevision.map { revision =>
-        Destination(stack.id, stack.displayName, stack.stage, stack.stack,
-          stack.composerPrefix, stack.isSecondary, revision, available = true)
-      } recover {
-        // if we fail to talk to the stack's API for any reason then provide a destination with available set to false
-        case NonFatal(e) =>
-          logger.warn(s"Couldn't communicate with Flexible stack at ${stack.apiPrefix}", e)
-          Destination(stack.id, stack.displayName, stack.stage, stack.stack,
-            stack.composerPrefix, stack.isSecondary, None, available = false)
+      val destination = Destination(stack.id, stack.displayName, stack.stage, stack.stack,
+          stack.composerPrefix, stack.isSecondary, None, available = false)
+
+      try {
+        val latestRevision = Await.ready(flexibleApi.latestRevision(stack, contentId), 3 seconds)
+        latestRevision.map { revision =>
+          destination.withApiStatus(revision, available = true)
+        } recover {
+          // if we fail to talk to the stack's API for any reason then provide a destination with available set to false
+          case NonFatal(e) =>
+            logger.warn(s"Couldn't communicate with Flexible stack at ${stack.apiPrefix}", e)
+            destination
+        }
+      } catch {
+        case e:TimeoutException => Future.successful(destination)
       }
     }
     Future.sequence(destinations).map(d => Ok(Json.toJson(d)))
