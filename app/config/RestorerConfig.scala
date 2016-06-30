@@ -35,8 +35,10 @@ class RestorerConfig(config: Configuration) extends AwsInstanceTags {
       "not-applicable"))
   else None
 
-  // list of stages - with our stage first
-  val destinationStages = (effectiveStage :: List("PROD", "CODE")).distinct
+  val destinationStages = effectiveStage match {
+    case "PROD" => List("PROD", "CODE")
+    case "CODE" => List("CODE")
+  }
 
   val allStacks = destinationStages.flatMap{ thisStage =>
     List(
