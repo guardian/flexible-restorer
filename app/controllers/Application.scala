@@ -37,11 +37,11 @@ class Application(val config:RestorerConfig, override val wsClient: WSClient) ex
   )
 
   def index = AuthAction {
-    Ok(views.html.main("Composer Restorer", config.allStacks.head.composerPrefix))
+    Ok(views.html.main("Composer Restorer"))
   }
 
   def versionIndex(contentId: String) = AuthAction {
-    Ok(views.html.main(s"Composer Restorer - Versions of $contentId", config.allStacks.head.composerPrefix))
+    Ok(views.html.main(s"Composer Restorer - Versions of $contentId"))
   }
 
   def preflight(routes: String) = CORSable(config.corsableDomains: _*) {

@@ -28,7 +28,8 @@ SnapshotListCtrlMod.controller('SnapshotListCtrl', [
         var activeModel = collection.find((data)=> data.activeState);
         $scope.articleTitle = activeModel.getHeadline();
         $scope.articleHash = activeModel.getContentId();
-        $scope.articleURL = [__COMPOSER_DOMAIN__, "content", $scope.articleHash].join("/");
+        // TODO - this should ideally gather URLs of all source systems rather than just the most recent
+        $scope.articleURL = activeModel.getComposerUrl();
         //animate sidebar in
         $timeout(()=> $scope.isSidebarActive = true, 500);
       })

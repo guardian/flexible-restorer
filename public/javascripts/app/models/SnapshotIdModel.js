@@ -35,9 +35,17 @@ SnapshotIdModelMod.factory('SnapshotIdModel', [
             getSystemId() {
                 return this.get('system.id')
             }
-
+            
             isSecondary() {
                 return this.get('system.isSecondary');
+            }
+            
+            getComposerUrl() {
+                return `${this.getComposerPrefix()}/content/${this.getContentId()}`;
+            }
+
+            getComposerPrefix() {
+                return this.get('system.composerPrefix');
             }
 
             getContentId() {
