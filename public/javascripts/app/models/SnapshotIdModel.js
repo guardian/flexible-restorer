@@ -28,12 +28,21 @@ SnapshotIdModelMod.factory('SnapshotIdModel', [
                 };
             }
 
-            getCreatedDate(){
-                return this.get('createdDate').format('HH:mm:ss [on] Do MMM');
+            getCreatedDateHtml(){
+                var date = this.get('createdDate');
+                var ordinal = date.format('Do').slice(-2);
+                var prefix = date.format('HH:mm:ss [on] D');
+                var month = date.format('MMMM');
+
+                return `${prefix}<sup>${ordinal}</sup> ${month}`
             }
 
             getSystemId() {
                 return this.get('system.id')
+            }
+
+            getSystem() {
+                return this.get('system')
             }
 
             isSecondary() {

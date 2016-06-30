@@ -121,6 +121,12 @@ a.snapshot-list__item__json, a.snapshot-list__item__restore {
   color: $color-650-grey;
 }
 
+.modal__content__source,
+.modal__content__destination__list {
+    font-family: "Guardian Agate Sans";
+    font-size: 16px;
+}
+
 .modal__content__form__header {
   font-family: "Guardian Egyptian Text";
   font-size: 14px;
