@@ -18,9 +18,10 @@ GET            /management/healthcheck                     controllers.Managemen
 GET            /management/info                            controllers.Management.info
 
 # API
-GET           /api/1/versionList/:contentId                controllers.Versions.versionList(contentId: String)
-GET           /api/1/version/:contentId/:timestamp                controllers.Versions.show(contentId: String, timestamp: String)
-GET           /api/1/user                                  controllers.Login.user
-GET           /api/1/user/permissions                      controllers.Login.permissions
-GET           /api/1/version-count/:contentId              controllers.Versions.availableVersionsCount(contentId: String)
-POST          /api/1/restore/:contentId/:timestamp         controllers.Versions.restore(contentId: String, timestamp: String)
+GET           /api/1/versionList/:contentId                                           controllers.Versions.versionList(contentId: String)
+GET           /api/1/version/:systemId/:contentId/:timestamp                          controllers.Versions.show(systemId: String, contentId: String, timestamp: String)
+GET           /api/1/user                                                             controllers.Login.user
+GET           /api/1/user/permissions                                                 controllers.Login.permissions
+GET           /api/1/version-count/:contentId                                         controllers.Versions.availableVersionsCount(contentId: String)
+POST          /api/1/restore/:sourceId/:contentId/:timestamp/to/:destinationId        controllers.Restore.restore(sourceId: String, contentId: String, timestamp: String, destinationId: String)
+GET           /api/1/restore/destinations/:contentId                                  controllers.Restore.restoreDestinations(contentId: String)

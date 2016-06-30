@@ -12,11 +12,13 @@ SnapshotIdModelMod.factory('SnapshotIdModel', [
             constructor(data){
                 super();
                 // contentId: String, timestamp: String
+                var system = data.system;
                 var contentId = data.contentId;
                 var timestamp = data.timestamp;
                 var metadata = data.info.metadata;
                 var summary = data.info.summary;
                 this.data = {
+                    system: system,
                     timestamp: timestamp,
                     contentId: contentId,
                     createdDate: moment(timestamp),
@@ -30,6 +32,22 @@ SnapshotIdModelMod.factory('SnapshotIdModel', [
                 return this.get('createdDate').format('HH:mm:ss D MMMM YYYY');
             }
 
+            getSystemId() {
+                return this.get('system.id')
+            }
+            
+            isSecondary() {
+                return this.get('system.isSecondary');
+            }
+            
+            getComposerUrl() {
+                return `${this.getComposerPrefix()}/content/${this.getContentId()}`;
+            }
+
+            getComposerPrefix() {
+                return this.get('system.composerPrefix');
+            }
+
             getContentId() {
                 return this.get('contentId')
             }
@@ -40,6 +58,10 @@ SnapshotIdModelMod.factory('SnapshotIdModel', [
 
             getHeadline() {
                 return this.get('summary.preview.fields.headline')
+            }
+
+            getRevisionId() {
+                return this.get('summary.contentChangeDetails.revision')
             }
 
             getSnapshotReason() {

@@ -32,18 +32,16 @@ trait PanDomainAuthActions extends AuthActions {
 
 class Application(val config:RestorerConfig, override val wsClient: WSClient) extends Controller with PanDomainAuthActions with Loggable {
 
-  lazy val composer = config.composerDomain
-
   val urlForm = Form(
     "url" -> nonEmptyText
   )
 
   def index = AuthAction {
-    Ok(views.html.main("Composer Restorer", config.composerDomain))
+    Ok(views.html.main("Composer Restorer"))
   }
 
   def versionIndex(contentId: String) = AuthAction {
-    Ok(views.html.main(s"Composer Restorer - Versions of $contentId", config.composerDomain))
+    Ok(views.html.main(s"Composer Restorer - Versions of $contentId"))
   }
 
   def preflight(routes: String) = CORSable(config.corsableDomains: _*) {

@@ -43,31 +43,35 @@
             <span class="snapshot-list-header__decal">No.</span>
             <span class="snapshot-list-header__content">Snapped at &amp; last modified</span>
             <span class="snapshot-list-header__status">Status</span>
-
         </gu-row>
 
         <!-- SNAPSHOT LIST -->
-        <gu-index-list class="snapshot-list">
-            <gu-index-list-item variant="{{ model.get('activeState') ? 'tertiary' : 'primary' }}"
-                                class="snapshot-list__item"
-                                ng-repeat-start="model in models"
-                                ng-mouseenter="hovered=true"
-                                ng-mouseleave="hovered=false"
-                                index="{{ models.length - $index }}"
-                                ng-class="{ 'item-active': model.get('activeState') }">
-                <!-- CONTENT -->
+        <ol class="index-list snapshot-list">
+            <!-- CONTENT -->
+            <li class="snapshot-list-secondary"
+                ng-repeat-start="model in models"
+                ng-if="model.isSecondary()">
+                Snapshot from secondary
+            </li>
+            <li class="snapshot-list__item index-list__item index-list__item--{{ model.get('activeState') ? 'tertiary' : 'primary' }}"
+                variant="{{ model.get('activeState') ? 'tertiary' : 'primary' }}"
+                ng-mouseenter="hovered=true"
+                ng-mouseleave="hovered=false"
+                ng-class="{ 'item-active': model.get('activeState') }">
+
+                <div class="index-list__item__index">{{model.getRevisionId() || (models.length - $index)}}</div>
+
                 <div class="snapshot-list__item__content"
                      ng-class="{ 'active': model.get('activeState') && isDisplayingHTML }"
                      ng-click="ctrl.onItemClicked($index)">
-                    <h6 class="snapshot-list__item__content__relative-date">{{ model.getSnapshotReason() }}</h6>
                     <h6 class="snapshot-list__item__content__actual-date">{{ model.getCreatedDate() }}</h6>
                     <h6 class="snapshot-list__item__content__relative-date">{{ model.getRelativeDate() }} ago</h6>
-
+                    <h6 class="snapshot-list__item__content__reason">{{ model.getSnapshotReason() }}</h6>
                 </div>
+
                 <div class="snapshot-list__item__information">
                     <div class="snapshot-list__item__status"
-                         ng-click="ctrl.onItemClicked($index)"
-                         ng-if="(!model.get('activeState') && !hovered) || (model.get('activeState') && !hovered) || (hovered && !model.get('activeState'))">
+                         ng-click="ctrl.onItemClicked($index)">
                         <div class="snapshot-list__item__status--left"
                              ng-click="ctrl.onItemClicked($index)">
 
@@ -102,8 +106,7 @@
                         </div>
                     </div>
                 </div>
-
-            </gu-index-list-item>
+            </li>
 
             <!-- DELTA TIME -->
             <li class="delta-row" ng-repeat-end ng-mouseover="isActive = true" ng-mouseout="isActive = false">
@@ -115,7 +118,7 @@
                 </gu-row>
             </li>
 
-        </gu-index-list>
+        </ol>
 
     </gu-column>
 
@@ -177,7 +180,6 @@
     </gu-column>
 
     <!-- MODAL -->
-    <!-- TODO JP 15/4/15 Replace with modal from components repo-->
     <!-- INLINE STYLE TO AVOID INITIAL FLASH OF CONTENT WITH THE MODAL -->
     <div style="display: none"
          class="modal center"
@@ -188,7 +190,6 @@
                   ng-submit="formCtrl.onSubmit()">
                 <div class="modal__content__track">
                     <gu-row>
-                        <!-- TODO JP 15/4/15 replace with accordion from components repo -->
                         <gu-column ng-class="{ 'in-active': isLoading }" class="form-panel" span="6">
 
                             <!-- MODAL HEADER -->
@@ -236,6 +237,15 @@
                                                    id="else-in-content"/>
                                             <span class="checked-decal"></span>
                                             <span class="label">No one else is in the content</span>
+                                        </label>
+                                    </gu-row>
+                                    <gu-row style="display: none">
+                                        <label for="destination">
+                                            <select id="destination" name="destination"
+                                                    ng-model="selectedDestination"
+                                                    ng-options="dest.displayName for dest in destinations"
+                                                    ng-change="setRestoreSystem">
+                                            </select>
                                         </label>
                                     </gu-row>
                                 </gu-column>

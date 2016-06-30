@@ -34,7 +34,7 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
       .getCollection($routeParams.contentId)
       .then((collection)=> {
         var model = collection.getModelAt(0);
-        loadContent(model.getContentId(), model.getTimestamp());
+        loadContent(model.getSystemId(), model.getContentId(), model.getTimestamp());
         mediator.publish('mixpanel:view-snapshot', model);
       })
       //TODO setup global error handle
@@ -48,9 +48,9 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
     mediator.subscribe('snapshot-list:hidden-modal', displayHTML);
 
       //logic for animating and setting content
-      function loadContent(contentId, timestamp) {
+      function loadContent(systemId, contentId, timestamp) {
           SnapshotModels
-              .getSnapshot(contentId, timestamp)
+              .getSnapshot(systemId, contentId, timestamp)
               .then((model) => {
                   displayContent(model)
               })

@@ -10,9 +10,10 @@ SnapshotModelMod.factory('SnapshotModel', [
   function(){
 
     class SnapshotModel extends BaseModel{
-      constructor(timestamp, snapshotData){
+      constructor(systemId, timestamp, snapshotData){
         super();
         this.data = {
+          systemId: systemId,
           timestamp: timestamp,
           createdDate: moment(timestamp),
           activeState: false,
@@ -57,17 +58,18 @@ SnapshotModelMod.factory('SnapshotModel', [
         delete clone.createdDate;
         delete clone.activeState;
         delete clone.snapshot;
+        delete clone.systemId;
         return clone;
       }
 
       getJSON(){
-        return JSON.stringify(this, null, 2);
+        return JSON.stringify(this.get('snapshot'), null, 2);
       }
     }
 
 
     return {
-      getModel: (timestamp, data)=> new SnapshotModel(timestamp, data)
+      getModel: (systemId, timestamp, data) => new SnapshotModel(systemId, timestamp, data)
     };
   }
 ]);
