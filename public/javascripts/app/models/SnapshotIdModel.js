@@ -29,17 +29,17 @@ SnapshotIdModelMod.factory('SnapshotIdModel', [
             }
 
             getCreatedDate(){
-                return this.get('createdDate').format('HH:mm:ss D MMMM YYYY');
+                return this.get('createdDate').format('HH:mm:ss [on] Do MMM');
             }
 
             getSystemId() {
                 return this.get('system.id')
             }
-            
+
             isSecondary() {
                 return this.get('system.isSecondary');
             }
-            
+
             getComposerUrl() {
                 return `${this.getComposerPrefix()}/content/${this.getContentId()}`;
             }
