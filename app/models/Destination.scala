@@ -1,5 +1,6 @@
 package models
 
+import org.joda.time.DateTime
 import play.api.libs.json.Json
 
 case class Destination(
@@ -9,11 +10,12 @@ case class Destination(
   stack: String,
   composerPrefix: String,
   isSecondary: Boolean,
-  revision: Option[Long],
+  changeDetails: Option[ChangeDetails],
+  lastModified: Option[DateTime],
   available: Boolean
 ) {
-  def withApiStatus(revision: Option[Long], available: Boolean): Destination =
-    this.copy(revision = revision, available = available)
+  def withApiStatus(changeDetails: Option[ChangeDetails], available: Boolean): Destination =
+    this.copy(changeDetails = changeDetails, available = available)
 }
 
 object Destination {

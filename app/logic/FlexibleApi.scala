@@ -2,6 +2,7 @@ package logic
 
 import helpers.Loggable
 import models._
+import org.joda.time.DateTime
 import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
 
@@ -9,10 +10,16 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class FlexibleApi(wsClient: WSClient) extends Loggable {
-  def latestRevision(stack: FlexibleStack, contentId: String): Future[Option[Long]] = {
+  def changeDetails(stack: FlexibleStack, contentId: String): Future[Option[ChangeDetails]] = {
     wsClient.url(s"${stack.apiPrefix}/content/$contentId/changeDetails").get().map { response =>
       response.status match {
-        case 200 => (response.json \ "data" \ "revision").asOpt[Long]
+        case 200 =>
+          val revision = (response.json \ "data" \ "revision").asOpt[Long]
+          val lastModified = (response.json \ "data" \ "lastModified" \ "date").asOpt[Long].map(new DateTime(_))
+          (revision, lastModified) match {
+            case (Some(rev), Some(lm)) => Some(ChangeDetails(rev, lm))
+            case _ => None
+          }
         case _ => None
       }
     }

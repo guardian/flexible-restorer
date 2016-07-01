@@ -225,9 +225,7 @@
                                                                ng-model="selectedDestination"
                                                                ng-value="dest"/>
                                                         <span class="checked-decal"></span>
-                                                        {{dest.displayName}}
-                                                        <span ng-show="dest.revision"><em> &nbsp;currently has revision {{dest.revision}}</em></span>
-                                                        <span ng-show="dest.available && !dest.revision"><em> &nbsp;content not on this instance</em></span>
+                                                        <span class="shrink-two">{{dest.displayName}} <em>{{dest.changeString}}</em></span>
                                                     </label>
                                                 </li>
                                             </ol>

@@ -1,5 +1,6 @@
 import angular from 'angular';
 import mediator from '../utils/mediator';
+import moment   from 'moment';
 
 var RestoreFormCtrlMod = angular.module('RestoreFormCtrlMod', []);
 
@@ -31,7 +32,18 @@ RestoreFormCtrlMod.controller('RestoreFormCtrl', [
             RestoreService
                 .getDestinations($routeParams.contentId)
                 .then((destinations)=> {
-                    $scope.destinations = destinations;
+                    $scope.destinations = destinations.map((dest) => {
+                        if (dest.changeDetails) {
+                            var lastModified = moment(dest.changeDetails.lastModified);
+                            dest.changeString = `currently has revision ${dest.changeDetails.revisionId}, last modified at ${lastModified.format("HH:mm:ss [on the] Do [of] MMMM")}`;
+                        } else if (dest.available) {
+                            dest.changeString = "content not on this instance";
+                        } else {
+                            dest.changeString = "";
+                        }
+                        return dest;
+                    });
+                    debugger;
                     SnapshotIdModels.getCollection($routeParams.contentId)
                         .then((collection) => {
                             //get model
