@@ -6,8 +6,8 @@ import BaseModel from './BaseModel';
 var SnapshotIdModelMod = angular.module('SnapshotIdModelMod', []);
 
 SnapshotIdModelMod.factory('SnapshotIdModel', [
-    function(){
-
+    'DateFormatService',
+    function(DateFormatService){
         class SnapshotIdModel extends BaseModel{
             constructor(data){
                 super();
@@ -30,11 +30,7 @@ SnapshotIdModelMod.factory('SnapshotIdModel', [
 
             getCreatedDateHtml(){
                 var date = this.get('createdDate');
-                var ordinal = date.format('Do').slice(-2);
-                var prefix = date.format('HH:mm:ss [on] D');
-                var month = date.format('MMMM');
-
-                return `${prefix}<sup>${ordinal}</sup> ${month}`
+                return DateFormatService.formatHtml(date);
             }
 
             getSystemId() {

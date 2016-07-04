@@ -9,7 +9,8 @@ RestoreFormCtrlMod.controller('RestoreFormCtrl', [
     '$routeParams',
     'RestoreService',
     'SnapshotIdModels',
-    function($scope, $routeParams, RestoreService, SnapshotIdModels){
+    'DateFormatService',
+    function($scope, $routeParams, RestoreService, SnapshotIdModels, DateFormatService){
 
         $scope.isLoading = false;
 
@@ -35,7 +36,8 @@ RestoreFormCtrlMod.controller('RestoreFormCtrl', [
                     $scope.destinations = destinations.map((dest) => {
                         if (dest.changeDetails) {
                             var lastModified = moment(dest.changeDetails.lastModified);
-                            dest.changeString = `currently has revision ${dest.changeDetails.revisionId}, last modified at ${lastModified.format("HH:mm:ss [on the] Do [of] MMMM")}`;
+                            var formattedDate = DateFormatService.formatHtml(lastModified);
+                            dest.changeString = `currently has revision ${dest.changeDetails.revisionId}, last modified at ${formattedDate}`;
                         } else if (dest.available) {
                             dest.changeString = "content not on this instance";
                         } else {
