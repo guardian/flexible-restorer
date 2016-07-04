@@ -58,7 +58,7 @@ gu-box.modal__content {
   margin-left: 10px;
 }
 
-.modal__content__destination__list {
+.modal__content__destination-list {
     margin-top: 5px;
     margin-bottom: 0;
     padding-left: 0;
@@ -74,7 +74,7 @@ gu-box.modal__content {
     };
 }
 
-.modal__content__destination__form {
+.modal__content__destination-form {
     .label {
         position: relative;
         top: -5px;
@@ -98,7 +98,7 @@ gu-box.modal__content {
     }
 }
 
-.modal__content__destination__form input {
+.modal__content__destination-form input {
     //reset
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -117,7 +117,7 @@ gu-box.modal__content {
     }
 }
 
-.modal__content__arrow {
+.modal__content__destination-arrow {
     font-size: xx-large;
 }
 

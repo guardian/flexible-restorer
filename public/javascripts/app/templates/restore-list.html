@@ -212,10 +212,10 @@
                                         <gu-column span="5" class="center">
                                             <div class="modal__content__source">Snapshot of revision {{snapshotRevisionId}} taken <strong>{{snapshotSystem.isSecondary ? "from secondary" : ""}}</strong> at <span ng-bind-html="snapshotCreatedDate"></span></div>
                                         </gu-column>
-                                        <gu-column span="1" class="center modal__content__arrow">&#10132;</gu-column>
+                                        <gu-column span="1" class="center modal__content__destination-arrow">&#10132;</gu-column>
                                         <gu-column span="6" class="center">
                                             <div class="full-width">
-                                            <ol class="modal__content__destination__list modal__content__destination__form">
+                                            <ol class="modal__content__destination-list modal__content__destination-form">
                                                 <li ng-repeat="dest in destinations">
                                                     <label for="{{dest.systemId}}" class="modal__content__text">
                                                         <input type="radio"
