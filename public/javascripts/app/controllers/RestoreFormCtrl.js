@@ -45,7 +45,6 @@ RestoreFormCtrlMod.controller('RestoreFormCtrl', [
                         }
                         return dest;
                     });
-                    debugger;
                     SnapshotIdModels.getCollection($routeParams.contentId)
                         .then((collection) => {
                             //get model
