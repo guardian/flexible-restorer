@@ -54,6 +54,6 @@ h6, h4 {
     width: 100%;
 }
 
-.shrink {
-    flex-shrink: 10;
+.no-shrink {
+    flex-shrink: 0;
 }

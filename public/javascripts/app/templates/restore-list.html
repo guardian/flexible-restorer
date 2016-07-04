@@ -219,13 +219,14 @@
                                                 <li ng-repeat="dest in destinations">
                                                     <label for="{{dest.systemId}}" class="modal__content__text">
                                                         <input type="radio"
+                                                               class="no-shrink"
                                                                id="{{dest.systemId}}"
                                                                name="destination"
                                                                ng-disabled="!dest.available"
                                                                ng-model="selectedDestination"
                                                                ng-value="dest"/>
                                                         <span class="checked-decal"></span>
-                                                        <span class="shrink">{{dest.displayName}} <em>{{dest.changeString}}</em></span>
+                                                        <span>{{dest.displayName}} <em ng-bind-html="dest.changeString"></em></span>
                                                     </label>
                                                 </li>
                                             </ol>
