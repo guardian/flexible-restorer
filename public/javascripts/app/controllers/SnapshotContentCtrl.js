@@ -1,6 +1,5 @@
 import angular from 'angular';
 import mediator from '../utils/mediator';
-import SnapshotCollectionMod from '../collections/SnapshotIdModels';
 import safeApply from '../utils/safe-apply';
 
 var SnapshotContentCtrlMod = angular.module('SnapshotContentCtrlMod', []);
@@ -20,7 +19,7 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
     $scope.canRestore =  false;
 
     UserService.get().then((user) => {
-        if(user.permissions && user.permissions.restoreContent && user.permissions.restoreContent === true) {
+        if(user.permissions && user.permissions.restore_content && user.permissions.restore_content === true) {
           $scope.canRestore = true;
         }
     }).catch ((err) => {

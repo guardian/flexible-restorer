@@ -40,7 +40,7 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
   val loginController = new Login(permissionsClient, restorerConfig, wsClient)
   val managementController = new Management(restorerConfig, wsClient)
   val versionsController = new Versions(restorerConfig, snapshotApi, wsClient)
-  val restoreController = new Restore(snapshotApi, flexibleApi, restorerConfig, wsClient)
+  val restoreController = new Restore(snapshotApi, flexibleApi, permissionsClient, restorerConfig, wsClient)
 
   def router: Router = new Routes(
     httpErrorHandler,

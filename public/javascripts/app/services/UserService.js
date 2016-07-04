@@ -2,17 +2,36 @@ import angular from 'angular';
 
 var UserServiceMod = angular.module('UserServiceMod', []);
 
+let userData;
+
 UserServiceMod.service('UserService', [
   '$http',
-  function($http) {
+    '$q',
+  function($http, $q) {
     return {
       get: () => {
-        return $http.get('/api/1/user').then((userResponse) => {
-          return $http.get('/api/1/user/permissions').then((permissionsResponse) => {
-            userResponse.data["permissions"] = permissionsResponse.data;
-            return userResponse.data;
-          })
-        });
+        return $q((resolve, reject) => {
+            if (userData) {
+                resolve(userData);
+                return;
+            }
+
+            $http.get('/api/1/user').
+            then((userResponse) => {
+                $http.get('/api/1/user/permissions').
+                then((permissionsResponse) => {
+                    userResponse.data["permissions"] = permissionsResponse.data;
+                    userData = userResponse.data;
+                    resolve(userData);
+                }).
+                catch((data) => {
+                    reject(data);
+                });
+            }).
+            catch((data) =>
+                reject(data)
+            );
+        })
       }
     }
   }
