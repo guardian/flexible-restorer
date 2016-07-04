@@ -3,11 +3,13 @@ package controllers
 import config.RestorerConfig
 import helpers.Loggable
 import permissions.Permissions
+import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
 import play.api.mvc._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.language.postfixOps
 
 class Login(permissionsClient: Permissions, val config: RestorerConfig, override val wsClient: WSClient)
   extends Controller with PanDomainAuthActions with Loggable {
@@ -28,9 +30,11 @@ class Login(permissionsClient: Permissions, val config: RestorerConfig, override
     Ok(request.user.toJson).as(JSON)
   }
 
-  def permissions() = AuthAction { implicit request =>
-    val permissions = s"""{\"restoreContent\" : ${permissionsClient.hasAccess(request.user)}}"""
-    Ok(permissions).as(JSON)
+  def permissions() = AuthAction.async { implicit request =>
+    val permissionsMap = permissionsClient.userPermissionMap(request.user)
+    permissionsMap.map{ permissions =>
+      val nameMap = permissions.map{case (p, v) => p.name -> v}
+      Ok(Json.toJson(nameMap))
+    }
   }
-
 }
