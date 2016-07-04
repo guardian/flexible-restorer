@@ -40,12 +40,12 @@ class Restore(snapshotApi: SnapshotApi, flexibleApi: FlexibleApi, val config: Re
   def restoreDestinations(contentId: String) = AuthAction.async {
     val destinations = config.allStacks.map { stack =>
       val destination = Destination(stack.id, stack.displayName, stack.stage, stack.stack,
-          stack.composerPrefix, stack.isSecondary, None, available = false)
+          stack.composerPrefix, stack.isSecondary, None, None, available = false)
 
       try {
-        val latestRevision = Await.ready(flexibleApi.latestRevision(stack, contentId), 3 seconds)
-        latestRevision.map { revision =>
-          destination.withApiStatus(revision, available = true)
+        val changeDetails = Await.ready(flexibleApi.changeDetails(stack, contentId), 3 seconds)
+        changeDetails.map { cdOption =>
+          destination.withApiStatus(cdOption, available = true)
         } recover {
           // if we fail to talk to the stack's API for any reason then provide a destination with available set to false
           case NonFatal(e) =>

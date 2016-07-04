@@ -64,7 +64,7 @@
                 <div class="snapshot-list__item__content"
                      ng-class="{ 'active': model.get('activeState') && isDisplayingHTML }"
                      ng-click="ctrl.onItemClicked($index)">
-                    <h6 class="snapshot-list__item__content__actual-date">{{ model.getCreatedDate() }}</h6>
+                    <h6 class="snapshot-list__item__content__actual-date" ng-bind-html="model.getCreatedDateHtml()"></h6>
                     <h6 class="snapshot-list__item__content__relative-date">{{ model.getRelativeDate() }} ago</h6>
                     <h6 class="snapshot-list__item__content__reason">{{ model.getSnapshotReason() }}</h6>
                 </div>
@@ -186,8 +186,7 @@
          ng-controller="ModalCtrl as modalCtrl"
          ng-class="{ 'visually-hidden': !isActive }">
         <gu-box class="modal__content" variant="primary">
-            <form novalidate class="modal-form" ng-controller="RestoreFormCtrl as formCtrl"
-                  ng-submit="formCtrl.onSubmit()">
+            <form novalidate class="modal-form" ng-controller="RestoreFormCtrl as formCtrl">
                 <div class="modal__content__track">
                     <gu-row>
                         <gu-column ng-class="{ 'in-active': isLoading }" class="form-panel" span="6">
@@ -196,28 +195,46 @@
                             <gu-row>
                                 <gu-column span="12">
                                     <h1 class="modal__content__title">Before you restore</h1>
-                                    <!--commented as we are going to add presence support at a later date
-                                      jp 13/04/2015
-                                      <p class="modal__content__desc">Currently present in the content</p>
-                                    -->
                                 </gu-column>
                             </gu-row>
 
-                            <!-- PRESENCE -->
-                            <!--commented as we are going to add presence support at a later date
-                              jp 13/04/2015
-                              <gu-row class="modal__content__container">
-                              <gu-column span="9">
-                              some people
-                              </gu-column>
-                              <gu-column span="3">
-                              <a class="model__content__refresh">
-                              <gu-icon variant="expand-active"></gu-icon>
-                              Refresh
-                              </a>
-                              </gu-column>
-                              </gu-row>
-                            -->
+                            <gu-row class="modal__content__container">
+                                <gu-column span="12">
+                                    <gu-row>
+                                        <gu-column span="6">
+                                            <h2 class="modal__content__form__header">From:</h2>
+                                        </gu-column>
+                                        <gu-column span="6">
+                                            <h2 class="modal__content__form__header">To:</h2>
+                                        </gu-column>
+                                    </gu-row>
+                                    <gu-row>
+                                        <gu-column span="5" class="center">
+                                            <div class="modal__content__source">Snapshot of revision {{snapshotRevisionId}} taken <strong>{{snapshotSystem.isSecondary ? "from secondary" : ""}}</strong> at <span ng-bind-html="snapshotCreatedDate"></span></div>
+                                        </gu-column>
+                                        <gu-column span="1" class="center modal__content__destination-arrow">&#10132;</gu-column>
+                                        <gu-column span="6" class="center">
+                                            <div class="full-width">
+                                            <ol class="modal__content__destination-list modal__content__destination-form">
+                                                <li ng-repeat="dest in destinations">
+                                                    <label for="{{dest.systemId}}" class="modal__content__text">
+                                                        <input type="radio"
+                                                               class="no-shrink"
+                                                               id="{{dest.systemId}}"
+                                                               name="destination"
+                                                               ng-disabled="!dest.available"
+                                                               ng-model="selectedDestination"
+                                                               ng-value="dest"/>
+                                                        <span class="checked-decal"></span>
+                                                        <span>{{dest.displayName}} <em ng-bind-html="dest.changeString"></em></span>
+                                                    </label>
+                                                </li>
+                                            </ol>
+                                            </div>
+                                        </gu-column>
+                                    </gu-row>
+                                </gu-column>
+                            </gu-row>
 
                             <!-- FORM -->
                             <gu-row class="modal__content__container">
@@ -239,22 +256,14 @@
                                             <span class="label">No one else is in the content</span>
                                         </label>
                                     </gu-row>
-                                    <gu-row style="display: none">
-                                        <label for="destination">
-                                            <select id="destination" name="destination"
-                                                    ng-model="selectedDestination"
-                                                    ng-options="dest.displayName for dest in destinations"
-                                                    ng-change="setRestoreSystem">
-                                            </select>
-                                        </label>
-                                    </gu-row>
                                 </gu-column>
                             </gu-row>
 
                             <!-- ACTIONS -->
                             <gu-row variant="reverse" class="modal__content__container">
                                 <gu-btn variant="active" class="modal__content__btn" type="submit"
-                                        ng-disabled="!selfInContent || !elseInContent">
+                                        ng-disabled="!selfInContent || !elseInContent"
+                                        ng-click="formCtrl.restore()">
                                     <gu-icon variant="wrench-disabled"></gu-icon>
                                     Restore Version
                                 </gu-btn>

@@ -1,5 +1,6 @@
 import angular from 'angular';
 import mediator from '../utils/mediator';
+import moment   from 'moment';
 
 var RestoreFormCtrlMod = angular.module('RestoreFormCtrlMod', []);
 
@@ -8,13 +9,12 @@ RestoreFormCtrlMod.controller('RestoreFormCtrl', [
     '$routeParams',
     'RestoreService',
     'SnapshotIdModels',
-    function($scope, $routeParams, RestoreService, SnapshotIdModels){
+    'DateFormatService',
+    function($scope, $routeParams, RestoreService, SnapshotIdModels, DateFormatService){
 
         $scope.isLoading = false;
 
-        this.onSubmit = function onRestoreFormSubmit(){
-            //PLACEHOLDER
-            //TODO ADD POST JP 13/4/15
+        this.restore = function() {
             $scope.isLoading = true;
             RestoreService
                 .restore($scope.selectedDestination.systemId)
@@ -27,17 +27,34 @@ RestoreFormCtrlMod.controller('RestoreFormCtrl', [
                 .catch((err) => mediator.publish('error', err));
         };
 
-        mediator.subscribe('snapshot-list:display-modal', loadDestinations);
+        mediator.subscribe('snapshot-list:display-modal', loadSourceAndDestinations);
 
-        function loadDestinations(){
+        function loadSourceAndDestinations(){
             RestoreService
                 .getDestinations($routeParams.contentId)
                 .then((destinations)=> {
-                    $scope.destinations = destinations;
+                    $scope.destinations = destinations.map((dest) => {
+                        if (dest.changeDetails) {
+                            var lastModified = moment(dest.changeDetails.lastModified);
+                            var formattedDate = DateFormatService.formatHtml(lastModified);
+                            dest.changeString = `currently has revision ${dest.changeDetails.revisionId}, last modified at ${formattedDate}`;
+                        } else if (dest.available) {
+                            dest.changeString = "content not on this instance";
+                        } else {
+                            dest.changeString = "";
+                        }
+                        return dest;
+                    });
                     SnapshotIdModels.getCollection($routeParams.contentId)
                         .then((collection) => {
                             //get model
                             var model = collection.find((data) => data.activeState);
+
+                            // set source info
+                            $scope.snapshotRevisionId = model.getRevisionId();
+                            $scope.snapshotSystem = model.getSystem();
+                            $scope.snapshotCreatedDate = model.getCreatedDateHtml();
+
                             var systemId = model.getSystemId();
                             var destination = destinations.find((d) => d.systemId == systemId);
                             $scope.selectedDestination = destination || destinations[0];
@@ -54,6 +71,10 @@ RestoreFormCtrlMod.controller('RestoreFormCtrl', [
         mediator.subscribe('snapshot-list:hidden-modal', resetModalForm);
 
         function resetModalForm(){
+            $scope.destinations = [];
+            $scope.snapshotRevisionId = null;
+            $scope.snapshotSystem = null;
+            $scope.snapshotCreatedDate = null;
             $scope.isLoading = false;
             $scope.selfInContent = false;
             $scope.elseInContent = false;

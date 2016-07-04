@@ -6,8 +6,8 @@ import BaseModel from './BaseModel';
 var SnapshotIdModelMod = angular.module('SnapshotIdModelMod', []);
 
 SnapshotIdModelMod.factory('SnapshotIdModel', [
-    function(){
-
+    'DateFormatService',
+    function(DateFormatService){
         class SnapshotIdModel extends BaseModel{
             constructor(data){
                 super();
@@ -28,18 +28,23 @@ SnapshotIdModelMod.factory('SnapshotIdModel', [
                 };
             }
 
-            getCreatedDate(){
-                return this.get('createdDate').format('HH:mm:ss D MMMM YYYY');
+            getCreatedDateHtml(){
+                var date = this.get('createdDate');
+                return DateFormatService.formatHtml(date);
             }
 
             getSystemId() {
                 return this.get('system.id')
             }
-            
+
+            getSystem() {
+                return this.get('system')
+            }
+
             isSecondary() {
                 return this.get('system.isSecondary');
             }
-            
+
             getComposerUrl() {
                 return `${this.getComposerPrefix()}/content/${this.getContentId()}`;
             }

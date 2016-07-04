@@ -21,7 +21,7 @@ class RestorerConfig(config: Configuration) extends AwsInstanceTags {
   val domain = RestorerConfig.domainFromStage(stage)
   val effectiveDomain = RestorerConfig.domainFromStage(effectiveStage)
 
-  val stackName = readTag("Stack").getOrElse("flexible")
+  val stackName = "flexible"
 
   val localStack: Option[FlexibleStack] = if (readTag("Stage").isEmpty)
     Some(FlexibleStack(
@@ -35,10 +35,17 @@ class RestorerConfig(config: Configuration) extends AwsInstanceTags {
       "not-applicable"))
   else None
 
-  val allStacks = List(
-    FlexibleStack(stackName, effectiveStage),
-    FlexibleStack(s"$stackName-secondary", effectiveStage)
-  ) ++ localStack
+  val destinationStages = effectiveStage match {
+    case "PROD" => List("PROD", "CODE")
+    case "CODE" => List("CODE")
+  }
+
+  val allStacks = destinationStages.flatMap{ thisStage =>
+    List(
+      FlexibleStack(stackName, thisStage),
+      FlexibleStack(s"$stackName-secondary", thisStage)
+    )
+  } ++ localStack
 
   val sourceStacks = allStacks.filter(_.stage == effectiveStage)
 

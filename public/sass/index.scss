@@ -49,3 +49,11 @@ h6, h4 {
 .center {
  @include center-children;
 }
+
+.full-width {
+    width: 100%;
+}
+
+.no-shrink {
+    flex-shrink: 0;
+}

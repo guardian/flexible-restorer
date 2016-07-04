@@ -28,6 +28,7 @@ gu-box.modal__content {
   z-index: 2;
   padding: 40px 30px 20px 30px;
   box-shadow: 15px 15px 30px rgba(0, 0, 0, 0.1);
+  width: 80%;
 }
 
 .modal__content__title {
@@ -57,6 +58,74 @@ gu-box.modal__content {
   margin-left: 10px;
 }
 
+.modal__content__destination-list {
+    margin-top: 5px;
+    margin-bottom: 0;
+    padding-left: 0;
+    & li {
+        list-style: none;
+        width: 100%;
+        border: 1px solid $color-400-grey;
+        box-sizing: border-box;
+        padding: 8px;
+        &:not(:last-child) {
+            margin-bottom: 10px;
+        }
+    };
+}
+
+.modal__content__destination-form {
+    .label {
+        position: relative;
+        top: -5px;
+    }
+    & label {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    & .checked-decal {
+        pointer-events: none;
+        position: absolute;
+        left: 5px;
+        font-size: 22px;
+        color: green;
+        opacity: 0;
+        transition: opacity .2s ease-in-out;
+        &:before {
+            content: '\2713';
+        }
+    }
+}
+
+.modal__content__destination-form input {
+    //reset
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border: 1px solid #9a9a9a;
+    &:checked + .checked-decal {
+        opacity: 1;
+    }
+    &:focus {
+        outline: 0;
+    }
+    &:disabled {
+        background: $color-200-grey;
+    }
+}
+
+.modal__content__destination-arrow {
+    font-size: xx-large;
+}
+
+.modal__content__source {
+    border: 1px solid $color-400-grey;
+    padding: 8px;
+}
+
 .modal__content__form {
   .label {
     position: relative;
@@ -68,8 +137,8 @@ gu-box.modal__content {
   & .checked-decal {
     pointer-events: none;
     position: absolute;
-    top: 11px;
-    left: 2px;
+    top: 14px;
+    left: 5px;
     font-size: 22px;
     color: green;
     opacity: 0;
@@ -103,8 +172,8 @@ gu-box.modal__content {
   }
 }
 
-.modal__content__btn--close {
-  margin-right: 10px;
+.modal__content__btn {
+  margin-left: 10px;
 }
 
 .modal__content__track {

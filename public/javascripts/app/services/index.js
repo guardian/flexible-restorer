@@ -3,12 +3,14 @@ import SnapshotServiceMod from './SnapshotCollectionService';
 import RestoreService from './RestoreService';
 import MixpanelServiceMod from './MixpanelService';
 import UserServiceMod from './UserService';
+import DateFormatServiceMod from './DateFormatService';
 
 var services = angular.module('restorerServices', [
   'SnapshotServiceMod',
   'RestoreServiceMod',
   'MixpanelServiceMod',
-  'UserServiceMod'
+  'UserServiceMod',
+  'DateFormatServiceMod'
 ]);
 
 export default services;
