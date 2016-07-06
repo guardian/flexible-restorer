@@ -26,8 +26,8 @@ System.config({
     "moment": "npm:moment@2.10.2",
     "necolas/normalize.css": "npm:normalize.css@3.0.2",
     "normalize.css": "npm:normalize.css@3.0.3",
-    "svg": "github:cutandpastey/plugin-svg@0.2.0",
     "systemjs-plugin-css": "npm:systemjs-plugin-css@0.1.20",
+    "text": "github:systemjs/plugin-text@0.0.2",
     "traceur": "github:jmcriffey/bower-traceur@0.0.93",
     "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.93",
     "github:angular/bower-angular-route@1.3.15": {
