@@ -223,7 +223,7 @@
                                                                id="{{dest.systemId}}"
                                                                name="destination"
                                                                ng-disabled="!dest.available"
-                                                               ng-model="selectedDestination"
+                                                               ng-model="$parent.selectedDestination"
                                                                ng-value="dest"/>
                                                         <span class="checked-decal"></span>
                                                         <span>{{dest.displayName}} <em ng-bind-html="dest.changeString"></em></span>
