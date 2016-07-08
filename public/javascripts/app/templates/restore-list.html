@@ -186,7 +186,7 @@
          ng-controller="ModalCtrl as modalCtrl"
          ng-class="{ 'visually-hidden': !isActive }">
         <gu-box class="modal__content" variant="primary">
-            <form novalidate class="modal-form" ng-controller="RestoreFormCtrl as formCtrl">
+            <form novalidate class="modal-form" ng-controller="RestoreFormCtrl as formCtrl" ng-submit="formCtrl.restore()">
                 <div class="modal__content__track">
                     <gu-row>
                         <gu-column ng-class="{ 'in-active': isLoading }" class="form-panel" span="6">
@@ -223,7 +223,7 @@
                                                                id="{{dest.systemId}}"
                                                                name="destination"
                                                                ng-disabled="!dest.available"
-                                                               ng-model="selectedDestination"
+                                                               ng-model="$parent.selectedDestination"
                                                                ng-value="dest"/>
                                                         <span class="checked-decal"></span>
                                                         <span>{{dest.displayName}} <em ng-bind-html="dest.changeString"></em></span>
@@ -262,8 +262,7 @@
                             <!-- ACTIONS -->
                             <gu-row variant="reverse" class="modal__content__container">
                                 <gu-btn variant="active" class="modal__content__btn" type="submit"
-                                        ng-disabled="!selfInContent || !elseInContent"
-                                        ng-click="formCtrl.restore()">
+                                        ng-disabled="!selfInContent || !elseInContent">
                                     <gu-icon variant="wrench-disabled"></gu-icon>
                                     Restore Version
                                 </gu-btn>
