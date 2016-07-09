@@ -9,6 +9,9 @@ scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Xfatal-warning
 val awsSdkVersion = "1.11.5"
 
 libraryDependencies ++= Seq(
+  "com.amazonaws" % "aws-lambda-java-core" % "1.1.0",
+  "com.amazonaws" % "aws-lambda-java-events" % "1.1.0" intransitive(),
+  "com.amazonaws" % "aws-lambda-java-log4j" % "1.0.0",
   "com.gu" %% "pan-domain-auth-play_2-5" % "0.3.0",
   "net.logstash.logback" % "logstash-logback-encoder" % "4.6",
   "com.gu" % "kinesis-logback-appender" % "1.2.0",
@@ -22,6 +25,8 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "2.2.6" % Test
 )
 
+publishMavenStyle := false
+
 lazy val mainProject = project.in(file("."))
   .enablePlugins(PlayScala, RiffRaffArtifact)
   .settings(Defaults.coreDefaultSettings: _*)
@@ -29,7 +34,7 @@ lazy val mainProject = project.in(file("."))
     routesGenerator := InjectedRoutesGenerator,
     // Never interested in the version number in the artifact name
     name in Universal := normalizedName.value,
-    topLevelDirectory in Universal := Some(normalizedName.value),
+    topLevelDirectory in Universal := None,
     riffRaffPackageName := s"editorial-tools:flexible:${name.value}",
     riffRaffManifestProjectName := riffRaffPackageName.value,
     riffRaffBuildIdentifier :=  Option(System.getenv("CIRCLE_BUILD_NUM")).getOrElse("dev"),
