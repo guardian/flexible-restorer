@@ -5,7 +5,7 @@ import com.amazonaws.services.lambda.runtime.{Context => λContext}
 import play.api.ApplicationLoader.Context
 import play.api.mvc.{AnyContentAsEmpty, RequestHeader}
 import play.api.test.{FakeHeaders, FakeRequest, Helpers, Writeables}
-import play.api.{Configuration, Environment, Mode}
+import play.api.{Configuration, Environment, Mode, Play}
 import play.core.DefaultWebCommands
 
 import scala.collection.JavaConverters._
@@ -25,6 +25,8 @@ class LambdaEntrypoint extends Writeables {
     )
     val app = appLoader.load(appContext)
     context.getLogger.log("Now I have an application!")
+
+    Play.start(app)
 
     val request = Request.fromEvent(event.asScala.toMap)
 
