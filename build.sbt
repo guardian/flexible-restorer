@@ -32,6 +32,7 @@ lazy val mainProject = project.in(file("."))
   .enablePlugins(PlayScala, RiffRaffArtifact)
   .settings(Defaults.coreDefaultSettings: _*)
   .settings(
+    PlayKeys.externalizeResources := false,
     routesGenerator := InjectedRoutesGenerator,
     // Never interested in the version number in the artifact name
     name in Universal := normalizedName.value,
