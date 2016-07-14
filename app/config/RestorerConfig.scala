@@ -2,7 +2,7 @@ package config
 
 import _root_.aws.AwsInstanceTags
 import com.amazonaws.auth.profile.ProfileCredentialsProvider
-import com.amazonaws.auth.{AWSCredentialsProviderChain, DefaultAWSCredentialsProviderChain, InstanceProfileCredentialsProvider}
+import com.amazonaws.auth.{AWSCredentialsProviderChain, DefaultAWSCredentialsProviderChain, EnvironmentVariableCredentialsProvider, InstanceProfileCredentialsProvider}
 import helpers.KinesisAppenderConfig
 import models.FlexibleStack
 import play.api.Configuration
@@ -61,7 +61,8 @@ class RestorerConfig(config: Configuration) extends AwsInstanceTags {
   val profile: String = config.getString("profile").getOrElse("composer")
   val creds = new AWSCredentialsProviderChain(
     new ProfileCredentialsProvider(profile),
-    new InstanceProfileCredentialsProvider
+    new InstanceProfileCredentialsProvider,
+    new EnvironmentVariableCredentialsProvider
   )
 
   // Logging
