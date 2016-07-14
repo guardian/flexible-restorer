@@ -11,34 +11,38 @@ import play.core.DefaultWebCommands
 import scala.collection.JavaConverters._
 
 class LambdaEntrypoint extends Writeables {
+
+  println("We started and ran!")
+  val appLoader = new AppLoader()
+  println("We newed up an app loader")
+  val environment = new Environment(new File("/"), getClass.getClassLoader, Mode.Prod)
+  val configuration = Configuration.load(environment)
+  val appContext = new Context(
+    environment,
+    None,
+    new DefaultWebCommands(),
+    configuration
+  )
+  val app = appLoader.load(appContext)
+  println("Now I have an application!")
+
+  Play.start(app)
+  println("Play application started")
+
   def run(event: JMap[String, Object], context: λContext): Unit = {
-    context.getLogger.log("We started and ran!")
-    val appLoader = new AppLoader()
-    context.getLogger.log("We newed up an app loader")
-    val environment = new Environment(new File("/"), getClass.getClassLoader, Mode.Prod)
-    val configuration = Configuration.load(environment)
-    val appContext = new Context(
-      environment,
-      None,
-      new DefaultWebCommands(),
-      configuration
-    )
-    val app = appLoader.load(appContext)
-    context.getLogger.log("Now I have an application!")
-
-    Play.start(app)
-
     val request = Request.fromEvent(event.asScala.toMap)
 
     // actually call the router
     val maybeResult = Helpers.route(app, request)(Helpers.writeableOf_AnyContentAsEmpty)
-    context.getLogger.log(s"Successfully routed $request")
+    context.getLogger.log(maybeResult.fold(s"Route not found for $request")(_ => s"Successfully routed $request"))
 
     import Helpers.defaultAwaitTimeout
 
     maybeResult.map(Helpers.contentAsString).foreach{result =>
       context.getLogger.log(result)
     }
+
+    context.getLogger.log("Finished")
   }
 }
 
