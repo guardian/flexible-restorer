@@ -11,7 +11,7 @@ class RestorerConfig(config: Configuration) extends AwsInstanceTags {
 
   lazy val stage = readTag("Stage") match {
     case Some(value) => value
-    case None => "DEV" // default to dev stage
+    case None => "CODE" // default to dev stage
   }
   lazy val effectiveStage = readTag("Stage") match {
     case Some(value) => value

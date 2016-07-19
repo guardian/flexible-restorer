@@ -45,8 +45,8 @@ class LambdaEntrypoint extends Writeables {
     import Helpers.defaultAwaitTimeout
 
     maybeResult.foreach { of =>
+      val body = Helpers.contentAsString(of)
       val result = Await.result(of, Helpers.defaultAwaitTimeout.duration)
-      val body = Await.result(result.body.consumeData(NoMaterializer), Helpers.defaultAwaitTimeout.duration)
       context.getLogger.log(s"Result:\n${result.header.status} ${result.header.reasonPhrase}\n$body")
     }
 
