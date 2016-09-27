@@ -37,12 +37,17 @@ object LambdaEntrypoint {
   println("Play application started")
 }
 
-object Params { implicit val reads = Json.reads[Params] }
-case class Params(header: Map[String, String], path: Map[String, String])
+object LambdaRequest {
+  implicit val reads = Json.reads[LambdaRequest]
+}
+case class LambdaRequest(httpMethod: String, path: String, headers: Option[Map[String, String]], body: Option[String])
 
-object Request {
-  implicit val reads = Json.reads[Request]
+object LambdaResponse {
+  implicit val writes = Json.writes[LambdaResponse]
+}
+case class LambdaResponse(statusCode: Int, headers: Map[String, String] = Map.empty, body: String = "")
 
+object RequestParser {
   def buildPath(uri: String, pathParams: Map[String, String]): String = {
     pathParams.foldLeft(uri){ case (acc, (key, value)) => acc.replace(s"{$key}", value) }
   }
@@ -51,45 +56,18 @@ object Request {
   def fromStream(stream: InputStream)(implicit logger: LambdaLogger): Option[FakeRequest[AnyContentAsEmpty.type]] = {
     val json = Json.parse(stream)
     logger.log(s"Got JSON: $json")
-    val request = Json.fromJson[Request](json)
+    val request = Json.fromJson[LambdaRequest](json)
     logger.log(s"Parsed request: $request")
     request.map { r =>
-      val substitutedPath = buildPath(r.uri, r.params.path)
       FakeRequest(
-        method = r.method,
-        uri = substitutedPath,
-        headers = FakeHeaders(r.params.header.toList),
+        method = r.httpMethod,
+        uri = r.path,
+        headers = FakeHeaders(r.headers.map(_.toList).getOrElse(Nil)),
         body = AnyContentAsEmpty
       )
     }.asOpt
   }
-
-  def fromEvent(event: Map[String, Object])(implicit logger: LambdaLogger): FakeRequest[AnyContentAsEmpty.type] = {
-    val method = event("method").asInstanceOf[String]
-    val uri = event("uri").asInstanceOf[String]
-    val headers = event.get("headers").map {
-      case headerMap: JavaLinkedHashMap[_,_] =>
-        headerMap.entrySet.asScala.flatMap { entry =>
-          (entry.getKey, entry.getValue) match {
-            case (key: String, value: String) => Some(key, value)
-            case _ => None
-          }
-        }.toMap
-      case _ => Map.empty[String, String]
-    }.getOrElse(Map.empty[String, String])
-
-    logger.log(s"Parsed headers $headers")
-
-    FakeRequest(
-      method = method,
-      uri = uri,
-      headers = FakeHeaders(headers.toList),
-      body = AnyContentAsEmpty
-    )
-  }
 }
-
-case class Request(method: String, uri: String, params: Params)
 
 // TODO: body should really be a byte array
 object Response {
@@ -102,7 +80,7 @@ class LambdaEntrypoint extends Writeables {
 
   def run(lambdaRequest: InputStream, lambdaResponse: OutputStream, context: λContext): Unit = {
     implicit val logger = context.getLogger
-    val request = Request.fromStream(lambdaRequest)
+    val request = RequestParser.fromStream(lambdaRequest)
 
     // actually call the router
     val maybeResult = request.flatMap(Helpers.route(LambdaEntrypoint.app, _)(Helpers.writeableOf_AnyContentAsEmpty))
@@ -116,23 +94,17 @@ class LambdaEntrypoint extends Writeables {
       val headers = result.header.headers ++
         result.body.contentType.map("Content-Type" ->) ++
         result.body.contentLength.map("Content-Length" -> _.toString)
-      val response = Response(body = body, status = result.header.status, result.header.reasonPhrase, headers)
+      val response = LambdaResponse(
+        statusCode = result.header.status,
+        headers = headers,
+        body = body)
       logger.log(s"Response object:\n$response")
       val json = Json.toJson(response)
       lambdaResponse.write(json.toString.getBytes("UTF-8"))
       lambdaResponse.flush()
       logger.log(s"Written JSON to response stream")
-      if (response.status != 200) {
-        throw new LocationException(s"status=${response.status}", response.headers("Location"))
-      }
     }
 
     context.getLogger.log("Finished")
   }
-}
-
-class LocationException(errorMessage: String, location: String) extends Exception(errorMessage) {
-  val locationQuery = if (location.contains('?')) "&ignoreThisQueryParameter=" else "?ignoreThisQueryParameter="
-  val locationElement = new StackTraceElement(s"$location$locationQuery", "", "", 0)
-  override def getStackTrace: Array[StackTraceElement] = Seq(locationElement).toArray
 }
