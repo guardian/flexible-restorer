@@ -9,6 +9,8 @@ import play.api.Configuration
 
 class RestorerConfig(config: Configuration) extends AwsInstanceTags {
 
+  val isInLambda = Option(System.getenv("LAMBDA_TASK_ROOT")).isDefined
+
   lazy val stage = readTag("Stage") match {
     case Some(value) => value
     case None => "CODE" // default to dev stage
@@ -52,7 +54,12 @@ class RestorerConfig(config: Configuration) extends AwsInstanceTags {
   val stacksById = allStacks.map(s => s.id -> s).toMap
   val stackFromId = stacksById.apply _
 
-  val hostName: String = "https://restorer." + domain
+  val hostName: String =
+    if (isInLambda)
+      "https://restorer-lambda." + domain
+    else
+      "https://restorer." + domain
+
 
   val validPreProductionEnvironments = Seq("code", "local")
 

@@ -1,10 +1,8 @@
 import java.io.{File, InputStream, OutputStream}
-import java.util.{LinkedHashMap => JavaLinkedHashMap}
 
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import com.amazonaws.services.lambda.runtime.{LambdaLogger, Context => λContext}
-import com.amazonaws.util.BinaryUtils
 import play.api.ApplicationLoader.Context
 import play.api.libs.json.Json
 import play.api.mvc.{AnyContentAsEmpty, Result}
@@ -12,7 +10,6 @@ import play.api.test.{FakeHeaders, FakeRequest, Helpers, Writeables}
 import play.api.{Configuration, Environment, Mode, Play}
 import play.core.DefaultWebCommands
 
-import scala.collection.JavaConverters._
 import scala.concurrent.Await
 import scala.language.postfixOps
 
@@ -40,12 +37,22 @@ object LambdaEntrypoint {
 object LambdaRequest {
   implicit val reads = Json.reads[LambdaRequest]
 }
-case class LambdaRequest(httpMethod: String, path: String, headers: Option[Map[String, String]], body: Option[String])
+case class LambdaRequest(
+  httpMethod: String,
+  path: String,
+  queryStringParameters: Option[Map[String, String]],
+  headers: Option[Map[String, String]],
+  body: Option[String]
+)
 
 object LambdaResponse {
   implicit val writes = Json.writes[LambdaResponse]
 }
-case class LambdaResponse(statusCode: Int, headers: Map[String, String] = Map.empty, body: String = "")
+case class LambdaResponse(
+  statusCode: Int,
+  headers: Map[String, String] = Map.empty,
+  body: String = ""
+)
 
 object RequestParser {
   def buildPath(uri: String, pathParams: Map[String, String]): String = {
@@ -59,9 +66,16 @@ object RequestParser {
     val request = Json.fromJson[LambdaRequest](json)
     logger.log(s"Parsed request: $request")
     request.map { r =>
+      val queryString = for {
+        queryMap <- r.queryStringParameters.toList
+        (name, value) <- queryMap
+      } yield s"$name=$value"
+      val pathWithQueryString =
+        if (queryString.isEmpty) r.path
+        else queryString.mkString(s"${r.path}?", "&", "")
       FakeRequest(
         method = r.httpMethod,
-        uri = r.path,
+        uri = pathWithQueryString,
         headers = FakeHeaders(r.headers.map(_.toList).getOrElse(Nil)),
         body = AnyContentAsEmpty
       )
@@ -69,7 +83,6 @@ object RequestParser {
   }
 }
 
-// TODO: body should really be a byte array
 object Response {
   implicit val writes = Json.writes[Response]
 }
@@ -88,22 +101,29 @@ class LambdaEntrypoint extends Writeables {
 
     import Helpers.defaultAwaitTimeout
 
-    maybeResult.foreach { of =>
-      val body = BinaryUtils.toBase64(Helpers.contentAsBytes(of).toArray)
-      val result: Result = Await.result(of, Helpers.defaultAwaitTimeout.duration)
+    val response = maybeResult.fold {
+      LambdaResponse(404, body = "Route not found")
+    }
+    { futureResult =>
+      val body = Helpers.contentAsBytes(futureResult).decodeString("utf-8")
+      val result: Result = Await.result(futureResult, Helpers.defaultAwaitTimeout.duration)
+
       val headers = result.header.headers ++
         result.body.contentType.map("Content-Type" ->) ++
         result.body.contentLength.map("Content-Length" -> _.toString)
-      val response = LambdaResponse(
+
+      LambdaResponse(
         statusCode = result.header.status,
         headers = headers,
-        body = body)
-      logger.log(s"Response object:\n$response")
-      val json = Json.toJson(response)
-      lambdaResponse.write(json.toString.getBytes("UTF-8"))
-      lambdaResponse.flush()
-      logger.log(s"Written JSON to response stream")
+        body = body
+      )
     }
+
+    logger.log(s"Response object:\n$response")
+    val json = Json.toJson(response)
+    lambdaResponse.write(json.toString.getBytes("UTF-8"))
+    lambdaResponse.flush()
+    logger.log(s"Written JSON to response stream")
 
     context.getLogger.log("Finished")
   }
