@@ -21,7 +21,7 @@ libraryDependencies ++= Seq(
   "com.amazonaws" % "aws-java-sdk-cloudwatch" % awsSdkVersion,
   "com.amazonaws" % "aws-java-sdk-kinesis" % awsSdkVersion,
   "com.amazonaws" % "aws-java-sdk-sts" % awsSdkVersion,
-  "net.sihil" %% "plambda" % "0.0.1",
+  "net.sihil" %% "plambda" % "0.0.2",
   component("play-test"),
   ws,
   "org.scalatest" %% "scalatest" % "2.2.6" % Test
