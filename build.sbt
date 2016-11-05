@@ -34,7 +34,7 @@ lazy val mainProject = project.in(file("."))
   .settings(Defaults.coreDefaultSettings: _*)
   .settings(
     PlayKeys.externalizeResources := false,
-    routesGenerator := InjectedRoutesGenerator,
+    routesGenerator := PlambdaInjectedRoutesGenerator,
     // Never interested in the version number in the artifact name
     name in Universal := normalizedName.value,
     topLevelDirectory in Universal := None,
