@@ -6,12 +6,11 @@ scalaVersion in ThisBuild := "2.11.8"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Xfatal-warnings")
 
-val awsSdkVersion = "1.11.5"
+val awsSdkVersion = "1.11.52"
+
+resolvers += "Plambda Releases" at "https://dl.bintray.com/sihil/plambda"
 
 libraryDependencies ++= Seq(
-  "com.amazonaws" % "aws-lambda-java-core" % "1.1.0",
-  "com.amazonaws" % "aws-lambda-java-events" % "1.1.0" intransitive(),
-  "com.amazonaws" % "aws-lambda-java-log4j" % "1.0.0",
   "com.gu" %% "pan-domain-auth-play_2-5" % "0.3.0" exclude("org.bouncycastle", "bcprov-jdk16"),
   "org.bouncycastle" % "bcprov-jdk15on" % "1.54",
   "net.logstash.logback" % "logstash-logback-encoder" % "4.6",
@@ -22,7 +21,8 @@ libraryDependencies ++= Seq(
   "com.amazonaws" % "aws-java-sdk-cloudwatch" % awsSdkVersion,
   "com.amazonaws" % "aws-java-sdk-kinesis" % awsSdkVersion,
   "com.amazonaws" % "aws-java-sdk-sts" % awsSdkVersion,
-  "com.typesafe.play" %% "play-test" % "2.5.3",
+  "net.sihil" %% "plambda" % "0.0.1",
+  component("play-test"),
   ws,
   "org.scalatest" %% "scalatest" % "2.2.6" % Test
 )
