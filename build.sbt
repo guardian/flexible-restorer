@@ -24,6 +24,12 @@ libraryDependencies ++= Seq(
 
 lazy val mainProject = project.in(file("."))
   .enablePlugins(PlayScala, RiffRaffArtifact)
+  .enablePlugins(JDebPackaging)
+  .settings(
+    javaOptions in Universal ++= Seq(
+          "-Dpidfile.path=/dev/null"
+     )
+  )
   .settings(Defaults.coreDefaultSettings: _*)
   .settings(
     routesGenerator := InjectedRoutesGenerator,
@@ -36,10 +42,18 @@ lazy val mainProject = project.in(file("."))
     riffRaffUploadArtifactBucket := Option("riffraff-artifact"),
     riffRaffUploadManifestBucket := Option("riffraff-builds"),
     riffRaffManifestBranch := Option(System.getenv("CIRCLE_BRANCH")).getOrElse("dev"),
-    riffRaffPackageType := (packageZipTarball in config("universal")).value,
     riffRaffArtifactResources ++= Seq(
-      riffRaffPackageType.value -> s"packages/${name.value}/${name.value}.tgz"
+      (packageBin in Debian).value -> s"packages/${name.value}/${name.value}.deb",
+         baseDirectory.value / "riff-raff.yaml" -> "riff-raff.yaml"
     ),
     sources in (Compile,doc) := Seq.empty,
     publishArtifact in (Compile, packageDoc) := false
   )
+
+import com.typesafe.sbt.packager.archetypes.ServerLoader.Systemd
+serverLoading in Debian := Systemd
+
+debianPackageDependencies := Seq("openjdk-8-jre-headless")
+maintainer := "Digital CMS <digitalcms.dev@guardian.co.uk>"
+packageSummary := "flexible-restorer"
+packageDescription := """content restorer for flexible content"""
