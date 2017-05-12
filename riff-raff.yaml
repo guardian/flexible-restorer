@@ -10,7 +10,7 @@ deployments:
       - flexible-restorer-ami-update
   flexible-restorer-ami-update:
     type: ami-cloudformation-parameter
-    app: flexible-restorer
+    app: restorer2
     parameters:
       amiTags:
         Recipe: editorial-tools-xenial-java8
