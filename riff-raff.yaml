@@ -16,4 +16,6 @@ deployments:
         Recipe: editorial-tools-xenial-java8
         AmigoStage: PROD
         BuiltBy: amigo
-      amiParameter: ImageId
+      cloudFormationStackName: Flexible-Restorer
+      cloudFormationStackByTags: false
+      prependStackToCloudFormationStackName: false
