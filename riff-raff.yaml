@@ -1,0 +1,21 @@
+regions: [eu-west-1]
+stacks: [flexible]
+
+deployments:
+  restorer2:
+    type: autoscaling
+    parameters:
+      bucket: composer-dist
+    dependencies:
+      - restorer2-ami-update
+  restorer2-ami-update:
+    type: ami-cloudformation-parameter
+    app: restorer2
+    parameters:
+      amiTags:
+        Recipe: editorial-tools-xenial-java8
+        AmigoStage: PROD
+        BuiltBy: amigo
+      cloudFormationStackName: Flexible-Restorer
+      cloudFormationStackByTags: false
+      prependStackToCloudFormationStackName: false
