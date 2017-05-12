@@ -1,0 +1,19 @@
+regions: [eu-west-1]
+stacks: [flexible]
+
+deployments:
+  flexible-restorer:
+    type: autoscaling
+    parameters:
+      bucket: composer-dist
+    dependencies:
+      - flexible-restorer-ami-update
+  flexible-restorer-ami-update:
+    type: ami-cloudformation-parameter
+    app: flexible-restorer
+    parameters:
+      amiTags:
+        Recipe: editorial-tools-xenial-java8
+        AmigoStage: PROD
+        BuiltBy: amigo
+      amiParameter: ImageId
