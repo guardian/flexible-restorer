@@ -2,13 +2,13 @@ regions: [eu-west-1]
 stacks: [flexible]
 
 deployments:
-  flexible-restorer:
+  restorer2:
     type: autoscaling
     parameters:
       bucket: composer-dist
     dependencies:
-      - flexible-restorer-ami-update
-  flexible-restorer-ami-update:
+      - restorer2-ami-update
+  restorer2-ami-update:
     type: ami-cloudformation-parameter
     app: restorer2
     parameters:
