@@ -5,3 +5,5 @@ resolvers += "Typesafe repository" at "https://repo.typesafe.com/typesafe/releas
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.5.3")
 
 addSbtPlugin("com.gu" % "sbt-riffraff-artifact" % "0.9.7")
+
+addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.9.0")
