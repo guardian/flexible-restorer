@@ -11,7 +11,7 @@ val awsSdkVersion = "1.11.5"
 libraryDependencies ++= Seq(
   "com.gu" %% "pan-domain-auth-play_2-5" % "0.3.0",
   "net.logstash.logback" % "logstash-logback-encoder" % "4.6",
-  "com.gu" % "kinesis-logback-appender" % "1.2.0",
+  "com.gu" % "kinesis-logback-appender" % "1.4.2",
   "com.gu" %% "editorial-permissions-client" % "0.3",
   "com.amazonaws" % "aws-java-sdk-s3" % awsSdkVersion,
   "com.amazonaws" % "aws-java-sdk-ec2" % awsSdkVersion,
