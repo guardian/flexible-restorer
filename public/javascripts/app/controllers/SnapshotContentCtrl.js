@@ -81,17 +81,17 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
       });
     }
 
-  this.toggleJSON = function() {
+    this.toggleJSON = function() {
       if ($scope.isShowingJSON) {
           mediator.publish('snapshot-list:display-html');
       } else {
           mediator.publish('snapshot-list:display-json');
       }
-  };
+    };
 
-      this.restoreContent = function() {
-          mediator.publish('snapshot-list:display-modal');
-      }
+    this.restoreContent = function() {
+      mediator.publish('snapshot-list:display-modal');
+    }
 
   }
 

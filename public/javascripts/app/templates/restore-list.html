@@ -66,6 +66,7 @@
                      ng-click="ctrl.onItemClicked($index)">
                     <h6 class="snapshot-list__item__content__actual-date" ng-bind-html="model.getCreatedDateHtml()"></h6>
                     <h6 class="snapshot-list__item__content__relative-date">{{ model.getRelativeDate() }} ago</h6>
+                    <h6 class="snapshot-list__item__content__name">Last modified by: {{ model.getUserEmail() }}</h6>
                     <h6 class="snapshot-list__item__content__reason">{{ model.getSnapshotReason() }}</h6>
                 </div>
 
