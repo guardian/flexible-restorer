@@ -120,6 +120,16 @@ SnapshotIdModelMod.factory('SnapshotIdModel', [
                 return this.get('createdDate').from(date, true);
             }
 
+            getUserEmail(){
+                const lastModifiedUser = this.get('summary.contentChangeDetails.lastModified.user');
+                if (!!lastModifiedUser) {
+                    const firstName = lastModifiedUser.firstName;
+                    const lastName = lastModifiedUser.lastName;
+                    return firstName + ' ' + lastName;
+                }
+                return "-";
+            }
+
             get(key){
                 return lodash_get(this.data, key);
             }
@@ -127,9 +137,9 @@ SnapshotIdModelMod.factory('SnapshotIdModel', [
 
 
         return {
-            getModel: (data)=> new SnapshotIdModel(data)
-        }
+                getModel: (data)=> new SnapshotIdModel(data)
     }
+    },
 ]);
 
 export default SnapshotIdModelMod;

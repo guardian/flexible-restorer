@@ -28,7 +28,7 @@ class Versions(val config: RestorerConfig, snapshotApi: SnapshotApi, override va
   }
 
   def versionList(contentId: String) = AuthAction.async {
-    val snapshotsWithMetadata = Attempt.successfulAttempts(config.sourceStacks.flatMap { case stack =>
+    val snapshotsWithMetadata = Attempt.successfulAttempts(config.sourceStacks.flatMap { stack =>
       val snapshots = snapshotApi.listForId(stack.snapshotBucket, contentId)
       snapshots.map { snapshotId =>
         val identifier = Json.toJson(snapshotId).asInstanceOf[JsObject]
