@@ -9,7 +9,7 @@ scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Xfatal-warning
 val awsSdkVersion = "1.11.5"
 
 libraryDependencies ++= Seq(
-  "com.gu" %% "pan-domain-auth-play_2-5" % "0.3.0",
+  "com.gu" %% "pan-domain-auth-play_2-5" % "0.5.1",
   "net.logstash.logback" % "logstash-logback-encoder" % "4.6",
   "com.gu" % "kinesis-logback-appender" % "1.4.2",
   "com.gu" %% "editorial-permissions-client" % "0.3",
