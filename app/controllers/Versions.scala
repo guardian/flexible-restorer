@@ -9,7 +9,6 @@ import play.api.libs.ws.WSClient
 import play.api.mvc._
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.language.postfixOps
 
 class Versions(val config: RestorerConfig, snapshotApi: SnapshotApi, override val wsClient: WSClient)
 

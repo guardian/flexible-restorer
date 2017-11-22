@@ -2,7 +2,7 @@ name := "restorer2"
 
 version := "1.0.0"
 
-scalaVersion in ThisBuild := "2.11.8"
+scalaVersion in ThisBuild := "2.11.11"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Xfatal-warnings")
 
@@ -30,6 +30,8 @@ lazy val mainProject = project.in(file("."))
           "-Dpidfile.path=/dev/null"
      )
   )
+  .settings(scalacOptions in Compile += "-Ywarn-unused-import")
+  .settings(scalacOptions in Compile -= "-Xfatal-warnings")
   .settings(Defaults.coreDefaultSettings: _*)
   .settings(
     routesGenerator := InjectedRoutesGenerator,
