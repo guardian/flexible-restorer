@@ -9,17 +9,17 @@ scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Xfatal-warning
 val awsSdkVersion = "1.11.5"
 
 libraryDependencies ++= Seq(
-  "com.gu" %% "pan-domain-auth-play_2-5" % "0.5.1",
-  "net.logstash.logback" % "logstash-logback-encoder" % "4.6",
-  "com.gu" % "kinesis-logback-appender" % "1.4.2",
-  "com.gu" %% "editorial-permissions-client" % "0.3",
-  "com.amazonaws" % "aws-java-sdk-s3" % awsSdkVersion,
-  "com.amazonaws" % "aws-java-sdk-ec2" % awsSdkVersion,
-  "com.amazonaws" % "aws-java-sdk-cloudwatch" % awsSdkVersion,
-  "com.amazonaws" % "aws-java-sdk-kinesis" % awsSdkVersion,
-  "com.amazonaws" % "aws-java-sdk-sts" % awsSdkVersion,
-  ws,
-  "org.scalatest" %% "scalatest" % "2.2.6" % Test
+    ws,
+    "com.gu" %% "pan-domain-auth-play_2-5" % "0.5.1",
+    "net.logstash.logback" % "logstash-logback-encoder" % "4.11",
+    "com.gu" % "kinesis-logback-appender" % "1.4.2",
+    "com.gu" %% "editorial-permissions-client" % "0.3",
+    "com.amazonaws" % "aws-java-sdk-s3" % awsSdkVersion,
+    "com.amazonaws" % "aws-java-sdk-ec2" % awsSdkVersion,
+    "com.amazonaws" % "aws-java-sdk-cloudwatch" % awsSdkVersion,
+    "com.amazonaws" % "aws-java-sdk-kinesis" % awsSdkVersion,
+    "com.amazonaws" % "aws-java-sdk-sts" % awsSdkVersion,
+    "org.scalatest" %% "scalatest" % "2.2.6" % Test
 )
 
 lazy val mainProject = project.in(file("."))
