@@ -9,7 +9,6 @@ import play.api.mvc._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.language.postfixOps
 
 class Login(permissionsClient: Permissions, val config: RestorerConfig, override val wsClient: WSClient)
   extends Controller with PanDomainAuthActions with Loggable {
