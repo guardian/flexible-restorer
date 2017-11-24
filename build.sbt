@@ -4,7 +4,7 @@ version := "1.0.0"
 
 scalaVersion in ThisBuild := "2.11.11"
 
-scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Xfatal-warnings")
+scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Ywarn-unused-import")
 
 val awsSdkVersion = "1.11.5"
 
@@ -31,8 +31,6 @@ lazy val mainProject = project.in(file("."))
           "-Dpidfile.path=/dev/null"
      )
   )
-  .settings(scalacOptions in Compile += "-Ywarn-unused-import")
-  .settings(scalacOptions in Compile -= "-Xfatal-warnings")
   .settings(Defaults.coreDefaultSettings: _*)
   .settings(
     routesGenerator := InjectedRoutesGenerator,
