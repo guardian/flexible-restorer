@@ -9,64 +9,61 @@ import play.api.Configuration
 
 class RestorerConfig(config: Configuration) extends AwsInstanceTags {
 
-  lazy val stage = readTag("Stage") match {
+  lazy val stage: String = readTag("Stage") match {
     case Some(value) => value
     case None => "DEV" // default to dev stage
   }
-  lazy val effectiveStage = readTag("Stage") match {
+  private lazy val effectiveStage: String = readTag("Stage") match {
     case Some(value) => value
     case None => "CODE" // use CODE when in development mode
   }
 
-  val domain = RestorerConfig.domainFromStage(stage)
-  val effectiveDomain = RestorerConfig.domainFromStage(effectiveStage)
+  val domain: String = RestorerConfig.domainFromStage(stage)
 
-  val stackName = "flexible"
+  private val stackName = "flexible"
 
-  val localStack: Option[FlexibleStack] = if (readTag("Stage").isEmpty)
+  private val localStack: Option[FlexibleStack] = if (readTag("Stage").isEmpty)
     Some(FlexibleStack(
-      "DEV:flexible",
-      "Local Flexible Content",
-      "flexible",
-      "DEV",
-      false,
-      "http://localhost:9082/api",
-      "https://composer.local.dev-gutools.co.uk",
-      "not-applicable"))
+      id = "DEV:flexible",
+      displayName = "Local Flexible Content",
+      stack = "flexible",
+      stage = "DEV",
+      isSecondary = false,
+      apiPrefix = "http://localhost:9082/api",
+      composerPrefix = "https://composer.local.dev-gutools.co.uk",
+      snapshotBucket = "not-applicable"))
   else None
 
-  val destinationStages = effectiveStage match {
+  private val destinationStages: List[String] = effectiveStage match {
     case "PROD" => List("PROD", "CODE")
     case "CODE" => List("CODE")
   }
 
-  val allStacks = destinationStages.flatMap{ thisStage =>
+  val allStacks: List[FlexibleStack] = destinationStages.flatMap { thisStage =>
     List(
       FlexibleStack(stackName, thisStage),
       FlexibleStack(s"$stackName-secondary", thisStage)
     )
   } ++ localStack
 
-  val sourceStacks = allStacks.filter(_.stage == effectiveStage)
+  val sourceStacks: List[FlexibleStack] = allStacks.filter(_.stage == effectiveStage)
 
-  val stacksById = allStacks.map(s => s.id -> s).toMap
-  val stackFromId = stacksById.apply _
+  private val stacksById: Map[String, FlexibleStack] = allStacks.map(s => s.id -> s).toMap
+  val stackFromId: (String) => FlexibleStack = stacksById.apply
 
   val hostName: String = "https://restorer." + domain
 
-  val validPreProductionEnvironments = Seq("code", "local")
+  val corsableDomains: List[String] = allStacks.map(_.composerPrefix)
 
-  val corsableDomains = allStacks.map(_.composerPrefix)
-
-  val profile: String = config.getString("profile").getOrElse("composer")
+  private val profile: String = config.getOptional[String]("profile").getOrElse("composer")
   val creds = new AWSCredentialsProviderChain(
     new ProfileCredentialsProvider(profile),
     new InstanceProfileCredentialsProvider
   )
 
   // Logging
-  lazy val loggingConfig = for {
-    stream <- config.getString("logging.stream")
+  lazy val loggingConfig: Option[KinesisAppenderConfig] = for {
+    stream <- config.getOptional[String]("logging.stream")
   } yield KinesisAppenderConfig(stream, new DefaultAWSCredentialsProviderChain())
 }
 

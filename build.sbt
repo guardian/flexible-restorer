@@ -10,7 +10,8 @@ val awsSdkVersion = "1.11.5"
 
 libraryDependencies ++= Seq(
     ws,
-    "com.gu" %% "pan-domain-auth-play_2-5" % "0.5.1",
+    "com.gu" %% "pan-domain-auth-play_2-6" % "0.5.1",
+    "com.typesafe.play" % "play-json-joda_2.11" % "2.6.7",
     "net.logstash.logback" % "logstash-logback-encoder" % "4.11",
     "com.gu" % "kinesis-logback-appender" % "1.4.2",
     "com.gu" %% "editorial-permissions-client" % "0.3",
@@ -49,8 +50,7 @@ lazy val mainProject = project.in(file("."))
     publishArtifact in (Compile, packageDoc) := false
   )
 
-import com.typesafe.sbt.packager.archetypes.ServerLoader.Systemd
-serverLoading in Debian := Systemd
+serverLoading in Debian := Some(ServerLoader.Systemd)
 
 debianPackageDependencies := Seq("openjdk-8-jre-headless")
 maintainer := "Digital CMS <digitalcms.dev@guardian.co.uk>"

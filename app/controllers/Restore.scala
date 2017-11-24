@@ -10,16 +10,16 @@ import models._
 import permissions.Permissions
 import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
-import play.api.mvc.{Controller, Result}
+import play.api.mvc._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
-import scala.concurrent.{Await, Future}
+import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.language.postfixOps
 import scala.util.control.NonFatal
 
-class Restore(snapshotApi: SnapshotApi, flexibleApi: FlexibleApi, permissions: Permissions, val config: RestorerConfig,
-  val wsClient: WSClient) extends Controller with PanDomainAuthActions with Loggable {
+class Restore(val controllerComponents: ControllerComponents, snapshotApi: SnapshotApi, flexibleApi: FlexibleApi, permissions: Permissions, val config: RestorerConfig,
+  val wsClient: WSClient) extends BaseController with PanDomainAuthActions with Loggable {
 
   def userFromPandaUser(user: PandaUser) = User(user.firstName, user.lastName, user.email)
 
@@ -67,4 +67,7 @@ class Restore(snapshotApi: SnapshotApi, flexibleApi: FlexibleApi, permissions: P
     }
     Future.sequence(destinations).map(d => Ok(Json.toJson(d)))
   }
+
+  protected val parser: BodyParser[AnyContent] = controllerComponents.parsers.default
+  protected val executionContext: ExecutionContext = controllerComponents.executionContext
 }

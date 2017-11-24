@@ -4,7 +4,9 @@ import config.RestorerConfig
 import play.api.libs.ws.WSClient
 import play.api.mvc._
 
-class Management(val config:RestorerConfig, override val wsClient: WSClient) extends Controller with PanDomainAuthActions {
+import scala.concurrent.ExecutionContext
+
+class Management(val controllerComponents: ControllerComponents, val config:RestorerConfig, override val wsClient: WSClient) extends BaseController with PanDomainAuthActions {
 
   def healthCheck = Action {
     Ok("Ok")
@@ -21,4 +23,7 @@ class Management(val config:RestorerConfig, override val wsClient: WSClient) ext
 
     Ok(info)
   }
+
+  protected val parser: BodyParser[AnyContent] = controllerComponents.parsers.default
+  protected val executionContext: ExecutionContext = controllerComponents.executionContext
 }
