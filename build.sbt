@@ -39,8 +39,8 @@ lazy val mainProject = project.in(file("."))
     riffRaffManifestProjectName := riffRaffPackageName.value,
     riffRaffBuildIdentifier :=  Option(System.getenv("CIRCLE_BUILD_NUM")).getOrElse("dev"),
     riffRaffUploadArtifactBucket := Option("riffraff-artifact"),
-    riffRaffUploadManifestBucket := Option("CIRCLE_BRANCH"),
-    riffRaffManifestBranch := Option(System.getenv("BRANCH_NAME")).getOrElse("dev"),
+    riffRaffUploadManifestBucket := Option("riffraff-builds"),
+    riffRaffManifestBranch := Option(System.getenv("CIRCLE_BRANCH")).getOrElse("dev"),
     riffRaffArtifactResources := Seq(
       (packageBin in Debian).value -> s"${name.value}/${name.value}.deb",
          baseDirectory.value / "riff-raff.yaml" -> "riff-raff.yaml"
