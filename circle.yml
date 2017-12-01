@@ -4,15 +4,13 @@ machine:
   java:
       version: oraclejdk8
 general:
-  branches:
-    only:
-      - master
   artifacts:
     - "target/riffraff/artifacts.zip"
 dependencies:
   cache_directories:
     - "~/.jspm"
     - "~/.sbt"
+    - "~/.ivy2"
     - "target/resolution-cache"
     - "target/streams"
     - "project/target/resolution-cache"
@@ -22,6 +20,8 @@ dependencies:
     - node_modules/.bin/jspm config registries.github.auth $JSPM_GITHUB_AUTH_TOKEN
     - npm install
     - npm run bundle
+    - wget -q https://dl.bintray.com/sbt/debian/sbt-0.13.12.deb
+    - sudo dpkg -i sbt-0.13.12.deb
   override:
     - sbt compile
 test:
