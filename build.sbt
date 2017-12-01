@@ -11,7 +11,7 @@ val awsSdkVersion = "1.11.5"
 libraryDependencies ++= Seq(
     ws,
     "com.gu" %% "pan-domain-auth-play_2-6" % "0.5.1",
-    "com.typesafe.play" % "play-json-joda_2.11" % "2.6.7",
+    "com.typesafe.play" %% "play-json-joda" % "2.6.7",
     "net.logstash.logback" % "logstash-logback-encoder" % "4.11",
     "com.gu" % "kinesis-logback-appender" % "1.4.2",
     "com.gu" %% "editorial-permissions-client" % "0.3",
@@ -19,7 +19,6 @@ libraryDependencies ++= Seq(
     "com.amazonaws" % "aws-java-sdk-ec2" % awsSdkVersion,
     "com.amazonaws" % "aws-java-sdk-cloudwatch" % awsSdkVersion,
     "com.amazonaws" % "aws-java-sdk-kinesis" % awsSdkVersion,
-    "com.amazonaws" % "aws-java-sdk-sts" % awsSdkVersion,
     "org.scalatest" %% "scalatest" % "2.2.6" % Test
 )
 
