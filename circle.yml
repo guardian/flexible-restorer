@@ -4,9 +4,6 @@ machine:
   java:
       version: oraclejdk8
 general:
-  branches:
-    only:
-      - master
   artifacts:
     - "target/riffraff/artifacts.zip"
 dependencies:

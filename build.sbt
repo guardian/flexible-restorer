@@ -37,9 +37,9 @@ lazy val mainProject = project.in(file("."))
     routesGenerator := InjectedRoutesGenerator,
     riffRaffPackageName := s"editorial-tools:flexible:${name.value}",
     riffRaffManifestProjectName := riffRaffPackageName.value,
-    riffRaffBuildIdentifier :=  Option(System.getenv("BUILD_NUM")).getOrElse("dev"),
+    riffRaffBuildIdentifier :=  Option(System.getenv("CIRCLE_BUILD_NUM")).getOrElse("dev"),
     riffRaffUploadArtifactBucket := Option("riffraff-artifact"),
-    riffRaffUploadManifestBucket := Option("riffraff-builds"),
+    riffRaffUploadManifestBucket := Option("CIRCLE_BRANCH"),
     riffRaffManifestBranch := Option(System.getenv("BRANCH_NAME")).getOrElse("dev"),
     riffRaffArtifactResources := Seq(
       (packageBin in Debian).value -> s"${name.value}/${name.value}.deb",
