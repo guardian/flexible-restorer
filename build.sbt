@@ -24,7 +24,7 @@ libraryDependencies ++= Seq(
 
 lazy val mainProject = project.in(file("."))
   .enablePlugins(PlayScala, RiffRaffArtifact)
-  .enablePlugins(JDebPackaging)
+  .enablePlugins(JDebPackaging, SystemdPlugin)
   .settings(
     javaOptions in Universal ++= Seq(
           "-Dpidfile.path=/dev/null"
