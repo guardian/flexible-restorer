@@ -29,7 +29,7 @@ class FlexibleApi(wsClient: WSClient) extends Loggable {
     val attempt = Attempt.Async.Right(
       wsClient
         .url(s"${stack.apiPrefix}/restorer/content/$contentId")
-        .withHeaders(userHeader)
+        .withHttpHeaders(userHeader)
         .put(snapshot.data)
     )
     attempt.flatMap { response =>
@@ -44,7 +44,7 @@ class FlexibleApi(wsClient: WSClient) extends Loggable {
     val attempt = Attempt.Async.Right(
       wsClient
         .url(s"${stack.apiPrefix}/restorer/contentRaw/$contentId")
-        .withHeaders(userHeader)
+        .withHttpHeaders(userHeader)
         .put(snapshot.data)
     )
     attempt.flatMap { response =>

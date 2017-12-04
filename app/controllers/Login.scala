@@ -8,10 +8,10 @@ import play.api.libs.ws.WSClient
 import play.api.mvc._
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
-class Login(permissionsClient: Permissions, val config: RestorerConfig, override val wsClient: WSClient)
-  extends Controller with PanDomainAuthActions with Loggable {
+class Login(val controllerComponents: ControllerComponents, permissionsClient: Permissions, val config: RestorerConfig, override val wsClient: WSClient)
+  extends BaseController with PanDomainAuthActions with Loggable {
 
   def oauthCallback = Action.async { implicit request =>
     processGoogleCallback()
@@ -36,4 +36,7 @@ class Login(permissionsClient: Permissions, val config: RestorerConfig, override
       Ok(Json.toJson(nameMap))
     }
   }
+
+  protected val parser: BodyParser[AnyContent] = controllerComponents.parsers.default
+  protected val executionContext: ExecutionContext = controllerComponents.executionContext
 }

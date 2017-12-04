@@ -4,13 +4,14 @@ version := "1.0.0"
 
 scalaVersion in ThisBuild := "2.11.11"
 
-scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Xfatal-warnings")
+scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Ywarn-unused-import")
 
 val awsSdkVersion = "1.11.5"
 
 libraryDependencies ++= Seq(
     ws,
-    "com.gu" %% "pan-domain-auth-play_2-5" % "0.5.1",
+    "com.gu" %% "pan-domain-auth-play_2-6" % "0.5.1",
+    "com.typesafe.play" %% "play-json-joda" % "2.6.7",
     "net.logstash.logback" % "logstash-logback-encoder" % "4.11",
     "com.gu" % "kinesis-logback-appender" % "1.4.2",
     "com.gu" %% "editorial-permissions-client" % "0.3",
@@ -18,20 +19,17 @@ libraryDependencies ++= Seq(
     "com.amazonaws" % "aws-java-sdk-ec2" % awsSdkVersion,
     "com.amazonaws" % "aws-java-sdk-cloudwatch" % awsSdkVersion,
     "com.amazonaws" % "aws-java-sdk-kinesis" % awsSdkVersion,
-    "com.amazonaws" % "aws-java-sdk-sts" % awsSdkVersion,
     "org.scalatest" %% "scalatest" % "2.2.6" % Test
 )
 
 lazy val mainProject = project.in(file("."))
   .enablePlugins(PlayScala, RiffRaffArtifact)
-  .enablePlugins(JDebPackaging)
+  .enablePlugins(JDebPackaging, SystemdPlugin)
   .settings(
     javaOptions in Universal ++= Seq(
           "-Dpidfile.path=/dev/null"
      )
   )
-  .settings(scalacOptions in Compile += "-Ywarn-unused-import")
-  .settings(scalacOptions in Compile -= "-Xfatal-warnings")
   .settings(Defaults.coreDefaultSettings: _*)
   .settings(
     routesGenerator := InjectedRoutesGenerator,
@@ -49,8 +47,7 @@ lazy val mainProject = project.in(file("."))
     publishArtifact in (Compile, packageDoc) := false
   )
 
-import com.typesafe.sbt.packager.archetypes.ServerLoader.Systemd
-serverLoading in Debian := Systemd
+serverLoading in Debian := Some(ServerLoader.Systemd)
 
 debianPackageDependencies := Seq("openjdk-8-jre-headless")
 maintainer := "Digital CMS <digitalcms.dev@guardian.co.uk>"

@@ -8,11 +8,11 @@ import play.api.libs.json._
 import play.api.libs.ws.WSClient
 import play.api.mvc._
 
+import scala.concurrent.ExecutionContext
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class Versions(val config: RestorerConfig, snapshotApi: SnapshotApi, override val wsClient: WSClient)
-
-  extends Controller with PanDomainAuthActions with Loggable {
+class Versions(val controllerComponents: ControllerComponents, val config: RestorerConfig, snapshotApi: SnapshotApi, override val wsClient: WSClient)
+  extends BaseController with PanDomainAuthActions with Loggable {
   // Show a specific version
   def show(systemId: String, contentId: String, timestamp: String) = AuthAction.async {
     val stack = config.stackFromId(systemId)
@@ -59,4 +59,7 @@ class Versions(val config: RestorerConfig, snapshotApi: SnapshotApi, override va
     val count = VersionCount(contentId, storeCounts.sum)
     Ok(Json.toJson(count))
   }
+
+  protected val parser: BodyParser[AnyContent] = controllerComponents.parsers.default
+  protected val executionContext: ExecutionContext = controllerComponents.executionContext
 }

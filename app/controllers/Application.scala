@@ -6,6 +6,8 @@ import play.api.data._
 import play.api.libs.ws.WSClient
 import play.api.mvc._
 
+import scala.concurrent.ExecutionContext
+
 // Pan domain
 import com.amazonaws.auth.AWSCredentialsProvider
 import com.gu.pandomainauth.action.AuthActions
@@ -30,7 +32,7 @@ trait PanDomainAuthActions extends AuthActions {
 }
 
 
-class Application(val config:RestorerConfig, override val wsClient: WSClient) extends Controller with PanDomainAuthActions with Loggable {
+class Application(val controllerComponents: ControllerComponents, val config:RestorerConfig, override val wsClient: WSClient) extends BaseController with PanDomainAuthActions with Loggable {
 
   val urlForm = Form(
     "url" -> nonEmptyText
@@ -44,7 +46,7 @@ class Application(val config:RestorerConfig, override val wsClient: WSClient) ex
     Ok(views.html.main(s"Composer Restorer - Versions of $contentId"))
   }
 
-  def preflight(routes: String) = CORSable(config.corsableDomains: _*) {
+  def preflight(routes: String) = CORSable(executionContext, config.corsableDomains: _*) {
     Action { implicit req =>
       val requestedHeaders = req.headers.get("Access-Control-Request-Headers")
 
@@ -53,4 +55,7 @@ class Application(val config:RestorerConfig, override val wsClient: WSClient) ex
         CORSable.CORS_ALLOW_HEADERS -> requestedHeaders.getOrElse(""))
     }
   }
+
+  protected val parser: BodyParser[AnyContent] = controllerComponents.parsers.default
+  protected val executionContext: ExecutionContext = controllerComponents.executionContext
 }

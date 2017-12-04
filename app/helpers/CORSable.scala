@@ -1,11 +1,12 @@
 package helpers
 
 import play.api.mvc._
-import scala.concurrent.Future
+
+import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 /* Must allow cross origin requests for the templating service */
-case class CORSable[A](origins: String*)(action: Action[A]) extends Action[A] {
+case class CORSable[A](execContext: ExecutionContext, origins: String*)(action: Action[A]) extends Action[A] {
   def apply(request: Request[A]): Future[Result] = {
 
     val headers = request.headers.get("Origin").map { origin =>
@@ -18,6 +19,8 @@ case class CORSable[A](origins: String*)(action: Action[A]) extends Action[A] {
   }
 
   lazy val parser = action.parser
+
+  def executionContext: ExecutionContext = execContext
 }
 
 
