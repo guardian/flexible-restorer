@@ -23,7 +23,7 @@ object FlexibleStack {
     val suffix = if (isSecondary) secondarySuffix else ""
 
     val displayName = s"Composer$suffix ($stage)"
-    val apiPrefix = s"http://api.$stage.$stack.gudiscovery.:8080"
+    val apiPrefix = s"http://flexible-content-api-proxy.$stage.$stack.gudiscovery.:8080"
     val composerPrefix = s"https://composer$suffix.$domain"
     val snapshotBucket = s"$stack-snapshotter-${stage.toLowerCase}"
 
