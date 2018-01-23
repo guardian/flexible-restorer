@@ -16,7 +16,7 @@ deployments:
         Recipe: editorial-tools-xenial-java8
         AmigoStage: CODE
         BuiltBy: amigo
-      amiEncrypted: false
+      amiEncrypted: true
       cloudFormationStackName: Flexible-Restorer
       cloudFormationStackByTags: false
       prependStackToCloudFormationStackName: false
