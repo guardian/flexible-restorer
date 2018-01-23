@@ -14,8 +14,9 @@ deployments:
     parameters:
       amiTags:
         Recipe: editorial-tools-xenial-java8
-        AmigoStage: PROD
+        AmigoStage: CODE
         BuiltBy: amigo
+      amiEncrypted: false
       cloudFormationStackName: Flexible-Restorer
       cloudFormationStackByTags: false
       prependStackToCloudFormationStackName: false
