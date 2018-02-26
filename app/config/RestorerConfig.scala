@@ -1,21 +1,20 @@
 package config
 
-import _root_.models.FlexibleStack
 import com.amazonaws.auth.profile.ProfileCredentialsProvider
 import com.amazonaws.auth.{AWSCredentialsProviderChain, DefaultAWSCredentialsProviderChain, InstanceProfileCredentialsProvider}
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement
 import com.gu.configraun.aws.AWSSimpleSystemsManagementFactory
 import com.gu.configraun.models._
+import models.FlexibleStack
 import com.gu.configraun.{Configraun, Errors, models}
 import helpers.KinesisAppenderConfig
-import play.api.{Mode, Logger}
+import play.api.Logger
 
-class RestorerConfig(mode: Mode) extends AwsInstanceTags {
+class RestorerConfig(config: Configuration) extends AwsInstanceTags {
 
-  lazy val stage: String = mode match {
-    case Mode.Prod => "PROD"
-    case Mode.Test => "CODE"
-    case Mode.Dev => "DEV"
+  lazy val stage: String = readTag("Stage") match {
+    case Some(value) => value
+    case None => "DEV" // default to dev stage
   }
   private lazy val effectiveStage: String = stage match {
     case "DEV" => "CODE" // use CODE when in development mode
@@ -66,7 +65,7 @@ class RestorerConfig(mode: Mode) extends AwsInstanceTags {
   )
 
   implicit val client: AWSSimpleSystemsManagement = AWSSimpleSystemsManagementFactory(AWS.region.getName, profile)
-  private val paramStoreConfig: models.Configuration = Configraun.loadConfig(Identifier(Stack(stackName), App("restorer"), Stage.fromString(effectiveStage).get)) match {
+  private lazy val configraunConfig: models.Configuration = Configraun.loadConfig(Identifier(Stack(stackName), App("restorer"), Stage.fromString(effectiveStage).get)) match {
     case Left(a) =>
       Logger.error(s"Unable to load Configraun configuration from AWS (${a.message})")
       sys.exit(1)
@@ -77,7 +76,7 @@ class RestorerConfig(mode: Mode) extends AwsInstanceTags {
 
   // Logging
   lazy val loggingConfig: Either[Errors.ConfigraunError, KinesisAppenderConfig] = for {
-    stream <- paramStoreConfig.getAsString("/logging.stream")
+    stream <- configraunConfig.getAsString("/logging.stream")
   } yield KinesisAppenderConfig(stream, new DefaultAWSCredentialsProviderChain())
 }
 

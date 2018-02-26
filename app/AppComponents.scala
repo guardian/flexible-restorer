@@ -11,8 +11,7 @@ import play.api.ApplicationLoader.Context
 import play.api.libs.ws.ahc.AhcWSComponents
 import play.api.mvc.EssentialFilter
 import play.api.routing.Router
-import play.api.{BuiltInComponentsFromContext, LoggerConfigurator, Mode}
-import router.Routes
+import play.api.{BuiltInComponentsFromContext, Configuration, LoggerConfigurator, Mode}
 
 import scala.concurrent.ExecutionContext.Implicits.{global => globalExecutionContext}
 
@@ -23,7 +22,7 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
 
   override lazy val httpFilters: Seq[EssentialFilter] = Seq(new HSTSFilter()(materializer, globalExecutionContext))
 
-  val restorerConfig = new RestorerConfig(context.environment.mode)
+  val restorerConfig = new RestorerConfig(configuration)
 
   val panDomainSettings: PanDomainAuthSettingsRefresher = new PanDomainAuthSettingsRefresher(
     domain = restorerConfig.domain,
