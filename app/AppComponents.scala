@@ -23,7 +23,7 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
 
   override lazy val httpFilters: Seq[EssentialFilter] = Seq(new HSTSFilter()(materializer, globalExecutionContext))
 
-  val restorerConfig = new RestorerConfig(configuration)
+  val restorerConfig = new RestorerConfig(context.environment.mode)
 
   val panDomainSettings: PanDomainAuthSettingsRefresher = new PanDomainAuthSettingsRefresher(
     domain = restorerConfig.domain,
@@ -32,7 +32,7 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
     actorSystem = actorSystem
   )
 
-  if (context.environment.mode == Mode.Prod) restorerConfig.loggingConfig.foreach(LogStash.init)
+  if (context.environment.mode != Mode.Dev) restorerConfig.loggingConfig.map(LogStash.init)
 
   val region: Regions = Regions.fromName(configuration.getOptional[String]("aws.region") getOrElse "eu-west-1")
   val s3Client: AmazonS3 = AmazonS3ClientBuilder.standard().withCredentials(restorerConfig.creds).withRegion(region).build()

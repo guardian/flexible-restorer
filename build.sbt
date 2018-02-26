@@ -13,6 +13,7 @@ libraryDependencies ++= Seq(
     "com.gu" %% "pan-domain-auth-play_2-6" % "0.7.0",
     "com.gu" % "kinesis-logback-appender" % "1.4.2",
     "com.gu" %% "editorial-permissions-client" % "0.8",
+    "com.gu" %% "configraun" % "0.3",
     "com.typesafe.play" %% "play-json-joda" % "2.6.7",
     "net.logstash.logback" % "logstash-logback-encoder" % "4.11",
     "com.amazonaws" % "aws-java-sdk-s3" % awsSdkVersion,

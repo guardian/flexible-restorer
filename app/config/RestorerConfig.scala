@@ -1,28 +1,32 @@
 package config
 
-import _root_.aws.AwsInstanceTags
+import _root_.models.FlexibleStack
 import com.amazonaws.auth.profile.ProfileCredentialsProvider
 import com.amazonaws.auth.{AWSCredentialsProviderChain, DefaultAWSCredentialsProviderChain, InstanceProfileCredentialsProvider}
+import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement
+import com.gu.configraun.aws.AWSSimpleSystemsManagementFactory
+import com.gu.configraun.models._
+import com.gu.configraun.{Configraun, Errors, models}
 import helpers.KinesisAppenderConfig
-import models.FlexibleStack
-import play.api.Configuration
+import play.api.{Mode, Logger}
 
-class RestorerConfig(config: Configuration) extends AwsInstanceTags {
+class RestorerConfig(mode: Mode) extends AwsInstanceTags {
 
-  lazy val stage: String = readTag("Stage") match {
-    case Some(value) => value
-    case None => "DEV" // default to dev stage
+  lazy val stage: String = mode match {
+    case Mode.Prod => "PROD"
+    case Mode.Test => "CODE"
+    case Mode.Dev => "DEV"
   }
-  private lazy val effectiveStage: String = readTag("Stage") match {
-    case Some(value) => value
-    case None => "CODE" // use CODE when in development mode
+  private lazy val effectiveStage: String = stage match {
+    case "DEV" => "CODE" // use CODE when in development mode
+    case value => value
   }
 
   val domain: String = RestorerConfig.domainFromStage(stage)
 
   private val stackName = "flexible"
 
-  private val localStack: Option[FlexibleStack] = if (readTag("Stage").isEmpty)
+  private val localStack: Option[FlexibleStack] = if (stage == "DEV")
     Some(FlexibleStack(
       id = "DEV:flexible",
       displayName = "Local Flexible Content",
@@ -55,15 +59,25 @@ class RestorerConfig(config: Configuration) extends AwsInstanceTags {
 
   val corsableDomains: List[String] = allStacks.map(_.composerPrefix)
 
-  private val profile: String = config.getOptional[String]("profile").getOrElse("composer")
+  private val profile: String = "composer"
   val creds = new AWSCredentialsProviderChain(
     new ProfileCredentialsProvider(profile),
     InstanceProfileCredentialsProvider.getInstance()
   )
 
+  implicit val client: AWSSimpleSystemsManagement = AWSSimpleSystemsManagementFactory(AWS.region.getName, profile)
+  private val paramStoreConfig: models.Configuration = Configraun.loadConfig(Identifier(Stack(stackName), App("restorer"), Stage.fromString(effectiveStage).get)) match {
+    case Left(a) =>
+      Logger.error(s"Unable to load Configraun configuration from AWS (${a.message})")
+      sys.exit(1)
+    case Right(a) =>
+      Logger.info(s"Loaded config using Configraun for /$stackName/restorer/$effectiveStage")
+      a
+  }
+
   // Logging
-  lazy val loggingConfig: Option[KinesisAppenderConfig] = for {
-    stream <- config.getOptional[String]("logging.stream")
+  lazy val loggingConfig: Either[Errors.ConfigraunError, KinesisAppenderConfig] = for {
+    stream <- paramStoreConfig.getAsString("/logging.stream")
   } yield KinesisAppenderConfig(stream, new DefaultAWSCredentialsProviderChain())
 }
 
