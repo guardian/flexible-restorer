@@ -9,8 +9,9 @@ import models.FlexibleStack
 import com.gu.configraun.{Configraun, Errors, models}
 import helpers.KinesisAppenderConfig
 import play.api.Logger
+import play.api.{Configuration => PlayConfig}
 
-class RestorerConfig(config: Configuration) extends AwsInstanceTags {
+class RestorerConfig(config: PlayConfig) extends AwsInstanceTags {
 
   lazy val stage: String = readTag("Stage") match {
     case Some(value) => value

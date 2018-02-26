@@ -11,7 +11,8 @@ import play.api.ApplicationLoader.Context
 import play.api.libs.ws.ahc.AhcWSComponents
 import play.api.mvc.EssentialFilter
 import play.api.routing.Router
-import play.api.{BuiltInComponentsFromContext, Configuration, LoggerConfigurator, Mode}
+import play.api.{BuiltInComponentsFromContext, LoggerConfigurator, Mode}
+import router.Routes
 
 import scala.concurrent.ExecutionContext.Implicits.{global => globalExecutionContext}
 
