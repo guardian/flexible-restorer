@@ -1,20 +1,19 @@
 package aws
 
-import com.amazonaws.regions.{Region, Regions}
-import com.amazonaws.services.cloudwatch.AmazonCloudWatchAsyncClient
-import com.amazonaws.services.ec2.AmazonEC2Client
-import com.amazonaws.services.ec2.model.DescribeTagsRequest
-import com.amazonaws.services.ec2.model.Filter
+import com.amazonaws.regions.Regions
+import com.amazonaws.services.cloudwatch.{AmazonCloudWatchAsync, AmazonCloudWatchAsyncClientBuilder}
+import com.amazonaws.services.ec2.model.{DescribeTagsRequest, Filter}
+import com.amazonaws.services.ec2.{AmazonEC2, AmazonEC2ClientBuilder}
 import com.amazonaws.util.EC2MetadataUtils
-import scala.collection.JavaConverters._
 
+import scala.collection.JavaConverters._
 
 object AWS {
 
-  lazy val region = Region getRegion Regions.EU_WEST_1
+  lazy val region: Regions = Regions.EU_WEST_1
 
-  lazy val EC2Client = region.createClient(classOf[AmazonEC2Client], null, null)
-  lazy val CloudWatch = region.createClient(classOf[AmazonCloudWatchAsyncClient], null, null)
+  lazy val EC2Client: AmazonEC2 = AmazonEC2ClientBuilder.standard().withRegion(region).build()
+  lazy val CloudWatch: AmazonCloudWatchAsync = AmazonCloudWatchAsyncClientBuilder.standard().withRegion(region).build()
 
 }
 

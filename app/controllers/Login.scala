@@ -1,5 +1,6 @@
 package controllers
 
+import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
 import config.RestorerConfig
 import helpers.Loggable
 import permissions.Permissions
@@ -10,7 +11,7 @@ import play.api.mvc._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 
-class Login(val controllerComponents: ControllerComponents, permissionsClient: Permissions, val config: RestorerConfig, override val wsClient: WSClient)
+class Login(val controllerComponents: ControllerComponents, permissionsClient: Permissions, val config: RestorerConfig, override val wsClient: WSClient, val panDomainSettings: PanDomainAuthSettingsRefresher)
   extends BaseController with PanDomainAuthActions with Loggable {
 
   def oauthCallback = Action.async { implicit request =>

@@ -1,5 +1,6 @@
 package controllers
 
+import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
 import helpers.Loggable
 import play.api.data.Forms._
 import play.api.data._
@@ -9,7 +10,6 @@ import play.api.mvc._
 import scala.concurrent.ExecutionContext
 
 // Pan domain
-import com.amazonaws.auth.AWSCredentialsProvider
 import com.gu.pandomainauth.action.AuthActions
 import com.gu.pandomainauth.model.AuthenticatedUser
 import config.RestorerConfig
@@ -24,15 +24,12 @@ trait PanDomainAuthActions extends AuthActions {
     Results.Redirect(controllers.routes.Login.authError(message))
   }
 
-  override lazy val system: String = "restorer"
   override def authCallbackUrl: String = config.hostName + "/oauthCallback"
-  override lazy val domain: String = config.domain
 
-  override def awsCredentialsProvider: AWSCredentialsProvider = config.creds
 }
 
 
-class Application(val controllerComponents: ControllerComponents, val config:RestorerConfig, override val wsClient: WSClient) extends BaseController with PanDomainAuthActions with Loggable {
+class Application(val controllerComponents: ControllerComponents, val config:RestorerConfig, override val wsClient: WSClient, val panDomainSettings: PanDomainAuthSettingsRefresher) extends BaseController with PanDomainAuthActions with Loggable {
 
   val urlForm = Form(
     "url" -> nonEmptyText
@@ -58,4 +55,5 @@ class Application(val controllerComponents: ControllerComponents, val config:Res
 
   protected val parser: BodyParser[AnyContent] = controllerComponents.parsers.default
   protected val executionContext: ExecutionContext = controllerComponents.executionContext
+
 }

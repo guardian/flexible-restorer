@@ -1,6 +1,6 @@
 package logic
 
-import com.amazonaws.services.s3.AmazonS3Client
+import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model._
 import helpers.Loggable
 import models.{Attempt, AttemptError, Snapshot, SnapshotId}
@@ -11,7 +11,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.io.Source
 import scala.util.control.NonFatal
 
-class SnapshotApi(s3Client: AmazonS3Client) extends Loggable {
+class SnapshotApi(s3Client: AmazonS3) extends Loggable {
   def listForId(bucket: String, id: String): List[SnapshotId] = listSnapshots(bucket, id)
 
   def getRawSnapshot(bucket: String, snapshotId: SnapshotId) = getObjectContentRaw(snapshotId.key, bucket)
