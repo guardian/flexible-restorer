@@ -1,22 +1,23 @@
 package helpers
 
-import aws.{AwsInstanceTags, AWS}
+import aws.{AWS, AwsInstanceTags}
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.classic.{Logger, LoggerContext}
 import ch.qos.logback.core.joran.spi.JoranException
 import ch.qos.logback.core.util.StatusPrinter
 import com.amazonaws.auth.AWSCredentialsProvider
-import com.amazonaws.regions.Region
+import com.amazonaws.regions.Regions
 import com.gu.logback.appender.kinesis.KinesisAppender
 import net.logstash.logback.layout.LogstashLayout
-import org.slf4j.{Logger => SLFLogger, LoggerFactory}
+import org.slf4j.{LoggerFactory, Logger => SLFLogger}
+
 import scala.language.postfixOps
 import scala.util.control.NonFatal
 
 case class KinesisAppenderConfig(
   stream: String,
   credentialsProvider: AWSCredentialsProvider,
-  region: Region = AWS.region,
+  region: Regions = AWS.region,
   bufferSize: Int = 1000
 )
 
@@ -34,10 +35,10 @@ object LogStash extends AwsInstanceTags with Loggable {
       Map.empty
   }
   // assume SLF4J is bound to logback in the current environment
-  lazy val context = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
+  lazy val context: LoggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
 
   def makeCustomFields(customFields: Map[String,String]): String = {
-    "{" + (for((k, v) <- customFields) yield(s""""${k}":"${v}"""")).mkString(",") + "}"
+    "{" + (for((k, v) <- customFields) yield s""""$k":"$v"""").mkString(",") + "}"
   }
 
   def makeLayout(customFields: String) = {

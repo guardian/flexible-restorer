@@ -2,24 +2,24 @@ name := "restorer2"
 
 version := "1.0.0"
 
-scalaVersion in ThisBuild := "2.11.11"
+scalaVersion in ThisBuild := "2.12.3"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Ywarn-unused-import")
 
-val awsSdkVersion = "1.11.5"
+val awsSdkVersion = "1.11.86"
 
 libraryDependencies ++= Seq(
     ws,
-    "com.gu" %% "pan-domain-auth-play_2-6" % "0.5.1",
+    "com.gu" %% "pan-domain-auth-play_2-6" % "0.7.0",
+    "com.gu" % "kinesis-logback-appender" % "1.4.2",
+    "com.gu" %% "editorial-permissions-client" % "0.8",
     "com.typesafe.play" %% "play-json-joda" % "2.6.7",
     "net.logstash.logback" % "logstash-logback-encoder" % "4.11",
-    "com.gu" % "kinesis-logback-appender" % "1.4.2",
-    "com.gu" %% "editorial-permissions-client" % "0.3",
     "com.amazonaws" % "aws-java-sdk-s3" % awsSdkVersion,
     "com.amazonaws" % "aws-java-sdk-ec2" % awsSdkVersion,
     "com.amazonaws" % "aws-java-sdk-cloudwatch" % awsSdkVersion,
     "com.amazonaws" % "aws-java-sdk-kinesis" % awsSdkVersion,
-    "org.scalatest" %% "scalatest" % "2.2.6" % Test
+    "org.scalatest" %% "scalatest" % "3.0.5" % Test
 )
 
 lazy val mainProject = project.in(file("."))

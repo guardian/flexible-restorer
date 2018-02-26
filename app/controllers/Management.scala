@@ -1,12 +1,13 @@
 package controllers
 
+import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
 import config.RestorerConfig
 import play.api.libs.ws.WSClient
 import play.api.mvc._
 
 import scala.concurrent.ExecutionContext
 
-class Management(val controllerComponents: ControllerComponents, val config:RestorerConfig, override val wsClient: WSClient) extends BaseController with PanDomainAuthActions {
+class Management(val controllerComponents: ControllerComponents, val config:RestorerConfig, override val wsClient: WSClient, val panDomainSettings: PanDomainAuthSettingsRefresher) extends BaseController with PanDomainAuthActions {
 
   def healthCheck = Action {
     Ok("Ok")

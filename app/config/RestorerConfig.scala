@@ -58,7 +58,7 @@ class RestorerConfig(config: Configuration) extends AwsInstanceTags {
   private val profile: String = config.getOptional[String]("profile").getOrElse("composer")
   val creds = new AWSCredentialsProviderChain(
     new ProfileCredentialsProvider(profile),
-    new InstanceProfileCredentialsProvider
+    InstanceProfileCredentialsProvider.getInstance()
   )
 
   // Logging
