@@ -25,7 +25,7 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
 
   val restorerConfig = new RestorerConfig(configuration)
 
-  def panDomainSettings: PanDomainAuthSettingsRefresher = new PanDomainAuthSettingsRefresher(
+  val panDomainSettings: PanDomainAuthSettingsRefresher = new PanDomainAuthSettingsRefresher(
     domain = restorerConfig.domain,
     system = "restorer",
     awsCredentialsProvider = restorerConfig.creds,
