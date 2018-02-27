@@ -1,28 +1,16 @@
 package config
 
-import _root_.aws.AwsInstanceTags
-import com.amazonaws.auth.profile.ProfileCredentialsProvider
-import com.amazonaws.auth.{AWSCredentialsProviderChain, DefaultAWSCredentialsProviderChain, InstanceProfileCredentialsProvider}
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain
+import config.AWS._
 import helpers.KinesisAppenderConfig
 import models.FlexibleStack
-import play.api.Configuration
+import com.typesafe.config.{Config => TypesafeConfig}
 
-class RestorerConfig(config: Configuration) extends AwsInstanceTags {
-
-  lazy val stage: String = readTag("Stage") match {
-    case Some(value) => value
-    case None => "DEV" // default to dev stage
-  }
-  private lazy val effectiveStage: String = readTag("Stage") match {
-    case Some(value) => value
-    case None => "CODE" // use CODE when in development mode
-  }
+class RestorerConfig(config: TypesafeConfig) {
 
   val domain: String = RestorerConfig.domainFromStage(stage)
 
-  private val stackName = "flexible"
-
-  private val localStack: Option[FlexibleStack] = if (readTag("Stage").isEmpty)
+  private val localStack: Option[FlexibleStack] = if (stage == "DEV")
     Some(FlexibleStack(
       id = "DEV:flexible",
       displayName = "Local Flexible Content",
@@ -55,16 +43,8 @@ class RestorerConfig(config: Configuration) extends AwsInstanceTags {
 
   val corsableDomains: List[String] = allStacks.map(_.composerPrefix)
 
-  private val profile: String = config.getOptional[String]("profile").getOrElse("composer")
-  val creds = new AWSCredentialsProviderChain(
-    new ProfileCredentialsProvider(profile),
-    InstanceProfileCredentialsProvider.getInstance()
-  )
-
   // Logging
-  lazy val loggingConfig: Option[KinesisAppenderConfig] = for {
-    stream <- config.getOptional[String]("logging.stream")
-  } yield KinesisAppenderConfig(stream, new DefaultAWSCredentialsProviderChain())
+  lazy val loggingConfig = KinesisAppenderConfig(config.getString("logging.stream"), new DefaultAWSCredentialsProviderChain())
 }
 
 object RestorerConfig {
