@@ -21,8 +21,6 @@ System.config({
     "lodash.get": "npm:lodash.get@4.3.0",
     "md5": "npm:blueimp-md5@2.3.0",
     "mediator": "npm:mediator-js@0.9.9",
-    "mixpanel": "github:mixpanel/mixpanel-js@2.4.2",
-    "mixpanel-browser": "npm:mixpanel-browser@2.7.2",
     "moment": "npm:moment@2.10.2",
     "necolas/normalize.css": "npm:normalize.css@3.0.2",
     "normalize.css": "npm:normalize.css@3.0.3",
@@ -105,7 +103,8 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "ieee754": "npm:ieee754@1.1.6",
       "isarray": "npm:isarray@1.0.0",
-      "process": "github:jspm/nodelibs-process@0.1.2"
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
     "npm:clean-css@3.1.9": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
@@ -141,6 +140,9 @@ System.config({
     },
     "npm:inherits@2.0.1": {
       "util": "github:jspm/nodelibs-util@0.1.0"
+    },
+    "npm:isarray@1.0.0": {
+      "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
     "npm:lodash._basetostring@4.12.0": {
       "process": "github:jspm/nodelibs-process@0.1.2"
@@ -205,7 +207,8 @@ System.config({
     },
     "npm:util@0.10.3": {
       "inherits": "npm:inherits@2.0.1",
-      "process": "github:jspm/nodelibs-process@0.1.2"
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     }
   }
 });

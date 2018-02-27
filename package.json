@@ -37,8 +37,6 @@
       "lodash.get": "npm:lodash.get@^4.3.0",
       "md5": "npm:blueimp-md5@^2.3.0",
       "mediator": "npm:mediator-js@^0.9.9",
-      "mixpanel": "npm:mixpanel-browser^2.4.2",
-      "mixpanel-browser": "npm:mixpanel-browser@^2.7.2",
       "moment": "npm:moment@^2.10.2",
       "necolas/normalize.css": "npm:normalize.css@3.0.2",
       "normalize.css": "npm:normalize.css@^3.0.3",

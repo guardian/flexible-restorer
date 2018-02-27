@@ -1,14 +1,14 @@
 import angular from 'angular';
 import SnapshotServiceMod from './SnapshotCollectionService';
 import RestoreService from './RestoreService';
-import MixpanelServiceMod from './MixpanelService';
+import AnalyticsServiceMod from './AnalyticsService';
 import UserServiceMod from './UserService';
 import DateFormatServiceMod from './DateFormatService';
 
 var services = angular.module('restorerServices', [
   'SnapshotServiceMod',
   'RestoreServiceMod',
-  'MixpanelServiceMod',
+  'AnalyticsServiceMod',
   'UserServiceMod',
   'DateFormatServiceMod'
 ]);

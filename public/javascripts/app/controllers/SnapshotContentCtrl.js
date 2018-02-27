@@ -34,7 +34,10 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
       .then((collection)=> {
         var model = collection.getModelAt(0);
         loadContent(model.getSystemId(), model.getContentId(), model.getTimestamp());
-        mediator.publish('mixpanel:view-snapshot', model);
+        mediator.publish('track:event', 'Snapshot', 'Viewed', null, null, {
+            contentId: model.id,
+            snapshotTime: model.timestamp
+        });
       })
       //TODO setup global error handle
       .catch((err)=> mediator.publish('error', err));

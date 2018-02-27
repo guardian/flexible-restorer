@@ -20,7 +20,12 @@ var RestoreService = RestoreServiceMod.service('RestoreService', [
                             //get model
                             var model = collection.find((data) => data.activeState);
                             var systemId = destinationSystemId || model.getSystemId();
-                            mediator.publish('mixpanel:restore-snapshot', model);
+
+                            mediator.publish('track:event', 'Snapshot', 'Restored', null, null, {
+                                contentId: model.id,
+                                snapshotTime: model.timestamp
+                            });
+
                             //make the request
                             $http({
                                 url: `/api/1/restore/${model.getSystemId()}/${contentId}/${model.getTimestamp()}/to/${systemId}`,
