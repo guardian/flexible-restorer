@@ -6,6 +6,7 @@ import play.api.data.Forms._
 import play.api.data._
 import play.api.libs.ws.WSClient
 import play.api.mvc._
+import play.api.libs.json.Json
 
 import scala.concurrent.ExecutionContext
 
@@ -35,12 +36,17 @@ class Application(val controllerComponents: ControllerComponents, val config:Res
     "url" -> nonEmptyText
   )
 
+  val clientConfig: String = Json.obj(
+    "gaId" -> config.googleTrackingId
+  ).toString()
+
+
   def index = AuthAction {
-    Ok(views.html.main("Composer Restorer"))
+    Ok(views.html.main("Composer Restorer", clientConfig, config.googleTrackingId))
   }
 
   def versionIndex(contentId: String) = AuthAction {
-    Ok(views.html.main(s"Composer Restorer - Versions of $contentId"))
+    Ok(views.html.main(s"Composer Restorer - Versions of $contentId", clientConfig, config.googleTrackingId))
   }
 
   def preflight(routes: String) = CORSable(executionContext, config.corsableDomains: _*) {
