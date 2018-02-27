@@ -3,12 +3,14 @@ import play.api.ApplicationLoader.Context
 import play.api._
 
 class AppLoader extends ApplicationLoader {
-  def load(context: Context): Application = {
+  def load(contextBefore: Context): Application = {
 
-    val config = Config.buildConfig(context)
+    val config = Config.buildConfig(contextBefore)
 
-    startLogging(context)
-    new AppComponents(context, config).application
+    val contextAfter = contextBefore.copy(initialConfiguration = Configuration(config))
+
+    startLogging(contextAfter)
+    new AppComponents(contextAfter, config).application
   }
 
   private def startLogging(context: Context): Unit = {
