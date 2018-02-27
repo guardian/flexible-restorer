@@ -1,8 +1,19 @@
+import config.Config
 import play.api.ApplicationLoader.Context
-import play.api.{Application, ApplicationLoader}
+import play.api._
 
 class AppLoader extends ApplicationLoader {
   def load(context: Context): Application = {
-    new AppComponents(context).application
+
+    val config = Config.buildConfig(context)
+
+    startLogging(context)
+    new AppComponents(context, config).application
+  }
+
+  private def startLogging(context: Context): Unit = {
+    LoggerConfigurator(context.environment.classLoader).foreach {
+      _.configure(context.environment)
+    }
   }
 }

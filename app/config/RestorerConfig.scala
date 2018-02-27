@@ -1,30 +1,14 @@
 package config
 
-import com.amazonaws.auth.profile.ProfileCredentialsProvider
-import com.amazonaws.auth.{AWSCredentialsProviderChain, DefaultAWSCredentialsProviderChain, InstanceProfileCredentialsProvider}
-import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement
-import com.gu.configraun.aws.AWSSimpleSystemsManagementFactory
-import com.gu.configraun.models._
-import models.FlexibleStack
-import com.gu.configraun.{Configraun, Errors, models}
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain
+import config.AWS._
 import helpers.KinesisAppenderConfig
-import play.api.Logger
-import play.api.{Configuration => PlayConfig}
+import models.FlexibleStack
+import com.typesafe.config.{Config => TypesafeConfig}
 
-class RestorerConfig(config: PlayConfig) extends AwsInstanceTags {
-
-  lazy val stage: String = readTag("Stage") match {
-    case Some(value) => value
-    case None => "DEV" // default to dev stage
-  }
-  private lazy val effectiveStage: String = stage match {
-    case "DEV" => "CODE" // use CODE when in development mode
-    case value => value
-  }
+class RestorerConfig(config: TypesafeConfig) {
 
   val domain: String = RestorerConfig.domainFromStage(stage)
-
-  private val stackName = "flexible"
 
   private val localStack: Option[FlexibleStack] = if (stage == "DEV")
     Some(FlexibleStack(
@@ -59,26 +43,8 @@ class RestorerConfig(config: PlayConfig) extends AwsInstanceTags {
 
   val corsableDomains: List[String] = allStacks.map(_.composerPrefix)
 
-  private val profile: String = "composer"
-  val creds = new AWSCredentialsProviderChain(
-    new ProfileCredentialsProvider(profile),
-    InstanceProfileCredentialsProvider.getInstance()
-  )
-
-  implicit val client: AWSSimpleSystemsManagement = AWSSimpleSystemsManagementFactory(AWS.region.getName, profile)
-  private lazy val configraunConfig: models.Configuration = Configraun.loadConfig(Identifier(Stack(stackName), App("restorer"), Stage.fromString(effectiveStage).get)) match {
-    case Left(a) =>
-      Logger.error(s"Unable to load Configraun configuration from AWS (${a.message})")
-      sys.exit(1)
-    case Right(a) =>
-      Logger.info(s"Loaded config using Configraun for /$stackName/restorer/$effectiveStage")
-      a
-  }
-
   // Logging
-  lazy val loggingConfig: Either[Errors.ConfigraunError, KinesisAppenderConfig] = for {
-    stream <- configraunConfig.getAsString("/logging.stream")
-  } yield KinesisAppenderConfig(stream, new DefaultAWSCredentialsProviderChain())
+  lazy val loggingConfig = KinesisAppenderConfig(config.getString("logging.stream"), new DefaultAWSCredentialsProviderChain())
 }
 
 object RestorerConfig {

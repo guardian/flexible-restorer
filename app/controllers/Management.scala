@@ -1,7 +1,7 @@
 package controllers
 
 import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
-import config.RestorerConfig
+import config.{AWS, RestorerConfig}
 import play.api.libs.ws.WSClient
 import play.api.mvc._
 
@@ -19,7 +19,7 @@ class Management(val controllerComponents: ControllerComponents, val config:Rest
       |Hostname: ${config.hostName}
       |Composer domains: ${config.allStacks.map(_.composerPrefix).mkString(", ")}
       |Snapshots buckets: ${config.sourceStacks.map(_.snapshotBucket).mkString(", ")}
-      |Credentials: ${config.creds}
+      |Credentials: ${AWS.creds}
       """.stripMargin
 
     Ok(info)

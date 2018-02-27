@@ -3,7 +3,7 @@ package permissions
 import com.amazonaws.auth.AWSCredentialsProvider
 import com.gu.editorial.permissions.client.{PermissionGranted, _}
 import com.gu.pandomainauth.model.User
-import config.RestorerConfig
+import config.{AWS, RestorerConfig}
 
 import scala.concurrent.Future
 import scala.language.postfixOps
@@ -15,7 +15,7 @@ class Permissions(restorerConfig: RestorerConfig, credsProvider: AWSCredentialsP
   val app = "composer-restorer"
 
   implicit def config = {
-    val stage = if (restorerConfig.stage == "PROD") "PROD" else "CODE"
+    val stage = if (AWS.stage == "PROD") "PROD" else "CODE"
 
     PermissionsConfig(
       app = app,
