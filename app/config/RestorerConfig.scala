@@ -45,6 +45,9 @@ class RestorerConfig(config: TypesafeConfig) {
 
   // Logging
   lazy val loggingConfig = KinesisAppenderConfig(config.getString("logging.stream"), new DefaultAWSCredentialsProviderChain())
+
+  // GA
+  lazy val googleTrackingId: String = config.getString("google.tracking.id")
 }
 
 object RestorerConfig {

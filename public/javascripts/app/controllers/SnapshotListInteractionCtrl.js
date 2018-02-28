@@ -42,7 +42,7 @@ SnapshotListInteractionCtrlMod.controller('SnapshotListInteractionCtrl', [
       div.appendChild(content);
       content = div.innerHTML;
       //send it off
-      mediator.publish('mixpanel:copy-content', content);
+      mediator.publish('track:event', 'Snapshot', 'Copied');
     })
 
     //keypress events
