@@ -1,5 +1,7 @@
 package logic
 
+import java.util.Base64
+
 import helpers.Loggable
 import models._
 import org.joda.time.DateTime
@@ -56,11 +58,14 @@ class FlexibleApi(wsClient: WSClient) extends Loggable {
   }
 
   def restore(stack: FlexibleStack, user: User, contentId: String, snapshot: Snapshot): Attempt[String] = {
-    val userHeader = "X-GU-User" -> Json.stringify(Json.toJson(user))
+    val userString = Json.stringify(Json.toJson(user))
 
-    restoreToExisting(stack, userHeader, contentId, snapshot).recoverWith { errors =>
+    // see https://github.com/guardian/flexible-content/pull/3130
+    val userHeaderBase64 = "X-GU-User-base64" -> Base64.getEncoder.encodeToString(userString.getBytes("UTF-8"))
+
+    restoreToExisting(stack, userHeaderBase64, contentId, snapshot).recoverWith { errors =>
       logger.info(s"Failed to restore $contentId to existing content in ${stack.displayName} - trying to upload new content ($errors)")
-      restoreToNew(stack, userHeader, contentId, snapshot)
+      restoreToNew(stack, userHeaderBase64, contentId, snapshot)
     }
   }
 }
