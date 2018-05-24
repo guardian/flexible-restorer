@@ -64,7 +64,8 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
       $scope.jsonContent = model.getJSON();
       $scope.headline = model.getHeadline();
       $scope.standfirst = model.getStandfirst();
-      $timeout(()=> $scope.isSettingContent = false, 200);
+      $scope.trailText = model.getTrailText();
+      $timeout(() => $scope.isSettingContent = false, 200);
     }
 
     function displayJSON() {
