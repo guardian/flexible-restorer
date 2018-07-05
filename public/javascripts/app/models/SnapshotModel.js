@@ -33,6 +33,10 @@ SnapshotModelMod.factory('SnapshotModel', [
           return this.get("snapshot.preview.fields.standfirst");
       }
 
+      getTrailText() {
+          return this.get("snapshot.preview.fields.trailText");
+      }
+
       getHTMLContent(){
         var content = this.get('snapshot.preview').blocks.map((block) => block.elements);
         content = flatten(content);
