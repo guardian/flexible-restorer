@@ -16,6 +16,7 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
 
     $scope.isShowingJSON = false;
     $scope.displayButtonLabel = "JSON";
+    $scope.copyButtonLabel = "Copy JSON";
     $scope.canRestore =  false;
 
     UserService.get().then((user) => {
@@ -68,6 +69,8 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
       $scope.headline = model.getHeadline();
       $scope.standfirst = model.getStandfirst();
       $scope.trailText = model.getTrailText();
+
+      $scope.copyButtonLabel = "Copy JSON";
       $timeout(() => $scope.isSettingContent = false, 200);
     }
 
@@ -97,6 +100,19 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
       mediator.publish('snapshot-list:display-modal');
     }
 
+    this.copyJSON = function() {
+      const sillyHacks = document.createElement("textarea");
+      sillyHacks.value = $scope.jsonContent;
+
+      document.body.appendChild(sillyHacks);
+      sillyHacks.focus();
+      sillyHacks.select();
+
+      document.execCommand("copy");
+
+      document.body.removeChild(sillyHacks);
+      $scope.copyButtonLabel = "Copied!";
+    }
   }
 
 ]);
