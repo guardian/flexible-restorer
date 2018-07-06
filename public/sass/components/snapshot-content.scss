@@ -9,10 +9,8 @@
 
 .snapshot-content__viewport {
   width: 100%;
-  overflow: hidden;
   display: flex;
   flex-flow: column;
-  max-height: calc(100vh - 46px);
 }
 
 .snapshot-content__container {
