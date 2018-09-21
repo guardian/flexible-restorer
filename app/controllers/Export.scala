@@ -1,7 +1,10 @@
 package controllers
 
+import java.io.FileOutputStream
 import java.nio.charset.StandardCharsets
-import java.nio.file.Files
+import java.nio.file.attribute.BasicFileAttributes
+import java.nio.file.{FileVisitResult, Files, Path, SimpleFileVisitor}
+import java.util.zip.{ZipEntry, ZipOutputStream}
 
 import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
 import config.RestorerConfig
@@ -44,7 +47,9 @@ class Export(override val controllerComponents: ControllerComponents, snapshotAp
         repo.commit().setMessage(s"Snapshot update from $timestamp").call()
       }
 
-      Ok(dir.toString)
+      val zip = zipFolder(contentId, dir)
+
+      Ok(zip.toString)
     }
   }
 
@@ -59,5 +64,34 @@ class Export(override val controllerComponents: ControllerComponents, snapshotAp
       case Right(Some(snapshot)) =>
         snapshot
     }
+  }
+
+  private def zipFolder(contentId: String, folder: Path): Path = {
+    val zipPath = Files.createTempFile(s"export-zip-$contentId", ".zip")
+
+    val fileOut = new FileOutputStream(zipPath.toFile)
+    val zipOut = new ZipOutputStream(fileOut)
+
+    Files.walkFileTree(folder, new SimpleFileVisitor[Path] {
+      override def visitFile(file: Path, attrs: BasicFileAttributes): FileVisitResult = {
+        zipOut.putNextEntry(new ZipEntry(folder.relativize(file).toString))
+        Files.copy(file, zipOut)
+        zipOut.closeEntry()
+
+        FileVisitResult.CONTINUE
+      }
+
+      override def preVisitDirectory(dir: Path, attrs: BasicFileAttributes): FileVisitResult = {
+        zipOut.putNextEntry(new ZipEntry(s"${folder.relativize(dir)}/"))
+        zipOut.closeEntry()
+
+        FileVisitResult.CONTINUE
+      }
+    })
+
+    zipOut.close()
+    fileOut.close()
+
+    zipPath
   }
 }
