@@ -16,6 +16,7 @@ libraryDependencies ++= Seq(
     "com.gu" %% "configraun" % "0.3",
     "com.typesafe.play" %% "play-json-joda" % "2.6.7",
     "net.logstash.logback" % "logstash-logback-encoder" % "4.11",
+    "org.eclipse.jgit" % "org.eclipse.jgit" % "5.1.1.201809181055-r",
     "com.amazonaws" % "aws-java-sdk-s3" % awsSdkVersion,
     "com.amazonaws" % "aws-java-sdk-ec2" % awsSdkVersion,
     "com.amazonaws" % "aws-java-sdk-cloudwatch" % awsSdkVersion,

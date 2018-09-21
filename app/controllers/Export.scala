@@ -8,6 +8,7 @@ import config.RestorerConfig
 import helpers.Loggable
 import logic.SnapshotApi
 import models.{FlexibleStack, SnapshotId}
+import org.eclipse.jgit.api.Git
 import play.api.libs.ws.WSClient
 import play.api.mvc.{BaseController, ControllerComponents}
 
@@ -31,11 +32,16 @@ class Export(override val controllerComponents: ControllerComponents, snapshotAp
     } else {
       // TODO MRB: delete directory once download complete
       val dir = Files.createTempDirectory(s"export-$contentId")
+      val repo = Git.init().setDirectory(dir.toFile).call()
 
       snapshotIds.foreach { case(stack, id @ SnapshotId(_, timestamp)) =>
-        val filename = s"${stack.stage}:${stack.stack}-$timestamp.yaml"
+        val filename = s"${stack.stage}:${stack.stack}.yaml"
         val snapshot = getSnapshot(stack, id)
         Files.write(dir.resolve(filename), snapshot.getBytes(StandardCharsets.UTF_8))
+
+        repo.add().addFilepattern(filename).call()
+        // TODO MRB: set author to lastModified user and use correct timestamp
+        repo.commit().setMessage(s"Snapshot update from $timestamp").call()
       }
 
       Ok(dir.toString)
