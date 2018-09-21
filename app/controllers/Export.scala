@@ -24,6 +24,7 @@ class Export(override val controllerComponents: ControllerComponents, snapshotAp
   extends BaseController with PanDomainAuthActions with Loggable {
 
   private val timeout = 30.seconds
+  private implicit val executionContext = controllerComponents.executionContext
 
   def exportAsGitRepo(contentId: String) = AuthAction {
     val snapshotIds = config.sourceStacks.flatMap { stack =>
@@ -48,8 +49,7 @@ class Export(override val controllerComponents: ControllerComponents, snapshotAp
       }
 
       val zip = zipFolder(contentId, dir)
-
-      Ok(zip.toString)
+      Ok.sendFile(zip.toFile)
     }
   }
 
