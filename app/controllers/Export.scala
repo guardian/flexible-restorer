@@ -14,7 +14,7 @@ import play.api.mvc.{BaseController, ControllerComponents}
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
-class Export(snapshotApi: SnapshotApi, override val controllerComponents: ControllerComponents, override val config: RestorerConfig,
+class Export(override val controllerComponents: ControllerComponents, snapshotApi: SnapshotApi, override val config: RestorerConfig,
              override val wsClient: WSClient, val panDomainSettings: PanDomainAuthSettingsRefresher)
 
   extends BaseController with PanDomainAuthActions with Loggable {
@@ -33,7 +33,7 @@ class Export(snapshotApi: SnapshotApi, override val controllerComponents: Contro
       val dir = Files.createTempDirectory(s"export-$contentId")
 
       snapshotIds.foreach { case(stack, id @ SnapshotId(_, timestamp)) =>
-        val filename = s"$stack-$timestamp"
+        val filename = s"${stack.stage}:${stack.stack}-$timestamp.yaml"
         val snapshot = getSnapshot(stack, id)
         Files.write(dir.resolve(filename), snapshot.getBytes(StandardCharsets.UTF_8))
       }

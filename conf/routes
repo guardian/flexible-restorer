@@ -25,3 +25,5 @@ GET           /api/1/user/permissions                                           
 GET           /api/1/version-count/:contentId                                         controllers.Versions.availableVersionsCount(contentId: String)
 POST          /api/1/restore/:sourceId/:contentId/:timestamp/to/:destinationId        controllers.Restore.restore(sourceId: String, contentId: String, timestamp: String, destinationId: String)
 GET           /api/1/restore/destinations/:contentId                                  controllers.Restore.restoreDestinations(contentId: String)
+
+GET           /export/:contentId/git  controllers.Export.exportAsGitRepo(contentId: String)

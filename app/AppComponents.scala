@@ -40,6 +40,7 @@ class AppComponents(context: Context, config: Config) extends BuiltInComponentsF
   val managementController = new Management(controllerComponents, restorerConfig, wsClient, panDomainSettings)
   val versionsController = new Versions(controllerComponents, restorerConfig, snapshotApi, wsClient, panDomainSettings)
   val restoreController = new Restore(controllerComponents, snapshotApi, flexibleApi, permissionsClient, restorerConfig, wsClient, panDomainSettings)
+  val exportController = new Export(controllerComponents, snapshotApi, restorerConfig, wsClient, panDomainSettings)
 
   def router: Router = new Routes(
     httpErrorHandler,
@@ -48,6 +49,7 @@ class AppComponents(context: Context, config: Config) extends BuiltInComponentsF
     assets,
     managementController,
     versionsController,
-    restoreController
+    restoreController,
+    exportController
   )
 }

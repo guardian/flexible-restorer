@@ -12,7 +12,8 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
   'SnapshotIdModels',
     'SnapshotModels',
     'UserService',
-  function($scope, $routeParams, $timeout, $sce, SnapshotIdModels, SnapshotModels, UserService){
+    'SnapshotService',
+  function($scope, $routeParams, $timeout, $sce, SnapshotIdModels, SnapshotModels, UserService, SnapshotService){
 
     $scope.isShowingJSON = false;
     $scope.displayButtonLabel = "JSON";
@@ -112,6 +113,12 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
 
       document.body.removeChild(sillyHacks);
       $scope.copyButtonLabel = "Copied!";
+    }
+
+    this.exportAsGit = function() {
+      SnapshotService.exportAsGit($routeParams.contentId)
+        .then(r => console.log(r))
+        .catch((err) => mediator.publish('error', err));
     }
   }
 
