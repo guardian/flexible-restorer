@@ -4,14 +4,20 @@ import java.io.FileOutputStream
 import java.nio.charset.StandardCharsets
 import java.nio.file.attribute.BasicFileAttributes
 import java.nio.file.{FileVisitResult, Files, Path, SimpleFileVisitor}
+import java.time.Instant
+import java.util.Date
 import java.util.zip.{ZipEntry, ZipOutputStream}
 
+import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
 import config.RestorerConfig
 import helpers.Loggable
 import logic.SnapshotApi
 import models.{FlexibleStack, SnapshotId}
+import org.apache.commons.io.FileUtils
 import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.lib.PersonIdent
 import play.api.libs.ws.WSClient
 import play.api.mvc.{BaseController, ControllerComponents}
 
@@ -34,26 +40,38 @@ class Export(override val controllerComponents: ControllerComponents, snapshotAp
     if(snapshotIds.isEmpty) {
       NotFound(s"$contentId does not have any snapshots")
     } else {
-      // TODO MRB: delete directory once download complete
       val dir = Files.createTempDirectory(s"export-$contentId")
       val repo = Git.init().setDirectory(dir.toFile).call()
 
       snapshotIds.foreach { case(stack, id @ SnapshotId(_, timestamp)) =>
         val filename = s"${stack.stage}:${stack.stack}.yaml"
         val snapshot = getSnapshot(stack, id)
-        Files.write(dir.resolve(filename), snapshot.getBytes(StandardCharsets.UTF_8))
+        val commitTime = Date.from(snapshot.lastModifiedTime.getOrElse(Instant.parse(timestamp)))
 
+        val author = new PersonIdent(new PersonIdent(
+          snapshot.lastModifiedName.getOrElse("unknown"),
+          snapshot.lastModifiedEmail.getOrElse("unknown")
+        ), commitTime)
+
+        Files.write(dir.resolve(filename), snapshot.contents.getBytes(StandardCharsets.UTF_8))
         repo.add().addFilepattern(filename).call()
-        // TODO MRB: set author to lastModified user and use correct timestamp
-        repo.commit().setMessage(s"Snapshot update from $timestamp").call()
+
+        repo.commit()
+          .setMessage(s"Snapshot update from $timestamp")
+          .setAuthor(author)
+          .call()
       }
 
       val zip = zipFolder(contentId, dir)
-      Ok.sendFile(zip.toFile)
+
+      Ok.sendPath(zip, onClose = () => {
+        FileUtils.deleteDirectory(dir.toFile)
+        Files.delete(zip)
+      })
     }
   }
 
-  private def getSnapshot(stack: FlexibleStack, id: SnapshotId): String = {
+  private def getSnapshot(stack: FlexibleStack, id: SnapshotId): FormattedSnapshot = {
     Await.result(snapshotApi.getRawSnapshot(stack.snapshotBucket, id).asFuture(controllerComponents.executionContext), timeout) match {
       case Left(err) =>
         throw new IllegalStateException(err.toString)
@@ -62,7 +80,7 @@ class Export(override val controllerComponents: ControllerComponents, snapshotAp
         throw new IllegalStateException(s"Missing snapshot for $stack $id")
 
       case Right(Some(snapshot)) =>
-        snapshot
+        FormattedSnapshot(snapshot)
     }
   }
 
@@ -93,5 +111,38 @@ class Export(override val controllerComponents: ControllerComponents, snapshotAp
     fileOut.close()
 
     zipPath
+  }
+}
+
+case class FormattedSnapshot(lastModifiedTime: Option[Instant], lastModifiedEmail: Option[String],
+                             lastModifiedName: Option[String], contents: String)
+object FormattedSnapshot {
+  def apply(rawSnapshot: String): FormattedSnapshot = {
+    val json = new ObjectMapper().readTree(rawSnapshot)
+    val yaml = new YAMLMapper().writeValueAsString(json)
+
+    val lastModifiedTime = metaField(json,"date") { n => Instant.ofEpochMilli(n.asLong()) }
+    val email = metaField(json,"user/email")(_.asText())
+
+    val firstName = metaField(json,"user/firstName")(_.asText())
+    val lastName = metaField(json,"user/lastName")(_.asText())
+    val name = if(firstName.isEmpty && lastName.isEmpty) {
+      None
+    } else {
+      Some(firstName.getOrElse("") + " " + lastName.getOrElse(""))
+    }
+
+    // TODO MRB: prettify html in text fields
+    FormattedSnapshot(lastModifiedTime, email, name, yaml)
+  }
+
+  private def metaField[T](json: JsonNode, field: String)(fn: JsonNode => T): Option[T] = {
+    val node = json.at(s"/contentChangeDetails/lastModified/$field")
+
+    if(node.isMissingNode) {
+      None
+    } else {
+      Some(fn(node))
+    }
   }
 }
