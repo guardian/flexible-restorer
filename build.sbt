@@ -19,6 +19,8 @@ libraryDependencies ++= Seq(
     "org.eclipse.jgit" % "org.eclipse.jgit" % "5.1.1.201809181055-r",
     "commons-io" % "commons-io" % "2.6",
     "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % "2.9.2",
+    "org.jsoup" % "jsoup" % "1.11.3",
+    "com.lihaoyi" %% "ujson" % "0.6.6",
     "com.amazonaws" % "aws-java-sdk-s3" % awsSdkVersion,
     "com.amazonaws" % "aws-java-sdk-ec2" % awsSdkVersion,
     "com.amazonaws" % "aws-java-sdk-cloudwatch" % awsSdkVersion,

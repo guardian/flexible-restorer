@@ -1,6 +1,6 @@
 package controllers
 
-import java.io.FileOutputStream
+import java.io.{FileOutputStream, StringWriter}
 import java.nio.charset.StandardCharsets
 import java.nio.file.attribute.BasicFileAttributes
 import java.nio.file.{FileVisitResult, Files, Path, SimpleFileVisitor}
@@ -8,8 +8,8 @@ import java.time.Instant
 import java.util.Date
 import java.util.zip.{ZipEntry, ZipOutputStream}
 
-import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
-import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.yaml.{YAMLGenerator, YAMLMapper}
 import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
 import config.RestorerConfig
 import helpers.Loggable
@@ -18,11 +18,14 @@ import models.{FlexibleStack, SnapshotId}
 import org.apache.commons.io.FileUtils
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.PersonIdent
+import org.jsoup.Jsoup
 import play.api.libs.ws.WSClient
 import play.api.mvc.{BaseController, ControllerComponents}
+import ujson.StringRenderer
 
 import scala.concurrent.Await
 import scala.concurrent.duration._
+import scala.util.Try
 
 class Export(override val controllerComponents: ControllerComponents, snapshotApi: SnapshotApi, override val config: RestorerConfig,
              override val wsClient: WSClient, val panDomainSettings: PanDomainAuthSettingsRefresher)
@@ -46,12 +49,9 @@ class Export(override val controllerComponents: ControllerComponents, snapshotAp
       snapshotIds.foreach { case(stack, id @ SnapshotId(_, timestamp)) =>
         val filename = s"${stack.stage}:${stack.stack}.yaml"
         val snapshot = getSnapshot(stack, id)
-        val commitTime = Date.from(snapshot.lastModifiedTime.getOrElse(Instant.parse(timestamp)))
+        val commitTime = Date.from(snapshot.lastModifiedTime)
 
-        val author = new PersonIdent(new PersonIdent(
-          snapshot.lastModifiedName.getOrElse("unknown"),
-          snapshot.lastModifiedEmail.getOrElse("unknown")
-        ), commitTime)
+        val author = new PersonIdent(new PersonIdent(snapshot.lastModifiedName, snapshot.lastModifiedEmail), commitTime)
 
         Files.write(dir.resolve(filename), snapshot.contents.getBytes(StandardCharsets.UTF_8))
         repo.add().addFilepattern(filename).call()
@@ -114,35 +114,35 @@ class Export(override val controllerComponents: ControllerComponents, snapshotAp
   }
 }
 
-case class FormattedSnapshot(lastModifiedTime: Option[Instant], lastModifiedEmail: Option[String],
-                             lastModifiedName: Option[String], contents: String)
+case class FormattedSnapshot(lastModifiedTime: Instant, lastModifiedEmail: String, lastModifiedName: String, contents: String)
 object FormattedSnapshot {
   def apply(rawSnapshot: String): FormattedSnapshot = {
-    val json = new ObjectMapper().readTree(rawSnapshot)
-    val yaml = new YAMLMapper().writeValueAsString(json)
+    val json = ujson.read(rawSnapshot)
+    val formattedJson = ujson.transform(json, new FormattedHTMLRenderer()).toString
 
-    val lastModifiedTime = metaField(json,"date") { n => Instant.ofEpochMilli(n.asLong()) }
-    val email = metaField(json,"user/email")(_.asText())
+    val yaml = new YAMLMapper()
+      .configure(YAMLGenerator.Feature.MINIMIZE_QUOTES, true)
+      .writeValueAsString(new ObjectMapper().readTree(formattedJson))
 
-    val firstName = metaField(json,"user/firstName")(_.asText())
-    val lastName = metaField(json,"user/lastName")(_.asText())
-    val name = if(firstName.isEmpty && lastName.isEmpty) {
-      None
-    } else {
-      Some(firstName.getOrElse("") + " " + lastName.getOrElse(""))
-    }
+    val contentChangeDetails = json("contentChangeDetails")("lastModified")
+    val lastModifiedTime = Instant.ofEpochMilli(contentChangeDetails("date").num.toLong)
+    val email = Try(contentChangeDetails("user")("email").str).getOrElse("unknown")
+    val name = Try(s"${contentChangeDetails("user")("firstName").str} ${contentChangeDetails("user")("lastName").str}").getOrElse("unknown")
 
-    // TODO MRB: prettify html in text fields
     FormattedSnapshot(lastModifiedTime, email, name, yaml)
   }
+}
 
-  private def metaField[T](json: JsonNode, field: String)(fn: JsonNode => T): Option[T] = {
-    val node = json.at(s"/contentChangeDetails/lastModified/$field")
+class FormattedHTMLRenderer extends StringRenderer {
+  override def visitString(s: CharSequence, index: Int): StringWriter = {
+    if(s.length() > 0 && s.charAt(0) == '<') {
+      val doc = Jsoup.parse(s.toString)
+      doc.outputSettings().prettyPrint(true)
 
-    if(node.isMissingNode) {
-      None
+      val formatted = doc.body().html()
+      super.visitString(formatted, index)
     } else {
-      Some(fn(node))
+      super.visitString(s, index)
     }
   }
 }
