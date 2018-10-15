@@ -21,7 +21,7 @@ import org.eclipse.jgit.lib.PersonIdent
 import org.jsoup.Jsoup
 import play.api.libs.ws.WSClient
 import play.api.mvc.{BaseController, ControllerComponents}
-import ujson.StringRenderer
+import ujson.{Js, StringRenderer}
 
 import scala.concurrent.Await
 import scala.concurrent.duration._
@@ -47,14 +47,14 @@ class Export(override val controllerComponents: ControllerComponents, snapshotAp
       val repo = Git.init().setDirectory(dir.toFile).call()
 
       snapshotIds.foreach { case(stack, id @ SnapshotId(_, timestamp)) =>
-        val filename = s"${stack.stage}:${stack.stack}.yaml"
         val snapshot = getSnapshot(stack, id)
         val commitTime = Date.from(snapshot.lastModifiedTime)
 
         val author = new PersonIdent(new PersonIdent(snapshot.lastModifiedName, snapshot.lastModifiedEmail), commitTime)
 
-        Files.write(dir.resolve(filename), snapshot.contents.getBytes(StandardCharsets.UTF_8))
-        repo.add().addFilepattern(filename).call()
+        write(dir, repo, filename(stack, "metadata"), snapshot.metadata)
+        write(dir, repo, filename(stack, "live"), snapshot.live)
+        write(dir, repo, filename(stack, "preview"), snapshot.preview)
 
         repo.commit()
           .setMessage(s"Snapshot update from $timestamp")
@@ -112,24 +112,51 @@ class Export(override val controllerComponents: ControllerComponents, snapshotAp
 
     zipPath
   }
+
+  private def write(dir: Path, repo: Git, filename: String, contents: String) = {
+    Files.write(dir.resolve(filename), contents.getBytes(StandardCharsets.UTF_8))
+    repo.add().addFilepattern(filename).call()
+  }
+
+  private def filename(stack: FlexibleStack, part: String) = {
+    s"${stack.stage}:${stack.stack}.$part.yaml"
+  }
 }
 
-case class FormattedSnapshot(lastModifiedTime: Instant, lastModifiedEmail: String, lastModifiedName: String, contents: String)
+case class FormattedSnapshot(lastModifiedTime: Instant, lastModifiedEmail: String, lastModifiedName: String, metadata: String, preview: String, live: String)
 object FormattedSnapshot {
+  private val jsonMapper = new ObjectMapper()
+
+  private val yamlMapper = new YAMLMapper()
+    .configure(YAMLGenerator.Feature.MINIMIZE_QUOTES, true)
+
   def apply(rawSnapshot: String): FormattedSnapshot = {
     val json = ujson.read(rawSnapshot)
-    val formattedJson = ujson.transform(json, new FormattedHTMLRenderer()).toString
 
-    val yaml = new YAMLMapper()
-      .configure(YAMLGenerator.Feature.MINIMIZE_QUOTES, true)
-      .writeValueAsString(new ObjectMapper().readTree(formattedJson))
+    val preview = json("preview")
+    val live = json("live")
+
+    json.obj.remove("preview")
+    json.obj.remove("live")
+
+    val formattedPreview = format(preview)
+    val formattedLive = format(live)
+    val formattedMeta = format(json)
 
     val contentChangeDetails = json("contentChangeDetails")("lastModified")
     val lastModifiedTime = Instant.ofEpochMilli(contentChangeDetails("date").num.toLong)
     val email = Try(contentChangeDetails("user")("email").str).getOrElse("unknown")
     val name = Try(s"${contentChangeDetails("user")("firstName").str} ${contentChangeDetails("user")("lastName").str}").getOrElse("unknown")
 
-    FormattedSnapshot(lastModifiedTime, email, name, yaml)
+    FormattedSnapshot(lastModifiedTime, email, name, formattedMeta, formattedPreview, formattedLive)
+  }
+
+  private def format(obj: ujson.Js.Value): String = {
+    val formatted = ujson.transform(obj, new FormattedHTMLRenderer()).toString
+    // YAML doesn't like spaces before newlines. Two backslashes because .replace takes a regex which is not suprising AT ALL
+    val oddYamlHacks = formatted.replace(" \\n", "\\n")
+
+    yamlMapper.writeValueAsString(jsonMapper.readTree(oddYamlHacks))
   }
 }
 
