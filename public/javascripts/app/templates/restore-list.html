@@ -137,10 +137,14 @@
                     <gu-icon class="snapshot-content__actions__restore__icon" variant="wrench-disabled"></gu-icon>
                     Restore
                 </gu-btn>
-                <gu-btn class="snapshot-content__actions--button"
-                ng-click="ctrl.toggleJSON()">{{displayButtonLabel}}</gu-btn>
                 <gu-btn class="snapshot-content__actions--button" ng-click="ctrl.copyJSON()">
                     {{copyButtonLabel}}
+                </gu-btn>
+                <a class="snapshot-content__actions--button btn btn" target="_blank" ng-href="/export/{{contentId}}/git">
+                    Export all as Git Repo
+                </a>
+                <gu-btn class="snapshot-content__actions--button" ng-click="ctrl.toggleJSON()">
+                    {{displayButtonLabel}}
                 </gu-btn>
             </gu-row>
 

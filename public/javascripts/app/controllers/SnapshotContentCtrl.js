@@ -14,8 +14,9 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
     'UserService',
   function($scope, $routeParams, $timeout, $sce, SnapshotIdModels, SnapshotModels, UserService){
 
+    $scope.contentId = $routeParams.contentId;
     $scope.isShowingJSON = false;
-    $scope.displayButtonLabel = "JSON";
+    $scope.displayButtonLabel = "Show JSON";
     $scope.copyButtonLabel = "Copy JSON";
     $scope.canRestore =  false;
 
@@ -77,14 +78,14 @@ SnapshotContentCtrlMod.controller('SnapshotContentCtrl', [
     function displayJSON() {
       safeApply($scope, () => {
           $scope.isShowingJSON = true;
-          $scope.displayButtonLabel = "TEXT";
+          $scope.displayButtonLabel = "Show TEXT";
       });
     }
 
     function displayHTML() {
       safeApply($scope, () => {
           $scope.isShowingJSON = false;
-          $scope.displayButtonLabel = "JSON";
+          $scope.displayButtonLabel = "Show JSON";
       });
     }
 
