@@ -6,16 +6,16 @@ scalaVersion in ThisBuild := "2.12.3"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Ywarn-unused-import")
 
-val awsSdkVersion = "1.11.86"
+val awsSdkVersion = "1.11.490"
 
 libraryDependencies ++= Seq(
     ws,
     "com.gu" %% "pan-domain-auth-play_2-6" % "0.7.0",
-    "com.gu" % "kinesis-logback-appender" % "1.4.2",
-    "com.gu" %% "editorial-permissions-client" % "0.8",
+    "com.gu" % "kinesis-logback-appender" % "1.4.4",
+    "com.gu" %% "editorial-permissions-client" % "0.8", //2.0
     "com.gu" %% "configraun" % "0.3",
-    "com.typesafe.play" %% "play-json-joda" % "2.6.7",
-    "net.logstash.logback" % "logstash-logback-encoder" % "4.11",
+    "com.typesafe.play" %% "play-json-joda" % "2.7.1",
+    "net.logstash.logback" % "logstash-logback-encoder" % "5.3",
     "com.amazonaws" % "aws-java-sdk-s3" % awsSdkVersion,
     "com.amazonaws" % "aws-java-sdk-ec2" % awsSdkVersion,
     "com.amazonaws" % "aws-java-sdk-cloudwatch" % awsSdkVersion,
