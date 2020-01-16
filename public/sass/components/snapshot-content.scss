@@ -12,6 +12,7 @@
   display: flex;
   flex-flow: column;
   max-height: calc(100vh - 46px);
+  overflow: scroll;
 }
 
 .snapshot-content__container {
