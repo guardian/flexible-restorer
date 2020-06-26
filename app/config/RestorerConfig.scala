@@ -17,7 +17,7 @@ class RestorerConfig(config: TypesafeConfig) {
       stack = "flexible",
       stage = "DEV",
       isSecondary = false,
-      apiPrefix = "http://localhost:9082/api",
+      apiPrefix = "http://localhost:9085/api",
       composerPrefix = "https://composer.local.dev-gutools.co.uk",
       snapshotBucket = "not-applicable"))
   else None
