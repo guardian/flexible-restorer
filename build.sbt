@@ -11,7 +11,7 @@ val awsSdkVersion = "1.11.86"
 libraryDependencies ++= Seq(
     ws,
     "com.gu" %% "pan-domain-auth-play_2-6" % "0.7.0",
-    "com.gu" % "kinesis-logback-appender" % "1.4.2",
+    "com.gu" % "kinesis-logback-appender" % "1.4.4",
     "com.gu" %% "editorial-permissions-client" % "0.8",
     "com.gu" %% "configraun" % "0.3",
     "com.typesafe.play" %% "play-json-joda" % "2.6.7",
