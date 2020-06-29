@@ -24,3 +24,4 @@ node_modules/
 public/css
 public/build.js
 public/build.js.map
+public/dist

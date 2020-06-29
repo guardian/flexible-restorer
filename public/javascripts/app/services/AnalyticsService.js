@@ -1,6 +1,5 @@
 import angular from 'angular';
 import mediator from '../utils/mediator';
-import md5 from 'md5';
 
 const initGA = gaId => {
     // tracking script should be on the page already
