@@ -30,7 +30,7 @@ SnapshotModelsMod.factory('SnapshotModels', [
           SnapshotService
               .getSnapshot(systemId, contentId, timestamp)
               .success(function(data, status, header, config){
-                  contentCache[key] = new SnapshotModel.getModel(systemId, timestamp, data);
+                  contentCache[key] = SnapshotModel.getModel(systemId, timestamp, data);
                 resolve(contentCache[key]);
               })
               .error(function(data, status, header, config){

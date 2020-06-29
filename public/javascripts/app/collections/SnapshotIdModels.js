@@ -1,6 +1,4 @@
 import angular from 'angular';
-import SnapshotIdModel from '../models/SnapshotIdModel';
-import SnapshotCollectionMod from '../services/SnapshotCollectionService';
 import BaseCollection from './BaseCollection';
 
 let listCache = {};
@@ -16,7 +14,7 @@ SnapshotIdModelsMod.factory('SnapshotIdModels', [
         class SnapshotIds extends BaseCollection {
             constructor(models){
                 super();
-                this.models = models.map((snapshot) => new SnapshotIdModel.getModel(snapshot)).sort(this.comparator);
+                this.models = models.map((snapshot) => SnapshotIdModel.getModel(snapshot)).sort(this.comparator);
             }
 
             comparator(modelA, modelB){
