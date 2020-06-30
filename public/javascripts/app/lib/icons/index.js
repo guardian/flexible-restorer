@@ -1,18 +1,18 @@
 import angular from 'angular'
 
-import clockActive      from './svg/clock-active.svg!text';
-import clockDisabled    from './svg/clock-disabled.svg!text';
-import infoActive       from './svg/info-active.svg!text';
-import infoDisabled     from './svg/info-disabled.svg!text';
-import publishActive    from './svg/publish-active.svg!text';
-import publishDisabled  from './svg/publish-disabled.svg!text';
-import previewActive    from './svg/preview-active.svg!text';
-import arrowDown        from './svg/arrow-down.svg!text';
-import composerIcon     from './svg/composer-icon.svg!text';
-import wrenchActive     from './svg/wrench-active.svg!text';
-import wrenchDisabled   from './svg/wrench-disabled.svg!text';
-import expandActive     from './svg/expand-active.svg!text';
-import expandDisabled   from './svg/expand-disabled.svg!text';
+import clockActive      from '!!raw-loader!./svg/clock-active.svg';
+import clockDisabled    from '!!raw-loader!./svg/clock-disabled.svg';
+import infoActive       from '!!raw-loader!./svg/info-active.svg';
+import infoDisabled     from '!!raw-loader!./svg/info-disabled.svg';
+import publishActive    from '!!raw-loader!./svg/publish-active.svg';
+import publishDisabled  from '!!raw-loader!./svg/publish-disabled.svg';
+import previewActive    from '!!raw-loader!./svg/preview-active.svg';
+import arrowDown        from '!!raw-loader!./svg/arrow-down.svg';
+import composerIcon     from '!!raw-loader!./svg/composer-icon.svg';
+import wrenchActive     from '!!raw-loader!./svg/wrench-active.svg';
+import wrenchDisabled   from '!!raw-loader!./svg/wrench-disabled.svg';
+import expandActive     from '!!raw-loader!./svg/expand-active.svg';
+import expandDisabled   from '!!raw-loader!./svg/expand-disabled.svg';
 
 var templates = {
     'clock-active': clockActive,

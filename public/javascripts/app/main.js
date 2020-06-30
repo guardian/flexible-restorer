@@ -9,6 +9,9 @@ import services     from './services/index';
 
 import components   from './lib/gu-components';
 
+import '../../sass/index.scss';
+import '../../gu-noting.css';
+
 var restorer = angular.module('restorer', [
   'ngRoute',
   'ngSanitize',

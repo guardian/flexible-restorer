@@ -5,16 +5,13 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Composer Restorer - @pageTitle</title>
-    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("jspm_packages/github/guardian/scribe-plugin-noting@0.3.29/skins/gu-noting.css")" />
-    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("css/index.css")" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("dist/main.css")" />
     <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/fav-versions-32.png")" />
 </head>
 <body ng-app="restorer">
     <main class="main" ng-view>
     <!-- Add Loading GFX -->
     </main>
-
-    <script src="@routes.Assets.at("jspm_packages/system.js")"></script>
 
     <script type="application/json" id="config">
         @Html(config)
@@ -29,14 +26,7 @@
         </script>
     }
 
-    <script src="@routes.Assets.at("config.js")"></script>
-    <script>
-      System
-        .import('javascripts/app/main')
-        .catch(function(err){
-          console.error(err);
-        });
-    </script>
+    <script src="@routes.Assets.at("dist/main.js")"></script>
 
 </body>
 </html>

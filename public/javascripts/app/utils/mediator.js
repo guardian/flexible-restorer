@@ -1,5 +1,3 @@
-import mediator from 'mediator';
-
-const Mediator = mediator.Mediator;;
+import * as Mediator from 'mediator-js';
 
 export default new Mediator();
