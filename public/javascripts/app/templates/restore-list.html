@@ -57,17 +57,20 @@
                 variant="{{ model.get('activeState') ? 'tertiary' : 'primary' }}"
                 ng-mouseenter="hovered=true"
                 ng-mouseleave="hovered=false"
-                ng-class="{ 'item-active': model.get('activeState') }">
+                ng-class="{ 'item-active': model.get('activeState'), 'highlight-row-for-launches': model.isBecauseOfLaunch()  }">
 
                 <div class="index-list__item__index">{{model.getRevisionId() || (models.length - $index)}}</div>
 
                 <div class="snapshot-list__item__content"
-                     ng-class="{ 'active': model.get('activeState') && isDisplayingHTML }"
+                     ng-class="{ 'active': model.get('activeState') && isDisplayingHTML}"
                      ng-click="ctrl.onItemClicked($index)">
                     <h6 class="snapshot-list__item__content__actual-date" ng-bind-html="model.getCreatedDateHtml()"></h6>
                     <h6 class="snapshot-list__item__content__relative-date">{{ model.getRelativeDate() }} ago</h6>
                     <h6 class="snapshot-list__item__content__reason">Last modified by: {{ model.getUserEmail() }}</h6>
-                    <h6 class="snapshot-list__item__content__reason">{{ model.getSnapshotReason() }}</h6>
+                    <h6 class="snapshot-list__item__content__reason"
+                        ng-class="{ 'highlight-reason-for-launches': model.isBecauseOfLaunch() }">
+                        {{ model.getSnapshotReason() }}
+                    </h6>
                 </div>
 
                 <div class="snapshot-list__item__information">

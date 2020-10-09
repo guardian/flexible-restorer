@@ -73,6 +73,11 @@ SnapshotIdModelMod.factory('SnapshotIdModel', [
                 return this.get('metadata.reason')
             }
 
+            isBecauseOfLaunch() {
+                const reason = this.getSnapshotReason() || '';
+                return reason === 'Published' || reason.toLowerCase().includes('launch')
+            }
+
             isLegallySensitive() {
                 const legallySensitive = this.get('summary.preview.settings.legallySensitive');
                 return legallySensitive === "true";
