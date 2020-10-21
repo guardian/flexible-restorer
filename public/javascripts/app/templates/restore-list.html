@@ -30,100 +30,104 @@
                gu-box="secondary"
                ng-class="{'active': isSidebarActive}"
                ng-controller="SnapshotListInteractionCtrl as ctrl">
+        <div class="scrollable__container">
 
-        <!-- SNAPSHOT LIST HEADER -->
-        <h1 class="article-headline">{{ articleTitle }}</h1>
-        <h6 class="article-hash">
-            (<a href="{{articleURL}}" target="_blank">
-            {{ articleHash }}
-        </a>)
-        </h6>
-
-        <gu-row class="snapshot-list-header">
-            <span class="snapshot-list-header__decal" title="Content revision number">No.</span>
-            <span class="snapshot-list-header__content">Snapped at &amp; last modified</span>
-            <span class="snapshot-list-header__status">Status</span>
-        </gu-row>
-
-        <!-- SNAPSHOT LIST -->
-        <ol class="index-list snapshot-list">
-            <!-- CONTENT -->
-            <li class="snapshot-list-secondary"
-                ng-repeat-start="model in models"
-                ng-if="model.isSecondary()">
-                Snapshot from secondary
-            </li>
-            <li class="snapshot-list__item index-list__item index-list__item--{{ model.get('activeState') ? 'tertiary' : 'primary' }}"
-                variant="{{ model.get('activeState') ? 'tertiary' : 'primary' }}"
-                ng-mouseenter="hovered=true"
-                ng-mouseleave="hovered=false"
-                ng-class="{ 'item-active': model.get('activeState'), 'highlight-row-for-launches': model.isBecauseOfLaunch()  }">
-
-                <div class="index-list__item__index">{{model.getRevisionId() || (models.length - $index)}}</div>
-
-                <div class="snapshot-list__item__content"
-                     ng-class="{ 'active': model.get('activeState') && isDisplayingHTML}"
-                     ng-click="ctrl.onItemClicked($index)">
-                    <h6 class="snapshot-list__item__content__actual-date" ng-bind-html="model.getCreatedDateHtml()"></h6>
-                    <h6 class="snapshot-list__item__content__relative-date">{{ model.getRelativeDate() }} ago</h6>
-                    <h6 class="snapshot-list__item__content__reason">Last modified by: {{ model.getUserEmail() }}</h6>
-                    <h6 class="snapshot-list__item__content__reason"
-                        ng-class="{ 'highlight-reason-for-launches': model.isBecauseOfLaunch() }">
-                        {{ model.getSnapshotReason() }}
-                    </h6>
-                </div>
-
-                <div class="snapshot-list__item__information">
-                    <div class="snapshot-list__item__status"
-                         ng-click="ctrl.onItemClicked($index)">
-                        <div class="snapshot-list__item__status--left"
-                             ng-click="ctrl.onItemClicked($index)">
-
-                            <div class="snapshot-list__item__settings__legally-sensitive"
-                                 ng-show="model.isLegallySensitive()">
-                            </div>
-
-                            <div class="snapshot-list__item__settings__comments--on"
-                                 ng-show="model.commentsEnabled().on">
-                                <div class="snapshot-list__item__settings__comments--on-image">
-                                </div>
-                                <div class="snapshot-list__item__settings__content--text">
-                                    on
-                                </div>
-                            </div>
-
-                            <div class="snapshot-list__item__settings__comments--off"
-                                 ng-show="model.commentsEnabled().defined && !model.commentsEnabled().on">
-                                <div class="snapshot-list__item__settings__comments--off-image">
-                                </div>
-                                <div class="snapshot-list__item__settings__content--text">
-                                    off
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="snapshot-list__item__status--right"
-                             ng-click="ctrl.onItemClicked($index)"
-                             ng-show="!!model.getPublishedState()">
-                            {{model.getPublishedState()}}
-                        </div>
-                    </div>
-                </div>
-            </li>
-
-            <!-- DELTA TIME -->
-            <li class="delta-row" ng-repeat-end ng-mouseover="isActive = true" ng-mouseout="isActive = false">
-                <gu-row variant="reverse">
-                    <gu-icon class="delta-row__icon" variant="expand-disabled"></gu-icon>
-          <span class="delta-row__content">
-            {{ model.getRelativeDate( models[$index + 1].get('createdDate') ) }}
-          </span>
+            <!-- SNAPSHOT LIST HEADER -->
+            <div class="scrollable__header-fixed">
+                <h1 class="article-headline">{{ articleTitle }}</h1>
+                <h6 class="article-hash">
+                    (<a href="{{articleURL}}" target="_blank">
+                    {{ articleHash }}
+                </a>)
+                </h6>
+                <gu-row class="snapshot-list-header">
+                    <span class="snapshot-list-header__decal" title="Content revision number">No.</span>
+                    <span class="snapshot-list-header__content">Snapped at &amp; last modified</span>
+                    <span class="snapshot-list-header__status">Status</span>
                 </gu-row>
-            </li>
+            </div>
 
-        </ol>
+            <!-- SNAPSHOT LIST -->
+            <div class="scrollable__body">
+                <ol class="index-list snapshot-list">
+                    <!-- CONTENT -->
+                    <li class="snapshot-list-secondary"
+                        ng-repeat-start="model in models"
+                        ng-if="model.isSecondary()">
+                        Snapshot from secondary
+                    </li>
+                    <li class="snapshot-list__item index-list__item index-list__item--{{ model.get('activeState') ? 'tertiary' : 'primary' }}"
+                        variant="{{ model.get('activeState') ? 'tertiary' : 'primary' }}"
+                        ng-mouseenter="hovered=true"
+                        ng-mouseleave="hovered=false"
+                        ng-class="{ 'item-active': model.get('activeState'), 'highlight-row-for-launches': model.isBecauseOfLaunch()  }">
 
+                        <div class="index-list__item__index">{{model.getRevisionId() || (models.length - $index)}}</div>
+
+                        <div class="snapshot-list__item__content"
+                            ng-class="{ 'active': model.get('activeState') && isDisplayingHTML}"
+                            ng-click="ctrl.onItemClicked($index)">
+                            <h6 class="snapshot-list__item__content__actual-date" ng-bind-html="model.getCreatedDateHtml()"></h6>
+                            <h6 class="snapshot-list__item__content__relative-date">{{ model.getRelativeDate() }} ago</h6>
+                            <h6 class="snapshot-list__item__content__reason">Last modified by: {{ model.getUserEmail() }}</h6>
+                            <h6 class="snapshot-list__item__content__reason"
+                                ng-class="{ 'highlight-reason-for-launches': model.isBecauseOfLaunch() }">
+                                {{ model.getSnapshotReason() }}
+                            </h6>
+                        </div>
+
+                        <div class="snapshot-list__item__information">
+                            <div class="snapshot-list__item__status"
+                                ng-click="ctrl.onItemClicked($index)">
+                                <div class="snapshot-list__item__status--left"
+                                    ng-click="ctrl.onItemClicked($index)">
+
+                                    <div class="snapshot-list__item__settings__legally-sensitive"
+                                        ng-show="model.isLegallySensitive()">
+                                    </div>
+
+                                    <div class="snapshot-list__item__settings__comments--on"
+                                        ng-show="model.commentsEnabled().on">
+                                        <div class="snapshot-list__item__settings__comments--on-image">
+                                        </div>
+                                        <div class="snapshot-list__item__settings__content--text">
+                                            on
+                                        </div>
+                                    </div>
+
+                                    <div class="snapshot-list__item__settings__comments--off"
+                                        ng-show="model.commentsEnabled().defined && !model.commentsEnabled().on">
+                                        <div class="snapshot-list__item__settings__comments--off-image">
+                                        </div>
+                                        <div class="snapshot-list__item__settings__content--text">
+                                            off
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="snapshot-list__item__status--right"
+                                    ng-click="ctrl.onItemClicked($index)"
+                                    ng-show="!!model.getPublishedState()">
+                                    {{model.getPublishedState()}}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- DELTA TIME -->
+                    <li class="delta-row" ng-repeat-end ng-mouseover="isActive = true" ng-mouseout="isActive = false">
+                        <gu-row variant="reverse">
+                            <gu-icon class="delta-row__icon" variant="expand-disabled"></gu-icon>
+                <span class="delta-row__content">
+                    {{ model.getRelativeDate( models[$index + 1].get('createdDate') ) }}
+                </span>
+                        </gu-row>
+                    </li>
+
+                </ol>
+            </div>
+        </div>
     </gu-column>
 
     <!-- CONTENT -->
@@ -131,9 +135,9 @@
                span="8"
                ng-controller="SnapshotContentCtrl as ctrl"
                ng-class="{'active': isSettingContent === false}">
-        <div class="snapshot-content__viewport">
+        <div class="snapshot-content__viewport scrollable__container">
 
-            <gu-row class="snapshot-content__actions">
+            <gu-row class="snapshot-content__actions scrollable__header-fixed">
                 <gu-btn class="snapshot-content__actions--button"
                 ng-click="ctrl.restoreContent()"
                 ng-if="canRestore">
@@ -150,52 +154,53 @@
                     {{displayButtonLabel}}
                 </gu-btn>
             </gu-row>
+            <div class="scrollable__body">
+                <div class="snapshot-content__furniture">
+                    <gu-row class="snapshot-content__furniture__item">
+                        <h4 class="snapshot-content__furniture__item--header">
+                            Headline
+                        </h4>
+                        <p class="snapshot-content__furniture__item--content">
+                            {{ headline }}
+                        </p>
+                    </gu-row>
 
-            <div class="snapshot-content__furniture">
-                <gu-row class="snapshot-content__furniture__item">
-                    <h4 class="snapshot-content__furniture__item--header">
-                        Headline
-                    </h4>
-                    <p class="snapshot-content__furniture__item--content">
-                        {{ headline }}
-                    </p>
-                </gu-row>
+                    <gu-row class="snapshot-content__furniture__item">
+                        <h4 class="snapshot-content__furniture__item--header">
+                            Standfirst
+                        </h4>
+                        <p class="snapshot-content__furniture__item--content">
+                            {{ standfirst }}
+                        </p>
+                    </gu-row>
 
-                <gu-row class="snapshot-content__furniture__item">
-                    <h4 class="snapshot-content__furniture__item--header">
-                        Standfirst
-                    </h4>
-                    <p class="snapshot-content__furniture__item--content">
-                        {{ standfirst }}
-                    </p>
-                </gu-row>
+                    <gu-row class="snapshot-content__furniture__item">
+                        <h4 class="snapshot-content__furniture__item--header">
+                            TrailText
+                        </h4>
+                        <p class="snapshot-content__furniture__item--content">
+                            {{ trailText }}
+                        </p>
+                    </gu-row>
+                </div>
 
-                <gu-row class="snapshot-content__furniture__item">
-                    <h4 class="snapshot-content__furniture__item--header">
-                        TrailText
-                    </h4>
-                    <p class="snapshot-content__furniture__item--content">
-                        {{ trailText }}
-                    </p>
+                <!-- TODO JP 15/4/15 Replace with accordion from components repo -->
+                <gu-row class="snapshot-content__container" ng-class="{ 'show-json': isShowingJSON }">
+
+                    <!-- HTML CONTENT -->
+                    <gu-column class="snapshot-content__container__item" span="6">
+                        <div ng-bind-html="htmlContent"></div>
+                    </gu-column>
+
+                    <!-- JSON CONTENT -->
+                    <gu-column span="6" class="snapshot-content__container__item--json">
+                        <div>
+                            <pre><code>{{ jsonContent }}</code></pre>
+                        </div>
+                    </gu-column>
+
                 </gu-row>
             </div>
-
-            <!-- TODO JP 15/4/15 Replace with accordion from components repo -->
-            <gu-row class="snapshot-content__container" ng-class="{ 'show-json': isShowingJSON }">
-
-                <!-- HTML CONTENT -->
-                <gu-column class="snapshot-content__container__item" span="6">
-                    <div ng-bind-html="htmlContent"></div>
-                </gu-column>
-
-                <!-- JSON CONTENT -->
-                <gu-column span="6" class="snapshot-content__container__item--json">
-                    <div>
-                        <pre><code>{{ jsonContent }}</code></pre>
-                    </div>
-                </gu-column>
-
-            </gu-row>
         </div>
     </gu-column>
 

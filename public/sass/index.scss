@@ -1,8 +1,10 @@
 @import "mixins/center-children";
 @import "mixins/borders";
 
+@import "components/content.scss";
 @import "components/snapshot-list.scss";
 @import "components/sidebar.scss";
+@import "components/scrollable.scss";
 @import "components/snapshot-content.scss";
 @import "components/text.scss";
 @import "components/modal.scss";
