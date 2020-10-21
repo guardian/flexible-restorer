@@ -8,10 +8,10 @@ Follow the [dev-nginx README](https://github.com/guardian/dev-nginx). There is a
 ```
 $ nvm use
 $ npm install
-$ npm build
+$ npm run build
 
 # Alternatively to continously watch for changes and rebuild
-$ npm watch
+$ npm run watch
 ```
 
 This project does not have hot module reloading so you will have to reload the page on Javascript or SCSS updates
