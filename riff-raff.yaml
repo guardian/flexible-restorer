@@ -13,7 +13,7 @@ deployments:
     app: restorer2
     parameters:
       amiTags:
-        Recipe: editorial-tools-xenial-java8
+        Recipe: editorial-tools-bionic-java8-ARM
         AmigoStage: PROD
         BuiltBy: amigo
       amiEncrypted: true
