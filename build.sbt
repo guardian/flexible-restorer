@@ -6,7 +6,7 @@ scalaVersion in ThisBuild := "2.12.3"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Ywarn-unused-import")
 
-val awsSdkVersion = "1.11.86"
+val awsSdkVersion = "1.11.678"
 
 libraryDependencies ++= Seq(
     ws,
