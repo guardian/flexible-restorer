@@ -8,16 +8,16 @@ import com.typesafe.config.{Config => TypesafeConfig}
 import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import config.AWS._
 import play.api.ApplicationLoader.Context
-import play.api.Logger
+import play.api.Logging
 
-object Config {
+object Config extends Logging {
   implicit val client: AWSSimpleSystemsManagement = AWSSimpleSystemsManagementFactory(region.getName, profile)
   private lazy val SSMConfig: models.Configuration = Configraun.loadConfig(Identifier(Stack(stackName), App(app), Stage.fromString(stage).get)) match {
     case Left(a) =>
-      Logger.error(s"Unable to load Configraun configuration from AWS (${a.message})")
+      logger.error(s"Unable to load Configraun configuration from AWS (${a.message})")
       sys.exit(1)
     case Right(a) =>
-      Logger.info(s"Loaded config using Configraun for /$stackName/$app/$stage")
+      logger.info(s"Loaded config using Configraun for /$stackName/$app/$stage")
       a
   }
 
@@ -27,7 +27,7 @@ object Config {
 
   private def readSSMParameter(str: String): String = SSMConfig.getAsString(s"/$str") match {
     case Left(e) =>
-      Logger.warn(s"Unable to load find '$str' in the config \n${e.message}")
+      logger.warn(s"Unable to load find '$str' in the config \n${e.message}")
       ""
     case Right(a) => a
   }

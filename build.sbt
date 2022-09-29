@@ -2,7 +2,7 @@ name := "restorer2"
 
 version := "1.0.0"
 
-scalaVersion in ThisBuild := "2.12.3"
+ThisBuild / scalaVersion := "2.12.3"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Ywarn-unused-import")
 
@@ -32,7 +32,7 @@ lazy val mainProject = project.in(file("."))
   .enablePlugins(PlayScala, RiffRaffArtifact)
   .enablePlugins(JDebPackaging, SystemdPlugin)
   .settings(
-    javaOptions in Universal ++= Seq(
+    Universal / javaOptions ++= Seq(
           "-Dpidfile.path=/dev/null"
      )
   )
@@ -46,14 +46,14 @@ lazy val mainProject = project.in(file("."))
     riffRaffUploadManifestBucket := Option("riffraff-builds"),
     riffRaffManifestBranch := Option(System.getenv("BRANCH_NAME")).getOrElse("dev"),
     riffRaffArtifactResources := Seq(
-      (packageBin in Debian).value -> s"${name.value}/${name.value}.deb",
+      (Debian / packageBin).value -> s"${name.value}/${name.value}.deb",
          baseDirectory.value / "riff-raff.yaml" -> "riff-raff.yaml"
     ),
-    sources in (Compile,doc) := Seq.empty,
-    publishArtifact in (Compile, packageDoc) := false
+    Compile / doc / sources := Seq.empty,
+    Compile / packageDoc / publishArtifact := false
   )
 
-serverLoading in Debian := Some(ServerLoader.Systemd)
+Debian / serverLoading := Some(ServerLoader.Systemd)
 
 debianPackageDependencies := Seq("openjdk-8-jre-headless")
 maintainer := "Digital CMS <digitalcms.dev@guardian.co.uk>"

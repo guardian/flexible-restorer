@@ -41,13 +41,13 @@ object LogStash extends AwsInstanceTags with Loggable {
     "{" + (for((k, v) <- customFields) yield s""""$k":"$v"""").mkString(",") + "}"
   }
 
-  def makeLayout(customFields: String) = {
+  def makeLayout(customFields: String): LogstashLayout = {
     val l = new LogstashLayout()
     l.setCustomFields(customFields)
     l
   }
 
-  def makeKinesisAppender(layout: LogstashLayout, context: LoggerContext, appenderConfig: KinesisAppenderConfig) = {
+  def makeKinesisAppender(layout: LogstashLayout, context: LoggerContext, appenderConfig: KinesisAppenderConfig): KinesisAppender[ILoggingEvent] = {
     val a = new KinesisAppender[ILoggingEvent]()
     a.setStreamName(appenderConfig.stream)
     a.setRegion(appenderConfig.region.getName)
@@ -62,7 +62,7 @@ object LogStash extends AwsInstanceTags with Loggable {
     a
   }
 
-  def init(config: KinesisAppenderConfig) {
+  def init(config: KinesisAppenderConfig): Unit = {
     try {
       val layout = makeLayout(makeCustomFields(FACTS))
       val appender = makeKinesisAppender(layout, context, config)
