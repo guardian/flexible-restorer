@@ -14,23 +14,23 @@ import scala.concurrent.{ExecutionContext, Future}
 class Login(val controllerComponents: ControllerComponents, permissionsClient: Permissions, val config: RestorerConfig, override val wsClient: WSClient, val panDomainSettings: PanDomainAuthSettingsRefresher)
   extends BaseController with PanDomainAuthActions with Loggable {
 
-  def oauthCallback = Action.async { implicit request =>
-    processGoogleCallback()
+  def oauthCallback: Action[AnyContent] = Action.async { implicit request =>
+    processOAuthCallback()
   }
 
-  def logout = Action.async { implicit request =>
+  def logout: Action[AnyContent] = Action.async { implicit request =>
     Future(processLogout)
   }
 
-  def authError(message: String) = Action.async { implicit request =>
+  def authError(message: String): Action[AnyContent] = Action.async { implicit request =>
     Future(Forbidden(views.html.authError(message)))
   }
 
-  def user() = AuthAction { implicit request =>
+  def user(): Action[AnyContent] = AuthAction { implicit request =>
     Ok(request.user.toJson).as(JSON)
   }
 
-  def permissions() = AuthAction.async { implicit request =>
+  def permissions(): Action[AnyContent] = AuthAction.async { implicit request =>
     val permissionsMap = permissionsClient.userPermissionMap(request.user)
     permissionsMap.map{ permissions =>
       val nameMap = permissions.map{case (p, v) => p.name -> v}

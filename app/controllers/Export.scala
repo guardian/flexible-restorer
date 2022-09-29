@@ -1,13 +1,5 @@
 package controllers
 
-import java.io.{FileOutputStream, StringWriter}
-import java.nio.charset.StandardCharsets
-import java.nio.file.attribute.BasicFileAttributes
-import java.nio.file.{FileVisitResult, Files, Path, SimpleFileVisitor}
-import java.time.Instant
-import java.util.Date
-import java.util.zip.{ZipEntry, ZipOutputStream}
-
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.{YAMLGenerator, YAMLMapper}
 import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
@@ -20,10 +12,17 @@ import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.PersonIdent
 import org.jsoup.Jsoup
 import play.api.libs.ws.WSClient
-import play.api.mvc.{BaseController, ControllerComponents}
-import ujson.{Js, StringRenderer}
+import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents}
+import ujson.StringRenderer
 
-import scala.concurrent.Await
+import java.io.{FileOutputStream, StringWriter}
+import java.nio.charset.StandardCharsets
+import java.nio.file.attribute.BasicFileAttributes
+import java.nio.file.{FileVisitResult, Files, Path, SimpleFileVisitor}
+import java.time.Instant
+import java.util.Date
+import java.util.zip.{ZipEntry, ZipOutputStream}
+import scala.concurrent.{Await, ExecutionContext}
 import scala.concurrent.duration._
 import scala.util.Try
 
@@ -33,9 +32,9 @@ class Export(override val controllerComponents: ControllerComponents, snapshotAp
   extends BaseController with PanDomainAuthActions with Loggable {
 
   private val timeout = 30.seconds
-  private implicit val executionContext = controllerComponents.executionContext
+  private implicit val executionContext: ExecutionContext = controllerComponents.executionContext
 
-  def exportAsGitRepo(contentId: String) = AuthAction {
+  def exportAsGitRepo(contentId: String): Action[AnyContent] = AuthAction {
     val snapshotIds = config.sourceStacks.flatMap { stack =>
       snapshotApi.listForId(stack.snapshotBucket, contentId).map(stack -> _)
     }

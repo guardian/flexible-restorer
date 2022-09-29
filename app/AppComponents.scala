@@ -1,16 +1,18 @@
+import com.amazonaws.regions.Regions
+import com.amazonaws.services.s3.{AmazonS3, AmazonS3ClientBuilder}
 import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
+import com.typesafe.config.Config
 import config.{AWS, RestorerConfig}
 import controllers._
 import helpers.{HSTSFilter, LogStash, Loggable}
 import logic.{FlexibleApi, SnapshotApi}
 import permissions.Permissions
-import com.typesafe.config.Config
 import play.api.ApplicationLoader.Context
 import play.api.libs.ws.ahc.AhcWSComponents
 import play.api.mvc.EssentialFilter
 import play.api.routing.Router
-import router.Routes
 import play.api.{BuiltInComponentsFromContext, Mode}
+import router.Routes
 
 import scala.concurrent.ExecutionContext.Implicits.{global => globalExecutionContext}
 
@@ -20,12 +22,16 @@ class AppComponents(context: Context, config: Config) extends BuiltInComponentsF
 
   val restorerConfig = new RestorerConfig(config)
 
+  val pandaS3Client: AmazonS3 = AmazonS3ClientBuilder.standard().withCredentials(AWS.creds).withRegion(Regions.EU_WEST_1).build()
+
   val panDomainSettings: PanDomainAuthSettingsRefresher = new PanDomainAuthSettingsRefresher(
     domain = restorerConfig.domain,
     system = "restorer",
-    awsCredentialsProvider = AWS.creds,
-    actorSystem = actorSystem
+    bucketName = "pan-domain-auth-settings",
+    settingsFileKey = s"${restorerConfig.domain}.settings",
+    s3Client = pandaS3Client
   )
+
 
   if (context.environment.mode != Mode.Dev) LogStash.init(restorerConfig.loggingConfig)
 
