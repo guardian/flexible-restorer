@@ -11,7 +11,7 @@ import play.api.ApplicationLoader.Context
 import play.api.Logging
 
 object Config extends Logging {
-  implicit val client: AWSSimpleSystemsManagement = AWSSimpleSystemsManagementFactory(region.getName, profile)
+  implicit val client: AWSSimpleSystemsManagement = AWSSimpleSystemsManagementFactory(region.id(), profile)
   private lazy val SSMConfig: models.Configuration = Configraun.loadConfig(Identifier(Stack(stackName), App(app), Stage.fromString(stage).get)) match {
     case Left(a) =>
       logger.error(s"Unable to load Configraun configuration from AWS (${a.message})")

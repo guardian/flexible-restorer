@@ -1,13 +1,15 @@
 package config
 
-import com.amazonaws.auth.{AWSCredentialsProviderChain, InstanceProfileCredentialsProvider}
-import com.amazonaws.auth.profile.ProfileCredentialsProvider
+import com.amazonaws.auth.profile.{ProfileCredentialsProvider => ProfileCredentialsProviderV1}
+import com.amazonaws.auth.{AWSCredentialsProviderChain, InstanceProfileCredentialsProvider => InstanceProfileCredentialsProviderV1}
 import com.amazonaws.regions.Regions
-import com.amazonaws.services.cloudwatch.{AmazonCloudWatchAsync, AmazonCloudWatchAsyncClientBuilder}
-import com.amazonaws.services.ec2.model.{DescribeTagsRequest, Filter}
-import com.amazonaws.services.ec2.{AmazonEC2, AmazonEC2ClientBuilder}
 import com.amazonaws.services.s3.{AmazonS3, AmazonS3ClientBuilder}
-import com.amazonaws.util.EC2MetadataUtils
+import software.amazon.awssdk.auth.credentials.{AwsCredentialsProviderChain, InstanceProfileCredentialsProvider, ProfileCredentialsProvider}
+import software.amazon.awssdk.regions.Region
+import software.amazon.awssdk.regions.internal.util.EC2MetadataUtils
+import software.amazon.awssdk.services.ec2.Ec2Client
+import software.amazon.awssdk.services.ec2.model.{DescribeTagsRequest, DescribeTagsResponse, Filter}
+import software.amazon.awssdk.services.s3.S3Client
 
 import scala.collection.JavaConverters._
 
@@ -26,31 +28,38 @@ object AWS extends AwsInstanceTags {
     case value => value
   }
 
-  lazy val region: Regions = Regions.EU_WEST_1
+  lazy val region: Region = Region.EU_WEST_1
 
-  val creds = new AWSCredentialsProviderChain(
-    new ProfileCredentialsProvider(profile),
-    InstanceProfileCredentialsProvider.getInstance()
+  val credentials: AwsCredentialsProviderChain = AwsCredentialsProviderChain.builder().credentialsProviders(
+    ProfileCredentialsProvider.create(profile),
+    InstanceProfileCredentialsProvider.create()
+  ).build()
+
+  lazy val EC2Client: Ec2Client = Ec2Client.builder().credentialsProvider(credentials).region(region).build()
+  lazy val s3Client: S3Client = S3Client.builder().credentialsProvider(credentials).region(region).build()
+
+  // TODO: Remove AWS SDK V1 objects once dependent libraries have been updated
+  val credentialsV1 = new AWSCredentialsProviderChain(
+    new ProfileCredentialsProviderV1(profile),
+    InstanceProfileCredentialsProviderV1.getInstance()
   )
-
-  lazy val EC2Client: AmazonEC2 = AmazonEC2ClientBuilder.standard().withRegion(region).build()
-  lazy val CloudWatch: AmazonCloudWatchAsync = AmazonCloudWatchAsyncClientBuilder.standard().withRegion(region).build()
-  lazy val s3Client: AmazonS3 = AmazonS3ClientBuilder.standard().withCredentials(creds).withRegion(region).build()
+  val S3ClientV1: AmazonS3 = AmazonS3ClientBuilder.standard().withCredentials(credentialsV1).withRegion(Regions.EU_WEST_1).build()
 }
 
 trait AwsInstanceTags {
-  lazy val instanceId = Option(EC2MetadataUtils.getInstanceId)
+  lazy val instanceId: Option[String] = Option(EC2MetadataUtils.getInstanceId)
 
-  def readTag(tagName: String) = {
-    instanceId.flatMap { id =>
-      val tagsResult = AWS.EC2Client.describeTags(
-        new DescribeTagsRequest().withFilters(
-          new Filter("resource-type").withValues("instance"),
-          new Filter("resource-id").withValues(id),
-          new Filter("key").withValues(tagName)
-        )
+  def readTag(tagName: String): Option[String] = {
+    instanceId flatMap { id =>
+      val tagsResponse: DescribeTagsResponse = AWS.EC2Client.describeTags(
+
+        DescribeTagsRequest.builder().filters(
+          Filter.builder().name("resource-type").values("instance").build(),
+          Filter.builder().name("resource-id").values(id).build(),
+          Filter.builder().name("key").values(tagName).build()
+        ).build()
       )
-      tagsResult.getTags.asScala.find(_.getKey == tagName).map(_.getValue)
+      tagsResponse.tags().asScala.find(_.key() == tagName).map(_.value())
     }
   }
 }

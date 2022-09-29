@@ -4,20 +4,20 @@ import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.classic.{Logger, LoggerContext}
 import ch.qos.logback.core.joran.spi.JoranException
 import ch.qos.logback.core.util.StatusPrinter
-import com.amazonaws.auth.AWSCredentialsProvider
-import com.amazonaws.regions.Regions
 import com.gu.logback.appender.kinesis.KinesisAppender
 import config.{AWS, AwsInstanceTags}
 import net.logstash.logback.layout.LogstashLayout
 import org.slf4j.{LoggerFactory, Logger => SLFLogger}
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain
+import software.amazon.awssdk.regions.Region
 
 import scala.language.postfixOps
 import scala.util.control.NonFatal
 
 case class KinesisAppenderConfig(
   stream: String,
-  credentialsProvider: AWSCredentialsProvider,
-  region: Regions = AWS.region,
+  credentialsProvider: AwsCredentialsProviderChain = AWS.credentials,
+  region: Region = AWS.region,
   bufferSize: Int = 1000
 )
 
@@ -50,7 +50,7 @@ object LogStash extends AwsInstanceTags with Loggable {
   def makeKinesisAppender(layout: LogstashLayout, context: LoggerContext, appenderConfig: KinesisAppenderConfig): KinesisAppender[ILoggingEvent] = {
     val a = new KinesisAppender[ILoggingEvent]()
     a.setStreamName(appenderConfig.stream)
-    a.setRegion(appenderConfig.region.getName)
+    a.setRegion(appenderConfig.region.id())
     a.setCredentialsProvider(appenderConfig.credentialsProvider)
     a.setBufferSize(appenderConfig.bufferSize)
 

@@ -1,6 +1,6 @@
 package config
 
-import com.amazonaws.auth.DefaultAWSCredentialsProviderChain
+import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
 import config.AWS._
 import helpers.KinesisAppenderConfig
 import models.FlexibleStack
@@ -44,10 +44,18 @@ class RestorerConfig(config: TypesafeConfig) {
   val corsableDomains: List[String] = allStacks.map(_.composerPrefix)
 
   // Logging
-  lazy val loggingConfig = KinesisAppenderConfig(config.getString("logging.stream"), new DefaultAWSCredentialsProviderChain())
+  lazy val loggingConfig = KinesisAppenderConfig(config.getString("logging.stream"))
 
   // GA
   lazy val googleTrackingId: String = config.getString("google.tracking.id")
+
+  val panDomainSettings: PanDomainAuthSettingsRefresher = new PanDomainAuthSettingsRefresher(
+    domain,
+    system = "restorer",
+    bucketName = "pan-domain-auth-settings",
+    settingsFileKey = s"$domain.settings",
+    s3Client = S3ClientV1
+  )
 }
 
 object RestorerConfig {

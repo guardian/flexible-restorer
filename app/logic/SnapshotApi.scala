@@ -1,17 +1,18 @@
 package logic
 
-import com.amazonaws.services.s3.AmazonS3
-import com.amazonaws.services.s3.model._
 import helpers.Loggable
 import models.{Attempt, AttemptError, Snapshot, SnapshotId}
 import play.api.libs.json.{JsValue, Json}
+import software.amazon.awssdk.core.ResponseInputStream
+import software.amazon.awssdk.services.s3.S3Client
+import software.amazon.awssdk.services.s3.model._
 
 import scala.collection.JavaConverters._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.io.Source
 import scala.util.control.NonFatal
 
-class SnapshotApi(s3Client: AmazonS3) extends Loggable {
+class SnapshotApi(s3Client: S3Client) extends Loggable {
   def listForId(bucket: String, id: String): List[SnapshotId] = listSnapshots(bucket, id)
 
   def getRawSnapshot(bucket: String, snapshotId: SnapshotId) = getObjectContentRaw(snapshotId.key, bucket)
@@ -25,12 +26,11 @@ class SnapshotApi(s3Client: AmazonS3) extends Loggable {
   def getSnapshotInfo(bucket: String, snapshotId: SnapshotId): Attempt[Option[JsValue]] =
     getObjectContentJson(snapshotId.infoKey, bucket)
 
-  private def getObject(key: String, bucketName: String): Attempt[Option[S3Object]] = {
+  private def getObject(key: String, bucketName: String): Attempt[Option[ResponseInputStream[GetObjectResponse]]] = {
     try {
-      Attempt.Right(Some(s3Client.getObject(new GetObjectRequest(bucketName, key))))
+      Attempt.Right(Some(s3Client.getObject(GetObjectRequest.builder().bucket(bucketName).key(key).build())))
     } catch {
-      case e:AmazonS3Exception if e.getErrorCode == "NoSuchKey" =>
-        Attempt.Right(None)
+      case _:NoSuchKeyException => Attempt.Right(None)
       case NonFatal(e) =>
         logger.warn(s"Unexpected error whilst getting object $bucketName:$key", e)
         Attempt.Left(AttemptError(s"Couldn't retrieve object: ${e.getMessage}"))
@@ -42,7 +42,7 @@ class SnapshotApi(s3Client: AmazonS3) extends Loggable {
     getObject(key, bucketName).map {
       _.map { obj =>
         try {
-          Source.fromInputStream(obj.getObjectContent, "UTF-8").mkString
+          Source.fromInputStream(obj, "UTF-8").mkString
         } finally {
           obj.close()
         }
@@ -54,7 +54,7 @@ class SnapshotApi(s3Client: AmazonS3) extends Loggable {
     getObject(key, bucketName).map {
       _.map { obj =>
         try {
-          Json.parse(obj.getObjectContent)
+          Json.parse(obj)
         } finally {
           obj.close()
         }
@@ -64,10 +64,10 @@ class SnapshotApi(s3Client: AmazonS3) extends Loggable {
 
   private def listSnapshots(bucket: String, id: String): List[SnapshotId] = {
     logger.info(s"Looking for snapshots of $id in $bucket")
-    val request = new ListObjectsRequest().withBucketName(bucket).withPrefix(id)
-    val listing = s3Client.listObjects(request)
+    val request = ListObjectsRequest.builder().bucket(bucket).prefix(id).build()
+    val listing: ListObjectsResponse = s3Client.listObjects(request)
 
-    val objectKeys = listing.getObjectSummaries.asScala.map(x => x.getKey).toList
+    val objectKeys = listing.contents().asScala.map(_.key()).toList
     logger.info(s"Found ${objectKeys.size} versions")
     objectKeys.flatMap { k => SnapshotId.fromKey(k) }.distinct
   }

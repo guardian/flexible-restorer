@@ -11,7 +11,7 @@ import scala.language.postfixOps
 /**
  * Adapter for the Permissions client library
  */
-class Permissions(restorerConfig: RestorerConfig, credsProvider: AWSCredentialsProvider) extends PermissionsProvider {
+class Permissions(restorerConfig: RestorerConfig, credsProvider: AWSCredentialsProvider = AWS.credentialsV1) extends PermissionsProvider {
   val app = "composer-restorer"
 
   implicit def config = {

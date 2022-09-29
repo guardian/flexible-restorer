@@ -6,12 +6,12 @@ ThisBuild / scalaVersion := "2.12.3"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Ywarn-unused-import")
 
-val awsSdkVersion = "1.11.678"
+val awsVersion = "2.17.276"
 
 libraryDependencies ++= Seq(
     ws,
     "com.gu" %% "pan-domain-auth-play_2-8" % "1.2.0",
-    "com.gu" % "kinesis-logback-appender" % "1.4.2",
+    "com.gu" % "kinesis-logback-appender" % "2.1.0",
     "com.gu" %% "editorial-permissions-client" % "0.8",
     "com.gu" %% "configraun" % "0.3",
     "com.typesafe.play" %% "play-json-joda" % "2.6.7",
@@ -21,10 +21,11 @@ libraryDependencies ++= Seq(
     "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % "2.9.2",
     "org.jsoup" % "jsoup" % "1.11.3",
     "com.lihaoyi" %% "ujson" % "0.6.6",
-    "com.amazonaws" % "aws-java-sdk-s3" % awsSdkVersion,
-    "com.amazonaws" % "aws-java-sdk-ec2" % awsSdkVersion,
-    "com.amazonaws" % "aws-java-sdk-cloudwatch" % awsSdkVersion,
-    "com.amazonaws" % "aws-java-sdk-kinesis" % awsSdkVersion,
+    "software.amazon.awssdk" % "ec2" % awsVersion,
+    "software.amazon.awssdk" % "s3" % awsVersion,
+    "software.amazon.awssdk" % "cloudwatch" % awsVersion,
+    "software.amazon.awssdk" % "kinesis" % awsVersion,
+    "software.amazon.awssdk" % "utils" % awsVersion,
     "org.scalatest" %% "scalatest" % "3.0.5" % Test
 )
 
