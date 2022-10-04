@@ -4,7 +4,7 @@ import java.util.concurrent.TimeoutException
 
 import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
 import com.gu.pandomainauth.model.{User => PandaUser}
-import config.RestorerConfig
+import config.AppConfig
 import helpers.Loggable
 import logic.{FlexibleApi, SnapshotApi}
 import models._
@@ -19,8 +19,8 @@ import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.language.postfixOps
 import scala.util.control.NonFatal
 
-class Restore(val controllerComponents: ControllerComponents, snapshotApi: SnapshotApi, flexibleApi: FlexibleApi, permissions: Permissions, val config: RestorerConfig,
-  val wsClient: WSClient, val panDomainSettings: PanDomainAuthSettingsRefresher) extends BaseController with PanDomainAuthActions with Loggable {
+class Restore(val controllerComponents: ControllerComponents, snapshotApi: SnapshotApi, flexibleApi: FlexibleApi, permissions: Permissions, val config: AppConfig,
+              val wsClient: WSClient, val panDomainSettings: PanDomainAuthSettingsRefresher) extends BaseController with PanDomainAuthActions with Loggable {
 
   def userFromPandaUser(user: PandaUser) = User(user.firstName, user.lastName, user.email)
 

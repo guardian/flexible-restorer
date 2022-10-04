@@ -1,9 +1,9 @@
 package permissions
 
 import com.amazonaws.auth.AWSCredentialsProvider
-import com.gu.editorial.permissions.client.{PermissionGranted, _}
+import com.gu.editorial.permissions.client._
 import com.gu.pandomainauth.model.User
-import config.{AWS, RestorerConfig}
+import config.AWS._
 
 import scala.concurrent.Future
 import scala.language.postfixOps
@@ -11,25 +11,25 @@ import scala.language.postfixOps
 /**
  * Adapter for the Permissions client library
  */
-class Permissions(restorerConfig: RestorerConfig, credsProvider: AWSCredentialsProvider = AWS.credentialsV1) extends PermissionsProvider {
+class Permissions(stage: String, awsCredentials: AWSCredentialsProvider = credentialsV1) extends PermissionsProvider {
   val app = "composer-restorer"
 
-  implicit def config = {
-    val stage = if (AWS.stage == "PROD") "PROD" else "CODE"
+  implicit def config: PermissionsConfig = {
+    val s3BucketPrefix = if (stage == "PROD") "PROD" else "CODE"
 
     PermissionsConfig(
       app = app,
       all = all,
-      s3BucketPrefix = stage,
-      awsCredentials = credsProvider
+      s3BucketPrefix = s3BucketPrefix,
+      awsCredentials = awsCredentials
     )
   }
 
-  val RestoreContent = Permission("restore_content", app, PermissionDenied)
+  val RestoreContent: Permission = Permission("restore_content", app, PermissionDenied)
 
-  val RestoreContentToAlternateStack = Permission("restore_content_to_any_stack", app, PermissionDenied)
+  val RestoreContentToAlternateStack: Permission = Permission("restore_content_to_any_stack", app, PermissionDenied)
 
-  val all = Seq(RestoreContent, RestoreContentToAlternateStack)
+  val all: Seq[Permission] = Seq(RestoreContent, RestoreContentToAlternateStack)
 
   def isGranted(user: User, permission: Permission): Future[Boolean] = {
     get(permission)(PermissionsUser(user.email)).map {

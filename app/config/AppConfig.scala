@@ -1,14 +1,25 @@
 package config
 
+import com.gu.{AppIdentity, AwsIdentity, DevIdentity}
 import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
 import config.AWS._
-import helpers.KinesisAppenderConfig
 import models.FlexibleStack
-import com.typesafe.config.{Config => TypesafeConfig}
+import play.api.Configuration
 
-class RestorerConfig(config: TypesafeConfig) {
+class AppConfig(configuration: Configuration, identity: AppIdentity) {
+  private val underlyingConfig = configuration.underlying
 
-  val domain: String = RestorerConfig.domainFromStage(stage)
+  val (app, stack, stage, region) = identity match {
+    case aws:AwsIdentity => (aws.app, aws.stack, aws.stage, aws.region)
+    case _:DevIdentity => (defaultAppName, defaultStack, "DEV", defaultRegion.id())
+  }
+
+  lazy val effectiveStage: String = stage match {
+    case "DEV" => "CODE" // use CODE when in development mode
+    case value => value
+  }
+
+  val domain: String = AppConfig.domainFromStage(stage)
 
   private val localStack: Option[FlexibleStack] = if (stage == "DEV")
     Some(FlexibleStack(
@@ -29,8 +40,8 @@ class RestorerConfig(config: TypesafeConfig) {
 
   val allStacks: List[FlexibleStack] = destinationStages.flatMap { thisStage =>
     List(
-      FlexibleStack(stackName, thisStage),
-      FlexibleStack(s"$stackName-secondary", thisStage)
+      FlexibleStack(stack, thisStage),
+      FlexibleStack(s"$stack-secondary", thisStage)
     )
   } ++ localStack
 
@@ -44,10 +55,11 @@ class RestorerConfig(config: TypesafeConfig) {
   val corsableDomains: List[String] = allStacks.map(_.composerPrefix)
 
   // Logging
-  lazy val loggingConfig = KinesisAppenderConfig(config.getString("logging.stream"))
+  val kinesisLoggingStream: String = underlyingConfig.getString("logging.stream")
+  val kinesisLoggingBufferSize: Int = 1000
 
   // GA
-  lazy val googleTrackingId: String = config.getString("google.tracking.id")
+  lazy val googleTrackingId: String = underlyingConfig.getString("google.tracking.id")
 
   val panDomainSettings: PanDomainAuthSettingsRefresher = new PanDomainAuthSettingsRefresher(
     domain,
@@ -58,7 +70,7 @@ class RestorerConfig(config: TypesafeConfig) {
   )
 }
 
-object RestorerConfig {
+object AppConfig {
   def domainFromStage(stage: String): String = {
     stage match {
       case "PROD" => "gutools.co.uk"

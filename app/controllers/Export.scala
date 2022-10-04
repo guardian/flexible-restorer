@@ -3,7 +3,7 @@ package controllers
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.{YAMLGenerator, YAMLMapper}
 import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
-import config.RestorerConfig
+import config.AppConfig
 import helpers.Loggable
 import logic.SnapshotApi
 import models.{FlexibleStack, SnapshotId}
@@ -26,7 +26,7 @@ import scala.concurrent.{Await, ExecutionContext}
 import scala.concurrent.duration._
 import scala.util.Try
 
-class Export(override val controllerComponents: ControllerComponents, snapshotApi: SnapshotApi, override val config: RestorerConfig,
+class Export(override val controllerComponents: ControllerComponents, snapshotApi: SnapshotApi, override val config: AppConfig,
              override val wsClient: WSClient, val panDomainSettings: PanDomainAuthSettingsRefresher)
 
   extends BaseController with PanDomainAuthActions with Loggable {
