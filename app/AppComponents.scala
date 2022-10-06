@@ -9,7 +9,7 @@ import play.api.ApplicationLoader.Context
 import play.api.libs.ws.ahc.AhcWSComponents
 import play.api.mvc.EssentialFilter
 import play.api.routing.Router
-import play.api.{BuiltInComponentsFromContext, Mode}
+import play.api.BuiltInComponentsFromContext
 import router.Routes
 
 import scala.concurrent.ExecutionContext.Implicits.{global => globalExecutionContext}
@@ -20,7 +20,7 @@ class AppComponents(context: Context, identity: AppIdentity) extends BuiltInComp
 
   val config = new AppConfig(configuration, identity)
 
-  if (context.environment.mode != Mode.Dev) LogStash.init(config)
+  if (config.stage != "DEV") LogStash.init(config)
 
   val permissionsClient = new Permissions(config.stage)
   logger.info(s"Permissions object initialised with config: ${permissionsClient.config}")

@@ -15,7 +15,7 @@ class AppLoader extends ApplicationLoader {
       case _: DevIdentity => SSMConfigurationLocation(s"/$defaultStack/$defaultAppName/DEV", defaultRegion.id())
     }
 
-    new AppComponents(context.copy(initialConfiguration = context.initialConfiguration.withFallback(Configuration(loadedConfig))), identity).application
+    new AppComponents(context.copy(initialConfiguration = Configuration(loadedConfig).withFallback(context.initialConfiguration)), identity).application
   }
 
   private def startLogging(context: Context): Unit = {
