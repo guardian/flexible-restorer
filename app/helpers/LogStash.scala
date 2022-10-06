@@ -42,7 +42,7 @@ object LogStash extends Loggable {
   }
 
   def init(config: AppConfig): Unit = {
-    val facts = Map("App" -> config.app.toLowerCase, "Stack" -> config.stack.toLowerCase, "Stage" -> config.stage.toLowerCase)
+    val facts = Map("app" -> config.app, "stack" -> config.stack, "stage" -> config.stage)
     try {
       val layout = makeLayout(makeCustomFields(facts))
       val appender = makeKinesisAppender(layout, context, config)
