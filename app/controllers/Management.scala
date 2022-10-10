@@ -19,7 +19,6 @@ class Management(val controllerComponents: ControllerComponents, val config:AppC
       |Hostname: ${config.hostName}
       |Composer domains: ${config.allStacks.map(_.composerPrefix).mkString(", ")}
       |Snapshots buckets: ${config.sourceStacks.map(_.snapshotBucket).mkString(", ")}
-      |Credentials: ${AWS.credentials}
       """.stripMargin
 
     Ok(info)
