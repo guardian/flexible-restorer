@@ -1,7 +1,7 @@
 package controllers
 
 import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
-import config.RestorerConfig
+import config.AppConfig
 import helpers.Loggable
 import logic.SnapshotApi
 import models.{Attempt, SnapshotId, VersionCount}
@@ -12,7 +12,7 @@ import play.api.mvc._
 import scala.concurrent.ExecutionContext
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class Versions(val controllerComponents: ControllerComponents, val config: RestorerConfig, snapshotApi: SnapshotApi, override val wsClient: WSClient, val panDomainSettings: PanDomainAuthSettingsRefresher)
+class Versions(val controllerComponents: ControllerComponents, val config: AppConfig, snapshotApi: SnapshotApi, override val wsClient: WSClient, val panDomainSettings: PanDomainAuthSettingsRefresher)
   extends BaseController with PanDomainAuthActions with Loggable {
   // Show a specific version
   def show(systemId: String, contentId: String, timestamp: String) = AuthAction.async {

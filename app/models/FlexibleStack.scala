@@ -1,6 +1,6 @@
 package models
 
-import config.RestorerConfig
+import config.AppConfig
 
 case class FlexibleStack(
   id: String,
@@ -16,12 +16,12 @@ case class FlexibleStack(
 object FlexibleStack {
   def apply(stack: String, stage: String): FlexibleStack = {
     val secondarySuffix = "-secondary"
-    val domain = RestorerConfig.domainFromStage(stage)
+    val domain = AppConfig.domainFromStage(stage)
 
     val isSecondary = stack.endsWith(secondarySuffix)
 
     val suffix = if (isSecondary) secondarySuffix else ""
-    
+
     val displayName = s"Composer$suffix ($stage)"
     val apiPrefix = if (isSecondary) s"http://apiv2.$stage.$stack.gudiscovery.:8080" else s"http://flexible-api.$stage.$stack.gudiscovery.:8080"
     val composerPrefix = s"https://composer$suffix.$domain"

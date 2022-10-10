@@ -13,11 +13,11 @@ import scala.concurrent.ExecutionContext
 // Pan domain
 import com.gu.pandomainauth.action.AuthActions
 import com.gu.pandomainauth.model.AuthenticatedUser
-import config.RestorerConfig
+import config.AppConfig
 import helpers.CORSable
 
 trait PanDomainAuthActions extends AuthActions {
-  def config:RestorerConfig
+  def config:AppConfig
 
   override def validateUser(authedUser: AuthenticatedUser): Boolean = authedUser.multiFactor
 
@@ -30,7 +30,7 @@ trait PanDomainAuthActions extends AuthActions {
 }
 
 
-class Application(val controllerComponents: ControllerComponents, val config:RestorerConfig, override val wsClient: WSClient, val panDomainSettings: PanDomainAuthSettingsRefresher) extends BaseController with PanDomainAuthActions with Loggable {
+class Application(val controllerComponents: ControllerComponents, val config:AppConfig, override val wsClient: WSClient, val panDomainSettings: PanDomainAuthSettingsRefresher) extends BaseController with PanDomainAuthActions with Loggable {
 
   val urlForm = Form(
     "url" -> nonEmptyText

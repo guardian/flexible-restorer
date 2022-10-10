@@ -4,36 +4,15 @@ import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.classic.{Logger, LoggerContext}
 import ch.qos.logback.core.joran.spi.JoranException
 import ch.qos.logback.core.util.StatusPrinter
-import com.amazonaws.auth.AWSCredentialsProvider
-import com.amazonaws.regions.Regions
 import com.gu.logback.appender.kinesis.KinesisAppender
-import config.{AWS, AwsInstanceTags}
+import config.{AWS, AppConfig}
 import net.logstash.logback.layout.LogstashLayout
 import org.slf4j.{LoggerFactory, Logger => SLFLogger}
 
-import scala.language.postfixOps
 import scala.util.control.NonFatal
 
-case class KinesisAppenderConfig(
-  stream: String,
-  credentialsProvider: AWSCredentialsProvider,
-  region: Regions = AWS.region,
-  bufferSize: Int = 1000
-)
+object LogStash extends Loggable {
 
-object LogStash extends AwsInstanceTags with Loggable {
-  lazy val FACTS: Map[String, String] = try {
-    val facts: Map[String, String] = {
-      logger.info("Loading facts from AWS instance tags")
-      Seq("App", "Stack", "Stage").flatMap(tag => readTag(tag).map(tag.toLowerCase ->)).toMap
-    }
-    logger.info(s"Using facts: $facts")
-    facts
-  } catch {
-    case NonFatal(e) =>
-      logger.error("Failed to get facts", e)
-      Map.empty
-  }
   // assume SLF4J is bound to logback in the current environment
   lazy val context: LoggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
 
@@ -41,18 +20,18 @@ object LogStash extends AwsInstanceTags with Loggable {
     "{" + (for((k, v) <- customFields) yield s""""$k":"$v"""").mkString(",") + "}"
   }
 
-  def makeLayout(customFields: String) = {
+  def makeLayout(customFields: String): LogstashLayout = {
     val l = new LogstashLayout()
     l.setCustomFields(customFields)
     l
   }
 
-  def makeKinesisAppender(layout: LogstashLayout, context: LoggerContext, appenderConfig: KinesisAppenderConfig) = {
+  def makeKinesisAppender(layout: LogstashLayout, context: LoggerContext, config: AppConfig): KinesisAppender[ILoggingEvent] = {
     val a = new KinesisAppender[ILoggingEvent]()
-    a.setStreamName(appenderConfig.stream)
-    a.setRegion(appenderConfig.region.getName)
-    a.setCredentialsProvider(appenderConfig.credentialsProvider)
-    a.setBufferSize(appenderConfig.bufferSize)
+    a.setStreamName(config.kinesisLoggingStream)
+    a.setRegion(config.region)
+    a.setCredentialsProvider(AWS.credentials)
+    a.setBufferSize(config.kinesisLoggingBufferSize)
 
     a.setContext(context)
     a.setLayout(layout)
@@ -62,9 +41,10 @@ object LogStash extends AwsInstanceTags with Loggable {
     a
   }
 
-  def init(config: KinesisAppenderConfig) {
+  def init(config: AppConfig): Unit = {
+    val facts = Map("app" -> config.app, "stack" -> config.stack, "stage" -> config.stage)
     try {
-      val layout = makeLayout(makeCustomFields(FACTS))
+      val layout = makeLayout(makeCustomFields(facts))
       val appender = makeKinesisAppender(layout, context, config)
       val rootLogger = LoggerFactory.getLogger(SLFLogger.ROOT_LOGGER_NAME).asInstanceOf[Logger]
       rootLogger.addAppender(appender)
