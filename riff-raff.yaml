@@ -5,7 +5,7 @@ deployments:
   restorer2:
     type: autoscaling
     parameters:
-      bucket: composer-dist
+      bucketSsmLookup: true
     dependencies:
       - restorer2-ami-update
   restorer2-ami-update:
