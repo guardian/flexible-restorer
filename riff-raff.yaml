@@ -4,8 +4,6 @@ stacks: [flexible]
 deployments:
   restorer2:
     type: autoscaling
-    parameters:
-      bucket: composer-dist
     dependencies:
       - restorer2-ami-update
   restorer2-ami-update:
