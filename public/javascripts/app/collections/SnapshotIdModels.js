@@ -37,7 +37,7 @@ SnapshotIdModelsMod.factory('SnapshotIdModels', [
                     //get the data from the server and build the new collections
                     SnapshotService
                         .getList(id)
-                        .success(function(data, status, header, config){
+                        .then(function(data, status, header, config){
                             if (!Array.isArray(data) || data.length === 0) {
                                 reject(new Error('There are no snapshots available for this piece of content'));
                                 return;
@@ -45,7 +45,7 @@ SnapshotIdModelsMod.factory('SnapshotIdModels', [
                             listCache[id] = new SnapshotIds(data);
                             resolve(listCache[id]);
                         })
-                        .error(function(data, status, header, config){
+                        .catch(function(data, status, header, config){
                             reject(data)
                         });
                 })

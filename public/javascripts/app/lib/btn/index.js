@@ -3,8 +3,8 @@ import angular from 'angular';
 var btn = angular.module('guBtn', []);
 
 var templates = {
-  'anchor': '<a class="{{className}}" ng-transclude=true></a>',
-  'button': '<button class="{{className}}" ng-transclude=true></button>',
+  'anchor': '<a class="{{className}}"><ng-transclude></ng-transclude></a>',
+  'button': '<button class="{{className}}"><ng-transclude></ng-transclude></button>',
 }
 
 btn.directive('guBtn', function btnDirective(){

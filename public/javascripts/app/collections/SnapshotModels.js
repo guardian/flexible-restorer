@@ -29,11 +29,11 @@ SnapshotModelsMod.factory('SnapshotModels', [
           //get the data from the server and build the new collections
           SnapshotService
               .getSnapshot(systemId, contentId, timestamp)
-              .success(function(data, status, header, config){
+              .then(function(data, status, header, config){
                   contentCache[key] = SnapshotModel.getModel(systemId, timestamp, data);
                 resolve(contentCache[key]);
               })
-              .error(function(data, status, header, config){
+              .catch(function(data, status, header, config){
                 reject(data)
               });
         })
