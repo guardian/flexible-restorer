@@ -4,7 +4,7 @@ import config.AWS._
 import controllers._
 import helpers.{HSTSFilter, LogStash, Loggable}
 import logic.{FlexibleApi, SnapshotApi}
-import permissions.Permissions
+import com.gu.permissions.{PermissionDefinition, PermissionsConfig, PermissionsProvider}
 import play.api.ApplicationLoader.Context
 import play.api.libs.ws.ahc.AhcWSComponents
 import play.api.mvc.EssentialFilter
@@ -23,7 +23,7 @@ class AppComponents(context: Context, identity: AppIdentity) extends BuiltInComp
   if (config.stage != "DEV") LogStash.init(config)
 
   val permissionsClient = new Permissions(config.stage)
-  logger.info(s"Permissions object initialised with config: ${permissionsClient.config}")
+  logger.info(s"Permissions object initialised: ${permissionsClient}")
 
   val snapshotApi = new SnapshotApi(s3Client)
 

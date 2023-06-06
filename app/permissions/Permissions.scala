@@ -1,7 +1,6 @@
+import com.gu.permissions.{PermissionDefinition, PermissionsConfig, PermissionsProvider}
 import com.amazonaws.auth.{AWSCredentialsProvider, DefaultAWSCredentialsProviderChain}
 import com.amazonaws.regions.Regions
-import com.gu.permissions.{PermissionDefinition, PermissionsConfig, PermissionsProvider}
-import config.AWS
 
 class Permissions(stage: String) {
   private val app = "atom-maker"
