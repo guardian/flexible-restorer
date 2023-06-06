@@ -1,4 +1,4 @@
-import play.sbt.PlayImport.ws
+import play.sbt.PlayImport._
 import sbt._
 
 object Dependencies {
