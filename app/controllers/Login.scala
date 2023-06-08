@@ -30,14 +30,30 @@ class Login(val controllerComponents: ControllerComponents, permissionsClient: P
     Ok(request.user.toJson).as(JSON)
   }
 
-  def permissions(): Action[AnyContent] = AuthAction.async { implicit request =>
-    val permissionsMap = permissionsClient.listPermissions(request.user.email)
-    permissionsMap.map{ permissions =>
-      val nameMap = permissionsMap.map { case (p, v) => p.name -> v }
-      Future.successful(Ok(Json.toJson(nameMap)))
-    }
-  }
+//  def permissions(): Action[AnyContent] = AuthAction.async { implicit request =>
+//    val permissionsMap = permissionsClient.listPermissions(request.user.email)
+//    permissionsMap.map{ permissions =>
+//      val nameMap = permissionsMap.map { case (p, v) => p.name -> v }
+//      Future.successful(Ok(Json.toJson(nameMap)))
+//    }
+//  }
+  // refactor above to return expected result userequest.user.email
+  //Description of the permisssions function below:
+
+   def permissions(): Action[AnyContent] = AuthAction.async { implicit request =>
+     val permissionsMap = permissionsClient.listPermissions(request.user.email)
+     val permissionFutures = permissionsMap.map { case (p, v) =>
+       val permissionResult = if (v) "granted" else "denied"
+       Future.successful(s"${p.name}: $permissionResult")
+     }
+     val resultFuture = Future.sequence(permissionFutures)
+     resultFuture.map { results =>
+       Ok(results.mkString("\n"))
+     }
+   }
 
   protected val parser: BodyParser[AnyContent] = controllerComponents.parsers.default
   protected val executionContext: ExecutionContext = controllerComponents.executionContext
 }
+
+// add 2 numbers
