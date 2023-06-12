@@ -31,24 +31,22 @@ var RestoreService = RestoreServiceMod.service('RestoreService', [
                                 url: `/api/1/restore/${model.getSystemId()}/${contentId}/${model.getTimestamp()}/to/${systemId}`,
                                 method: 'POST'
                             })
-                                .then((data)=> resolve(data))
-                                .catch((err)=> reject(err));
+                                .then(resolve)
+                                .catch(reject);
                         });
                 });
             },
             getDestinations: (contentId) => {
                 return $q((resolve, reject) => {
                     $http.get(`/api/1/restore/destinations/${contentId}`)
-                        .then(function(data, status, header, config){
+                        .then(function({data}){
                             if (!Array.isArray(data) || data.length === 0) {
                                 reject(new Error('There are no destinations available'));
                                 return;
                             }
                             resolve(data);
                         })
-                        .catch(function(data, status, header, config){
-                            reject(data)
-                        });
+                        .catch(reject);
                 });
             }
         }
