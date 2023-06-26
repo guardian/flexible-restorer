@@ -25,7 +25,8 @@ var restorer = angular.module('restorer', [
 restorer.config([
   '$routeProvider',
   '$locationProvider',
-  function($routeProvider, $locationProvider){
+  '$qProvider',
+  function($routeProvider, $locationProvider, $qProvider){
 
     $routeProvider.when('/content/:contentId/versions', {
       templateUrl: '/assets/javascripts/app/templates/restore-list.html',
@@ -40,6 +41,8 @@ restorer.config([
       enabled: true,
       requireBase: false
     });
+
+    $qProvider.errorOnUnhandledRejections(false);
   }
 ]);
 
