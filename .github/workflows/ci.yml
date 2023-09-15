@@ -50,6 +50,10 @@ jobs:
               run: |
                   sbt clean compile test Debian/packageBin
 
+            - name: Rename file to match Launch Configuration in AWS
+              run: |
+                  - mv target/restorer2_1.0.0_all.deb restorer2.deb
+
             # Fetch AWS credentials, allowing us to upload to Riff-Raff (well, S3)
             - uses: aws-actions/configure-aws-credentials@v2
               with:
@@ -64,4 +68,4 @@ jobs:
                   configPath: riff-raff.yaml
                   contentDirectories: |
                       restorer2:
-                        - target/restorer2_1.0.0_all.deb
+                        - restorer2.deb
