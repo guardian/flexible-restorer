@@ -1,43 +1,38 @@
 package permissions
 
-import com.amazonaws.auth.AWSCredentialsProvider
-import com.gu.editorial.permissions.client._
-import com.gu.pandomainauth.model.User
-import config.AWS._
-
+import com.gu.permissions.{PermissionDefinition, PermissionsConfig, PermissionsProvider}
+import com.amazonaws.auth.{AWSCredentialsProvider, DefaultAWSCredentialsProviderChain}
+import com.amazonaws.regions.Regions
 import scala.concurrent.Future
-import scala.language.postfixOps
+import scala.concurrent.ExecutionContext
 
-/**
- * Adapter for the Permissions client library
- */
-class Permissions(stage: String, awsCredentials: AWSCredentialsProvider = credentialsV1) extends PermissionsProvider {
-  val app = "composer-restorer"
 
-  implicit def config: PermissionsConfig = {
-    val s3BucketPrefix = if (stage == "PROD") "PROD" else "CODE"
+class Permissions(stage: String)(implicit ec: ExecutionContext) {
+  private val app = "atom-maker"
 
-    PermissionsConfig(
-      app = app,
-      all = all,
-      s3BucketPrefix = s3BucketPrefix,
-      awsCredentials = awsCredentials
-    )
-  }
+  private val permissionDefinitions = Map(
+    "restoreContent" -> PermissionDefinition(name = "restore_content", app),
+    "restoreContentToAnyStack" -> PermissionDefinition(name = "restore_content_to_any_stack", app)
+  )
+  val RestoreContent: PermissionDefinition = PermissionDefinition("restore_content", app)
+  val RestoreContentToAlternateStack: PermissionDefinition = PermissionDefinition("restore_content_to_any_stack", app)
 
-  val RestoreContent: Permission = Permission("restore_content", app, PermissionDenied)
+  private val credentialsProvider: AWSCredentialsProvider = new DefaultAWSCredentialsProviderChain()
+  private val permissions: PermissionsProvider = PermissionsProvider(PermissionsConfig(stage, Regions.DEFAULT_REGION.getName, credentialsProvider))
 
-  val RestoreContentToAlternateStack: Permission = Permission("restore_content_to_any_stack", app, PermissionDenied)
+  def canRestoreContent(email: String): Boolean = permissions.hasPermission(permissionDefinitions("restoreContent"), email)
 
-  val all: Seq[Permission] = Seq(RestoreContent, RestoreContentToAlternateStack)
+  def canRestoreContentToAnyStack(email: String): Boolean = permissions.hasPermission(permissionDefinitions("restoreContentToAnyStack"), email)
 
-  def isGranted(user: User, permission: Permission): Future[Boolean] = {
-    get(permission)(PermissionsUser(user.email)).map {
-      case PermissionGranted => true
-      case _ => false
+
+  def userPermissionMap(email: String): Future[Map[PermissionDefinition, Boolean]] = {
+    val permissionFutures = permissionDefinitions.map { case (_, permission) =>
+      val result = permissions.hasPermission(permission, email)
+      Future.successful(permission -> result)
     }
+
+    Future.sequence(permissionFutures).map(_.toMap)
   }
 
-  def userPermissionMap(user: User): Future[Map[Permission, Boolean]] =
-    Future.sequence(all.map(p => isGranted(user, p).map(p ->))).map(_.toMap)
+
 }

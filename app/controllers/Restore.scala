@@ -1,5 +1,7 @@
 package controllers
-
+import permissions.Permissions
+import com.gu.permissions.{PermissionDefinition, PermissionsConfig, PermissionsProvider}
+import com.amazonaws.auth.{AWSCredentialsProvider, DefaultAWSCredentialsProviderChain}
 import java.util.concurrent.TimeoutException
 
 import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
@@ -8,7 +10,7 @@ import config.AppConfig
 import helpers.Loggable
 import logic.{FlexibleApi, SnapshotApi}
 import models._
-import permissions.Permissions
+import com.gu.permissions.{PermissionDefinition, PermissionsConfig, PermissionsProvider}
 import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
 import play.api.mvc._
@@ -25,7 +27,7 @@ class Restore(val controllerComponents: ControllerComponents, snapshotApi: Snaps
   def userFromPandaUser(user: PandaUser) = User(user.firstName, user.lastName, user.email)
 
   def restore(sourceId: String, contentId: String, timestamp: String, destinationId: String) = AuthAction.async { request =>
-    permissions.userPermissionMap(request.user).flatMap { permissionMap =>
+    permissions.userPermissionMap(request.user.email).flatMap { permissionMap =>
       if (!permissionMap(permissions.RestoreContent)) {
         Future.successful(Forbidden(s"You do not have the ${permissions.RestoreContent.name} permission which is required to restore content"))
       } else if (sourceId != destinationId && !permissionMap(permissions.RestoreContentToAlternateStack)) {

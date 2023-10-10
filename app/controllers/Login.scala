@@ -3,7 +3,7 @@ package controllers
 import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
 import config.AppConfig
 import helpers.Loggable
-import permissions.Permissions
+import com.gu.permissions.{PermissionDefinition, PermissionsConfig, PermissionsProvider}
 import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
 import play.api.mvc._
@@ -11,7 +11,7 @@ import play.api.mvc._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 
-class Login(val controllerComponents: ControllerComponents, permissionsClient: Permissions, val config: AppConfig, override val wsClient: WSClient, val panDomainSettings: PanDomainAuthSettingsRefresher)
+class Login(val controllerComponents: ControllerComponents, permissionsClient: PermissionsProvider, val config: AppConfig, override val wsClient: WSClient, val panDomainSettings: PanDomainAuthSettingsRefresher)
   extends BaseController with PanDomainAuthActions with Loggable {
 
   def oauthCallback: Action[AnyContent] = Action.async { implicit request =>
@@ -30,14 +30,30 @@ class Login(val controllerComponents: ControllerComponents, permissionsClient: P
     Ok(request.user.toJson).as(JSON)
   }
 
-  def permissions(): Action[AnyContent] = AuthAction.async { implicit request =>
-    val permissionsMap = permissionsClient.userPermissionMap(request.user)
-    permissionsMap.map{ permissions =>
-      val nameMap = permissions.map{case (p, v) => p.name -> v}
-      Ok(Json.toJson(nameMap))
-    }
-  }
+//  def permissions(): Action[AnyContent] = AuthAction.async { implicit request =>
+//    val permissionsMap = permissionsClient.listPermissions(request.user.email)
+//    permissionsMap.map{ permissions =>
+//      val nameMap = permissionsMap.map { case (p, v) => p.name -> v }
+//      Future.successful(Ok(Json.toJson(nameMap)))
+//    }
+//  }
+  // refactor above to return expected result userequest.user.email
+  //Description of the permisssions function below:
+
+   def permissions(): Action[AnyContent] = AuthAction.async { implicit request =>
+     val permissionsMap = permissionsClient.listPermissions(request.user.email)
+     val permissionFutures = permissionsMap.map { case (p, v) =>
+       val permissionResult = if (v) "granted" else "denied"
+       Future.successful(s"${p.name}: $permissionResult")
+     }
+     val resultFuture = Future.sequence(permissionFutures)
+     resultFuture.map { results =>
+       Ok(results.mkString("\n"))
+     }
+   }
 
   protected val parser: BodyParser[AnyContent] = controllerComponents.parsers.default
   protected val executionContext: ExecutionContext = controllerComponents.executionContext
 }
+
+// add 2 numbers
