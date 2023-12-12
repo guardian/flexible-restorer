@@ -57,7 +57,7 @@
 
 .highlight-row-for-launches {
     border: 2px solid $color-500-grey;
-    .snapshot-list__item__status--right::after {
+    .snapshot-list__item__status::after {
         border: none;
         display: block;
         position: absolute;
