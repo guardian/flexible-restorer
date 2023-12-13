@@ -15,7 +15,6 @@ object Dependencies {
 
   val guardianDependencies = Seq(
     "com.gu" %% "pan-domain-auth-play_2-8" % "1.2.0",
-    "com.gu" % "kinesis-logback-appender" % "2.1.0",
     "com.gu" %% "editorial-permissions-client" % "0.8",
     "com.gu" %% "simple-configuration-ssm" % "1.5.7"
   )
