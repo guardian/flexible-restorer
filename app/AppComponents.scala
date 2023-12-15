@@ -2,7 +2,7 @@ import com.gu.AppIdentity
 import config.AppConfig
 import config.AWS._
 import controllers._
-import helpers.{HSTSFilter, LogStash, Loggable}
+import helpers.{HSTSFilter, Loggable}
 import logic.{FlexibleApi, SnapshotApi}
 import permissions.Permissions
 import play.api.ApplicationLoader.Context
@@ -19,8 +19,6 @@ class AppComponents(context: Context, identity: AppIdentity) extends BuiltInComp
   override lazy val httpFilters: Seq[EssentialFilter] = Seq(new HSTSFilter()(materializer, globalExecutionContext))
 
   val config = new AppConfig(configuration, identity)
-
-  if (config.stage != "DEV") LogStash.init(config)
 
   val permissionsClient = new Permissions(config.stage)
   logger.info(s"Permissions object initialised with config: ${permissionsClient.config}")
