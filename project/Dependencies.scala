@@ -3,7 +3,7 @@ import sbt._
 
 object Dependencies {
   val awsVersion = "2.23.13"
-  val awsVersionV1 = "1.12.673"
+  val awsVersionV1 = "1.12.470"
 
   val awsDependencies = Seq(
     "com.amazonaws" % "aws-java-sdk-s3" % awsVersionV1,
@@ -30,7 +30,7 @@ object Dependencies {
     "org.eclipse.jgit" % "org.eclipse.jgit" % "5.1.1.201809181055-r",
     "commons-io" % "commons-io" % "2.15.1",
     "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % "2.12.0",
-    "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.16.1",
+    "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.14.3",
     "org.jsoup" % "jsoup" % "1.11.3",
     "com.lihaoyi" %% "ujson" % "3.1.4",
   ) ++ awsDependencies ++ guardianDependencies ++ testDependencies
