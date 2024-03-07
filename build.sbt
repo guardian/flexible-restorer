@@ -4,9 +4,9 @@ name := "restorer2"
 
 version := "1.0.0"
 
-ThisBuild / scalaVersion := "2.12.3"
+ThisBuild / scalaVersion := "2.13.12"
 
-scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Ywarn-unused-import")
+scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
 
 val awsVersion = "2.17.276"
 val awsVersionV1 = "1.12.307"
