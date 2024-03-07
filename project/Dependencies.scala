@@ -25,8 +25,8 @@ object Dependencies {
 
   val dependencies = Seq(
     ws,
-    "com.typesafe.play" %% "play-json-joda" % "2.6.7",
     "net.logstash.logback" % "logstash-logback-encoder" % "4.11",
+    "org.playframework" %% "play-json-joda" % "3.0.1",
     "org.eclipse.jgit" % "org.eclipse.jgit" % "5.1.1.201809181055-r",
     "commons-io" % "commons-io" % "2.6",
     "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % "2.12.0",
