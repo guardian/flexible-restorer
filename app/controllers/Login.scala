@@ -26,11 +26,11 @@ class Login(val controllerComponents: ControllerComponents, permissionsClient: P
     Future(Forbidden(views.html.authError(message)))
   }
 
-  def user(): Action[AnyContent] = AuthAction { implicit request =>
+  def user: Action[AnyContent] = AuthAction { implicit request =>
     Ok(request.user.toJson).as(JSON)
   }
 
-  def permissions(): Action[AnyContent] = AuthAction.async { implicit request =>
+  def permissions: Action[AnyContent] = AuthAction.async { implicit request =>
     val permissionsMap = permissionsClient.userPermissionMap(request.user)
     permissionsMap.map{ permissions =>
       val nameMap = permissions.map{case (p, v) => p.name -> v}
