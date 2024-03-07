@@ -30,6 +30,7 @@ lazy val mainProject = project.in(file("."))
 
 Debian / serverLoading := Some(ServerLoader.Systemd)
 debianPackageDependencies := Seq("openjdk-8-jre-headless")
+debianPackageDependencies := Seq("java11-runtime-headless")
 maintainer := "Digital CMS <digitalcms.dev@guardian.co.uk>"
 packageSummary := "flexible-restorer"
 packageDescription := """content restorer for flexible content"""
