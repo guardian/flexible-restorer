@@ -27,7 +27,6 @@ class AppComponents(context: Context, identity: AppIdentity) extends BuiltInComp
     awsCredentials = credentialsV1
   )
   val permissionsClient = PermissionsProvider(permissionsConfig)
-  logger.info(s"Permissions object initialised with config: $permissionsConfig")
 
   val snapshotApi = new SnapshotApi(s3Client)
 
