@@ -1,9 +1,9 @@
 package controllers
 
 import java.util.concurrent.TimeoutException
-
 import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
 import com.gu.pandomainauth.model.{User => PandaUser}
+import com.gu.permissions.PermissionsProvider
 import config.AppConfig
 import helpers.Loggable
 import logic.{FlexibleApi, SnapshotApi}
@@ -19,31 +19,29 @@ import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.language.postfixOps
 import scala.util.control.NonFatal
 
-class Restore(val controllerComponents: ControllerComponents, snapshotApi: SnapshotApi, flexibleApi: FlexibleApi, permissions: Permissions, val config: AppConfig,
+class Restore(val controllerComponents: ControllerComponents, snapshotApi: SnapshotApi, flexibleApi: FlexibleApi, permissionsClient: PermissionsProvider, val config: AppConfig,
               val wsClient: WSClient, val panDomainSettings: PanDomainAuthSettingsRefresher) extends BaseController with PanDomainAuthActions with Loggable {
 
   def userFromPandaUser(user: PandaUser) = User(user.firstName, user.lastName, user.email)
 
   def restore(sourceId: String, contentId: String, timestamp: String, destinationId: String) = AuthAction.async { request =>
-    permissions.userPermissionMap(request.user).flatMap { permissionMap =>
-      if (!permissionMap(permissions.RestoreContent)) {
-        Future.successful(Forbidden(s"You do not have the ${permissions.RestoreContent.name} permission which is required to restore content"))
-      } else if (sourceId != destinationId && !permissionMap(permissions.RestoreContentToAlternateStack)) {
-        Future.successful(Forbidden(s"You do not have the ${permissions.RestoreContentToAlternateStack.name} permission which is required to restore content from one stack to another"))
-      } else {
-        val user = userFromPandaUser(request.user)
-        val sourceStack = config.stackFromId(sourceId)
-        val targetStack = config.stackFromId(destinationId)
-        val snapshotId = SnapshotId(contentId, timestamp)
-        val result = snapshotApi.getSnapshot(sourceStack.snapshotBucket, snapshotId).flatMap[Result] {
-          case None => Attempt.Right(NotFound)
-          case Some(snapshot) => flexibleApi.restore(targetStack, user, contentId, snapshot).map(Ok(_))
-        }
-        result.fold(
-          errors => InternalServerError(s"Error whilst restoring: $errors"),
-          identity
-        )
+    if (!permissionsClient.hasPermission(Permissions.RestoreContent, request.user.email)) {
+      Future.successful(Forbidden(s"You do not have the ${Permissions.RestoreContent.name} permission which is required to restore content"))
+    } else if (sourceId != destinationId && !permissionsClient.hasPermission(Permissions.RestoreContentToAlternateStack, request.user.email)) {
+      Future.successful(Forbidden(s"You do not have the ${Permissions.RestoreContentToAlternateStack.name} permission which is required to restore content from one stack to another"))
+    } else {
+      val user = userFromPandaUser(request.user)
+      val sourceStack = config.stackFromId(sourceId)
+      val targetStack = config.stackFromId(destinationId)
+      val snapshotId = SnapshotId(contentId, timestamp)
+      val result = snapshotApi.getSnapshot(sourceStack.snapshotBucket, snapshotId).flatMap[Result] {
+        case None => Attempt.Right(NotFound)
+        case Some(snapshot) => flexibleApi.restore(targetStack, user, contentId, snapshot).map(Ok(_))
       }
+      result.fold(
+        errors => InternalServerError(s"Error whilst restoring: $errors"),
+        identity
+      )
     }
   }
 

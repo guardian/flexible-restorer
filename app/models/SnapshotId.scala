@@ -1,6 +1,6 @@
 package models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Format, Json}
 
 case class SnapshotId(contentId: String, timestamp: String) {
   lazy val key = s"$contentId/$timestamp.json"
@@ -15,5 +15,5 @@ object SnapshotId {
     case _ => None
   }
 
-  implicit val formats = Json.format[SnapshotId]
+  implicit val formats: Format[SnapshotId] = Json.format[SnapshotId]
 }

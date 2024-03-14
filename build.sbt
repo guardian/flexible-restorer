@@ -4,9 +4,9 @@ name := "restorer2"
 
 version := "1.0.0"
 
-ThisBuild / scalaVersion := "2.12.3"
+ThisBuild / scalaVersion := "2.13.12"
 
-scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Ywarn-unused-import")
+scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
 
 val awsVersion = "2.17.276"
 val awsVersionV1 = "1.12.307"
@@ -29,7 +29,7 @@ lazy val mainProject = project.in(file("."))
   )
 
 Debian / serverLoading := Some(ServerLoader.Systemd)
-debianPackageDependencies := Seq("openjdk-8-jre-headless")
+debianPackageDependencies := Seq("java11-runtime-headless")
 maintainer := "Digital CMS <digitalcms.dev@guardian.co.uk>"
 packageSummary := "flexible-restorer"
 packageDescription := """content restorer for flexible content"""

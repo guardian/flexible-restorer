@@ -2,8 +2,8 @@ import play.sbt.PlayImport.ws
 import sbt._
 
 object Dependencies {
-  val awsVersion = "2.17.276"
-  val awsVersionV1 = "1.12.307"
+  val awsVersion = "2.23.13"
+  val awsVersionV1 = "1.12.470"
 
   val awsDependencies = Seq(
     "com.amazonaws" % "aws-java-sdk-s3" % awsVersionV1,
@@ -14,24 +14,24 @@ object Dependencies {
   )
 
   val guardianDependencies = Seq(
-    "com.gu" %% "pan-domain-auth-play_2-8" % "1.2.0",
-    "com.gu" %% "editorial-permissions-client" % "0.8",
-    "com.gu" %% "simple-configuration-ssm" % "1.5.7"
+    "com.gu" %% "pan-domain-auth-play_3-0" % "3.0.1",
+    "com.gu" %% "editorial-permissions-client" % "2.15",
+    "com.gu" %% "simple-configuration-ssm" % "1.6.4"
   )
 
   val testDependencies = Seq(
-    "org.scalatest" %% "scalatest" % "3.0.5" % Test
+    "org.scalatest" %% "scalatest" % "3.2.17" % Test
   )
 
   val dependencies = Seq(
     ws,
-    "com.typesafe.play" %% "play-json-joda" % "2.6.7",
-    "net.logstash.logback" % "logstash-logback-encoder" % "4.11",
+    "org.playframework" %% "play-json-joda" % "3.0.1",
+    "net.logstash.logback" % "logstash-logback-encoder" % "7.3",
     "org.eclipse.jgit" % "org.eclipse.jgit" % "5.1.1.201809181055-r",
-    "commons-io" % "commons-io" % "2.6",
+    "commons-io" % "commons-io" % "2.15.1",
     "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % "2.12.0",
-    "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.12.0",
+    "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.14.3",
     "org.jsoup" % "jsoup" % "1.11.3",
-    "com.lihaoyi" %% "ujson" % "0.6.6",
+    "com.lihaoyi" %% "ujson" % "3.1.4",
   ) ++ awsDependencies ++ guardianDependencies ++ testDependencies
 }

@@ -1,4 +1,5 @@
 import com.gu.AppIdentity
+import com.gu.permissions.{PermissionsConfig, PermissionsProvider}
 import config.AppConfig
 import config.AWS._
 import controllers._
@@ -20,8 +21,12 @@ class AppComponents(context: Context, identity: AppIdentity) extends BuiltInComp
 
   val config = new AppConfig(configuration, identity)
 
-  val permissionsClient = new Permissions(config.stage)
-  logger.info(s"Permissions object initialised with config: ${permissionsClient.config}")
+  val permissionsConfig = PermissionsConfig(
+    stage = config.stage,
+    region = config.region,
+    awsCredentials = credentialsV1
+  )
+  val permissionsClient = PermissionsProvider(permissionsConfig)
 
   val snapshotApi = new SnapshotApi(s3Client)
 
