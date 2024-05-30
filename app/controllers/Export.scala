@@ -1,8 +1,10 @@
 package controllers
 
+import auth.PanDomainAuthActions
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.{YAMLGenerator, YAMLMapper}
 import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
+import com.gu.permissions.PermissionsProvider
 import config.AppConfig
 import helpers.Loggable
 import logic.SnapshotApi
@@ -26,8 +28,14 @@ import scala.concurrent.{Await, ExecutionContext}
 import scala.concurrent.duration._
 import scala.util.Try
 
-class Export(override val controllerComponents: ControllerComponents, snapshotApi: SnapshotApi, override val config: AppConfig,
-             override val wsClient: WSClient, val panDomainSettings: PanDomainAuthSettingsRefresher)
+class Export(
+  override val controllerComponents: ControllerComponents,
+  snapshotApi: SnapshotApi,
+  override val config: AppConfig,
+  override val wsClient: WSClient,
+  override val permissions: PermissionsProvider,
+  override val panDomainSettings: PanDomainAuthSettingsRefresher
+)
 
   extends BaseController with PanDomainAuthActions with Loggable {
 
