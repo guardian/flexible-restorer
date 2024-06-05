@@ -1,5 +1,6 @@
 package auth
 
+import com.gu.pandomainauth.PanDomain
 import com.gu.pandomainauth.action.AuthActions
 import com.gu.pandomainauth.model.AuthenticatedUser
 import com.gu.permissions.{PermissionDefinition, PermissionsProvider}
@@ -14,7 +15,7 @@ trait PanDomainAuthActions extends AuthActions with Loggable {
   def permissions: PermissionsProvider
 
   override def validateUser(authedUser: AuthenticatedUser): Boolean = {
-    val isValid = (authedUser.user.emailDomain == "guardian.co.uk") && authedUser.multiFactor
+    val isValid = PanDomain.guardianValidation(authedUser)
 
     val hasRestorerAccess = permissions.hasPermission(Permissions.RestorerAccess, authedUser.user.email)
 
