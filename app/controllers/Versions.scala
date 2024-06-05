@@ -1,6 +1,8 @@
 package controllers
 
+import auth.PanDomainAuthActions
 import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
+import com.gu.permissions.PermissionsProvider
 import config.AppConfig
 import helpers.Loggable
 import logic.SnapshotApi
@@ -12,8 +14,14 @@ import play.api.mvc._
 import scala.concurrent.ExecutionContext
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class Versions(val controllerComponents: ControllerComponents, val config: AppConfig, snapshotApi: SnapshotApi, override val wsClient: WSClient, val panDomainSettings: PanDomainAuthSettingsRefresher)
-  extends BaseController with PanDomainAuthActions with Loggable {
+class Versions(
+  val controllerComponents: ControllerComponents,
+  val config: AppConfig,
+  snapshotApi: SnapshotApi,
+  override val wsClient: WSClient,
+  override val permissions: PermissionsProvider,
+  override val panDomainSettings: PanDomainAuthSettingsRefresher
+) extends BaseController with PanDomainAuthActions with Loggable {
   // Show a specific version
   def show(systemId: String, contentId: String, timestamp: String) = AuthAction.async {
     val stack = config.stackFromId(systemId)

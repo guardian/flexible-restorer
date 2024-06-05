@@ -1,6 +1,8 @@
 package controllers
 
+import auth.PanDomainAuthActions
 import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
+import com.gu.permissions.PermissionsProvider
 import helpers.Loggable
 import play.api.data.Forms._
 import play.api.data._
@@ -16,21 +18,16 @@ import com.gu.pandomainauth.model.AuthenticatedUser
 import config.AppConfig
 import helpers.CORSable
 
-trait PanDomainAuthActions extends AuthActions {
-  def config:AppConfig
-
-  override def validateUser(authedUser: AuthenticatedUser): Boolean = authedUser.multiFactor
-
-  override def showUnauthedMessage(message: String)(implicit request: RequestHeader): Result = {
-    Results.Redirect(controllers.routes.Login.authError(message))
-  }
-
-  override def authCallbackUrl: String = config.hostName + "/oauthCallback"
-
-}
 
 
-class Application(val controllerComponents: ControllerComponents, val config:AppConfig, override val wsClient: WSClient, val panDomainSettings: PanDomainAuthSettingsRefresher) extends BaseController with PanDomainAuthActions with Loggable {
+
+class Application(
+  val controllerComponents: ControllerComponents,
+  val config:AppConfig,
+  override val wsClient: WSClient,
+  override val permissions: PermissionsProvider,
+  val panDomainSettings: PanDomainAuthSettingsRefresher
+) extends BaseController with PanDomainAuthActions with Loggable {
 
   val urlForm = Form(
     "url" -> nonEmptyText

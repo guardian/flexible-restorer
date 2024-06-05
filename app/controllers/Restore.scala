@@ -1,5 +1,7 @@
 package controllers
 
+import auth.PanDomainAuthActions
+
 import java.util.concurrent.TimeoutException
 import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
 import com.gu.pandomainauth.model.{User => PandaUser}
@@ -19,15 +21,22 @@ import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.language.postfixOps
 import scala.util.control.NonFatal
 
-class Restore(val controllerComponents: ControllerComponents, snapshotApi: SnapshotApi, flexibleApi: FlexibleApi, permissionsClient: PermissionsProvider, val config: AppConfig,
-              val wsClient: WSClient, val panDomainSettings: PanDomainAuthSettingsRefresher) extends BaseController with PanDomainAuthActions with Loggable {
+class Restore(
+  val controllerComponents: ControllerComponents,
+  snapshotApi: SnapshotApi,
+  flexibleApi: FlexibleApi,
+  val config: AppConfig,
+  val wsClient: WSClient,
+  override val permissions: PermissionsProvider,
+  override val panDomainSettings: PanDomainAuthSettingsRefresher
+) extends BaseController with PanDomainAuthActions with Loggable {
 
   def userFromPandaUser(user: PandaUser) = User(user.firstName, user.lastName, user.email)
 
   def restore(sourceId: String, contentId: String, timestamp: String, destinationId: String) = AuthAction.async { request =>
-    if (!permissionsClient.hasPermission(Permissions.RestoreContent, request.user.email)) {
+    if (!permissions.hasPermission(Permissions.RestoreContent, request.user.email)) {
       Future.successful(Forbidden(s"You do not have the ${Permissions.RestoreContent.name} permission which is required to restore content"))
-    } else if (sourceId != destinationId && !permissionsClient.hasPermission(Permissions.RestoreContentToAlternateStack, request.user.email)) {
+    } else if (sourceId != destinationId && !permissions.hasPermission(Permissions.RestoreContentToAlternateStack, request.user.email)) {
       Future.successful(Forbidden(s"You do not have the ${Permissions.RestoreContentToAlternateStack.name} permission which is required to restore content from one stack to another"))
     } else {
       val user = userFromPandaUser(request.user)

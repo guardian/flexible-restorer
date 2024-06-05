@@ -61,13 +61,6 @@ class AppConfig(configuration: Configuration, identity: AppIdentity) {
   // GA
   lazy val googleTrackingId: String = underlyingConfig.getString("google.tracking.id")
 
-  val panDomainSettings: PanDomainAuthSettingsRefresher = new PanDomainAuthSettingsRefresher(
-    domain,
-    system = "restorer",
-    bucketName = "pan-domain-auth-settings",
-    settingsFileKey = s"$domain.settings",
-    s3Client = S3ClientV1
-  )
 }
 
 object AppConfig {
