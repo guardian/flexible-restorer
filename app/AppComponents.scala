@@ -22,7 +22,7 @@ class AppComponents(context: Context, identity: AppIdentity) extends BuiltInComp
   val config = new AppConfig(configuration, identity)
 
   val permissions = PermissionsProvider(PermissionsConfig(
-    stage = config.stage,
+    stage = config.effectiveStage,
     region = config.region,
     awsCredentials = credentialsV1
   ))
