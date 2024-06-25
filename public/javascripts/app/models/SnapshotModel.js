@@ -40,14 +40,22 @@ SnapshotModelMod.factory('SnapshotModel', [
       getHTMLContent(){
         var content = this.get('snapshot.preview').blocks.map((block) => block.elements);
         content = flatten(content);
-        return content.map((element) => {
-          if (element.fields.text) {
-            return element.fields.text;
-          }
-          if (element.fields.html) {
-            return element.fields.html;
-          }
-        }).join('');
+        function htmlFromElements(elements) {
+            return elements.map((element) => {
+                if (element.fields.text) {
+                    return element.fields.text;
+                }
+                if (element.fields.html) {
+                    return element.fields.html;
+                }
+                if (element.fields.items) {
+                    return element.fields.items.map((item) => {
+                        return `<h2>${item.title}</h2>` + htmlFromElements(item.content)
+                    }).join('');
+                }
+            }).join('');
+        }
+        return htmlFromElements(content);
       }
 
       get(key){
