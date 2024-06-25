@@ -3,7 +3,7 @@ package auth
 import com.gu.pandomainauth.PanDomain
 import com.gu.pandomainauth.action.AuthActions
 import com.gu.pandomainauth.model.AuthenticatedUser
-import com.gu.permissions.{PermissionDefinition, PermissionsProvider}
+import com.gu.permissions.PermissionsProvider
 import config.AppConfig
 import helpers.Loggable
 import permissions.Permissions
@@ -26,7 +26,7 @@ trait PanDomainAuthActions extends AuthActions with Loggable {
       logger.warn(s"User ${authedUser.user.email} doesn't have 'restorer_access' permission.")
     }
 
-    isValid // && hasRestorerAccess TODO add this back in after two weeks of logs to actually enforce
+    isValid && hasRestorerAccess
   }
 
   override def showUnauthedMessage(message: String)(implicit request: RequestHeader): Result = {
