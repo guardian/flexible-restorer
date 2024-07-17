@@ -6,6 +6,21 @@ import BaseModel from './BaseModel';
 
 var SnapshotModelMod = angular.module('SnapshotModelMod', []);
 
+
+const getListItemContent = (item, htmlFromElements) => {
+    const title = item.title ? `<h2>${item.title}</h2>` : "";
+    const bio = item.bio ? `${item.bio}` : "";
+    const endNote = item.endNote ? `<p><em>${item.endNote}</em></p>` : "";
+    const byline = item.byline ? `<p>${byline}</p>` : "";
+    return `${title} ${byline} ${bio} ${htmlFromElements(item.content)} ${endNote}`
+}
+
+const getTimelineEventContent = (event, htmlFromElements) => {
+    const title = event.title ? `<h2>${event.title}</h2>` : "";
+    const date = event.date ? `<p>${event.date}</p>` : "";
+    return `${title} ${date} ${htmlFromElements(event.body)}`
+}
+
 SnapshotModelMod.factory('SnapshotModel', [
   function(){
 
@@ -37,20 +52,6 @@ SnapshotModelMod.factory('SnapshotModel', [
           return this.get("snapshot.preview.fields.trailText");
       }
 
-      getListItemContent(item, htmlFromElements) {
-          const title = item.title ? `<h2>${item.title}</h2>` : "";
-          const bio = item.bio ? `${item.bio}` : "";
-          const endNote = item.endNote ? `<p><em>${item.endNote}</em></p>` : "";
-          const byline = item.byline ? `<p>${byline}</p>` : "";
-          return `${title} ${byline} ${bio} ${htmlFromElements(item.content)} ${endNote}`
-      }
-
-      getTimelineEventContent(event, htmlFromElements){
-          const title = event.title ? `<h2>${event.title}</h2>` : "";
-          const date = event.date ? `<p>${event.date}</p>` : "";
-          return `${title} ${date} ${htmlFromElements(event.body)}`
-      }
-
       getHTMLContent(){
         var content = this.get('snapshot.preview').blocks.map((block) => block.elements);
         content = flatten(content);
@@ -71,7 +72,7 @@ SnapshotModelMod.factory('SnapshotModel', [
                 if (element.fields.sections) {
                     // This element is a Timeline element
                     return element.fields.sections.map((section) => {
-                        return `${section.title} ${section.events.map(event => getTimelineEventContent(body)).join('')}`
+                        return `${section.title} ${section.events.map(event => getTimelineEventContent(event, htmlFromElements)).join('')}`
                     }).join('');
                 }
             }).join('');
