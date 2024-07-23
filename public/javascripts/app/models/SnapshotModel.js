@@ -6,6 +6,21 @@ import BaseModel from './BaseModel';
 
 var SnapshotModelMod = angular.module('SnapshotModelMod', []);
 
+
+const getListItemContent = (item, htmlFromElements) => {
+    const title = item.title ? `<h2>${item.title}</h2>` : "";
+    const bio = item.bio ? `${item.bio}` : "";
+    const endNote = item.endNote ? `<p><em>${item.endNote}</em></p>` : "";
+    const byline = item.byline ? `<p>${byline}</p>` : "";
+    return `${title} ${byline} ${bio} ${htmlFromElements(item.content)} ${endNote}`
+}
+
+const getTimelineEventContent = (event, htmlFromElements) => {
+    const title = event.title ? `<h2>${event.title}</h2>` : "";
+    const date = event.date ? `<p>${event.date}</p>` : "";
+    return `${title} ${date} ${htmlFromElements(event.body)}`
+}
+
 SnapshotModelMod.factory('SnapshotModel', [
   function(){
 
@@ -49,8 +64,15 @@ SnapshotModelMod.factory('SnapshotModel', [
                     return element.fields.html;
                 }
                 if (element.fields.items) {
+                    // This element is a List element (Key takeaways, Q&A Explainer, Mini profiles)
                     return element.fields.items.map((item) => {
-                        return `<h2>${item.title}</h2>` + htmlFromElements(item.content)
+                        return getListItemContent(item, htmlFromElements)
+                    }).join('');
+                }
+                if (element.fields.sections) {
+                    // This element is a Timeline element
+                    return element.fields.sections.map((section) => {
+                        return `${section.title} ${section.events.map(event => getTimelineEventContent(event, htmlFromElements)).join('')}`
                     }).join('');
                 }
             }).join('');
