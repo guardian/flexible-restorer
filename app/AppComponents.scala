@@ -1,5 +1,5 @@
 import com.gu.AppIdentity
-import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
+import com.gu.pandomainauth.{PanDomainAuthSettingsRefresher, S3BucketLoader}
 import com.gu.permissions.{PermissionsConfig, PermissionsProvider}
 import config.AppConfig
 import config.AWS._
@@ -27,12 +27,10 @@ class AppComponents(context: Context, identity: AppIdentity) extends BuiltInComp
     awsCredentials = credentialsV1
   ))
 
-  val panDomainSettings: PanDomainAuthSettingsRefresher = new PanDomainAuthSettingsRefresher(
+  val panDomainSettings: PanDomainAuthSettingsRefresher = PanDomainAuthSettingsRefresher(
     domain = config.domain,
     system = "restorer",
-    bucketName = "pan-domain-auth-settings",
-    settingsFileKey = s"${config.domain}.settings",
-    s3Client = S3ClientV1
+    S3BucketLoader.forAwsSdkV1(S3ClientV1, "pan-domain-auth-settings")
   )
 
   val snapshotApi = new SnapshotApi(s3Client)
