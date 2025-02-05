@@ -40,11 +40,7 @@ jobs:
                   npm install
                   npm run build
 
-            - uses: actions/setup-java@v3
-              with:
-                  java-version: '11'
-                  distribution: 'corretto'
-                  cache: 'sbt'
+            - uses: guardian/setup-scala@v1
 
             - name: Scala Build
               run: |
