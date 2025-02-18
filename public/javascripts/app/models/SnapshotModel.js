@@ -11,7 +11,7 @@ const getListItemContent = (item, htmlFromElements) => {
     const title = item.title ? `<h2>${item.title}</h2>` : "";
     const bio = item.bio ? `${item.bio}` : "";
     const endNote = item.endNote ? `<p><em>${item.endNote}</em></p>` : "";
-    const byline = item.byline ? `<p>${byline}</p>` : "";
+    const byline = item.byline ? `<p>${item.byline}</p>` : "";
     return `${title} ${byline} ${bio} ${htmlFromElements(item.content)} ${endNote}`
 }
 
