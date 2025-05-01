@@ -1,4 +1,4 @@
-@(pageTitle:String, config:String, gaId:String)
+@(pageTitle:String, config:String, gaId:String, path:String)
 
 <!DOCTYPE html>
 <html>
@@ -27,6 +27,6 @@
     }
 
     <script src="@routes.Assets.at("dist/main.js")"></script>
-
+    <img style="display:none;" src="https://user-telemetry.gutools.co.uk/guardian-tool-accessed?app=restorer&path=@path">
 </body>
 </html>
