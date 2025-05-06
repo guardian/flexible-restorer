@@ -61,6 +61,13 @@ class AppConfig(configuration: Configuration, identity: AppIdentity) {
   // GA
   lazy val googleTrackingId: String = underlyingConfig.getString("google.tracking.id")
 
+  val trackingPixel: Option[TrackingPixel] = (stage match {
+    case "PROD" => Some(TelemetryPROD)
+    case "CODE" => Some(TelemetryCODE)
+    case "DEV" => Some(TelemetryDEV)
+    case _ => None
+  }).map(TrackingPixel(_))
+
 }
 
 object AppConfig {
