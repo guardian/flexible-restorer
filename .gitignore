@@ -26,3 +26,9 @@ public/build.js
 public/build.js.map
 public/dist
 .bsp
+# Ignored files for metals
+/.bloop/
+/.metals/
+/project/.bloop/
+/project/metals.sbt
+# End ignored files for metals
