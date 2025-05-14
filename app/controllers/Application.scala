@@ -39,25 +39,11 @@ class Application(
 
 
   def index = AuthAction {
-    Ok(
-      views.html.main(
-        "Composer Restorer",
-        clientConfig,
-        config.googleTrackingId,
-        config.trackingPixel.map(_.urlFor("/"))
-      )
-    )
+    Ok(views.html.main("Composer Restorer", clientConfig, config.googleTrackingId))
   }
 
   def versionIndex(contentId: String) = AuthAction {
-    Ok(
-      views.html.main(
-        s"Composer Restorer - Versions of $contentId",
-        clientConfig,
-        config.googleTrackingId,
-        config.trackingPixel.map(_.urlFor(s"/content/$contentId/versions"))
-      )
-    )
+    Ok(views.html.main(s"Composer Restorer - Versions of $contentId", clientConfig, config.googleTrackingId))
   }
 
   def preflight(routes: String) = CORSable(executionContext, config.corsableDomains: _*) {

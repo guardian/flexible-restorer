@@ -24,6 +24,8 @@ AnalyticsServiceMod.service('AnalyticsService', [
         break;
     }
 
+    loadTrackingPixel(userTelemetryClient, $location.path());
+
     $rootScope.$on('$routeChangeSuccess', function() {
       loadTrackingPixel(userTelemetryClient, $location.path());
     });

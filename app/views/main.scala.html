@@ -1,4 +1,4 @@
-@(pageTitle:String, config:String, gaId:String, trackingPixelUrl:Option[String])
+@(pageTitle:String, config:String, gaId:String)
 
 <!DOCTYPE html>
 <html>
@@ -27,8 +27,6 @@
     }
 
     <script src="@routes.Assets.at("dist/main.js")"></script>
-    @for(url <- trackingPixelUrl) {
-        <img style="display:none;" src="@url">
-    }
+
 </body>
 </html>
