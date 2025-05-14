@@ -1,36 +1,31 @@
 import angular from 'angular';
-import mediator from '../utils/mediator';
 
-const initGA = gaId => {
-    // tracking script should be on the page already
-    if (gaId) {
-        window.ga =
-            window.ga ||
-            ((...args) => (window.ga.q = window.ga.q || []).push(args));
-
-        const { ga } = window;
-        ga("create", gaId, "auto");
-        ga("set", "transport", "beacon");
-        ga("send", "pageview");
-
-        return ga;
-    }
-    return (...args) => window.debugGA && console.log(...args);
-};
+function loadTrackingPixel(clientUrl, path) {
+  const image = new Image();
+  image.src = `${clientUrl}/guardian-tool-accessed?app=restorer&path=${path}`;
+}
 
 var AnalyticsServiceMod = angular.module('AnalyticsServiceMod', []);
 
 AnalyticsServiceMod.service('AnalyticsService', [
-  '$q',
-  function($q){
+  '$rootScope',
+  '$location',
+  function($rootScope, $location) {
+    var userTelemetryClient;
+    switch ($location.host()) {
+      case "restorer.gutools.co.uk":
+        userTelemetryClient = "https://user-telemetry.gutools.co.uk";
+        break;
+      case "restorer.code.dev-gutools.co.uk":
+        userTelemetryClient = "https://user-telemetry.code.dev-gutools.co.uk";
+        break;
+      default:
+        userTelemetryClient = "https://user-telemetry.local.dev-gutools.co.uk";
+        break;
+    }
 
-    //setup ga
-    const gaId = JSON.parse(document.getElementById('config').textContent).gaId;
-
-    const ga = initGA(gaId);
-
-    mediator.subscribe('track:event', (event, category, action, label, value, dimensions) => {
-        ga('send', 'event', category, action, label, value, dimensions);
+    $rootScope.$on('$routeChangeSuccess', function() {
+      loadTrackingPixel(userTelemetryClient, $location.path());
     });
   }
 ]);
