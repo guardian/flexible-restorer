@@ -17,15 +17,6 @@ jobs:
             contents: read
 
         steps:
-            # Seed the build number with last number from TeamCity.
-            # This env var is used by the JS, and SBT builds, and guardian/actions-riff-raff.
-            # Set the value early, rather than `buildNumberOffset` in guardian/actions-riff-raff, to ensure each usage has the same number.
-            # For some reason, it's not possible to mutate GITHUB_RUN_NUMBER, so set BUILD_NUMBER instead.
-            - name: Set BUILD_NUMBER environment variable
-              run: |
-                  LAST_TEAMCITY_BUILD=298
-                  echo "BUILD_NUMBER=$(( $GITHUB_RUN_NUMBER + $LAST_TEAMCITY_BUILD ))" >> $GITHUB_ENV
-
             - uses: actions/checkout@v3
 
             - uses: actions/setup-node@v3
@@ -53,7 +44,7 @@ jobs:
             - uses: guardian/actions-riff-raff@v4
               with:
                   projectName: editorial-tools:flexible:restorer2
-                  buildNumber: ${{ env.BUILD_NUMBER }}
+                  buildNumberOffset: 298
                   roleArn: ${{ secrets.GU_RIFF_RAFF_ROLE_ARN }}
                   githubToken: ${{ secrets.GITHUB_TOKEN }}
                   configPath: riff-raff.yaml
