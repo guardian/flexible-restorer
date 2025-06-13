@@ -27,3 +27,4 @@ POST          /api/1/restore/:sourceId/:contentId/:timestamp/to/:destinationId  
 GET           /api/1/restore/destinations/:contentId                                  controllers.Restore.restoreDestinations(contentId: String)
 
 GET           /export/:contentId/git  controllers.Export.exportAsGitRepo(contentId: String)
+GET           /export/:contentId/zip  controllers.Export.exportAsZip(contentId: String)
