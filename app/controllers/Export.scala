@@ -42,6 +42,32 @@ class Export(
   private val timeout = 30.seconds
   private implicit val executionContext: ExecutionContext = controllerComponents.executionContext
 
+  def exportAsZip(contentId: String): Action[AnyContent] = AuthAction {
+    val snapshotIds = config.sourceStacks.flatMap { stack =>
+      snapshotApi.listForId(stack.snapshotBucket, contentId).map(stack -> _)
+    }
+
+    if(snapshotIds.isEmpty) {
+      NotFound(s"$contentId does not have any snapshots")
+    } else {
+      val dir = Files.createTempDirectory(s"export-$contentId")
+
+      snapshotIds.foreach { case (stack, id@SnapshotId(_, timestamp)) =>
+        val snapshot = getSnapshot(stack, id)
+
+        write(dir, s"$timestamp-live.json", snapshot.live)
+        write(dir, s"$timestamp-preview.json", snapshot.preview)
+        write(dir, s"$timestamp-metadata.json", snapshot.metadata)
+      }
+      val zip = zipFolder(contentId, dir)
+      Ok.sendPath(zip, onClose = () => {
+        FileUtils.deleteDirectory(dir.toFile)
+        Files.delete(zip)
+      })
+    }
+
+  }
+
   def exportAsGitRepo(contentId: String): Action[AnyContent] = AuthAction {
     val snapshotIds = config.sourceStacks.flatMap { stack =>
       snapshotApi.listForId(stack.snapshotBucket, contentId).map(stack -> _)
@@ -59,9 +85,9 @@ class Export(
 
         val author = new PersonIdent(new PersonIdent(snapshot.lastModifiedName, snapshot.lastModifiedEmail), commitTime)
 
-        write(dir, repo, filename(stack, "metadata"), snapshot.metadata)
-        write(dir, repo, filename(stack, "live"), snapshot.live)
-        write(dir, repo, filename(stack, "preview"), snapshot.preview)
+        writeToRepo(dir, repo, filename(stack, "metadata"), snapshot.metadata)
+        writeToRepo(dir, repo, filename(stack, "live"), snapshot.live)
+        writeToRepo(dir, repo, filename(stack, "preview"), snapshot.preview)
 
         repo.commit()
           .setMessage(s"Snapshot update from $timestamp")
@@ -120,8 +146,12 @@ class Export(
     zipPath
   }
 
-  private def write(dir: Path, repo: Git, filename: String, contents: String) = {
+  private def write(dir: Path, filename: String, contents: String) = {
     Files.write(dir.resolve(filename), contents.getBytes(StandardCharsets.UTF_8))
+  }
+
+  private def writeToRepo(dir: Path, repo: Git, filename: String, contents: String) = {
+    write(dir, filename, contents)
     repo.add().addFilepattern(filename).call()
   }
 
