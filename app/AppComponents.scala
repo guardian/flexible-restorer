@@ -24,13 +24,13 @@ class AppComponents(context: Context, identity: AppIdentity) extends BuiltInComp
   val permissions = PermissionsProvider(PermissionsConfig(
     stage = config.effectiveStage,
     region = config.region,
-    awsCredentials = credentialsV1
+    awsCredentials = credentials
   ))
 
   val panDomainSettings: PanDomainAuthSettingsRefresher = PanDomainAuthSettingsRefresher(
     domain = config.domain,
     system = "restorer",
-    S3BucketLoader.forAwsSdkV1(S3ClientV1, "pan-domain-auth-settings")
+    S3BucketLoader.forAwsSdkV2(s3Client, "pan-domain-auth-settings")
   )
 
   val snapshotApi = new SnapshotApi(s3Client)
