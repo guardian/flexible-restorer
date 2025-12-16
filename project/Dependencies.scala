@@ -6,7 +6,6 @@ object Dependencies {
   val awsVersionV1 = "1.12.584"
 
   val awsDependencies = Seq(
-    "com.amazonaws" % "aws-java-sdk-s3" % awsVersionV1,
     "software.amazon.awssdk" % "s3" % awsVersion,
     "software.amazon.awssdk" % "cloudwatch" % awsVersion,
     "software.amazon.awssdk" % "kinesis" % awsVersion,
