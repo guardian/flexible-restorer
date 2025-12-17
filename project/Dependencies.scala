@@ -6,7 +6,6 @@ object Dependencies {
   val awsVersionV1 = "1.12.584"
 
   val awsDependencies = Seq(
-    "com.amazonaws" % "aws-java-sdk-s3" % awsVersionV1,
     "software.amazon.awssdk" % "s3" % awsVersion,
     "software.amazon.awssdk" % "cloudwatch" % awsVersion,
     "software.amazon.awssdk" % "kinesis" % awsVersion,
@@ -14,8 +13,8 @@ object Dependencies {
   )
 
   val guardianDependencies = Seq(
-    "com.gu" %% "pan-domain-auth-play_3-0" % "7.0.0",
-    "com.gu" %% "editorial-permissions-client" % "2.15",
+    "com.gu" %% "pan-domain-auth-play_3-0" % "13.0.0",
+    "com.gu" %% "editorial-permissions-client" % "6.0.0",
     "com.gu" %% "simple-configuration-ssm" % "2.0.0"
   )
 
