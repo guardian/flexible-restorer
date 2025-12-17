@@ -1,6 +1,6 @@
 # Restorer
 
-Restores snapshotted content back into Composer.
+Restores snapshotted content back into Composer. The snapshotting itself is taken care of in https://github.com/guardian/flexible-snapshotter.
 
 ## Before running locally
 
