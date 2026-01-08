@@ -2,7 +2,7 @@
 resolvers += "Typesafe repository" at "https://repo.typesafe.com/typesafe/releases/"
 
 // Use the Play sbt plugin for Play projects
-addSbtPlugin("org.playframework" % "sbt-plugin" % "3.0.1")
+addSbtPlugin("org.playframework" % "sbt-plugin" % "3.0.10")
 
 addSbtPlugin("ch.epfl.scala" % "sbt-scalafix" % "0.10.3")
 
