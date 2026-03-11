@@ -26,7 +26,7 @@ object Dependencies {
     ws,
     "org.playframework" %% "play-json-joda" % "3.0.2",
     "net.logstash.logback" % "logstash-logback-encoder" % "7.4",
-    "org.eclipse.jgit" % "org.eclipse.jgit" % "5.13.5.202508271544-r",
+    "org.eclipse.jgit" % "org.eclipse.jgit" % "7.5.0.202512021534-r",
     "commons-io" % "commons-io" % "2.16.1",
     "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % "2.17.0",
     "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.17.0",
