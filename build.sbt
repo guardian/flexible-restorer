@@ -4,7 +4,7 @@ name := "restorer2"
 
 version := "1.0.0"
 
-ThisBuild / scalaVersion := "2.13.12"
+ThisBuild / scalaVersion := "2.13.18"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
 
