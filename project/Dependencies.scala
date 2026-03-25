@@ -13,7 +13,7 @@ object Dependencies {
   )
 
   val guardianDependencies = Seq(
-    "com.gu" %% "pan-domain-auth-play_3-0" % "13.0.0",
+    "com.gu" %% "pan-domain-auth-play_3-0" % "18.0.0-PREVIEW.introduce-play-free-response-strategy.2026-03-25T1818.c7fdcf9f",
     "com.gu" %% "editorial-permissions-client" % "6.0.0",
     "com.gu" %% "simple-configuration-ssm" % "2.0.0"
   )
@@ -31,6 +31,6 @@ object Dependencies {
     "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % "2.17.0",
     "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.17.0",
     "org.jsoup" % "jsoup" % "1.17.2",
-    "com.lihaoyi" %% "ujson" % "3.3.1",
+    "com.lihaoyi" %% "ujson" % "4.4.3",
   ) ++ awsDependencies ++ guardianDependencies ++ testDependencies
 }
