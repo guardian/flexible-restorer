@@ -31,6 +31,6 @@ object Dependencies {
     "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % "2.17.0",
     "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.17.0",
     "org.jsoup" % "jsoup" % "1.17.2",
-    "com.lihaoyi" %% "ujson" % "3.3.1",
+    "com.lihaoyi" %% "ujson" % "4.4.3",
   ) ++ awsDependencies ++ guardianDependencies ++ testDependencies
 }
