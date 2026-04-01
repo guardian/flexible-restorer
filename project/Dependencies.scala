@@ -28,8 +28,8 @@ object Dependencies {
     "net.logstash.logback" % "logstash-logback-encoder" % "7.4",
     "org.eclipse.jgit" % "org.eclipse.jgit" % "5.13.5.202508271544-r",
     "commons-io" % "commons-io" % "2.16.1",
-    "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % "2.17.0",
-    "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.17.0",
+    "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % "2.17.3",
+    "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.17.3",
     "org.jsoup" % "jsoup" % "1.17.2",
     "com.lihaoyi" %% "ujson" % "3.3.1",
   ) ++ awsDependencies ++ guardianDependencies ++ testDependencies
