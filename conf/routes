@@ -6,6 +6,11 @@
 GET            /                                           controllers.Application.index
 GET            /content/:contentId/versions                controllers.Application.versionIndex(contentId:String)
 
+# React app
+GET             /react                                     controllers.Application.reactIndex
+GET             /react/:contentId/versions                 controllers.Application.reactVersionIndex(contentId:String)
+
+
 # Panda / Google auth
 GET            /oauthCallback                              controllers.Login.oauthCallback
 GET            /authError                                  controllers.Login.authError(message: String)

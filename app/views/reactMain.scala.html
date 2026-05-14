@@ -1,0 +1,23 @@
+@(pageTitle:String, config:String)
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Composer Restorer - @pageTitle</title>
+    <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/fav-versions-32.png")" />
+
+    <script type="module" crossorigin src="/assets/index.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index.css">
+
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="application/json" id="config">
+        @Html(config)
+    </script>
+
+
+</body>
+</html>
