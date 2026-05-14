@@ -1,21 +1,16 @@
-import { useState } from "react";
+import { Grid, Item } from "@guardian/stand/grid";
+import { MainLayout } from "./components/MainLayout";
+import { ComposerFileSearch } from "./components/ComposerFileSearch";
 
 function App() {
-    const [count, setCount] = useState(0);
-
     return (
-        <>
-            <section id="center">
-                <h2>restorer</h2>
-                <button
-                    type="button"
-                    className="counter"
-                    onClick={() => setCount((count) => count + 1)}
-                >
-                    Count is {count}
-                </button>
-            </section>
-        </>
+        <MainLayout>
+            <Grid>
+                <Item size={{ sm: 12 }}>
+                    <ComposerFileSearch submit={console.log} />
+                </Item>
+            </Grid>
+        </MainLayout>
     );
 }
 
