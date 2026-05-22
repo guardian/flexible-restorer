@@ -24,11 +24,42 @@ export interface SystemInfo {
     composerPrefix: string;
 }
 
+type ChangeRecord = {
+    date: number;
+    user: {
+        email: string;
+        firstName: string;
+        lastName: string;
+    };
+};
+
 export interface VersionListItem {
     contentId: string;
     timestamp: string;
     system: SystemInfo;
-    info: Record<string, unknown>;
+    info: {
+        metadata: {
+            reason?: string;
+        };
+        summary: {
+            preview: {
+                fields: {
+                    headline?: string;
+                    standfirst?: string;
+                    trailText?: string;
+                };
+                settings: { legallySensitive?: "false" | "true" };
+            };
+            type: string;
+            published: boolean;
+            contentChangeDetails: {
+                lastModified: ChangeRecord;
+                created: ChangeRecord;
+                published?: ChangeRecord;
+                revision: number;
+            };
+        };
+    };
 }
 
 export interface SnapshotResponse {

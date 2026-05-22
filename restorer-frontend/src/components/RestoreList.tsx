@@ -9,7 +9,7 @@ just split the component to a separate files, do not worry about unit tests for 
 
 */
 
-type Model = {
+export type VersionModel = {
     isSecondary?: boolean;
     activeState?: boolean;
     revisionId?: number | string;
@@ -25,7 +25,7 @@ type Model = {
 
 type Props = {
     isLoading?: boolean;
-    models?: Model[];
+    models?: VersionModel[];
     articleTitle?: string;
     articleURL?: string;
     articleHash?: string;
