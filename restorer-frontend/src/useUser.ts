@@ -8,10 +8,22 @@ to a file adjacent to App.tsx and import it into App.tsx.
 Do not use any angular-related code.
 */
 
-export type UserData = Record<string, unknown>;
+type Permissions = {
+    restorer_access?: boolean;
+    restore_content?: boolean;
+    restore_content_to_any_stack?: boolean;
+};
+
+export type UserData = {
+    firstName?: string;
+    lastName?: string;
+    email: string;
+    avatarUrl?: string;
+    permissions: Permissions;
+};
 
 let cachedUserData: UserData | null = null;
-let cachedPermissions: UserData | null = null;
+let cachedPermissions: Permissions | null = null;
 let cachedError: Error | null = null;
 let cachedPromise: Promise<UserData> | null = null;
 
@@ -44,9 +56,9 @@ async function fetchUserData(): Promise<UserData> {
             return response.json();
         })
         .then((permissionsData) => {
-            cachedPermissions = permissionsData as UserData;
+            cachedPermissions = permissionsData as Permissions;
             if (!cachedUserData) {
-                cachedUserData = {};
+                cachedUserData = { email: "", permissions: {} };
             }
             return { ...cachedUserData, permissions: cachedPermissions };
         })
@@ -63,7 +75,7 @@ async function fetchUserData(): Promise<UserData> {
 export function useUser() {
     const [user, setUser] = useState<UserData | null>(
         cachedUserData
-            ? { ...cachedUserData, permissions: cachedPermissions }
+            ? { ...cachedUserData, permissions: cachedPermissions ?? {} }
             : null,
     );
     const [loading, setLoading] = useState(

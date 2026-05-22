@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
-import { Button } from "@guardian/stand/button";
-import { TextInput } from "@guardian/stand/text-input";
+import { Button } from "@guardian/stand/Button";
+import { TextInput } from "@guardian/stand/TextInput";
 import { useState } from "react";
 
 interface Props {

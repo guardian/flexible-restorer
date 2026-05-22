@@ -1,21 +1,16 @@
-import { Grid, Item } from "@guardian/stand/grid";
+import { Grid, Item } from "@guardian/stand/Grid";
 import { MainLayout } from "./components/MainLayout";
 import { ComposerFileSearch } from "./components/ComposerFileSearch";
 import { useUser } from "./useUser";
 
 function App() {
-    const { user, loading, error } = useUser();
+    const { user } = useUser();
 
     return (
-        <MainLayout>
+        <MainLayout user={user}>
             <Grid>
                 <Item size={{ sm: 12 }}>
                     <ComposerFileSearch submit={console.log} />
-                </Item>
-                <Item size={{ sm: 12 }}>
-                    {loading && <p>Loading user details…</p>}
-                    {error && <p>Error loading user: {error.message}</p>}
-                    {user && <pre>{JSON.stringify(user, null, 2)}</pre>}
                 </Item>
             </Grid>
         </MainLayout>
