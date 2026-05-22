@@ -8,7 +8,7 @@ GET            /content/:contentId/versions                controllers.Applicati
 
 # React app
 GET             /react                                     controllers.Application.reactIndex
-GET             /react/:contentId/versions                 controllers.Application.reactVersionIndex(contentId:String)
+GET             /react/content/:contentId/versions         controllers.Application.reactVersionIndex(contentId:String)
 
 
 # Panda / Google auth

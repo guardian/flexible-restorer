@@ -1,19 +1,19 @@
-import { css } from "@emotion/react";
 import { Button } from "@guardian/stand/Button";
 import { TextInput } from "@guardian/stand/TextInput";
 import { useState } from "react";
 
 interface Props {
     submit: { (input: string): void };
+    errorMessage?: string;
 }
 
-export const ComposerFileSearch = ({ submit }: Props) => {
+export const ComposerFileSearch = ({ submit, errorMessage }: Props) => {
     const [input, setInput] = useState("");
 
     return (
         <section
             style={{
-                minHeight: 200,
+                minHeight: 300,
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -22,30 +22,38 @@ export const ComposerFileSearch = ({ submit }: Props) => {
             <div
                 style={{
                     display: "flex",
+                    flexDirection: "column",
                     justifyContent: "flex-start",
                     alignItems: "center",
+                    gap: 10,
                 }}
             >
-                <span>Enter a composer url:</span>
-                <TextInput
-                    aria-label="Enter a composer url:"
-                    value={input}
-                    onChange={setInput}
-                    cssOverrides={css({
-                        flexDirection: "row",
-                        alignItems: "center",
-                        width: "unset",
-                        input: {
-                            margin: 0,
-                        },
-                    })}
-                />
-                <Button
-                    onClick={() => submit(input)}
-                    isDisabled={input.length === 0}
+                <div
+                    style={{
+                        minHeight: 100,
+                    }}
                 >
-                    Search
-                </Button>
+                    <TextInput
+                        label="Enter a composer url:"
+                        value={input}
+                        onChange={setInput}
+                        error={errorMessage}
+                        isInvalid={!!errorMessage}
+                    />
+                </div>
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                    }}
+                >
+                    <Button
+                        onClick={() => submit(input)}
+                        isDisabled={input.length === 0}
+                    >
+                        Search
+                    </Button>
+                </div>
             </div>
         </section>
     );

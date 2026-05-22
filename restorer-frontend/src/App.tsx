@@ -1,18 +1,41 @@
-import { Grid, Item } from "@guardian/stand/Grid";
+import { useEffect, useState } from "react";
+import { ContentPage } from "./components/ContentPage";
 import { MainLayout } from "./components/MainLayout";
-import { ComposerFileSearch } from "./components/ComposerFileSearch";
+import { SearchPage } from "./components/SearchPage";
 import { useUser } from "./useUser";
+
+const getPage = (path: string | undefined) => {
+    if (!path) {
+        return undefined;
+    }
+
+    if (!path.includes("content")) {
+        return {
+            id: undefined,
+        };
+    }
+
+    //path format = /react/content/6a01c9df8f0896e9229358d4/versions
+
+    return {
+        id: path.split("/")[3],
+    };
+};
 
 function App() {
     const { user } = useUser();
 
+    const [path, setPath] = useState<string>();
+    useEffect(() => {
+        setPath(window.location.pathname);
+    }, []);
+
+    const page = getPage(path);
+
     return (
         <MainLayout user={user}>
-            <Grid>
-                <Item size={{ sm: 12 }}>
-                    <ComposerFileSearch submit={console.log} />
-                </Item>
-            </Grid>
+            {page && !page.id && <SearchPage />}
+            {page?.id && <ContentPage contentId={page.id} />}
         </MainLayout>
     );
 }
