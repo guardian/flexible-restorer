@@ -21,7 +21,6 @@ In RestoreList, replace all GuBtn components with the Button from the @guardian/
 
 export type VersionModel = {
     isSecondary?: boolean;
-    activeState?: boolean;
     revisionId?: number | string;
     createdDateHtml?: string;
     createdTimestamp?: string;
@@ -35,6 +34,8 @@ export type VersionModel = {
 };
 
 type Props = {
+    activeVersionIndex: number;
+    setActiveVersionIndex: { (index: number): void };
     models?: VersionModel[];
     articleTitle?: string;
     articleURL?: string;
@@ -52,6 +53,8 @@ type Props = {
 
 // Main converted component
 export const RestoreList: React.FC<Props> = ({
+    activeVersionIndex,
+    setActiveVersionIndex,
     models = [],
     articleTitle = "",
     articleURL = "#",
@@ -134,29 +137,31 @@ export const RestoreList: React.FC<Props> = ({
                                     )}
 
                                     <li
-                                        className={`snapshot-list__item index-list__item index-list__item--${model.activeState ? "tertiary" : "primary"}`}
-                                        data-variant={
-                                            model.activeState
-                                                ? "tertiary"
-                                                : "primary"
-                                        }
                                         style={{
                                             borderTop: "1px solid black",
                                             borderBottom: "1px solid black",
                                             display: "flex",
-                                            backgroundColor: model.activeState
-                                                ? "lightgray"
-                                                : "whitesmoke",
+                                            backgroundColor:
+                                                index === activeVersionIndex
+                                                    ? "lightgray"
+                                                    : "whitesmoke",
                                         }}
+                                        onClick={
+                                            index !== activeVersionIndex
+                                                ? () => {
+                                                      setActiveVersionIndex(
+                                                          index,
+                                                      );
+                                                  }
+                                                : undefined
+                                        }
                                     >
                                         <div className="index-list__item__index">
                                             {model.revisionId ??
                                                 models.length - index}
                                         </div>
 
-                                        <div
-                                            className={`snapshot-list__item__content ${model.activeState ? "active" : ""}`}
-                                        >
+                                        <div>
                                             <h6
                                                 className="snapshot-list__item__content__actual-date"
                                                 dangerouslySetInnerHTML={{

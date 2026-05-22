@@ -10,7 +10,6 @@ interface Props {
 
 const convertToModel = (version: VersionListItem): VersionModel => {
     return {
-        activeState: false,
         isSecondary: version.system.isSecondary,
         revisionId: version.info.summary.contentChangeDetails.revision,
         createdDateHtml: "",
@@ -34,6 +33,7 @@ export const ContentPage = ({ contentId }: Props) => {
     const [modelList, setModelList] = useState<VersionModel[]>();
     const [itemList, setItemList] = useState<VersionListItem[]>();
     const [isLoading, setIsLoading] = useState(true);
+    const [activeVersionIndex, setActiveVersionIndex] = useState(0);
 
     useEffect(() => {
         snapshotService.getList(contentId).then((versions) => {
@@ -41,19 +41,11 @@ export const ContentPage = ({ contentId }: Props) => {
             versions.reverse();
             setItemList(versions);
             const models = versions.map(convertToModel);
-            const [first] = models;
-            if (first) {
-                first.activeState = true;
-            }
             setModelList(models);
         });
     }, [contentId, snapshotService]);
 
-    const activeIndex = modelList?.findIndex((model) => model.activeState);
-
-    const activeItem =
-        typeof activeIndex === "number" ? itemList?.[activeIndex] : undefined;
-
+    const activeItem = itemList?.[activeVersionIndex];
     const fields = activeItem?.info.summary.preview.fields;
 
     const articleURL = activeItem
@@ -66,6 +58,8 @@ export const ContentPage = ({ contentId }: Props) => {
             <dialog open={isLoading}>Loading...</dialog>
 
             <RestoreList
+                activeVersionIndex={activeVersionIndex}
+                setActiveVersionIndex={setActiveVersionIndex}
                 models={modelList}
                 articleTitle={fields?.headline}
                 articleURL={articleURL}
