@@ -14,7 +14,8 @@ const convertToModel = (version: VersionListItem): VersionModel => {
         isSecondary: version.system.isSecondary,
         revisionId: version.info.summary.contentChangeDetails.revision,
         createdDateHtml: "",
-        relativeDate: "",
+        createdTimestamp: version.timestamp,
+        relativeDate: "[no relative date]",
         userEmail: "",
         snapshotReason: version.info.metadata.reason,
         isLegallySensitive:
@@ -35,10 +36,10 @@ export const ContentPage = ({ contentId }: Props) => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        snapshotService.getList(contentId).then((response) => {
+        snapshotService.getList(contentId).then((versions) => {
             setIsLoading(false);
-            setItemList(response);
-            const models = response.map(convertToModel);
+            setItemList(versions);
+            const models = versions.map(convertToModel);
             const [first] = models;
             if (first) {
                 first.activeState = true;
@@ -49,8 +50,6 @@ export const ContentPage = ({ contentId }: Props) => {
 
     const activeIndex = modelList?.findIndex((model) => model.activeState);
 
-    // const activeModel =
-    //     typeof activeIndex === "number" ? modelList?.[activeIndex] : undefined;
     const activeItem =
         typeof activeIndex === "number" ? itemList?.[activeIndex] : undefined;
 

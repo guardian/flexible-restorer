@@ -54,7 +54,7 @@ export interface VersionListItem {
             published: boolean;
             contentChangeDetails: {
                 lastModified: ChangeRecord;
-                created: ChangeRecord;
+                created?: ChangeRecord;
                 published?: ChangeRecord;
                 revision: number;
             };

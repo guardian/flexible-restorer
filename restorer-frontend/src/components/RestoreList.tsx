@@ -1,6 +1,7 @@
 import { Layout } from "@guardian/stand/Layout";
-import React from "react";
+import React, { useState } from "react";
 import { GuBtn, GuColumn, GuIcon, GuRow } from "./GuComponents";
+import Dayjs from "dayjs";
 
 /*
 initial file generated with AI:
@@ -16,6 +17,7 @@ export type VersionModel = {
     activeState?: boolean;
     revisionId?: number | string;
     createdDateHtml?: string;
+    createdTimestamp?: string;
     relativeDate?: string;
     userEmail?: string;
     snapshotReason?: string;
@@ -57,6 +59,24 @@ export const RestoreList: React.FC<Props> = ({
     jsonContent = "",
     contentId = "",
 }) => {
+    const [today] = useState(() => new Date().toISOString());
+
+    const getRelativeDate = (model: VersionModel, nextModel?: VersionModel) => {
+        const nextModelTime = nextModel?.createdTimestamp ?? today;
+        const newModelTime = model.createdTimestamp;
+
+        if (!newModelTime) {
+            return `[no relative date]`;
+        }
+
+        const hourDiff = Dayjs(nextModelTime).diff(newModelTime, "hours");
+        if (hourDiff < 36) {
+            return `${hourDiff} hours ago`;
+        }
+        const dayDiff = Dayjs(nextModelTime).diff(newModelTime, "days");
+        return `${dayDiff} days ago`;
+    };
+
     return (
         <>
             <Layout.Sidebar>
@@ -92,8 +112,8 @@ export const RestoreList: React.FC<Props> = ({
 
                     <div className="scrollable__body">
                         <ol className="index-list snapshot-list">
-                            {models.map((model, idx) => (
-                                <React.Fragment key={idx}>
+                            {models.map((model, index) => (
+                                <React.Fragment key={index}>
                                     {model.isSecondary && (
                                         <li className="snapshot-list-secondary">
                                             Snapshot from secondary
@@ -110,7 +130,7 @@ export const RestoreList: React.FC<Props> = ({
                                     >
                                         <div className="index-list__item__index">
                                             {model.revisionId ??
-                                                models.length - idx}
+                                                models.length - index}
                                         </div>
 
                                         <div
@@ -125,7 +145,8 @@ export const RestoreList: React.FC<Props> = ({
                                                 }}
                                             ></h6>
                                             <h6 className="snapshot-list__item__content__relative-date">
-                                                {model.relativeDate} ago
+                                                {/* {model.relativeDate} ago */}
+                                                {getRelativeDate(model)}
                                             </h6>
                                             <h6 className="snapshot-list__item__content__reason">
                                                 Last modified by:{" "}
@@ -182,7 +203,12 @@ export const RestoreList: React.FC<Props> = ({
                                                 variant="expand-disabled"
                                             />
                                             <span className="delta-row__content">
-                                                {model.relativeDate}
+                                                {/* AI got this wrong - should be the date relative to the next item */}
+                                                {/* {model.relativeDate} */}
+                                                {getRelativeDate(
+                                                    model,
+                                                    models[index + 1],
+                                                )}
                                             </span>
                                         </GuRow>
                                     </li>
