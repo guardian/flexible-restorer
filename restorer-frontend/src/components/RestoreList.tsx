@@ -328,5 +328,3 @@ export const RestoreList: React.FC<Props> = ({
         </>
     );
 };
-
-export default RestoreList;

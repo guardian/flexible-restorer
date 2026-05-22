@@ -1,6 +1,11 @@
 import { Favicon } from "@guardian/stand/Favicon";
 import { Layout } from "@guardian/stand/Layout";
-import { TopBar, TopBarToolName } from "@guardian/stand/TopBar";
+import {
+    TopBar,
+    TopBarContainerLeft,
+    TopBarItem,
+    TopBarToolName,
+} from "@guardian/stand/TopBar";
 import { Avatar } from "@guardian/stand/Avatar";
 import { type ReactNode } from "react";
 import { RestorerIcon } from "./RestorerIcon";
@@ -18,6 +23,7 @@ pass the user value as a prop to MainLayout and use it to include an Avatar comp
 interface Props {
     children: ReactNode;
     user?: UserData | null;
+    contentId?: string;
 }
 
 const getInitials = (user: UserData): string => {
@@ -26,7 +32,7 @@ const getInitials = (user: UserData): string => {
     return `${firstName}${lastName}`.toUpperCase() || "U";
 };
 
-export const MainLayout = ({ children, user }: Props) => {
+export const MainLayout = ({ children, user, contentId }: Props) => {
     return (
         <>
             <TopBar>
@@ -34,6 +40,9 @@ export const MainLayout = ({ children, user }: Props) => {
                     name="Flexible Restorer"
                     favicon={{ icon: <Favicon icon={<RestorerIcon />} /> }}
                 />
+                <TopBarContainerLeft>
+                    {contentId && <TopBarItem>{contentId}</TopBarItem>}
+                </TopBarContainerLeft>
                 {user && (
                     <Avatar
                         src={user.avatarUrl}

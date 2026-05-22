@@ -33,7 +33,7 @@ function App() {
     const page = getPage(path);
 
     return (
-        <MainLayout user={user}>
+        <MainLayout user={user} contentId={page?.id}>
             {page && !page.id && <SearchPage />}
             {page?.id && <ContentPage contentId={page.id} />}
         </MainLayout>
