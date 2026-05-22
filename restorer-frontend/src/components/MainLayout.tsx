@@ -34,28 +34,30 @@ const getInitials = (user: UserData): string => {
 
 export const MainLayout = ({ children, user, contentId }: Props) => {
     return (
-        <>
-            <TopBar>
-                <TopBarToolName
-                    name="Flexible Restorer"
-                    favicon={{ icon: <Favicon icon={<RestorerIcon />} /> }}
-                />
-                <TopBarContainerLeft>
-                    {contentId && <TopBarItem>{contentId}</TopBarItem>}
-                </TopBarContainerLeft>
-                {user && (
-                    <Avatar
-                        src={user.avatarUrl}
-                        alt={
-                            `${user.firstName} ${user.lastName}`.trim() ||
-                            user.email
-                        }
-                        initials={getInitials(user)}
-                        size="md"
+        <Layout>
+            <Layout.TopBar>
+                <TopBar>
+                    <TopBarToolName
+                        name="Flexible Restorer"
+                        favicon={{ icon: <Favicon icon={<RestorerIcon />} /> }}
                     />
-                )}
-            </TopBar>
-            <Layout>{children}</Layout>
-        </>
+                    <TopBarContainerLeft>
+                        {contentId && <TopBarItem>{contentId}</TopBarItem>}
+                    </TopBarContainerLeft>
+                    {user && (
+                        <Avatar
+                            src={user.avatarUrl}
+                            alt={
+                                `${user.firstName} ${user.lastName}`.trim() ||
+                                user.email
+                            }
+                            initials={getInitials(user)}
+                            size="md"
+                        />
+                    )}
+                </TopBar>
+            </Layout.TopBar>
+            {children}
+        </Layout>
     );
 };

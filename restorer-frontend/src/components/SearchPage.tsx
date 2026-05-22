@@ -1,6 +1,7 @@
 import { Grid, Item } from "@guardian/stand/Grid";
 import { ComposerFileSearch } from "./ComposerFileSearch";
 import { useState } from "react";
+import { Layout } from "@guardian/stand/Layout";
 
 const idRegex = /^[a-zA-Z0-9_-]{24}$/;
 
@@ -29,13 +30,15 @@ export const SearchPage = () => {
     };
 
     return (
-        <Grid>
-            <Item size={{ sm: 12 }}>
-                <ComposerFileSearch
-                    submit={navigate}
-                    errorMessage={errorMessage}
-                />
-            </Item>
-        </Grid>
+        <Layout.Main>
+            <Grid>
+                <Item size={{ sm: 12 }}>
+                    <ComposerFileSearch
+                        submit={navigate}
+                        errorMessage={errorMessage}
+                    />
+                </Item>
+            </Grid>
+        </Layout.Main>
     );
 };

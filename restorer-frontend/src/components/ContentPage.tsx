@@ -1,4 +1,3 @@
-import { Grid, Item } from "@guardian/stand/Grid";
 import { useEffect, useState } from "react";
 import SnapshotService, {
     type VersionListItem,
@@ -33,9 +32,11 @@ export const ContentPage = ({ contentId }: Props) => {
     const [snapshotService] = useState(new SnapshotService());
     const [modelList, setModelList] = useState<VersionModel[]>();
     const [itemList, setItemList] = useState<VersionListItem[]>();
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         snapshotService.getList(contentId).then((response) => {
+            setIsLoading(false);
             setItemList(response);
             const models = response.map(convertToModel);
             const [first] = models;
@@ -60,25 +61,25 @@ export const ContentPage = ({ contentId }: Props) => {
         : undefined;
 
     return (
-        <Grid>
-            <Item>
-                <RestoreList
-                    isLoading={false}
-                    models={modelList}
-                    articleTitle={fields?.headline}
-                    articleURL={articleURL}
-                    articleHash={contentId}
-                    canRestore={undefined}
-                    copyButtonLabel={undefined}
-                    displayButtonLabel={undefined}
-                    headline={fields?.headline}
-                    standfirst={fields?.standfirst}
-                    trailText={fields?.trailText}
-                    htmlContent="<p>contents</p>"
-                    jsonContent="[]"
-                    contentId={contentId}
-                />
-            </Item>
-        </Grid>
+        <>
+            {/* TO DO - overlay modal component */}
+            <dialog open={isLoading}>Loading...</dialog>
+
+            <RestoreList
+                models={modelList}
+                articleTitle={fields?.headline}
+                articleURL={articleURL}
+                articleHash={contentId}
+                canRestore={undefined}
+                copyButtonLabel={undefined}
+                displayButtonLabel={undefined}
+                headline={fields?.headline}
+                standfirst={fields?.standfirst}
+                trailText={fields?.trailText}
+                htmlContent="<p>contents</p>"
+                jsonContent="[]"
+                contentId={contentId}
+            />
+        </>
     );
 };

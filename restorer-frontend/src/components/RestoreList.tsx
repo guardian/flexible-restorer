@@ -1,4 +1,6 @@
+import { Layout } from "@guardian/stand/Layout";
 import React from "react";
+import { GuBtn, GuColumn, GuIcon, GuRow } from "./GuComponents";
 
 /*
 initial file generated with AI:
@@ -24,7 +26,6 @@ export type VersionModel = {
 };
 
 type Props = {
-    isLoading?: boolean;
     models?: VersionModel[];
     articleTitle?: string;
     articleURL?: string;
@@ -40,18 +41,8 @@ type Props = {
     contentId?: string | number;
 };
 
-import {
-    GuRow,
-    GuColumn,
-    GuBox,
-    GuBtn,
-    GuIcon,
-    GuLoadingBars,
-} from "./GuComponents";
-
 // Main converted component
 export const RestoreList: React.FC<Props> = ({
-    isLoading = false,
     models = [],
     articleTitle = "",
     articleURL = "#",
@@ -68,263 +59,230 @@ export const RestoreList: React.FC<Props> = ({
 }) => {
     return (
         <>
-            {/* ERROR STATUS (hidden placeholder) */}
-            <div
-                style={{ display: "none" }}
-                className="modal center visually-hidden"
-            >
-                <GuBox variant="primary">
-                    <GuRow>
-                        <GuColumn span={12}>
-                            <h1 className="modal__content__title">
-                                Ooops, something went wrong
-                            </h1>
-                        </GuColumn>
-                    </GuRow>
-                </GuBox>
-            </div>
+            <Layout.Sidebar>
+                <div className="scrollable__container">
+                    <div className="scrollable__header-fixed">
+                        <h1 className="article-headline">{articleTitle}</h1>
+                        <h6 className="article-hash">
+                            (
+                            <a
+                                href={articleURL}
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                {articleHash}
+                            </a>
+                            )
+                        </h6>
+                        <GuRow className="snapshot-list-header">
+                            <span
+                                className="snapshot-list-header__decal"
+                                title="Content revision number"
+                            >
+                                No.
+                            </span>
+                            <span className="snapshot-list-header__content">
+                                Snapped at &amp; last modified
+                            </span>
+                            <span className="snapshot-list-header__status">
+                                Status
+                            </span>
+                        </GuRow>
+                    </div>
 
-            {/* HEADER */}
-            <GuRow className="header">
-                {/* in the original template this was an include */}
-            </GuRow>
+                    <div className="scrollable__body">
+                        <ol className="index-list snapshot-list">
+                            {models.map((model, idx) => (
+                                <React.Fragment key={idx}>
+                                    {model.isSecondary && (
+                                        <li className="snapshot-list-secondary">
+                                            Snapshot from secondary
+                                        </li>
+                                    )}
 
-            {/* PRELOADER */}
-            {isLoading && (
-                <div>
-                    <GuLoadingBars />
-                </div>
-            )}
+                                    <li
+                                        className={`snapshot-list__item index-list__item index-list__item--${model.activeState ? "tertiary" : "primary"}`}
+                                        data-variant={
+                                            model.activeState
+                                                ? "tertiary"
+                                                : "primary"
+                                        }
+                                    >
+                                        <div className="index-list__item__index">
+                                            {model.revisionId ??
+                                                models.length - idx}
+                                        </div>
 
-            <GuRow className="content">
-                <GuColumn className="sidebar" span={4}>
-                    <div className="scrollable__container">
-                        <div className="scrollable__header-fixed">
-                            <h1 className="article-headline">{articleTitle}</h1>
-                            <h6 className="article-hash">
-                                (
-                                <a
-                                    href={articleURL}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    {articleHash}
-                                </a>
-                                )
-                            </h6>
-                            <GuRow className="snapshot-list-header">
-                                <span
-                                    className="snapshot-list-header__decal"
-                                    title="Content revision number"
-                                >
-                                    No.
-                                </span>
-                                <span className="snapshot-list-header__content">
-                                    Snapped at &amp; last modified
-                                </span>
-                                <span className="snapshot-list-header__status">
-                                    Status
-                                </span>
-                            </GuRow>
-                        </div>
-
-                        <div className="scrollable__body">
-                            <ol className="index-list snapshot-list">
-                                {models.map((model, idx) => (
-                                    <React.Fragment key={idx}>
-                                        {model.isSecondary && (
-                                            <li className="snapshot-list-secondary">
-                                                Snapshot from secondary
-                                            </li>
-                                        )}
-
-                                        <li
-                                            className={`snapshot-list__item index-list__item index-list__item--${model.activeState ? "tertiary" : "primary"}`}
-                                            data-variant={
-                                                model.activeState
-                                                    ? "tertiary"
-                                                    : "primary"
-                                            }
+                                        <div
+                                            className={`snapshot-list__item__content ${model.activeState ? "active" : ""}`}
                                         >
-                                            <div className="index-list__item__index">
-                                                {model.revisionId ??
-                                                    models.length - idx}
-                                            </div>
+                                            <h6
+                                                className="snapshot-list__item__content__actual-date"
+                                                dangerouslySetInnerHTML={{
+                                                    __html:
+                                                        model.createdDateHtml ??
+                                                        "",
+                                                }}
+                                            ></h6>
+                                            <h6 className="snapshot-list__item__content__relative-date">
+                                                {model.relativeDate} ago
+                                            </h6>
+                                            <h6 className="snapshot-list__item__content__reason">
+                                                Last modified by:{" "}
+                                                {model.userEmail}
+                                            </h6>
+                                            <h6 className="snapshot-list__item__content__reason">
+                                                {model.snapshotReason}
+                                            </h6>
+                                        </div>
 
-                                            <div
-                                                className={`snapshot-list__item__content ${model.activeState ? "active" : ""}`}
-                                            >
-                                                <h6
-                                                    className="snapshot-list__item__content__actual-date"
-                                                    dangerouslySetInnerHTML={{
-                                                        __html:
-                                                            model.createdDateHtml ??
-                                                            "",
-                                                    }}
-                                                ></h6>
-                                                <h6 className="snapshot-list__item__content__relative-date">
-                                                    {model.relativeDate} ago
-                                                </h6>
-                                                <h6 className="snapshot-list__item__content__reason">
-                                                    Last modified by:{" "}
-                                                    {model.userEmail}
-                                                </h6>
-                                                <h6 className="snapshot-list__item__content__reason">
-                                                    {model.snapshotReason}
-                                                </h6>
-                                            </div>
+                                        <div className="snapshot-list__item__information">
+                                            <div className="snapshot-list__item__status">
+                                                <div className="snapshot-list__item__status--left">
+                                                    {model.isLegallySensitive && (
+                                                        <div className="snapshot-list__item__settings__legally-sensitive" />
+                                                    )}
 
-                                            <div className="snapshot-list__item__information">
-                                                <div className="snapshot-list__item__status">
-                                                    <div className="snapshot-list__item__status--left">
-                                                        {model.isLegallySensitive && (
-                                                            <div className="snapshot-list__item__settings__legally-sensitive" />
-                                                        )}
+                                                    {model.commentsEnabled
+                                                        ?.on && (
+                                                        <div className="snapshot-list__item__settings__comments--on">
+                                                            <div className="snapshot-list__item__settings__comments--on-image" />
+                                                            <div className="snapshot-list__item__settings__content--text">
+                                                                on
+                                                            </div>
+                                                        </div>
+                                                    )}
 
-                                                        {model.commentsEnabled
+                                                    {model.commentsEnabled
+                                                        ?.defined &&
+                                                        !model.commentsEnabled
                                                             ?.on && (
-                                                            <div className="snapshot-list__item__settings__comments--on">
-                                                                <div className="snapshot-list__item__settings__comments--on-image" />
+                                                            <div className="snapshot-list__item__settings__comments--off">
+                                                                <div className="snapshot-list__item__settings__comments--off-image" />
                                                                 <div className="snapshot-list__item__settings__content--text">
-                                                                    on
+                                                                    off
                                                                 </div>
                                                             </div>
                                                         )}
-
-                                                        {model.commentsEnabled
-                                                            ?.defined &&
-                                                            !model
-                                                                .commentsEnabled
-                                                                ?.on && (
-                                                                <div className="snapshot-list__item__settings__comments--off">
-                                                                    <div className="snapshot-list__item__settings__comments--off-image" />
-                                                                    <div className="snapshot-list__item__settings__content--text">
-                                                                        off
-                                                                    </div>
-                                                                </div>
-                                                            )}
-                                                    </div>
-
-                                                    {model.publishedState && (
-                                                        <div className="snapshot-list__item__status--right">
-                                                            {
-                                                                model.publishedState
-                                                            }
-                                                        </div>
-                                                    )}
                                                 </div>
+
+                                                {model.publishedState && (
+                                                    <div className="snapshot-list__item__status--right">
+                                                        {model.publishedState}
+                                                    </div>
+                                                )}
                                             </div>
-                                        </li>
+                                        </div>
+                                    </li>
 
-                                        <li className="delta-row">
-                                            <GuRow variant="reverse">
-                                                <GuIcon
-                                                    className="delta-row__icon"
-                                                    variant="expand-disabled"
-                                                />
-                                                <span className="delta-row__content">
-                                                    {model.relativeDate}
-                                                </span>
-                                            </GuRow>
-                                        </li>
-                                    </React.Fragment>
-                                ))}
-                            </ol>
-                        </div>
+                                    <li className="delta-row">
+                                        <GuRow variant="reverse">
+                                            <GuIcon
+                                                className="delta-row__icon"
+                                                variant="expand-disabled"
+                                            />
+                                            <span className="delta-row__content">
+                                                {model.relativeDate}
+                                            </span>
+                                        </GuRow>
+                                    </li>
+                                </React.Fragment>
+                            ))}
+                        </ol>
                     </div>
-                </GuColumn>
+                </div>
+            </Layout.Sidebar>
 
-                <GuColumn className="snapshot-content" span={8}>
-                    <div className="snapshot-content__viewport scrollable__container">
-                        <GuRow className="snapshot-content__actions scrollable__header-fixed">
-                            {canRestore && (
-                                <GuBtn className="snapshot-content__actions--button">
-                                    <GuIcon
-                                        className="snapshot-content__actions__restore__icon"
-                                        variant="wrench-disabled"
-                                    />
-                                    <span>Restore</span>
-                                </GuBtn>
-                            )}
+            <Layout.Main>
+                <div className="snapshot-content__viewport scrollable__container">
+                    <GuRow className="snapshot-content__actions scrollable__header-fixed">
+                        {canRestore && (
                             <GuBtn className="snapshot-content__actions--button">
-                                {copyButtonLabel}
+                                <GuIcon
+                                    className="snapshot-content__actions__restore__icon"
+                                    variant="wrench-disabled"
+                                />
+                                <span>Restore</span>
                             </GuBtn>
-                            <a
-                                className="snapshot-content__actions--button btn btn"
-                                target="_blank"
-                                rel="noreferrer"
-                                href={`/export/${contentId}/git`}
-                            >
-                                Export all as Git Repo
-                            </a>
-                            <a
-                                className="snapshot-content__actions--button btn btn"
-                                target="_blank"
-                                rel="noreferrer"
-                                href={`/export/${contentId}/zip`}
-                            >
-                                Export all as Zip
-                            </a>
-                            <GuBtn className="snapshot-content__actions--button">
-                                {displayButtonLabel}
-                            </GuBtn>
-                        </GuRow>
+                        )}
+                        <GuBtn className="snapshot-content__actions--button">
+                            {copyButtonLabel}
+                        </GuBtn>
+                        <a
+                            className="snapshot-content__actions--button btn btn"
+                            target="_blank"
+                            rel="noreferrer"
+                            href={`/export/${contentId}/git`}
+                        >
+                            Export all as Git Repo
+                        </a>
+                        <a
+                            className="snapshot-content__actions--button btn btn"
+                            target="_blank"
+                            rel="noreferrer"
+                            href={`/export/${contentId}/zip`}
+                        >
+                            Export all as Zip
+                        </a>
+                        <GuBtn className="snapshot-content__actions--button">
+                            {displayButtonLabel}
+                        </GuBtn>
+                    </GuRow>
 
-                        <div className="scrollable__body">
-                            <div className="snapshot-content__furniture">
-                                <GuRow className="snapshot-content__furniture__item">
-                                    <h4 className="snapshot-content__furniture__item--header">
-                                        Headline
-                                    </h4>
-                                    <p className="snapshot-content__furniture__item--content">
-                                        {headline}
-                                    </p>
-                                </GuRow>
+                    <div className="scrollable__body">
+                        <div className="snapshot-content__furniture">
+                            <GuRow className="snapshot-content__furniture__item">
+                                <h4 className="snapshot-content__furniture__item--header">
+                                    Headline
+                                </h4>
+                                <p className="snapshot-content__furniture__item--content">
+                                    {headline}
+                                </p>
+                            </GuRow>
 
-                                <GuRow className="snapshot-content__furniture__item">
-                                    <h4 className="snapshot-content__furniture__item--header">
-                                        Standfirst
-                                    </h4>
-                                    <p className="snapshot-content__furniture__item--content">
-                                        {standfirst}
-                                    </p>
-                                </GuRow>
+                            <GuRow className="snapshot-content__furniture__item">
+                                <h4 className="snapshot-content__furniture__item--header">
+                                    Standfirst
+                                </h4>
+                                <p className="snapshot-content__furniture__item--content">
+                                    {standfirst}
+                                </p>
+                            </GuRow>
 
-                                <GuRow className="snapshot-content__furniture__item">
-                                    <h4 className="snapshot-content__furniture__item--header">
-                                        TrailText
-                                    </h4>
-                                    <p className="snapshot-content__furniture__item--content">
-                                        {trailText}
-                                    </p>
-                                </GuRow>
-                            </div>
-
-                            <GuRow className={`snapshot-content__container`}>
-                                <GuColumn
-                                    span={6}
-                                    className="snapshot-content__container__item"
-                                >
-                                    <div
-                                        dangerouslySetInnerHTML={{
-                                            __html: htmlContent,
-                                        }}
-                                    />
-                                </GuColumn>
-
-                                <GuColumn
-                                    span={6}
-                                    className="snapshot-content__container__item--json"
-                                >
-                                    <pre>
-                                        <code>{jsonContent}</code>
-                                    </pre>
-                                </GuColumn>
+                            <GuRow className="snapshot-content__furniture__item">
+                                <h4 className="snapshot-content__furniture__item--header">
+                                    TrailText
+                                </h4>
+                                <p className="snapshot-content__furniture__item--content">
+                                    {trailText}
+                                </p>
                             </GuRow>
                         </div>
+
+                        <GuRow className={`snapshot-content__container`}>
+                            <GuColumn
+                                span={6}
+                                className="snapshot-content__container__item"
+                            >
+                                <div
+                                    dangerouslySetInnerHTML={{
+                                        __html: htmlContent,
+                                    }}
+                                />
+                            </GuColumn>
+
+                            <GuColumn
+                                span={6}
+                                className="snapshot-content__container__item--json"
+                            >
+                                <pre>
+                                    <code>{jsonContent}</code>
+                                </pre>
+                            </GuColumn>
+                        </GuRow>
                     </div>
-                </GuColumn>
-            </GuRow>
+                </div>
+            </Layout.Main>
         </>
     );
 };
