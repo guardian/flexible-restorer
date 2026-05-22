@@ -1,6 +1,6 @@
 import { Layout } from "@guardian/stand/Layout";
 import { Button } from "@guardian/stand/Button";
-import { Link } from "@guardian/stand/Link";
+import { LinkButton } from "@guardian/stand/LinkButton";
 import React, { useState } from "react";
 import { GuColumn, GuIcon, GuRow } from "./GuComponents";
 import Dayjs from "dayjs";
@@ -118,7 +118,13 @@ export const RestoreList: React.FC<Props> = ({
                     </div>
 
                     <div className="scrollable__body">
-                        <ol className="index-list snapshot-list">
+                        <ol
+                            className="index-list snapshot-list"
+                            style={{
+                                listStyle: "none",
+                                padding: 0,
+                            }}
+                        >
                             {models.map((model, index) => (
                                 <React.Fragment key={index}>
                                     {model.isSecondary && (
@@ -134,6 +140,14 @@ export const RestoreList: React.FC<Props> = ({
                                                 ? "tertiary"
                                                 : "primary"
                                         }
+                                        style={{
+                                            borderTop: "1px solid black",
+                                            borderBottom: "1px solid black",
+                                            display: "flex",
+                                            backgroundColor: model.activeState
+                                                ? "lightgray"
+                                                : "whitesmoke",
+                                        }}
                                     >
                                         <div className="index-list__item__index">
                                             {model.revisionId ??
@@ -228,7 +242,13 @@ export const RestoreList: React.FC<Props> = ({
 
             <Layout.Main>
                 <div className="snapshot-content__viewport scrollable__container">
-                    <GuRow className="snapshot-content__actions scrollable__header-fixed">
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 10,
+                        }}
+                    >
                         {canRestore && (
                             <Button>
                                 <GuIcon
@@ -239,22 +259,24 @@ export const RestoreList: React.FC<Props> = ({
                             </Button>
                         )}
                         <Button>{copyButtonLabel}</Button>
-                        <Link
+                        <LinkButton
+                            size="sm"
                             target="_blank"
                             rel="noreferrer"
                             href={`/export/${contentId}/git`}
                         >
                             Export all as Git Repo
-                        </Link>
-                        <Link
+                        </LinkButton>
+                        <LinkButton
+                            size="sm"
                             target="_blank"
                             rel="noreferrer"
                             href={`/export/${contentId}/zip`}
                         >
                             Export all as Zip
-                        </Link>
+                        </LinkButton>
                         <Button>{displayButtonLabel}</Button>
-                    </GuRow>
+                    </div>
 
                     <div className="scrollable__body">
                         <div className="snapshot-content__furniture">

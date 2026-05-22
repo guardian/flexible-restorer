@@ -24,7 +24,7 @@ const convertToModel = (version: VersionListItem): VersionModel => {
             on: undefined,
             defined: undefined,
         },
-        publishedState: undefined,
+        publishedState: undefined, // TO DO - parse from model
         isBecauseOfLaunch: false,
     };
 };
@@ -38,6 +38,7 @@ export const ContentPage = ({ contentId }: Props) => {
     useEffect(() => {
         snapshotService.getList(contentId).then((versions) => {
             setIsLoading(false);
+            versions.reverse();
             setItemList(versions);
             const models = versions.map(convertToModel);
             const [first] = models;
