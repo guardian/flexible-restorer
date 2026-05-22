@@ -1,6 +1,8 @@
 import { Layout } from "@guardian/stand/Layout";
+import { Button } from "@guardian/stand/Button";
+import { Link } from "@guardian/stand/Link";
 import React, { useState } from "react";
-import { GuBtn, GuColumn, GuIcon, GuRow } from "./GuComponents";
+import { GuColumn, GuIcon, GuRow } from "./GuComponents";
 import Dayjs from "dayjs";
 
 /*
@@ -9,6 +11,11 @@ Read the Angular template in restore-list.html and convert it to a react compone
 
 (follow up)
 just split the component to a separate files, do not worry about unit tests for them
+
+(next iteration)
+In RestoreList, replace all GuBtn components with the Button from the @guardian/stand library and all link elements (<a>) with the @guardian/stand library 's Link component. Do not remove any comments this file.
+
+(forgot to tell the AI to remove classNames - did that)
 
 */
 
@@ -223,36 +230,30 @@ export const RestoreList: React.FC<Props> = ({
                 <div className="snapshot-content__viewport scrollable__container">
                     <GuRow className="snapshot-content__actions scrollable__header-fixed">
                         {canRestore && (
-                            <GuBtn className="snapshot-content__actions--button">
+                            <Button>
                                 <GuIcon
                                     className="snapshot-content__actions__restore__icon"
                                     variant="wrench-disabled"
                                 />
                                 <span>Restore</span>
-                            </GuBtn>
+                            </Button>
                         )}
-                        <GuBtn className="snapshot-content__actions--button">
-                            {copyButtonLabel}
-                        </GuBtn>
-                        <a
-                            className="snapshot-content__actions--button btn btn"
+                        <Button>{copyButtonLabel}</Button>
+                        <Link
                             target="_blank"
                             rel="noreferrer"
                             href={`/export/${contentId}/git`}
                         >
                             Export all as Git Repo
-                        </a>
-                        <a
-                            className="snapshot-content__actions--button btn btn"
+                        </Link>
+                        <Link
                             target="_blank"
                             rel="noreferrer"
                             href={`/export/${contentId}/zip`}
                         >
                             Export all as Zip
-                        </a>
-                        <GuBtn className="snapshot-content__actions--button">
-                            {displayButtonLabel}
-                        </GuBtn>
+                        </Link>
+                        <Button>{displayButtonLabel}</Button>
                     </GuRow>
 
                     <div className="scrollable__body">
