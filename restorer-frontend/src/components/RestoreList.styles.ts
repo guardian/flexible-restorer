@@ -20,33 +20,6 @@ export const styles = {
     `,
     articleHeadline: css``,
     articleHash: css``,
-    snapshotListHeader: css`
-        background: #dee2e3;
-        font-size: 12px;
-    `,
-    snapshotListHeaderDecal: css`
-        box-sizing: border-box;
-        flex-basis: 46px;
-        max-width: 46px;
-        padding: 5px 10px;
-        border-right: 1px solid #bdbdbd;
-    `,
-    snapshotListHeaderContent: css`
-        padding: 5px 10px;
-        flex-basis: 175px;
-        border-right: 1px solid #bdbdbd;
-    `,
-    snapshotListHeaderStatus: css`
-        padding: 5px 10px;
-    `,
-    indexList: css`
-        margin-top: 5px;
-        list-style: none;
-        padding-left: 0;
-        li {
-            list-style: none;
-        }
-    `,
     snapshotList: css`
         margin-top: 5px;
         list-style: none;
@@ -67,112 +40,12 @@ export const styles = {
         border-top: 1px solid black;
         border-bottom: 1px solid black;
         display: flex;
-        background-color: whitesmoke;
-
-        &.active {
-            overflow: visible;
-            background-color: lightgray;
-
-            &:before {
-                display: none;
-            }
-        }
-
-        &:hover:not(.active) {
-            color: white;
-        }
-
-        &:hover:before {
-            opacity: 1;
-        }
-
-        &:before {
-            content: " ";
-            display: inline-block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #898984;
-            opacity: 0;
-            transition:
-                transform 0.2s ease-in-out,
-                opacity 0.2s ease-in;
-            z-index: 1;
-        }
     `,
-    indexListItemIndex: css`
-        box-sizing: border-box;
-        flex-basis: 46px;
-        max-width: 46px;
-        padding: 5px;
-        padding-top: 10px;
-        text-align: center;
-        border-right: 2px solid #bdbdbd;
-        z-index: 2;
-    `,
-    snapshotListItemContentActualDate: css``,
-    snapshotListItemContentRelativeDate: css``,
-    snapshotListItemContentReason: css``,
-    snapshotListItemInformation: css``,
-    snapshotListItemStatus: css`
-        flex-grow: 3;
-        font-size: small;
-        font-family: "Guardian Agate Sans";
-        z-index: 2;
-
+    snapshotListItemNotActive: css`
+        cursor: pointer;
         &:hover {
-            cursor: pointer;
+            background-color: yellow;
         }
-    `,
-    snapshotListItemStatusLeft: css`
-        float: left;
-        height: 3.1em;
-        padding: 10px 5px;
-    `,
-    snapshotListItemStatusRight: css`
-        float: right;
-        width: 45%;
-        height: 3.1em;
-        padding: 10px 5px;
-        border-left: 1px solid #bdbdbd;
-    `,
-    snapshotListItemSettingsLegallySensitive: css`
-        padding: 0;
-        text-align: center;
-        height: 15px;
-        margin-bottom: 5px;
-        width: 17px;
-        background: url(../images/legalcheck-grey-14.svg) center center
-            no-repeat;
-    `,
-    snapshotListItemSettingsCommentsOn: css`
-        width: 32px;
-    `,
-    snapshotListItemSettingsCommentsOnImage: css`
-        padding: 0;
-        float: left;
-        text-align: center;
-        height: 15px;
-        width: 16px;
-        background: url(../images/comment-green-14.svg) center center no-repeat;
-    `,
-    snapshotListItemSettingsContentText: css`
-        float: right;
-        font-size: 12px;
-        text-transform: uppercase;
-    `,
-    snapshotListItemSettingsCommentsOff: css`
-        width: 36px;
-    `,
-    snapshotListItemSettingsCommentsOffImage: css`
-        padding: 0;
-        float: left;
-        text-align: center;
-        height: 15px;
-        width: 16px;
-        background: url(../images/comment-grey-14.svg) center center no-repeat;
     `,
     deltaRow: css`
         padding: 5px 0 2px 0;

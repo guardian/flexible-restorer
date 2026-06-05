@@ -1,7 +1,7 @@
-import { css } from "@emotion/react";
+import { Grid, Item } from "@guardian/stand/Grid";
 import React from "react";
 import { SnapshotIdModel, type VersionListItem } from "../models";
-import { GuIcon } from "./GuComponents";
+import { RestoreItem } from "./RestoreItem";
 import { styles } from "./RestoreList.styles";
 
 /*
@@ -56,175 +56,33 @@ export const RestoreList: React.FC<Props> = ({
                     </a>
                     )
                 </h6>
-                <div css={[styles.row, styles.snapshotListHeader]}>
-                    <span
-                        css={styles.snapshotListHeaderDecal}
-                        title="Content revision number"
-                    >
-                        No.
-                    </span>
-                    <span css={styles.snapshotListHeaderContent}>
-                        Snapped at &amp; last modified
-                    </span>
-                    <span css={styles.snapshotListHeaderStatus}>Status</span>
-                </div>
+
+                <Grid
+                    theme={{
+                        sm: { padding: "0" },
+                        md: { padding: "0" },
+                        lg: { padding: "0" },
+                    }}
+                >
+                    <Item size={2}>No.</Item>
+                    <Item size={7}>Snapped at &amp; last modified</Item>
+                    <Item size={3}>Status</Item>
+                </Grid>
             </div>
 
             <div css={styles.scrollableBody}>
                 <ol css={styles.snapshotList}>
                     {models.map((model, index) => (
-                        <React.Fragment key={index}>
-                            {model.isSecondary && (
-                                <li css={styles.snapshotListSecondary}>
-                                    Snapshot from secondary
-                                </li>
-                            )}
-
-                            <li
-                                css={[
-                                    styles.snapshotListItem,
-                                    index === activeVersionIndex &&
-                                        css`
-                                            background-color: lightgray;
-                                        `,
-                                ]}
-                                onClick={
-                                    index !== activeVersionIndex
-                                        ? () => {
-                                              setActiveVersionIndex(index);
-                                          }
-                                        : undefined
-                                }
-                            >
-                                <div css={styles.indexListItemIndex}>
-                                    {model.revisionId ?? models.length - index}
-                                </div>
-
-                                <div>
-                                    <h6
-                                        css={
-                                            styles.snapshotListItemContentActualDate
-                                        }
-                                        dangerouslySetInnerHTML={{
-                                            __html: model.createdDateHtml ?? "",
-                                        }}
-                                    ></h6>
-                                    <h6
-                                        css={
-                                            styles.snapshotListItemContentRelativeDate
-                                        }
-                                    >
-                                        {model.getRelativeDate()} ago
-                                    </h6>
-                                    <h6
-                                        css={
-                                            styles.snapshotListItemContentReason
-                                        }
-                                    >
-                                        Last modified by: {model.userEmail}
-                                    </h6>
-                                    <h6
-                                        css={
-                                            styles.snapshotListItemContentReason
-                                        }
-                                    >
-                                        {model.snapshotReason}
-                                    </h6>
-                                </div>
-
-                                <div css={styles.snapshotListItemInformation}>
-                                    <div css={styles.snapshotListItemStatus}>
-                                        <div
-                                            css={
-                                                styles.snapshotListItemStatusLeft
-                                            }
-                                        >
-                                            {model.isLegallySensitive && (
-                                                <div
-                                                    css={
-                                                        styles.snapshotListItemSettingsLegallySensitive
-                                                    }
-                                                />
-                                            )}
-
-                                            {model.commentsEnabled?.on && (
-                                                <div
-                                                    css={
-                                                        styles.snapshotListItemSettingsCommentsOn
-                                                    }
-                                                >
-                                                    <div
-                                                        css={
-                                                            styles.snapshotListItemSettingsCommentsOnImage
-                                                        }
-                                                    />
-                                                    <div
-                                                        css={
-                                                            styles.snapshotListItemSettingsContentText
-                                                        }
-                                                    >
-                                                        on
-                                                    </div>
-                                                </div>
-                                            )}
-
-                                            {model.commentsEnabled?.defined &&
-                                                !model.commentsEnabled?.on && (
-                                                    <div
-                                                        css={
-                                                            styles.snapshotListItemSettingsCommentsOff
-                                                        }
-                                                    >
-                                                        <div
-                                                            css={
-                                                                styles.snapshotListItemSettingsCommentsOffImage
-                                                            }
-                                                        />
-                                                        <div
-                                                            css={
-                                                                styles.snapshotListItemSettingsContentText
-                                                            }
-                                                        >
-                                                            off
-                                                        </div>
-                                                    </div>
-                                                )}
-                                        </div>
-
-                                        {model.publishedState && (
-                                            <div
-                                                css={
-                                                    styles.snapshotListItemStatusRight
-                                                }
-                                            >
-                                                {model.publishedState}
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li css={styles.deltaRow}>
-                                <div
-                                    css={[
-                                        styles.row,
-                                        { flexDirection: "row-reverse" },
-                                    ]}
-                                >
-                                    <GuIcon
-                                        css={styles.deltaRowIcon}
-                                        variant="expand-disabled"
-                                    />
-                                    <span css={styles.deltaRowContent}>
-                                        {models[index + 1]
-                                            ? models[index + 1].getRelativeDate(
-                                                  model.createdDate,
-                                              )
-                                            : model.getRelativeDate()}
-                                    </span>
-                                </div>
-                            </li>
-                        </React.Fragment>
+                        <RestoreItem
+                            key={index}
+                            model={model}
+                            nextModel={models[index + 1]}
+                            makeActive={() => setActiveVersionIndex(index)}
+                            isActive={index === activeVersionIndex}
+                            itemNumber={
+                                model.revisionId ?? models.length - index
+                            }
+                        />
                     ))}
                 </ol>
             </div>
