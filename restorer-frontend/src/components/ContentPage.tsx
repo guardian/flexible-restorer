@@ -39,18 +39,18 @@ export const ContentPage = ({ contentId }: Props) => {
                 activeVersionIndex={activeVersionIndex}
                 setActiveVersionIndex={setActiveVersionIndex}
                 items={itemList}
-                articleTitle={fields?.headline}
                 articleURL={articleURL}
                 articleHash={contentId}
                 canRestore={undefined}
                 copyButtonLabel={undefined}
                 displayButtonLabel={undefined}
+                contentId={contentId}
+                articleTitle={fields?.headline}
                 headline={fields?.headline}
                 standfirst={fields?.standfirst}
                 trailText={fields?.trailText}
                 htmlContent="<p>contents</p>"
                 jsonContent="[]"
-                contentId={contentId}
             />
         </>
     );
