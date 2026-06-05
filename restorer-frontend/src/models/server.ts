@@ -36,7 +36,7 @@ export interface VersionListItem {
                 settings?: {
                     legallySensitive?: "false" | "true";
                     commentable?: "false" | "true";
-                    embargoedUntil?:string;
+                    embargoedUntil?: string;
                 };
             };
             type: string;
@@ -51,3 +51,19 @@ export interface VersionListItem {
         };
     };
 }
+
+export type ComposerElement = {
+    fields: Record<string, unknown>;
+    elementType: string;
+    assets: unknown[];
+};
+
+export type SnapshotData = {
+    [key: string]: unknown;
+} & {
+    preview?: {
+        blocks: {
+            elements: ComposerElement[];
+        }[];
+    };
+};

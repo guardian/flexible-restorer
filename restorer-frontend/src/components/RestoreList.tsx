@@ -45,7 +45,7 @@ export const RestoreList: React.FC<Props> = ({
                 <h1 css={styles.articleHeadline}>{activeModel?.headline ?? ""}</h1>
                 <h6 css={styles.articleHash}>
                     (
-                    <a href={activeModel.getComposerUrl() ?? "#"} target="_blank" rel="noreferrer">
+                    <a href={activeModel?.getComposerUrl() ?? "#"} target="_blank" rel="noreferrer">
                         {articleHash}
                     </a>
                     )

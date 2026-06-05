@@ -11,12 +11,8 @@ prompt 2:
  * Based on SnapshotCollectionService.js but using fetch instead of Angular $http
  */
 
-import type { VersionListItem } from "../models";
+import type { SnapshotData, VersionListItem } from "../models";
 
-
-export interface SnapshotResponse {
-    [key: string]: unknown;
-}
 
 export type VersionListResponse = Array<VersionListItem>;
 
@@ -51,7 +47,7 @@ export class SnapshotService {
         systemId: string,
         contentId: string,
         timestamp: string,
-    ): Promise<SnapshotResponse> {
+    ): Promise<SnapshotData> {
         const response = await fetch(
             `${this.baseUrl}/api/1/version/${systemId}/${contentId}/${timestamp}`,
         );
@@ -81,4 +77,3 @@ export class SnapshotService {
     }
 }
 
-export default SnapshotService;

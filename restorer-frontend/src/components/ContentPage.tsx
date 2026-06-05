@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { SnapshotIdModel, type VersionListItem } from "../models";
-import SnapshotService, {
-    type SnapshotResponse,
-} from "../services/SnapshotService";
+import {
+    SnapshotIdModel,
+    type VersionListItem,
+    type SnapshotData,
+} from "../models";
+import { SnapshotService } from "../services/SnapshotService";
 import { RestoreList } from "./RestoreList";
 import { Layout } from "@guardian/stand/Layout";
 import { SnapshotContent } from "./SnapshotContent";
@@ -17,8 +19,8 @@ export const ContentPage = ({ contentId }: Props) => {
     const [isLoadingList, setIsLoadingList] = useState(true);
     const [activeVersionIndex, setActiveVersionIndex] = useState(0);
     const [isLoadingSnapshot, setisLoadingSnapshot] = useState(false);
-    const [snapshotResponse, setSnapshotResponse] =
-        useState<SnapshotResponse>();
+    const [snapshot, setSnapshot] =
+        useState<SnapshotData>();
 
     useEffect(() => {
         snapshotService
@@ -44,7 +46,7 @@ export const ContentPage = ({ contentId }: Props) => {
                 .getSnapshot(model.systemId, model.contentId, model.timestamp)
                 .then((data) => {
                     console.log("fetched", data);
-                    setSnapshotResponse(data);
+                    setSnapshot(data);
                 })
                 .finally(() => {
                     setisLoadingSnapshot(false);
@@ -75,9 +77,7 @@ export const ContentPage = ({ contentId }: Props) => {
                     copyButtonLabel={"Copy"}
                     displayButtonLabel={"Display JSON"}
                     contentId={contentId}
-                    htmlContent="<p>contents</p>"
-                    jsonContent="[]"
-                    snapshotResponse={snapshotResponse}
+                    snapshot={snapshot}
                 />
             </Layout.Main>
         </>

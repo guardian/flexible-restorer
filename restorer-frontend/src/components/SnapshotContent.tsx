@@ -1,10 +1,14 @@
 import { Button } from "@guardian/stand/Button";
 import { LinkButton } from "@guardian/stand/LinkButton";
-import React from "react";
-import type { VersionListItem } from "../models";
+import React, { type ReactNode } from "react";
+import {
+    SnapshotIdModel,
+    type SnapshotData,
+    type VersionListItem,
+    type ComposerElement,
+} from "../models";
 import { GuColumn, GuIcon, GuRow } from "./GuComponents";
 import { styles } from "./RestoreList.styles";
-import type { SnapshotResponse } from "../services/SnapshotService";
 
 type SnapshotContentProps = {
     activeItem?: VersionListItem;
@@ -12,9 +16,33 @@ type SnapshotContentProps = {
     copyButtonLabel: string;
     displayButtonLabel: string;
     contentId: string | number;
-    htmlContent: string;
-    jsonContent: string;
-    snapshotResponse?: SnapshotResponse;
+    snapshot?: SnapshotData;
+};
+
+const renderComposerElement = (element: ComposerElement): ReactNode => {
+    const { text, html } = element.fields;
+    if (typeof text === "string") {
+        return <div dangerouslySetInnerHTML={{ __html: text }}></div>;
+    }
+    if (typeof html === "string") {
+        return <div dangerouslySetInnerHTML={{ __html: html }}></div>;
+    }
+    // TO DO - return list elements from element.fields.items or element.fields.sections
+    return <p>{element.elementType} element</p>;
+};
+
+const getHtmlContent = (snapshot?: SnapshotData): ReactNode => {
+    if (!snapshot?.preview) {
+        return <div>No html</div>;
+    }
+    const elements = snapshot.preview.blocks.flatMap((block) => block.elements);
+    return (
+        <div>
+            {elements.map((element, index) => (
+                <div key={index}>{renderComposerElement(element)}</div>
+            ))}
+        </div>
+    );
 };
 
 export const SnapshotContent: React.FC<SnapshotContentProps> = ({
@@ -23,13 +51,12 @@ export const SnapshotContent: React.FC<SnapshotContentProps> = ({
     copyButtonLabel,
     displayButtonLabel,
     contentId,
-    htmlContent,
-    jsonContent,
-    snapshotResponse
+    snapshot,
 }) => {
-    const headline = activeItem?.info.summary.preview.fields?.headline ?? "";
-    const standfirst = activeItem?.info.summary.preview.fields?.standfirst ?? "";
-    const trailText = activeItem?.info.summary.preview.fields?.trailText ?? "";    
+    const model = activeItem && new SnapshotIdModel(activeItem);
+    const { headline, standfirst, trailText } = model?.fields ?? {};
+
+    const htmlContent = getHtmlContent(snapshot);
 
     return (
         <div css={[styles.snapshotContentViewport, styles.scrollableContainer]}>
@@ -100,34 +127,26 @@ export const SnapshotContent: React.FC<SnapshotContentProps> = ({
                 </div>
 
                 <GuRow css={styles.snapshotContentContainer}>
-
-
-            <aside>
-                <div>
-                    {snapshotResponse && (
-                        <pre> {JSON.stringify(snapshotResponse,undefined,1)}</pre>
-                    )}
-                </div>
-            </aside>
-
                     <GuColumn
                         span={6}
                         css={styles.snapshotContentContainerItem}
                     >
-                        <div
-                            dangerouslySetInnerHTML={{
-                                __html: htmlContent,
-                            }}
-                        />
+                        {htmlContent}
                     </GuColumn>
 
                     <GuColumn
                         span={6}
                         css={styles.snapshotContentContainerItemJson}
                     >
-                        <pre>
-                            <code>{jsonContent}</code>
-                        </pre>
+                        <div>
+                            {snapshot && (
+                                <pre>
+                                    <code>
+                                        {JSON.stringify(snapshot, undefined, 1)}
+                                    </code>
+                                </pre>
+                            )}
+                        </div>
                     </GuColumn>
                 </GuRow>
             </div>

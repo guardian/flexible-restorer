@@ -45,6 +45,10 @@ export class SnapshotIdModel {
         return this._data.timestamp;
     }
 
+    get fields() {
+        return this._data.info.summary.preview.fields ?? {}
+    }
+
     get headline() {
         return this._data.info.summary.preview.fields?.headline;
     }
