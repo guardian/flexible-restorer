@@ -4,11 +4,12 @@ import React, { useState, type ReactNode } from "react";
 import { type ComposerElement, type SnapshotData } from "../models";
 import { styles } from "./RestoreList.styles";
 import { css } from "@emotion/react";
+import { useUser } from "../useUser";
 
 type SnapshotContentProps = {
-    canRestore: boolean;
     contentId: string | number;
     snapshot?: SnapshotData;
+    openConfirmationModal: { (): void };
 };
 
 const renderComposerElement = (element: ComposerElement): ReactNode => {
@@ -58,10 +59,13 @@ const FurnitureRow = ({
 );
 
 export const SnapshotContent: React.FC<SnapshotContentProps> = ({
-    canRestore,
     contentId,
     snapshot,
+    openConfirmationModal,
 }) => {
+    const { user } = useUser();
+    const canRestore = user?.permissions.restore_content === true;
+
     const [showJson, setShowJson] = useState(false);
     const [isCopying, setIsCopying] = useState(false);
     const [copied, setCopied] = useState(false);
@@ -97,7 +101,7 @@ export const SnapshotContent: React.FC<SnapshotContentProps> = ({
                 }}
             >
                 {canRestore && (
-                    <Button icon="build">
+                    <Button icon="build" onClick={openConfirmationModal}>
                         <span>Restore</span>
                     </Button>
                 )}

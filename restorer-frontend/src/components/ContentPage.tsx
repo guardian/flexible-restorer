@@ -1,13 +1,14 @@
+import { Layout } from "@guardian/stand/Layout";
 import { useEffect, useState } from "react";
 import {
     SnapshotIdModel,
-    type VersionListItem,
     type SnapshotData,
+    type VersionListItem,
 } from "../models";
 import { SnapshotService } from "../services/SnapshotService";
 import { RestoreList } from "./RestoreList";
-import { Layout } from "@guardian/stand/Layout";
 import { SnapshotContent } from "./SnapshotContent";
+import { Button } from "react-aria-components";
 
 interface Props {
     contentId: string;
@@ -16,11 +17,11 @@ interface Props {
 export const ContentPage = ({ contentId }: Props) => {
     const [snapshotService] = useState(new SnapshotService());
     const [itemList, setItemList] = useState<VersionListItem[]>();
+    const [showRestoreModal, setShowRestoreModal] = useState(false);
     const [isLoadingList, setIsLoadingList] = useState(true);
     const [activeVersionIndex, setActiveVersionIndex] = useState(0);
     const [isLoadingSnapshot, setisLoadingSnapshot] = useState(false);
-    const [snapshot, setSnapshot] =
-        useState<SnapshotData>();
+    const [snapshot, setSnapshot] = useState<SnapshotData>();
 
     useEffect(() => {
         snapshotService
@@ -61,6 +62,15 @@ export const ContentPage = ({ contentId }: Props) => {
                 Loading...
             </dialog>
 
+            {showRestoreModal && (
+                <Layout.AlertBanner>
+                    <div>TO DO - restore modal</div>
+                    <Button onClick={() => setShowRestoreModal(false)}>
+                        close
+                    </Button>
+                </Layout.AlertBanner>
+            )}
+
             <Layout.Sidebar>
                 <RestoreList
                     activeVersionIndex={activeVersionIndex}
@@ -72,9 +82,9 @@ export const ContentPage = ({ contentId }: Props) => {
 
             <Layout.Main>
                 <SnapshotContent
-                    canRestore={false}
                     contentId={contentId}
                     snapshot={snapshot}
+                    openConfirmationModal={() => setShowRestoreModal(true)}
                 />
             </Layout.Main>
         </>
