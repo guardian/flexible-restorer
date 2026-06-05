@@ -2,9 +2,8 @@ import { css } from "@emotion/react";
 import { Button } from "@guardian/stand/Button";
 import { Layout } from "@guardian/stand/Layout";
 import { LinkButton } from "@guardian/stand/LinkButton";
-import Dayjs from "dayjs";
-import React, { useState } from "react";
-import type { VersionModel } from "../models";
+import React from "react";
+import { SnapshotIdModel, type VersionListItem } from "../models";
 import { GuColumn, GuIcon, GuRow } from "./GuComponents";
 
 /*
@@ -256,11 +255,10 @@ const styles = {
     `,
 };
 
-
 type Props = {
     activeVersionIndex: number;
     setActiveVersionIndex: { (index: number): void };
-    models?: VersionModel[];
+    items?: VersionListItem[];
     articleTitle?: string;
     articleURL?: string;
     articleHash?: string;
@@ -279,7 +277,7 @@ type Props = {
 export const RestoreList: React.FC<Props> = ({
     activeVersionIndex,
     setActiveVersionIndex,
-    models = [],
+    items = [],
     articleTitle = "",
     articleURL = "#",
     articleHash = "",
@@ -293,23 +291,7 @@ export const RestoreList: React.FC<Props> = ({
     jsonContent = "",
     contentId = "",
 }) => {
-    const [today] = useState(() => new Date().toISOString());
-
-    const getRelativeDate = (model: VersionModel, nextModel?: VersionModel) => {
-        const nextModelTime = nextModel?.createdTimestamp ?? today;
-        const newModelTime = model.createdTimestamp;
-
-        if (!newModelTime) {
-            return `[no relative date]`;
-        }
-
-        const hourDiff = Dayjs(nextModelTime).diff(newModelTime, "hours");
-        if (hourDiff < 36) {
-            return `${hourDiff} hours ago`;
-        }
-        const dayDiff = Dayjs(nextModelTime).diff(newModelTime, "days");
-        return `${dayDiff} days ago`;
-    };
+    const models = items.map((item) => new SnapshotIdModel(item));
 
     return (
         <>
@@ -393,8 +375,7 @@ export const RestoreList: React.FC<Props> = ({
                                                     styles.snapshotListItemContentRelativeDate
                                                 }
                                             >
-                                                {/* {model.relativeDate} ago */}
-                                                {getRelativeDate(model)}
+                                                {model.getRelativeDate()} ago
                                             </h6>
                                             <h6
                                                 css={
@@ -503,12 +484,13 @@ export const RestoreList: React.FC<Props> = ({
                                                 variant="expand-disabled"
                                             />
                                             <span css={styles.deltaRowContent}>
-                                                {/* AI got this wrong - should be the date relative to the next item */}
-                                                {/* {model.relativeDate} */}
-                                                {getRelativeDate(
-                                                    model,
-                                                    models[index + 1],
-                                                )}
+                                                {models[index + 1]
+                                                    ? models[
+                                                          index + 1
+                                                      ].getRelativeDate(
+                                                          model.createdDate,
+                                                      )
+                                                    : model.getRelativeDate()}
                                             </span>
                                         </GuRow>
                                     </li>

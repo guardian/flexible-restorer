@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import {
-    convertToModel,
-    type VersionListItem,
-    type VersionModel,
+    type VersionListItem
 } from "../models";
 import SnapshotService from "../services/SnapshotService";
 import { RestoreList } from "./RestoreList";
@@ -13,7 +11,6 @@ interface Props {
 
 export const ContentPage = ({ contentId }: Props) => {
     const [snapshotService] = useState(new SnapshotService());
-    const [modelList, setModelList] = useState<VersionModel[]>();
     const [itemList, setItemList] = useState<VersionListItem[]>();
     const [isLoading, setIsLoading] = useState(true);
     const [activeVersionIndex, setActiveVersionIndex] = useState(0);
@@ -23,8 +20,6 @@ export const ContentPage = ({ contentId }: Props) => {
             setIsLoading(false);
             versions.reverse();
             setItemList(versions);
-            const models = versions.map(convertToModel);
-            setModelList(models);
         });
     }, [contentId, snapshotService]);
 
@@ -43,7 +38,7 @@ export const ContentPage = ({ contentId }: Props) => {
             <RestoreList
                 activeVersionIndex={activeVersionIndex}
                 setActiveVersionIndex={setActiveVersionIndex}
-                models={modelList}
+                items={itemList}
                 articleTitle={fields?.headline}
                 articleURL={articleURL}
                 articleHash={contentId}
