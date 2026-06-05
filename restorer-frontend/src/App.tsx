@@ -3,6 +3,7 @@ import { ContentPage } from "./components/ContentPage";
 import { MainLayout } from "./components/MainLayout";
 import { SearchPage } from "./components/SearchPage";
 import { useUser } from "./useUser";
+import '@guardian/stand/fonts/MaterialSymbolsOutlined.css';
 
 const getPage = (path: string | undefined) => {
     if (!path) {

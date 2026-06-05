@@ -2,7 +2,6 @@ import { Button } from "@guardian/stand/Button";
 import { LinkButton } from "@guardian/stand/LinkButton";
 import React, { useState, type ReactNode } from "react";
 import { type ComposerElement, type SnapshotData } from "../models";
-import { GuIcon } from "./GuComponents";
 import { styles } from "./RestoreList.styles";
 
 type SnapshotContentProps = {
@@ -72,23 +71,21 @@ export const SnapshotContent: React.FC<SnapshotContentProps> = ({
     return (
         <div css={[styles.snapshotContentViewport, styles.scrollableContainer]}>
             <div
-                style={{
+                css={{
                     display: "flex",
                     alignItems: "center",
                     gap: 10,
+                    padding: 10,
                 }}
             >
-                {!canRestore && (
-                    <Button>
-                        <GuIcon
-                            css={styles.snapshotContentActionsRestoreIcon}
-                            variant="wrench-disabled"
-                        />
+                {canRestore && (
+                    <Button icon="build">
                         <span>Restore</span>
                     </Button>
                 )}
-                <Button>{copyButtonLabel}</Button>
+                <Button icon="content_copy">{copyButtonLabel}</Button>
                 <LinkButton
+                    icon="archive"
                     size="sm"
                     target="_blank"
                     rel="noreferrer"
@@ -97,6 +94,7 @@ export const SnapshotContent: React.FC<SnapshotContentProps> = ({
                     Export all as Git Repo
                 </LinkButton>
                 <LinkButton
+                    icon="folder_zip"
                     size="sm"
                     target="_blank"
                     rel="noreferrer"
@@ -115,8 +113,7 @@ export const SnapshotContent: React.FC<SnapshotContentProps> = ({
                     <FurnitureRow property="Standfirst" value={standfirst} />
                     <FurnitureRow property="TrailText" value={trailText} />
                 </div>
-
-                <div>
+                <div css={{ paddingLeft: 10 }}>
                     {showJson ? (
                         <div>
                             {snapshot && (

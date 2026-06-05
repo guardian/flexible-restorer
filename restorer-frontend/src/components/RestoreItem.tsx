@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 import type { SnapshotIdModel } from "../models";
 import { styles } from "./RestoreList.styles";
 import { Grid, Item } from "@guardian/stand/Grid";
-import { GuIcon } from "./GuComponents";
+import { Icon } from "@guardian/stand/Icon";
 
 export const RestoreItem = ({
     model,
@@ -79,10 +79,7 @@ export const RestoreItem = ({
             </div>
             <div css={styles.deltaRow}>
                 <div css={[styles.row, { flexDirection: "row-reverse" }]}>
-                    <GuIcon
-                        css={styles.deltaRowIcon}
-                        variant="expand-disabled"
-                    />
+                    <Icon symbol="collapse_all" />
                     <span css={styles.deltaRowContent}>
                         {nextModel
                             ? nextModel.getRelativeDate(model.createdDate)

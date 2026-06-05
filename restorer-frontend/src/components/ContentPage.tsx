@@ -73,7 +73,7 @@ export const ContentPage = ({ contentId }: Props) => {
             <Layout.Main>
                 <SnapshotContent
                     canRestore={false}
-                    copyButtonLabel={"Copy"}
+                    copyButtonLabel={"Copy JSON"}
                     contentId={contentId}
                     snapshot={snapshot}
                 />

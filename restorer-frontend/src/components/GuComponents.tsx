@@ -23,23 +23,11 @@ export const GuBox: React.FC<
     </div>
 );
 
-export const GuIcon: React.FC<{ variant?: string; className?: string }> = ({
-    variant,
-    className,
-}) => (
-    <span
-        className={["gu-icon", variant ? `gu-icon--${variant}` : "", className]
-            .filter(Boolean)
-            .join(" ")}
-    ></span>
-);
-
 export const GuLoadingBars: React.FC = () => (
     <div className="gu-loading-bars">Loading…</div>
 );
 
 export default {
     GuBox,
-    GuIcon,
     GuLoadingBars,
 };
