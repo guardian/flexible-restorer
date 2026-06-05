@@ -4,6 +4,7 @@ import { LinkButton } from "@guardian/stand/LinkButton";
 import React, { useState } from "react";
 import { GuColumn, GuIcon, GuRow } from "./GuComponents";
 import Dayjs from "dayjs";
+import { css } from "@emotion/react";
 
 /*
 initial file generated with AI:
@@ -17,7 +18,242 @@ In RestoreList, replace all GuBtn components with the Button from the @guardian/
 
 (forgot to tell the AI to remove classNames - did that)
 
+
+follow up:
+replace all of the className attributes in RestoreList.tsx with object notation emotion css matching the the .scss files in the sass folder. define all the css objects at the start of RestoreList.tsx in an object called "styles".
+
 */
+
+const styles = {
+    scrollableContainer: css`
+        display: flex;
+        flex-direction: column;
+        max-height: 100%;
+    `,
+    scrollableHeaderFixed: css`
+        flex-shrink: 0;
+    `,
+    scrollableBody: css`
+        flex-grow: 1;
+        overflow-y: auto;
+    `,
+    articleHeadline: css``,
+    articleHash: css``,
+    snapshotListHeader: css`
+        background: #dee2e3;
+        font-size: 12px;
+    `,
+    snapshotListHeaderDecal: css`
+        box-sizing: border-box;
+        flex-basis: 46px;
+        max-width: 46px;
+        padding: 5px 10px;
+        border-right: 1px solid #bdbdbd;
+    `,
+    snapshotListHeaderContent: css`
+        padding: 5px 10px;
+        flex-basis: 175px;
+        border-right: 1px solid #bdbdbd;
+    `,
+    snapshotListHeaderStatus: css`
+        padding: 5px 10px;
+    `,
+    indexList: css`
+        margin-top: 5px;
+        list-style: none;
+        padding-left: 0;
+        li {
+            list-style: none;
+        }
+    `,
+    snapshotList: css`
+        margin-top: 5px;
+        list-style: none;
+        padding: 0;
+        li {
+            list-style: none;
+        }
+    `,
+    snapshotListSecondary: css`
+        color: white;
+        background: #ed5935;
+        padding: 2px;
+    `,
+    snapshotListItem: css`
+        position: relative;
+        overflow: hidden;
+        min-height: 60px;
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+        display: flex;
+        background-color: whitesmoke;
+
+        &.active {
+            overflow: visible;
+            background-color: lightgray;
+
+            &:before {
+                display: none;
+            }
+        }
+
+        &:hover:not(.active) {
+            color: white;
+        }
+
+        &:hover:before {
+            opacity: 1;
+        }
+
+        &:before {
+            content: " ";
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #898984;
+            opacity: 0;
+            transition:
+                transform 0.2s ease-in-out,
+                opacity 0.2s ease-in;
+            z-index: 1;
+        }
+    `,
+    indexListItemIndex: css`
+        box-sizing: border-box;
+        flex-basis: 46px;
+        max-width: 46px;
+        padding: 5px;
+        padding-top: 10px;
+        text-align: center;
+        border-right: 2px solid #bdbdbd;
+        z-index: 2;
+    `,
+    snapshotListItemContentActualDate: css``,
+    snapshotListItemContentRelativeDate: css``,
+    snapshotListItemContentReason: css``,
+    snapshotListItemInformation: css``,
+    snapshotListItemStatus: css`
+        flex-grow: 3;
+        font-size: small;
+        font-family: "Guardian Agate Sans";
+        z-index: 2;
+
+        &:hover {
+            cursor: pointer;
+        }
+    `,
+    snapshotListItemStatusLeft: css`
+        float: left;
+        height: 3.1em;
+        padding: 10px 5px;
+    `,
+    snapshotListItemStatusRight: css`
+        float: right;
+        width: 45%;
+        height: 3.1em;
+        padding: 10px 5px;
+        border-left: 1px solid #bdbdbd;
+    `,
+    snapshotListItemSettingsLegallySensitive: css`
+        padding: 0;
+        text-align: center;
+        height: 15px;
+        margin-bottom: 5px;
+        width: 17px;
+        background: url(../images/legalcheck-grey-14.svg) center center
+            no-repeat;
+    `,
+    snapshotListItemSettingsCommentsOn: css`
+        width: 32px;
+    `,
+    snapshotListItemSettingsCommentsOnImage: css`
+        padding: 0;
+        float: left;
+        text-align: center;
+        height: 15px;
+        width: 16px;
+        background: url(../images/comment-green-14.svg) center center no-repeat;
+    `,
+    snapshotListItemSettingsContentText: css`
+        float: right;
+        font-size: 12px;
+        text-transform: uppercase;
+    `,
+    snapshotListItemSettingsCommentsOff: css`
+        width: 36px;
+    `,
+    snapshotListItemSettingsCommentsOffImage: css`
+        padding: 0;
+        float: left;
+        text-align: center;
+        height: 15px;
+        width: 16px;
+        background: url(../images/comment-grey-14.svg) center center no-repeat;
+    `,
+    deltaRow: css`
+        padding: 5px 0 2px 0;
+        opacity: 0.3;
+    `,
+    deltaRowIcon: css``,
+    deltaRowContent: css``,
+    snapshotContentViewport: css`
+        width: 100%;
+        display: flex;
+        flex-flow: column;
+        max-height: calc(100vh - 46px);
+        overflow: scroll;
+    `,
+    snapshotContentActionsRestoreIcon: css`
+        margin-right: 5px;
+    `,
+    snapshotContentFurniture: css`
+        border-bottom: 1px solid rgba(162, 160, 160, 0.49);
+    `,
+    snapshotContentFurnitureItem: css`
+        padding: 2%;
+    `,
+    snapshotContentFurnitureItemHeader: css`
+        font-family: "Guardian Agate Sans";
+        font-weight: bold;
+        color: #333333;
+    `,
+    snapshotContentFurnitureItemContent: css`
+        font-family: "Guardian Agate Sans";
+        font-weight: normal;
+        color: #333333;
+    `,
+    snapshotContentContainer: css`
+        width: 200%;
+        transition: transform 0.3s ease-in-out;
+        transform: translateX(0);
+
+        &.show-json {
+            transform: translateX(-50%);
+        }
+
+        flex-grow: 1;
+    `,
+    snapshotContentContainerItem: css`
+        box-sizing: border-box;
+        padding: 2% 10%;
+        font-family: "Guardian Agate Sans";
+        overflow: auto;
+    `,
+    snapshotContentContainerItemJson: css`
+        box-sizing: border-box;
+        padding: 2% 5%;
+        font-family: "Guardian Agate Sans";
+        overflow: auto;
+        width: 50%;
+
+        code {
+            word-wrap: break-word;
+        }
+    `,
+};
 
 export type VersionModel = {
     isSecondary?: boolean;
@@ -90,10 +326,10 @@ export const RestoreList: React.FC<Props> = ({
     return (
         <>
             <Layout.Sidebar>
-                <div className="scrollable__container">
-                    <div className="scrollable__header-fixed">
-                        <h1 className="article-headline">{articleTitle}</h1>
-                        <h6 className="article-hash">
+                <div css={styles.scrollableContainer}>
+                    <div css={styles.scrollableHeaderFixed}>
+                        <h1 css={styles.articleHeadline}>{articleTitle}</h1>
+                        <h6 css={styles.articleHash}>
                             (
                             <a
                                 href={articleURL}
@@ -104,48 +340,40 @@ export const RestoreList: React.FC<Props> = ({
                             </a>
                             )
                         </h6>
-                        <GuRow className="snapshot-list-header">
+                        <GuRow css={styles.snapshotListHeader}>
                             <span
-                                className="snapshot-list-header__decal"
+                                css={styles.snapshotListHeaderDecal}
                                 title="Content revision number"
                             >
                                 No.
                             </span>
-                            <span className="snapshot-list-header__content">
+                            <span css={styles.snapshotListHeaderContent}>
                                 Snapped at &amp; last modified
                             </span>
-                            <span className="snapshot-list-header__status">
+                            <span css={styles.snapshotListHeaderStatus}>
                                 Status
                             </span>
                         </GuRow>
                     </div>
 
-                    <div className="scrollable__body">
-                        <ol
-                            className="index-list snapshot-list"
-                            style={{
-                                listStyle: "none",
-                                padding: 0,
-                            }}
-                        >
+                    <div css={styles.scrollableBody}>
+                        <ol css={styles.snapshotList}>
                             {models.map((model, index) => (
                                 <React.Fragment key={index}>
                                     {model.isSecondary && (
-                                        <li className="snapshot-list-secondary">
+                                        <li css={styles.snapshotListSecondary}>
                                             Snapshot from secondary
                                         </li>
                                     )}
 
                                     <li
-                                        style={{
-                                            borderTop: "1px solid black",
-                                            borderBottom: "1px solid black",
-                                            display: "flex",
-                                            backgroundColor:
-                                                index === activeVersionIndex
-                                                    ? "lightgray"
-                                                    : "whitesmoke",
-                                        }}
+                                        css={[
+                                            styles.snapshotListItem,
+                                            index === activeVersionIndex &&
+                                                css`
+                                                    background-color: lightgray;
+                                                `,
+                                        ]}
                                         onClick={
                                             index !== activeVersionIndex
                                                 ? () => {
@@ -156,45 +384,87 @@ export const RestoreList: React.FC<Props> = ({
                                                 : undefined
                                         }
                                     >
-                                        <div className="index-list__item__index">
+                                        <div css={styles.indexListItemIndex}>
                                             {model.revisionId ??
                                                 models.length - index}
                                         </div>
 
                                         <div>
                                             <h6
-                                                className="snapshot-list__item__content__actual-date"
+                                                css={
+                                                    styles.snapshotListItemContentActualDate
+                                                }
                                                 dangerouslySetInnerHTML={{
                                                     __html:
                                                         model.createdDateHtml ??
                                                         "",
                                                 }}
                                             ></h6>
-                                            <h6 className="snapshot-list__item__content__relative-date">
+                                            <h6
+                                                css={
+                                                    styles.snapshotListItemContentRelativeDate
+                                                }
+                                            >
                                                 {/* {model.relativeDate} ago */}
                                                 {getRelativeDate(model)}
                                             </h6>
-                                            <h6 className="snapshot-list__item__content__reason">
+                                            <h6
+                                                css={
+                                                    styles.snapshotListItemContentReason
+                                                }
+                                            >
                                                 Last modified by:{" "}
                                                 {model.userEmail}
                                             </h6>
-                                            <h6 className="snapshot-list__item__content__reason">
+                                            <h6
+                                                css={
+                                                    styles.snapshotListItemContentReason
+                                                }
+                                            >
                                                 {model.snapshotReason}
                                             </h6>
                                         </div>
 
-                                        <div className="snapshot-list__item__information">
-                                            <div className="snapshot-list__item__status">
-                                                <div className="snapshot-list__item__status--left">
+                                        <div
+                                            css={
+                                                styles.snapshotListItemInformation
+                                            }
+                                        >
+                                            <div
+                                                css={
+                                                    styles.snapshotListItemStatus
+                                                }
+                                            >
+                                                <div
+                                                    css={
+                                                        styles.snapshotListItemStatusLeft
+                                                    }
+                                                >
                                                     {model.isLegallySensitive && (
-                                                        <div className="snapshot-list__item__settings__legally-sensitive" />
+                                                        <div
+                                                            css={
+                                                                styles.snapshotListItemSettingsLegallySensitive
+                                                            }
+                                                        />
                                                     )}
 
                                                     {model.commentsEnabled
                                                         ?.on && (
-                                                        <div className="snapshot-list__item__settings__comments--on">
-                                                            <div className="snapshot-list__item__settings__comments--on-image" />
-                                                            <div className="snapshot-list__item__settings__content--text">
+                                                        <div
+                                                            css={
+                                                                styles.snapshotListItemSettingsCommentsOn
+                                                            }
+                                                        >
+                                                            <div
+                                                                css={
+                                                                    styles.snapshotListItemSettingsCommentsOnImage
+                                                                }
+                                                            />
+                                                            <div
+                                                                css={
+                                                                    styles.snapshotListItemSettingsContentText
+                                                                }
+                                                            >
                                                                 on
                                                             </div>
                                                         </div>
@@ -204,9 +474,21 @@ export const RestoreList: React.FC<Props> = ({
                                                         ?.defined &&
                                                         !model.commentsEnabled
                                                             ?.on && (
-                                                            <div className="snapshot-list__item__settings__comments--off">
-                                                                <div className="snapshot-list__item__settings__comments--off-image" />
-                                                                <div className="snapshot-list__item__settings__content--text">
+                                                            <div
+                                                                css={
+                                                                    styles.snapshotListItemSettingsCommentsOff
+                                                                }
+                                                            >
+                                                                <div
+                                                                    css={
+                                                                        styles.snapshotListItemSettingsCommentsOffImage
+                                                                    }
+                                                                />
+                                                                <div
+                                                                    css={
+                                                                        styles.snapshotListItemSettingsContentText
+                                                                    }
+                                                                >
                                                                     off
                                                                 </div>
                                                             </div>
@@ -214,7 +496,11 @@ export const RestoreList: React.FC<Props> = ({
                                                 </div>
 
                                                 {model.publishedState && (
-                                                    <div className="snapshot-list__item__status--right">
+                                                    <div
+                                                        css={
+                                                            styles.snapshotListItemStatusRight
+                                                        }
+                                                    >
                                                         {model.publishedState}
                                                     </div>
                                                 )}
@@ -222,13 +508,13 @@ export const RestoreList: React.FC<Props> = ({
                                         </div>
                                     </li>
 
-                                    <li className="delta-row">
+                                    <li css={styles.deltaRow}>
                                         <GuRow variant="reverse">
                                             <GuIcon
-                                                className="delta-row__icon"
+                                                css={styles.deltaRowIcon}
                                                 variant="expand-disabled"
                                             />
-                                            <span className="delta-row__content">
+                                            <span css={styles.deltaRowContent}>
                                                 {/* AI got this wrong - should be the date relative to the next item */}
                                                 {/* {model.relativeDate} */}
                                                 {getRelativeDate(
@@ -246,7 +532,12 @@ export const RestoreList: React.FC<Props> = ({
             </Layout.Sidebar>
 
             <Layout.Main>
-                <div className="snapshot-content__viewport scrollable__container">
+                <div
+                    css={[
+                        styles.snapshotContentViewport,
+                        styles.scrollableContainer,
+                    ]}
+                >
                     <div
                         style={{
                             display: "flex",
@@ -257,7 +548,9 @@ export const RestoreList: React.FC<Props> = ({
                         {canRestore && (
                             <Button>
                                 <GuIcon
-                                    className="snapshot-content__actions__restore__icon"
+                                    css={
+                                        styles.snapshotContentActionsRestoreIcon
+                                    }
                                     variant="wrench-disabled"
                                 />
                                 <span>Restore</span>
@@ -283,40 +576,64 @@ export const RestoreList: React.FC<Props> = ({
                         <Button>{displayButtonLabel}</Button>
                     </div>
 
-                    <div className="scrollable__body">
-                        <div className="snapshot-content__furniture">
-                            <GuRow className="snapshot-content__furniture__item">
-                                <h4 className="snapshot-content__furniture__item--header">
+                    <div css={styles.scrollableBody}>
+                        <div css={styles.snapshotContentFurniture}>
+                            <GuRow css={styles.snapshotContentFurnitureItem}>
+                                <h4
+                                    css={
+                                        styles.snapshotContentFurnitureItemHeader
+                                    }
+                                >
                                     Headline
                                 </h4>
-                                <p className="snapshot-content__furniture__item--content">
+                                <p
+                                    css={
+                                        styles.snapshotContentFurnitureItemContent
+                                    }
+                                >
                                     {headline}
                                 </p>
                             </GuRow>
 
-                            <GuRow className="snapshot-content__furniture__item">
-                                <h4 className="snapshot-content__furniture__item--header">
+                            <GuRow css={styles.snapshotContentFurnitureItem}>
+                                <h4
+                                    css={
+                                        styles.snapshotContentFurnitureItemHeader
+                                    }
+                                >
                                     Standfirst
                                 </h4>
-                                <p className="snapshot-content__furniture__item--content">
+                                <p
+                                    css={
+                                        styles.snapshotContentFurnitureItemContent
+                                    }
+                                >
                                     {standfirst}
                                 </p>
                             </GuRow>
 
-                            <GuRow className="snapshot-content__furniture__item">
-                                <h4 className="snapshot-content__furniture__item--header">
+                            <GuRow css={styles.snapshotContentFurnitureItem}>
+                                <h4
+                                    css={
+                                        styles.snapshotContentFurnitureItemHeader
+                                    }
+                                >
                                     TrailText
                                 </h4>
-                                <p className="snapshot-content__furniture__item--content">
+                                <p
+                                    css={
+                                        styles.snapshotContentFurnitureItemContent
+                                    }
+                                >
                                     {trailText}
                                 </p>
                             </GuRow>
                         </div>
 
-                        <GuRow className={`snapshot-content__container`}>
+                        <GuRow css={styles.snapshotContentContainer}>
                             <GuColumn
                                 span={6}
-                                className="snapshot-content__container__item"
+                                css={styles.snapshotContentContainerItem}
                             >
                                 <div
                                     dangerouslySetInnerHTML={{
@@ -327,7 +644,7 @@ export const RestoreList: React.FC<Props> = ({
 
                             <GuColumn
                                 span={6}
-                                className="snapshot-content__container__item--json"
+                                css={styles.snapshotContentContainerItemJson}
                             >
                                 <pre>
                                     <code>{jsonContent}</code>
