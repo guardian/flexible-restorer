@@ -5,6 +5,7 @@ import { SnapshotIdModel, type VersionListItem } from "../models";
 import { GuIcon, GuRow } from "./GuComponents";
 import { SnapshotContent } from "./SnapshotContent";
 import { styles } from "./RestoreList.styles";
+import type { SnapshotResponse } from "../services/SnapshotService";
 
 /*
 initial file generated with AI:
@@ -35,6 +36,7 @@ type Props = {
     htmlContent?: string;
     jsonContent?: string;
     contentId?: string | number;
+    snapshotResponse?: SnapshotResponse;
 };
 
 // Main converted component
@@ -49,10 +51,12 @@ export const RestoreList: React.FC<Props> = ({
     htmlContent = "",
     jsonContent = "",
     contentId = "",
+    snapshotResponse,
 }) => {
     const models = items.map((item) => new SnapshotIdModel(item));
     const activeItem = items[activeVersionIndex];
-    const articleTitle = activeItem?.info.summary.preview.fields?.headline ?? "";
+    const articleTitle =
+        activeItem?.info.summary.preview.fields?.headline ?? "";
     const articleURL = activeItem
         ? `${activeItem.system.composerPrefix}/content/${activeItem.contentId}`
         : "#";
@@ -274,6 +278,7 @@ export const RestoreList: React.FC<Props> = ({
                     contentId={contentId}
                     htmlContent={htmlContent}
                     jsonContent={jsonContent}
+                    snapshotResponse={snapshotResponse}
                 />
             </Layout.Main>
         </>

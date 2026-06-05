@@ -4,6 +4,7 @@ import React from "react";
 import type { VersionListItem } from "../models";
 import { GuColumn, GuIcon, GuRow } from "./GuComponents";
 import { styles } from "./RestoreList.styles";
+import type { SnapshotResponse } from "../services/SnapshotService";
 
 type SnapshotContentProps = {
     activeItem?: VersionListItem;
@@ -13,6 +14,7 @@ type SnapshotContentProps = {
     contentId: string | number;
     htmlContent: string;
     jsonContent: string;
+    snapshotResponse?: SnapshotResponse;
 };
 
 export const SnapshotContent: React.FC<SnapshotContentProps> = ({
@@ -23,10 +25,11 @@ export const SnapshotContent: React.FC<SnapshotContentProps> = ({
     contentId,
     htmlContent,
     jsonContent,
+    snapshotResponse
 }) => {
     const headline = activeItem?.info.summary.preview.fields?.headline ?? "";
     const standfirst = activeItem?.info.summary.preview.fields?.standfirst ?? "";
-    const trailText = activeItem?.info.summary.preview.fields?.trailText ?? "";
+    const trailText = activeItem?.info.summary.preview.fields?.trailText ?? "";    
 
     return (
         <div css={[styles.snapshotContentViewport, styles.scrollableContainer]}>
@@ -97,6 +100,16 @@ export const SnapshotContent: React.FC<SnapshotContentProps> = ({
                 </div>
 
                 <GuRow css={styles.snapshotContentContainer}>
+
+
+            <aside>
+                <div>
+                    {snapshotResponse && (
+                        <pre> {JSON.stringify(snapshotResponse,undefined,1)}</pre>
+                    )}
+                </div>
+            </aside>
+
                     <GuColumn
                         span={6}
                         css={styles.snapshotContentContainerItem}

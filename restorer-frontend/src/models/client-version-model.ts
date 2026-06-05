@@ -17,7 +17,7 @@ export class SnapshotIdModel {
         return `${time} on ${date}`;
     }
 
-    getSystemId() {
+    get systemId() {
         return this._data.system.id;
     }
 
@@ -30,14 +30,14 @@ export class SnapshotIdModel {
     }
 
     getComposerUrl() {
-        return `${this.getComposerPrefix()}/content/${this.getContentId()}`;
+        return `${this.getComposerPrefix()}/content/${this.contentId}`;
     }
 
     getComposerPrefix() {
         return this._data.system.composerPrefix;
     }
 
-    getContentId() {
+    get contentId() {
         return this._data.contentId;
     }
 

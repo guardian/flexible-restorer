@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { type VersionListItem } from "../models";
-import SnapshotService from "../services/SnapshotService";
+import { SnapshotIdModel, type VersionListItem } from "../models";
+import SnapshotService, {
+    type SnapshotResponse,
+} from "../services/SnapshotService";
 import { RestoreList } from "./RestoreList";
 
 interface Props {
@@ -10,21 +12,50 @@ interface Props {
 export const ContentPage = ({ contentId }: Props) => {
     const [snapshotService] = useState(new SnapshotService());
     const [itemList, setItemList] = useState<VersionListItem[]>();
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoadingList, setIsLoadingList] = useState(true);
     const [activeVersionIndex, setActiveVersionIndex] = useState(0);
+    const [isLoadingSnapshot, setisLoadingSnapshot] = useState(false);
+    const [snapshotResponse, setSnapshotResponse] =
+        useState<SnapshotResponse>();
 
     useEffect(() => {
-        snapshotService.getList(contentId).then((versions) => {
-            setIsLoading(false);
-            versions.reverse();
-            setItemList(versions);
-        });
+        snapshotService
+            .getList(contentId)
+            .then((versions) => {
+                versions.reverse();
+                setItemList(versions);
+            })
+            .finally(() => {
+                setIsLoadingList(false);
+            });
     }, [contentId, snapshotService]);
+
+    useEffect(() => {
+        const activeItem = itemList?.[activeVersionIndex];
+
+        if (activeItem) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setisLoadingSnapshot(true);
+
+            const model = new SnapshotIdModel(activeItem);
+            snapshotService
+                .getSnapshot(model.systemId, model.contentId, model.timestamp)
+                .then((data) => {
+                    console.log("fetched", data);
+                    setSnapshotResponse(data);
+                })
+                .finally(() => {
+                    setisLoadingSnapshot(false);
+                });
+        }
+    }, [contentId, snapshotService, activeVersionIndex, itemList]);
 
     return (
         <>
             {/* TO DO - overlay modal component */}
-            <dialog open={isLoading}>Loading...</dialog>
+            <dialog open={isLoadingList || isLoadingSnapshot}>
+                Loading...
+            </dialog>
 
             <RestoreList
                 activeVersionIndex={activeVersionIndex}
@@ -37,6 +68,7 @@ export const ContentPage = ({ contentId }: Props) => {
                 contentId={contentId}
                 htmlContent="<p>contents</p>"
                 jsonContent="[]"
+                snapshotResponse={snapshotResponse}
             />
         </>
     );
