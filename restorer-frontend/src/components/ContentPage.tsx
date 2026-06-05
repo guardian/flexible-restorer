@@ -72,10 +72,8 @@ export const ContentPage = ({ contentId }: Props) => {
 
             <Layout.Main>
                 <SnapshotContent
-                    activeItem={itemList?.[activeVersionIndex]}
                     canRestore={false}
                     copyButtonLabel={"Copy"}
-                    displayButtonLabel={"Display JSON"}
                     contentId={contentId}
                     snapshot={snapshot}
                 />

@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import React from "react";
 import { SnapshotIdModel, type VersionListItem } from "../models";
-import { GuIcon, GuRow } from "./GuComponents";
+import { GuIcon } from "./GuComponents";
 import { styles } from "./RestoreList.styles";
 
 /*
@@ -42,15 +42,21 @@ export const RestoreList: React.FC<Props> = ({
     return (
         <div css={styles.scrollableContainer}>
             <div css={styles.scrollableHeaderFixed}>
-                <h1 css={styles.articleHeadline}>{activeModel?.headline ?? ""}</h1>
+                <h1 css={styles.articleHeadline}>
+                    {activeModel?.headline ?? ""}
+                </h1>
                 <h6 css={styles.articleHash}>
                     (
-                    <a href={activeModel?.getComposerUrl() ?? "#"} target="_blank" rel="noreferrer">
+                    <a
+                        href={activeModel?.getComposerUrl() ?? "#"}
+                        target="_blank"
+                        rel="noreferrer"
+                    >
                         {articleHash}
                     </a>
                     )
                 </h6>
-                <GuRow css={styles.snapshotListHeader}>
+                <div css={[styles.row, styles.snapshotListHeader]}>
                     <span
                         css={styles.snapshotListHeaderDecal}
                         title="Content revision number"
@@ -61,7 +67,7 @@ export const RestoreList: React.FC<Props> = ({
                         Snapped at &amp; last modified
                     </span>
                     <span css={styles.snapshotListHeaderStatus}>Status</span>
-                </GuRow>
+                </div>
             </div>
 
             <div css={styles.scrollableBody}>
@@ -199,7 +205,12 @@ export const RestoreList: React.FC<Props> = ({
                             </li>
 
                             <li css={styles.deltaRow}>
-                                <GuRow variant="reverse">
+                                <div
+                                    css={[
+                                        styles.row,
+                                        { flexDirection: "row-reverse" },
+                                    ]}
+                                >
                                     <GuIcon
                                         css={styles.deltaRowIcon}
                                         variant="expand-disabled"
@@ -211,7 +222,7 @@ export const RestoreList: React.FC<Props> = ({
                                               )
                                             : model.getRelativeDate()}
                                     </span>
-                                </GuRow>
+                                </div>
                             </li>
                         </React.Fragment>
                     ))}

@@ -1,20 +1,13 @@
 import { Button } from "@guardian/stand/Button";
 import { LinkButton } from "@guardian/stand/LinkButton";
-import React, { type ReactNode } from "react";
-import {
-    SnapshotIdModel,
-    type SnapshotData,
-    type VersionListItem,
-    type ComposerElement,
-} from "../models";
-import { GuColumn, GuIcon, GuRow } from "./GuComponents";
+import React, { useState, type ReactNode } from "react";
+import { type ComposerElement, type SnapshotData } from "../models";
+import { GuIcon } from "./GuComponents";
 import { styles } from "./RestoreList.styles";
 
 type SnapshotContentProps = {
-    activeItem?: VersionListItem;
     canRestore: boolean;
     copyButtonLabel: string;
-    displayButtonLabel: string;
     contentId: string | number;
     snapshot?: SnapshotData;
 };
@@ -45,17 +38,35 @@ const getHtmlContent = (snapshot?: SnapshotData): ReactNode => {
     );
 };
 
+const FurnitureRow = ({
+    property,
+    value = "",
+}: {
+    property: string;
+    value?: string;
+}) => (
+    <div
+        css={[
+            styles.row,
+            {
+                padding: "2%",
+            },
+        ]}
+    >
+        <h4 css={styles.snapshotContentFurnitureItemHeader}>{property}</h4>
+        <p css={styles.snapshotContentFurnitureItemContent}>{value}</p>
+    </div>
+);
+
 export const SnapshotContent: React.FC<SnapshotContentProps> = ({
-    activeItem,
     canRestore,
     copyButtonLabel,
-    displayButtonLabel,
     contentId,
     snapshot,
 }) => {
-    const model = activeItem && new SnapshotIdModel(activeItem);
-    const { headline, standfirst, trailText } = model?.fields ?? {};
+    const [showJson, setShowJson] = useState(false);
 
+    const { headline, standfirst, trailText } = snapshot?.preview?.fields ?? {};
     const htmlContent = getHtmlContent(snapshot);
 
     return (
@@ -67,7 +78,7 @@ export const SnapshotContent: React.FC<SnapshotContentProps> = ({
                     gap: 10,
                 }}
             >
-                {canRestore && (
+                {!canRestore && (
                     <Button>
                         <GuIcon
                             css={styles.snapshotContentActionsRestoreIcon}
@@ -93,51 +104,20 @@ export const SnapshotContent: React.FC<SnapshotContentProps> = ({
                 >
                     Export all as Zip
                 </LinkButton>
-                <Button>{displayButtonLabel}</Button>
+                <Button onClick={() => setShowJson((current) => !current)}>
+                    {showJson ? "Show Text" : "Show Json"}
+                </Button>
             </div>
 
             <div css={styles.scrollableBody}>
                 <div css={styles.snapshotContentFurniture}>
-                    <GuRow css={styles.snapshotContentFurnitureItem}>
-                        <h4 css={styles.snapshotContentFurnitureItemHeader}>
-                            Headline
-                        </h4>
-                        <p css={styles.snapshotContentFurnitureItemContent}>
-                            {headline}
-                        </p>
-                    </GuRow>
-
-                    <GuRow css={styles.snapshotContentFurnitureItem}>
-                        <h4 css={styles.snapshotContentFurnitureItemHeader}>
-                            Standfirst
-                        </h4>
-                        <p css={styles.snapshotContentFurnitureItemContent}>
-                            {standfirst}
-                        </p>
-                    </GuRow>
-
-                    <GuRow css={styles.snapshotContentFurnitureItem}>
-                        <h4 css={styles.snapshotContentFurnitureItemHeader}>
-                            TrailText
-                        </h4>
-                        <p css={styles.snapshotContentFurnitureItemContent}>
-                            {trailText}
-                        </p>
-                    </GuRow>
+                    <FurnitureRow property="Headline" value={headline} />
+                    <FurnitureRow property="Standfirst" value={standfirst} />
+                    <FurnitureRow property="TrailText" value={trailText} />
                 </div>
 
-                <GuRow css={styles.snapshotContentContainer}>
-                    <GuColumn
-                        span={6}
-                        css={styles.snapshotContentContainerItem}
-                    >
-                        {htmlContent}
-                    </GuColumn>
-
-                    <GuColumn
-                        span={6}
-                        css={styles.snapshotContentContainerItemJson}
-                    >
+                <div>
+                    {showJson ? (
                         <div>
                             {snapshot && (
                                 <pre>
@@ -147,8 +127,10 @@ export const SnapshotContent: React.FC<SnapshotContentProps> = ({
                                 </pre>
                             )}
                         </div>
-                    </GuColumn>
-                </GuRow>
+                    ) : (
+                        <div>{htmlContent}</div>
+                    )}
+                </div>
             </div>
         </div>
     );

@@ -9,31 +9,6 @@ just split the component to a separate files, do not worry about unit tests for 
 
 */
 
-export const GuRow: React.FC<
-    React.HTMLAttributes<HTMLDivElement> & { variant?: string }
-> = ({ children, className, variant, ...rest }) => (
-    <div
-        className={["gu-row", variant ? `gu-row--${variant}` : "", className]
-            .filter(Boolean)
-            .join(" ")}
-        {...rest}
-    >
-        {children}
-    </div>
-);
-
-export const GuColumn: React.FC<
-    React.HTMLAttributes<HTMLDivElement> & { span?: number | string }
-> = ({ children, className, span, ...rest }) => (
-    <div
-        className={["gu-column", span ? `span-${span}` : "", className]
-            .filter(Boolean)
-            .join(" ")}
-        {...rest}
-    >
-        {children}
-    </div>
-);
 
 export const GuBox: React.FC<
     React.HTMLAttributes<HTMLDivElement> & { variant?: string }
@@ -46,20 +21,6 @@ export const GuBox: React.FC<
     >
         {children}
     </div>
-);
-
-export const GuBtn: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
-    children,
-    ...rest
-}) => (
-    <button
-        {...rest}
-        className={["gu-btn", (rest.className as string) || ""]
-            .filter(Boolean)
-            .join(" ")}
-    >
-        {children}
-    </button>
 );
 
 export const GuIcon: React.FC<{ variant?: string; className?: string }> = ({
@@ -78,10 +39,7 @@ export const GuLoadingBars: React.FC = () => (
 );
 
 export default {
-    GuRow,
-    GuColumn,
     GuBox,
-    GuBtn,
     GuIcon,
     GuLoadingBars,
 };

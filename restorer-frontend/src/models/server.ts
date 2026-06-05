@@ -62,6 +62,7 @@ export type SnapshotData = {
     [key: string]: unknown;
 } & {
     preview?: {
+        fields?: Record<string, string>;
         blocks: {
             elements: ComposerElement[];
         }[];

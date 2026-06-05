@@ -1,6 +1,11 @@
 import { css } from "@emotion/react";
 
 export const styles = {
+    row: css({
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap",
+    }),
     scrollableContainer: css`
         display: flex;
         flex-direction: column;
@@ -187,9 +192,6 @@ export const styles = {
     `,
     snapshotContentFurniture: css`
         border-bottom: 1px solid rgba(162, 160, 160, 0.49);
-    `,
-    snapshotContentFurnitureItem: css`
-        padding: 2%;
     `,
     snapshotContentFurnitureItemHeader: css`
         font-family: "Guardian Agate Sans";
