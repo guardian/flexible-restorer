@@ -28,12 +28,12 @@ export interface VersionListItem {
         };
         summary: {
             preview: {
-                fields: {
+                fields?: {
                     headline?: string;
                     standfirst?: string;
                     trailText?: string;
                 };
-                settings: {
+                settings?: {
                     legallySensitive?: "false" | "true";
                     commentable?: "false" | "true";
                     embargoedUntil?:string;

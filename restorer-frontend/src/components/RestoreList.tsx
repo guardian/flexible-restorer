@@ -28,15 +28,10 @@ type Props = {
     activeVersionIndex: number;
     setActiveVersionIndex: { (index: number): void };
     items?: VersionListItem[];
-    articleTitle?: string;
-    articleURL?: string;
     articleHash?: string;
     canRestore?: boolean;
     copyButtonLabel?: string;
     displayButtonLabel?: string;
-    headline?: string;
-    standfirst?: string;
-    trailText?: string;
     htmlContent?: string;
     jsonContent?: string;
     contentId?: string | number;
@@ -47,20 +42,20 @@ export const RestoreList: React.FC<Props> = ({
     activeVersionIndex,
     setActiveVersionIndex,
     items = [],
-    articleTitle = "",
-    articleURL = "#",
     articleHash = "",
     canRestore = false,
     copyButtonLabel = "Copy",
     displayButtonLabel = "Display JSON",
-    headline = "",
-    standfirst = "",
-    trailText = "",
     htmlContent = "",
     jsonContent = "",
     contentId = "",
 }) => {
     const models = items.map((item) => new SnapshotIdModel(item));
+    const activeItem = items[activeVersionIndex];
+    const articleTitle = activeItem?.info.summary.preview.fields?.headline ?? "";
+    const articleURL = activeItem
+        ? `${activeItem.system.composerPrefix}/content/${activeItem.contentId}`
+        : "#";
 
     return (
         <>
@@ -272,13 +267,11 @@ export const RestoreList: React.FC<Props> = ({
 
             <Layout.Main>
                 <SnapshotContent
+                    activeItem={activeItem}
                     canRestore={canRestore}
                     copyButtonLabel={copyButtonLabel}
                     displayButtonLabel={displayButtonLabel}
                     contentId={contentId}
-                    headline={headline}
-                    standfirst={standfirst}
-                    trailText={trailText}
                     htmlContent={htmlContent}
                     jsonContent={jsonContent}
                 />

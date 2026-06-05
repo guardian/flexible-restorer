@@ -46,7 +46,7 @@ export class SnapshotIdModel {
     }
 
     get headline() {
-        return this._data.info.summary.preview.fields.headline;
+        return this._data.info.summary.preview.fields?.headline;
     }
 
     get revisionId() {
@@ -66,13 +66,13 @@ export class SnapshotIdModel {
 
     get isLegallySensitive() {
         const legallySensitive =
-            this._data.info.summary.preview.settings.legallySensitive;
+            this._data.info.summary.preview.settings?.legallySensitive;
         return legallySensitive === "true";
     }
 
     get commentsEnabled() {
         const commentable =
-            this._data.info.summary.preview.settings.commentable;
+            this._data.info.summary.preview.settings?.commentable;
         return {
             defined: !!commentable,
             on: commentable === "true",

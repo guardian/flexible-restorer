@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-    type VersionListItem
-} from "../models";
+import { type VersionListItem } from "../models";
 import SnapshotService from "../services/SnapshotService";
 import { RestoreList } from "./RestoreList";
 
@@ -23,13 +21,6 @@ export const ContentPage = ({ contentId }: Props) => {
         });
     }, [contentId, snapshotService]);
 
-    const activeItem = itemList?.[activeVersionIndex];
-    const fields = activeItem?.info.summary.preview.fields;
-
-    const articleURL = activeItem
-        ? `${activeItem?.system.composerPrefix}/content/${activeItem?.contentId}`
-        : undefined;
-
     return (
         <>
             {/* TO DO - overlay modal component */}
@@ -39,16 +30,11 @@ export const ContentPage = ({ contentId }: Props) => {
                 activeVersionIndex={activeVersionIndex}
                 setActiveVersionIndex={setActiveVersionIndex}
                 items={itemList}
-                articleURL={articleURL}
                 articleHash={contentId}
                 canRestore={undefined}
                 copyButtonLabel={undefined}
                 displayButtonLabel={undefined}
                 contentId={contentId}
-                articleTitle={fields?.headline}
-                headline={fields?.headline}
-                standfirst={fields?.standfirst}
-                trailText={fields?.trailText}
                 htmlContent="<p>contents</p>"
                 jsonContent="[]"
             />
