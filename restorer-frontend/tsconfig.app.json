@@ -14,7 +14,7 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
-
+    "jsxImportSource": "@emotion/react",
     /* Linting */
     "noUnusedLocals": true,
     "noUnusedParameters": true,
