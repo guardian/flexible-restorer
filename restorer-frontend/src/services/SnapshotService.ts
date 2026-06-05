@@ -11,56 +11,8 @@ prompt 2:
  * Based on SnapshotCollectionService.js but using fetch instead of Angular $http
  */
 
-// Types based on Scala models
+import type { VersionListItem } from "../models";
 
-export interface SnapshotId {
-    contentId: string;
-    timestamp: string;
-}
-
-export interface SystemInfo {
-    id: string;
-    isSecondary: boolean;
-    composerPrefix: string;
-}
-
-type ChangeRecord = {
-    date: number;
-    user: {
-        email: string;
-        firstName: string;
-        lastName: string;
-    };
-};
-
-export interface VersionListItem {
-    contentId: string;
-    timestamp: string;
-    system: SystemInfo;
-    info: {
-        metadata: {
-            reason?: string;
-        };
-        summary: {
-            preview: {
-                fields: {
-                    headline?: string;
-                    standfirst?: string;
-                    trailText?: string;
-                };
-                settings: { legallySensitive?: "false" | "true" };
-            };
-            type: string;
-            published: boolean;
-            contentChangeDetails: {
-                lastModified: ChangeRecord;
-                created?: ChangeRecord;
-                published?: ChangeRecord;
-                revision: number;
-            };
-        };
-    };
-}
 
 export interface SnapshotResponse {
     [key: string]: unknown;

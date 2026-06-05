@@ -1,32 +1,15 @@
 import { useEffect, useState } from "react";
-import SnapshotService, {
+import {
+    convertToModel,
     type VersionListItem,
-} from "../services/SnapshotService";
-import { RestoreList, type VersionModel } from "./RestoreList";
+    type VersionModel,
+} from "../models";
+import SnapshotService from "../services/SnapshotService";
+import { RestoreList } from "./RestoreList";
 
 interface Props {
     contentId: string;
 }
-
-const convertToModel = (version: VersionListItem): VersionModel => {
-    return {
-        isSecondary: version.system.isSecondary,
-        revisionId: version.info.summary.contentChangeDetails.revision,
-        createdDateHtml: "",
-        createdTimestamp: version.timestamp,
-        relativeDate: "[no relative date]",
-        userEmail: "",
-        snapshotReason: version.info.metadata.reason,
-        isLegallySensitive:
-            version.info.summary.preview.settings.legallySensitive === "true",
-        commentsEnabled: {
-            on: undefined,
-            defined: undefined,
-        },
-        publishedState: undefined, // TO DO - parse from model
-        isBecauseOfLaunch: false,
-    };
-};
 
 export const ContentPage = ({ contentId }: Props) => {
     const [snapshotService] = useState(new SnapshotService());

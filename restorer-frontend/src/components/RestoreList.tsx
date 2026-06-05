@@ -1,10 +1,11 @@
-import { Layout } from "@guardian/stand/Layout";
-import { Button } from "@guardian/stand/Button";
-import { LinkButton } from "@guardian/stand/LinkButton";
-import React, { useState } from "react";
-import { GuColumn, GuIcon, GuRow } from "./GuComponents";
-import Dayjs from "dayjs";
 import { css } from "@emotion/react";
+import { Button } from "@guardian/stand/Button";
+import { Layout } from "@guardian/stand/Layout";
+import { LinkButton } from "@guardian/stand/LinkButton";
+import Dayjs from "dayjs";
+import React, { useState } from "react";
+import type { VersionModel } from "../models";
+import { GuColumn, GuIcon, GuRow } from "./GuComponents";
 
 /*
 initial file generated with AI:
@@ -255,19 +256,6 @@ const styles = {
     `,
 };
 
-export type VersionModel = {
-    isSecondary?: boolean;
-    revisionId?: number | string;
-    createdDateHtml?: string;
-    createdTimestamp?: string;
-    relativeDate?: string;
-    userEmail?: string;
-    snapshotReason?: string;
-    isLegallySensitive?: boolean;
-    commentsEnabled?: { on?: boolean; defined?: boolean };
-    publishedState?: string;
-    isBecauseOfLaunch?: boolean;
-};
 
 type Props = {
     activeVersionIndex: number;
