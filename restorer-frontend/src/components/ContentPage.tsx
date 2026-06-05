@@ -4,6 +4,8 @@ import SnapshotService, {
     type SnapshotResponse,
 } from "../services/SnapshotService";
 import { RestoreList } from "./RestoreList";
+import { Layout } from "@guardian/stand/Layout";
+import { SnapshotContent } from "./SnapshotContent";
 
 interface Props {
     contentId: string;
@@ -57,19 +59,27 @@ export const ContentPage = ({ contentId }: Props) => {
                 Loading...
             </dialog>
 
-            <RestoreList
-                activeVersionIndex={activeVersionIndex}
-                setActiveVersionIndex={setActiveVersionIndex}
-                items={itemList}
-                articleHash={contentId}
-                canRestore={undefined}
-                copyButtonLabel={undefined}
-                displayButtonLabel={undefined}
-                contentId={contentId}
-                htmlContent="<p>contents</p>"
-                jsonContent="[]"
-                snapshotResponse={snapshotResponse}
-            />
+            <Layout.Sidebar>
+                <RestoreList
+                    activeVersionIndex={activeVersionIndex}
+                    setActiveVersionIndex={setActiveVersionIndex}
+                    items={itemList}
+                    articleHash={contentId}
+                />
+            </Layout.Sidebar>
+
+            <Layout.Main>
+                <SnapshotContent
+                    activeItem={itemList?.[activeVersionIndex]}
+                    canRestore={false}
+                    copyButtonLabel={"Copy"}
+                    displayButtonLabel={"Display JSON"}
+                    contentId={contentId}
+                    htmlContent="<p>contents</p>"
+                    jsonContent="[]"
+                    snapshotResponse={snapshotResponse}
+                />
+            </Layout.Main>
         </>
     );
 };

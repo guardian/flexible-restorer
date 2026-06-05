@@ -1,11 +1,8 @@
 import { css } from "@emotion/react";
-import { Layout } from "@guardian/stand/Layout";
 import React from "react";
 import { SnapshotIdModel, type VersionListItem } from "../models";
 import { GuIcon, GuRow } from "./GuComponents";
-import { SnapshotContent } from "./SnapshotContent";
 import { styles } from "./RestoreList.styles";
-import type { SnapshotResponse } from "../services/SnapshotService";
 
 /*
 initial file generated with AI:
@@ -30,13 +27,6 @@ type Props = {
     setActiveVersionIndex: { (index: number): void };
     items?: VersionListItem[];
     articleHash?: string;
-    canRestore?: boolean;
-    copyButtonLabel?: string;
-    displayButtonLabel?: string;
-    htmlContent?: string;
-    jsonContent?: string;
-    contentId?: string | number;
-    snapshotResponse?: SnapshotResponse;
 };
 
 // Main converted component
@@ -45,242 +35,188 @@ export const RestoreList: React.FC<Props> = ({
     setActiveVersionIndex,
     items = [],
     articleHash = "",
-    canRestore = false,
-    copyButtonLabel = "Copy",
-    displayButtonLabel = "Display JSON",
-    htmlContent = "",
-    jsonContent = "",
-    contentId = "",
-    snapshotResponse,
 }) => {
     const models = items.map((item) => new SnapshotIdModel(item));
-    const activeItem = items[activeVersionIndex];
-    const articleTitle =
-        activeItem?.info.summary.preview.fields?.headline ?? "";
-    const articleURL = activeItem
-        ? `${activeItem.system.composerPrefix}/content/${activeItem.contentId}`
-        : "#";
+    const activeModel = models[activeVersionIndex];
 
     return (
-        <>
-            <Layout.Sidebar>
-                <div css={styles.scrollableContainer}>
-                    <div css={styles.scrollableHeaderFixed}>
-                        <h1 css={styles.articleHeadline}>{articleTitle}</h1>
-                        <h6 css={styles.articleHash}>
-                            (
-                            <a
-                                href={articleURL}
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                {articleHash}
-                            </a>
-                            )
-                        </h6>
-                        <GuRow css={styles.snapshotListHeader}>
-                            <span
-                                css={styles.snapshotListHeaderDecal}
-                                title="Content revision number"
-                            >
-                                No.
-                            </span>
-                            <span css={styles.snapshotListHeaderContent}>
-                                Snapped at &amp; last modified
-                            </span>
-                            <span css={styles.snapshotListHeaderStatus}>
-                                Status
-                            </span>
-                        </GuRow>
-                    </div>
+        <div css={styles.scrollableContainer}>
+            <div css={styles.scrollableHeaderFixed}>
+                <h1 css={styles.articleHeadline}>{activeModel?.headline ?? ""}</h1>
+                <h6 css={styles.articleHash}>
+                    (
+                    <a href={activeModel.getComposerUrl() ?? "#"} target="_blank" rel="noreferrer">
+                        {articleHash}
+                    </a>
+                    )
+                </h6>
+                <GuRow css={styles.snapshotListHeader}>
+                    <span
+                        css={styles.snapshotListHeaderDecal}
+                        title="Content revision number"
+                    >
+                        No.
+                    </span>
+                    <span css={styles.snapshotListHeaderContent}>
+                        Snapped at &amp; last modified
+                    </span>
+                    <span css={styles.snapshotListHeaderStatus}>Status</span>
+                </GuRow>
+            </div>
 
-                    <div css={styles.scrollableBody}>
-                        <ol css={styles.snapshotList}>
-                            {models.map((model, index) => (
-                                <React.Fragment key={index}>
-                                    {model.isSecondary && (
-                                        <li css={styles.snapshotListSecondary}>
-                                            Snapshot from secondary
-                                        </li>
-                                    )}
+            <div css={styles.scrollableBody}>
+                <ol css={styles.snapshotList}>
+                    {models.map((model, index) => (
+                        <React.Fragment key={index}>
+                            {model.isSecondary && (
+                                <li css={styles.snapshotListSecondary}>
+                                    Snapshot from secondary
+                                </li>
+                            )}
 
-                                    <li
-                                        css={[
-                                            styles.snapshotListItem,
-                                            index === activeVersionIndex &&
-                                                css`
-                                                    background-color: lightgray;
-                                                `,
-                                        ]}
-                                        onClick={
-                                            index !== activeVersionIndex
-                                                ? () => {
-                                                      setActiveVersionIndex(
-                                                          index,
-                                                      );
-                                                  }
-                                                : undefined
+                            <li
+                                css={[
+                                    styles.snapshotListItem,
+                                    index === activeVersionIndex &&
+                                        css`
+                                            background-color: lightgray;
+                                        `,
+                                ]}
+                                onClick={
+                                    index !== activeVersionIndex
+                                        ? () => {
+                                              setActiveVersionIndex(index);
+                                          }
+                                        : undefined
+                                }
+                            >
+                                <div css={styles.indexListItemIndex}>
+                                    {model.revisionId ?? models.length - index}
+                                </div>
+
+                                <div>
+                                    <h6
+                                        css={
+                                            styles.snapshotListItemContentActualDate
+                                        }
+                                        dangerouslySetInnerHTML={{
+                                            __html: model.createdDateHtml ?? "",
+                                        }}
+                                    ></h6>
+                                    <h6
+                                        css={
+                                            styles.snapshotListItemContentRelativeDate
                                         }
                                     >
-                                        <div css={styles.indexListItemIndex}>
-                                            {model.revisionId ??
-                                                models.length - index}
-                                        </div>
+                                        {model.getRelativeDate()} ago
+                                    </h6>
+                                    <h6
+                                        css={
+                                            styles.snapshotListItemContentReason
+                                        }
+                                    >
+                                        Last modified by: {model.userEmail}
+                                    </h6>
+                                    <h6
+                                        css={
+                                            styles.snapshotListItemContentReason
+                                        }
+                                    >
+                                        {model.snapshotReason}
+                                    </h6>
+                                </div>
 
-                                        <div>
-                                            <h6
-                                                css={
-                                                    styles.snapshotListItemContentActualDate
-                                                }
-                                                dangerouslySetInnerHTML={{
-                                                    __html:
-                                                        model.createdDateHtml ??
-                                                        "",
-                                                }}
-                                            ></h6>
-                                            <h6
-                                                css={
-                                                    styles.snapshotListItemContentRelativeDate
-                                                }
-                                            >
-                                                {model.getRelativeDate()} ago
-                                            </h6>
-                                            <h6
-                                                css={
-                                                    styles.snapshotListItemContentReason
-                                                }
-                                            >
-                                                Last modified by:{" "}
-                                                {model.userEmail}
-                                            </h6>
-                                            <h6
-                                                css={
-                                                    styles.snapshotListItemContentReason
-                                                }
-                                            >
-                                                {model.snapshotReason}
-                                            </h6>
-                                        </div>
-
+                                <div css={styles.snapshotListItemInformation}>
+                                    <div css={styles.snapshotListItemStatus}>
                                         <div
                                             css={
-                                                styles.snapshotListItemInformation
+                                                styles.snapshotListItemStatusLeft
                                             }
                                         >
-                                            <div
-                                                css={
-                                                    styles.snapshotListItemStatus
-                                                }
-                                            >
+                                            {model.isLegallySensitive && (
                                                 <div
                                                     css={
-                                                        styles.snapshotListItemStatusLeft
+                                                        styles.snapshotListItemSettingsLegallySensitive
+                                                    }
+                                                />
+                                            )}
+
+                                            {model.commentsEnabled?.on && (
+                                                <div
+                                                    css={
+                                                        styles.snapshotListItemSettingsCommentsOn
                                                     }
                                                 >
-                                                    {model.isLegallySensitive && (
-                                                        <div
-                                                            css={
-                                                                styles.snapshotListItemSettingsLegallySensitive
-                                                            }
-                                                        />
-                                                    )}
-
-                                                    {model.commentsEnabled
-                                                        ?.on && (
-                                                        <div
-                                                            css={
-                                                                styles.snapshotListItemSettingsCommentsOn
-                                                            }
-                                                        >
-                                                            <div
-                                                                css={
-                                                                    styles.snapshotListItemSettingsCommentsOnImage
-                                                                }
-                                                            />
-                                                            <div
-                                                                css={
-                                                                    styles.snapshotListItemSettingsContentText
-                                                                }
-                                                            >
-                                                                on
-                                                            </div>
-                                                        </div>
-                                                    )}
-
-                                                    {model.commentsEnabled
-                                                        ?.defined &&
-                                                        !model.commentsEnabled
-                                                            ?.on && (
-                                                            <div
-                                                                css={
-                                                                    styles.snapshotListItemSettingsCommentsOff
-                                                                }
-                                                            >
-                                                                <div
-                                                                    css={
-                                                                        styles.snapshotListItemSettingsCommentsOffImage
-                                                                    }
-                                                                />
-                                                                <div
-                                                                    css={
-                                                                        styles.snapshotListItemSettingsContentText
-                                                                    }
-                                                                >
-                                                                    off
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                </div>
-
-                                                {model.publishedState && (
                                                     <div
                                                         css={
-                                                            styles.snapshotListItemStatusRight
+                                                            styles.snapshotListItemSettingsCommentsOnImage
+                                                        }
+                                                    />
+                                                    <div
+                                                        css={
+                                                            styles.snapshotListItemSettingsContentText
                                                         }
                                                     >
-                                                        {model.publishedState}
+                                                        on
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {model.commentsEnabled?.defined &&
+                                                !model.commentsEnabled?.on && (
+                                                    <div
+                                                        css={
+                                                            styles.snapshotListItemSettingsCommentsOff
+                                                        }
+                                                    >
+                                                        <div
+                                                            css={
+                                                                styles.snapshotListItemSettingsCommentsOffImage
+                                                            }
+                                                        />
+                                                        <div
+                                                            css={
+                                                                styles.snapshotListItemSettingsContentText
+                                                            }
+                                                        >
+                                                            off
+                                                        </div>
                                                     </div>
                                                 )}
-                                            </div>
                                         </div>
-                                    </li>
 
-                                    <li css={styles.deltaRow}>
-                                        <GuRow variant="reverse">
-                                            <GuIcon
-                                                css={styles.deltaRowIcon}
-                                                variant="expand-disabled"
-                                            />
-                                            <span css={styles.deltaRowContent}>
-                                                {models[index + 1]
-                                                    ? models[
-                                                          index + 1
-                                                      ].getRelativeDate(
-                                                          model.createdDate,
-                                                      )
-                                                    : model.getRelativeDate()}
-                                            </span>
-                                        </GuRow>
-                                    </li>
-                                </React.Fragment>
-                            ))}
-                        </ol>
-                    </div>
-                </div>
-            </Layout.Sidebar>
+                                        {model.publishedState && (
+                                            <div
+                                                css={
+                                                    styles.snapshotListItemStatusRight
+                                                }
+                                            >
+                                                {model.publishedState}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </li>
 
-            <Layout.Main>
-                <SnapshotContent
-                    activeItem={activeItem}
-                    canRestore={canRestore}
-                    copyButtonLabel={copyButtonLabel}
-                    displayButtonLabel={displayButtonLabel}
-                    contentId={contentId}
-                    htmlContent={htmlContent}
-                    jsonContent={jsonContent}
-                    snapshotResponse={snapshotResponse}
-                />
-            </Layout.Main>
-        </>
+                            <li css={styles.deltaRow}>
+                                <GuRow variant="reverse">
+                                    <GuIcon
+                                        css={styles.deltaRowIcon}
+                                        variant="expand-disabled"
+                                    />
+                                    <span css={styles.deltaRowContent}>
+                                        {models[index + 1]
+                                            ? models[index + 1].getRelativeDate(
+                                                  model.createdDate,
+                                              )
+                                            : model.getRelativeDate()}
+                                    </span>
+                                </GuRow>
+                            </li>
+                        </React.Fragment>
+                    ))}
+                </ol>
+            </div>
+        </div>
     );
 };
