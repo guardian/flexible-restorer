@@ -3,10 +3,10 @@ import { LinkButton } from "@guardian/stand/LinkButton";
 import React, { useState, type ReactNode } from "react";
 import { type ComposerElement, type SnapshotData } from "../models";
 import { styles } from "./RestoreList.styles";
+import { css } from "@emotion/react";
 
 type SnapshotContentProps = {
     canRestore: boolean;
-    copyButtonLabel: string;
     contentId: string | number;
     snapshot?: SnapshotData;
 };
@@ -59,11 +59,29 @@ const FurnitureRow = ({
 
 export const SnapshotContent: React.FC<SnapshotContentProps> = ({
     canRestore,
-    copyButtonLabel,
     contentId,
     snapshot,
 }) => {
     const [showJson, setShowJson] = useState(false);
+    const [isCopying, setIsCopying] = useState(false);
+    const [copied, setCopied] = useState(false);
+
+    const copySnapshotJson = async () => {
+        const jsonText = snapshot ? JSON.stringify(snapshot, undefined, 2) : "";
+        setIsCopying(true);
+        setCopied(false);
+        try {
+            await navigator.clipboard.writeText(jsonText);
+            setCopied(true);
+            window.setTimeout(() => {
+                setCopied(false);
+            }, 1500);
+        } catch (error) {
+            console.warn("Failed to copy snapshot JSON", error);
+        } finally {
+            setIsCopying(false);
+        }
+    };
 
     const { headline, standfirst, trailText } = snapshot?.preview?.fields ?? {};
     const htmlContent = getHtmlContent(snapshot);
@@ -83,7 +101,14 @@ export const SnapshotContent: React.FC<SnapshotContentProps> = ({
                         <span>Restore</span>
                     </Button>
                 )}
-                <Button icon="content_copy">{copyButtonLabel}</Button>
+                <Button
+                    icon="content_copy"
+                    onClick={copySnapshotJson}
+                    isDisabled={isCopying}
+                    cssOverrides={css({ minWidth: 120 })}
+                >
+                    {copied ? "Copied!" : "Copy JSON"}
+                </Button>
                 <LinkButton
                     icon="archive"
                     size="sm"
