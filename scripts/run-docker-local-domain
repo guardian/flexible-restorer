@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ROOT_DIR=${DIR}/..
+
+IMAGE_NAME="${IMAGE_NAME:-flexible-restorer}"
+DOCKERFILE_PATH="${DOCKERFILE_PATH:-images/restorer.Dockerfile}"
+
+cd "$ROOT_DIR"
+
+docker build -t "$IMAGE_NAME" -f "$DOCKERFILE_PATH" .
+
+docker run --rm \
+  -p 80:80 \
+  -p 443:443 \
+  -p 9000:9000 \
+  -e AWS_ACCESS_KEY_ID \
+  -e AWS_SECRET_ACCESS_KEY \
+  -e AWS_SESSION_TOKEN \
+  -e AWS_PROFILE \
+  -v "$HOME/.aws:/root/.aws:ro" \
+  "$IMAGE_NAME"

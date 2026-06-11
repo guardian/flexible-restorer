@@ -38,13 +38,20 @@ $ sbt
 
 The app will then be accessible locally at: <https://restorer.local.dev-gutools.co.uk/>
 
-
 ## Run end-to-end tests headlessly
 
 Use:
 
 ```
 npm run test
+
+Single command:
+
+```
+
+./scripts/run-docker-local-domain
+
+```
 
 ```
 
@@ -66,5 +73,3 @@ npm run dev:local
 
 This starts MinIO and Restorer using the same bootstrap code as the e2e suite and
 keeps the stack running until you press Ctrl+C.
-
-

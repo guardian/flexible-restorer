@@ -11,6 +11,8 @@ RUN apt-get update \
     curl \
     bash \
     git \
+    nginx \
+    openssl \
     scala \
     && rm -rf /var/lib/apt/lists/*
 
@@ -33,7 +35,11 @@ RUN npm install
 
 COPY . .
 RUN npm run build
+RUN chmod +x /app/scripts/docker-start
 
-EXPOSE 9000
+COPY images/dev-nginx /usr/local/bin/dev-nginx
+RUN chmod +x /usr/local/bin/dev-nginx
 
-CMD ["sbt", "run"]
+EXPOSE 80 443 9000
+
+CMD ["/app/scripts/docker-start"]
