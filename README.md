@@ -46,8 +46,26 @@ You can pass your current shell AWS credentials and profile into the container.
 docker build -t flexible-restorer -f images/restorer.Dockerfile .
 ```
 
+Single command:
+
+```
+./scripts/run-docker-local-domain
+```
+
 ```
 docker run --rm -p 9001:9000 \
+	-e AWS_ACCESS_KEY_ID \
+	-e AWS_SECRET_ACCESS_KEY \
+	-e AWS_SESSION_TOKEN \
+	-e AWS_PROFILE \
+	-v "$HOME/.aws:/root/.aws:ro" \
+	flexible-restorer
+```
+
+To run with local domain proxy support via nginx (inside the container), expose 80/443 as well:
+
+```
+docker run --rm -p 80:80 -p 443:443 -p 9000:9000 \
 	-e AWS_ACCESS_KEY_ID \
 	-e AWS_SECRET_ACCESS_KEY \
 	-e AWS_SESSION_TOKEN \
