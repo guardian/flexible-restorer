@@ -23,11 +23,12 @@ This project does not have hot module reloading so you will have to reload the p
 
 ### Get credentials
 
-* Get [Composer credentials from Janus](https://janus.gutools.co.uk/credentials?permissionId=composer-dev)
-* Make sure you have `restore_content` permission on [CODE environment](https://permissions.code.dev-gutools.co.uk/admin)
-* Log in to [CODE Workflow](https://workflow.code.dev-gutools.co.uk/dashboard)
+- Get [Composer credentials from Janus](https://janus.gutools.co.uk/credentials?permissionId=composer-dev)
+- Make sure you have `restore_content` permission on [CODE environment](https://permissions.code.dev-gutools.co.uk/admin)
+- Log in to [CODE Workflow](https://workflow.code.dev-gutools.co.uk/dashboard)
 
 ## Start the app
+
 ```
 $ sbt
 [restorer] $ run
@@ -43,6 +44,12 @@ You can pass your current shell AWS credentials and profile into the container.
 docker build -t flexible-restorer -f images/restorer.Dockerfile .
 ```
 
+Single command:
+
+```
+./scripts/run-docker-local-domain
+```
+
 ```
 docker run --rm -p 9001:9000 \
 	-e AWS_ACCESS_KEY_ID \
@@ -53,10 +60,21 @@ docker run --rm -p 9001:9000 \
 	flexible-restorer
 ```
 
+To run with local domain proxy support via nginx (inside the container), expose 80/443 as well:
+
+```
+docker run --rm -p 80:80 -p 443:443 -p 9000:9000 \
+	-e AWS_ACCESS_KEY_ID \
+	-e AWS_SECRET_ACCESS_KEY \
+	-e AWS_SESSION_TOKEN \
+	-e AWS_PROFILE \
+	-v "$HOME/.aws:/root/.aws:ro" \
+	flexible-restorer
+```
+
 Notes:
 
-* Using `-e VAR_NAME` (without `=value`) forwards the current value from your shell.
-* Mounting `~/.aws` lets profile-based auth work inside the container.
-* This project image sets `AWS_SDK_LOAD_CONFIG=1`, so Java AWS SDK profile loading works as expected.
-* If port 9001 is busy, switch to another host port (for example `-p 9002:9000`).
-
+- Using `-e VAR_NAME` (without `=value`) forwards the current value from your shell.
+- Mounting `~/.aws` lets profile-based auth work inside the container.
+- This project image sets `AWS_SDK_LOAD_CONFIG=1`, so Java AWS SDK profile loading works as expected.
+- If port 9001 is busy, switch to another host port (for example `-p 9002:9000`).
