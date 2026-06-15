@@ -12,7 +12,7 @@ cd "$ROOT_DIR"
 
 docker build -t "$IMAGE_NAME" -f "$DOCKERFILE_PATH" .
 
-docker run --rm \
+CONTAINER_ID="$(docker run --rm -d \
   -p 80:80 \
   -p 443:443 \
   -p 9000:9000 \
@@ -21,4 +21,16 @@ docker run --rm \
   -e AWS_SESSION_TOKEN \
   -e AWS_PROFILE \
   -v "$HOME/.aws:/root/.aws:ro" \
-  "$IMAGE_NAME"
+  "$IMAGE_NAME")"
+
+cleanup() {
+  echo ""
+  echo "Stopping container ${CONTAINER_ID}..."
+  docker stop "$CONTAINER_ID"
+}
+trap cleanup INT TERM
+
+echo "Container started: ${CONTAINER_ID}"
+echo "Press Ctrl+C to stop."
+docker logs -f "$CONTAINER_ID"
+wait
