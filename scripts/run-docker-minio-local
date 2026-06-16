@@ -39,5 +39,5 @@ echo "S3 API: http://localhost:9002"
 echo "Console: http://localhost:9003"
 echo "Buckets: ${PAN_DOMAIN_BUCKET}, ${SNAPSHOT_BUCKET}"
 echo "Press Ctrl+C to stop."
-docker logs -f "$CONTAINER_ID"
+docker logs -f "$CONTAINER_ID" | perl -pe 's/\\n/\n/g; s/\\t/\t/g'
 wait
