@@ -18,8 +18,8 @@ cd "$ROOT_DIR"
 docker build -t "$IMAGE_NAME" -f "$DOCKERFILE_PATH" .
 
 CONTAINER_ID="$(docker run --rm -d \
-  -p 9000:9000 \
-  -p 9001:9001 \
+  -p 9002:9000 \
+  -p 9003:9001 \
   -e MINIO_ROOT_USER="$MINIO_ROOT_USER" \
   -e MINIO_ROOT_PASSWORD="$MINIO_ROOT_PASSWORD" \
   -e PAN_DOMAIN_BUCKET="$PAN_DOMAIN_BUCKET" \
@@ -35,8 +35,8 @@ cleanup() {
 trap cleanup INT TERM
 
 echo "MinIO container started: ${CONTAINER_ID}"
-echo "S3 API: http://localhost:9000"
-echo "Console: http://localhost:9001"
+echo "S3 API: http://localhost:9002"
+echo "Console: http://localhost:9003"
 echo "Buckets: ${PAN_DOMAIN_BUCKET}, ${SNAPSHOT_BUCKET}"
 echo "Press Ctrl+C to stop."
 docker logs -f "$CONTAINER_ID"
