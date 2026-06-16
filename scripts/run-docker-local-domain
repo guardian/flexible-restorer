@@ -8,8 +8,13 @@ ROOT_DIR=${DIR}/..
 IMAGE_NAME="${IMAGE_NAME:-flexible-restorer}"
 DOCKERFILE_PATH="${DOCKERFILE_PATH:-images/restorer.Dockerfile}"
 
-S3_ENDPOINT="${S3_ENDPOINT:-http://localhost:9002}"
+AWS_ENDPOINT_URL_S3="${AWS_ENDPOINT_URL_S3:-http://host.docker.internal:9002}"
 S3_PATH_STYLE_ACCESS="${S3_PATH_STYLE_ACCESS:-true}"
+AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID:-minioadmin}"
+AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY:-minioadmin}"
+PERMISSIONS_BUCKET="${PERMISSIONS_BUCKET:-permissions-cache}"
+PAN_DOMAIN_BUCKET="${PAN_DOMAIN_BUCKET:-pan-domain-auth-settings}"
+SNAPSHOT_BUCKET="${SNAPSHOT_BUCKET:-flexible-snapshotter-code}"
 
 cd "$ROOT_DIR"
 
@@ -19,12 +24,13 @@ CONTAINER_ID="$(docker run --rm -d \
   -p 80:80 \
   -p 443:443 \
   -p 9000:9000 \
-  -e AWS_ACCESS_KEY_ID \
-  -e AWS_SECRET_ACCESS_KEY \
-  -e AWS_SESSION_TOKEN \
-  -e AWS_PROFILE \
-  -e S3_ENDPOINT \
-  -e S3_PATH_STYLE_ACCESS \
+  -e AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" \
+  -e AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" \
+  -e AWS_ENDPOINT_URL_S3="$AWS_ENDPOINT_URL_S3" \
+  -e S3_PATH_STYLE_ACCESS="$S3_PATH_STYLE_ACCESS" \
+  --add-host "${PERMISSIONS_BUCKET}.host.docker.internal:host-gateway" \
+  --add-host "${PAN_DOMAIN_BUCKET}.host.docker.internal:host-gateway" \
+  --add-host "${SNAPSHOT_BUCKET}.host.docker.internal:host-gateway" \
   -v "$HOME/.aws:/root/.aws:ro" \
   "$IMAGE_NAME")"
 
@@ -37,5 +43,5 @@ trap cleanup INT TERM
 
 echo "Container started: ${CONTAINER_ID}"
 echo "Press Ctrl+C to stop."
-docker logs -f "$CONTAINER_ID"
+docker logs -f "$CONTAINER_ID" | perl -pe 's/\\n/\n/g; s/\\t/\t/g'
 wait
