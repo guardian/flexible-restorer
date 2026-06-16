@@ -1,0 +1,83 @@
+#!/bin/sh
+
+set -eu
+
+MINIO_ROOT_USER="${MINIO_ROOT_USER:-minioadmin}"
+MINIO_ROOT_PASSWORD="${MINIO_ROOT_PASSWORD:-minioadmin}"
+MINIO_DATA_DIR="${MINIO_DATA_DIR:-/data}"
+MINIO_API_PORT="${MINIO_API_PORT:-9000}"
+MINIO_CONSOLE_PORT="${MINIO_CONSOLE_PORT:-9001}"
+PAN_DOMAIN_BUCKET="${PAN_DOMAIN_BUCKET:-pan-domain-auth-settings}"
+SNAPSHOT_BUCKET="${SNAPSHOT_BUCKET:-flexible-snapshotter-code}"
+MINIO_ENDPOINT="http://127.0.0.1:${MINIO_API_PORT}"
+AWS_ACCESS_KEY_ID="${MINIO_ROOT_USER}"
+AWS_SECRET_ACCESS_KEY="${MINIO_ROOT_PASSWORD}"
+AWS_DEFAULT_REGION="us-east-1"
+
+export AWS_ACCESS_KEY_ID
+export AWS_SECRET_ACCESS_KEY
+export AWS_DEFAULT_REGION
+
+max_attempts="${MINIO_STARTUP_MAX_ATTEMPTS:-60}"
+
+shutdown() {
+  echo "Stopping MinIO process ${MINIO_PID}..."
+  if kill -0 "${MINIO_PID}" 2>/dev/null; then
+    kill -TERM "${MINIO_PID}" 2>/dev/null || true
+    wait "${MINIO_PID}" 2>/dev/null || true
+  fi
+}
+
+on_signal() {
+  echo "Termination signal received"
+  shutdown
+  exit 0
+}
+
+wait_for_health() {
+  attempt=1
+  while ! curl -sf "${MINIO_ENDPOINT}/minio/health/live" >/dev/null 2>&1; do
+    if ! kill -0 "${MINIO_PID}" 2>/dev/null; then
+      echo "MinIO exited before becoming healthy"
+      wait "${MINIO_PID}" || true
+      exit 1
+    fi
+
+    if [ "${attempt}" -ge "${max_attempts}" ]; then
+      echo "Timed out waiting for MinIO readiness"
+      shutdown
+      exit 1
+    fi
+
+    attempt=$((attempt + 1))
+    sleep 1
+  done
+}
+
+create_bucket() {
+  bucket_name=$1
+
+  if ! aws s3api head-bucket --bucket "${bucket_name}" --endpoint-url "${MINIO_ENDPOINT}" >/dev/null 2>&1; then
+    aws s3api create-bucket \
+      --bucket "${bucket_name}" \
+      --endpoint-url "${MINIO_ENDPOINT}" \
+      --region us-east-1 >/dev/null
+  fi
+}
+
+trap on_signal INT TERM HUP
+
+minio server "${MINIO_DATA_DIR}" --address ":${MINIO_API_PORT}" --console-address ":${MINIO_CONSOLE_PORT}" &
+MINIO_PID=$!
+
+echo "MinIO started in background with PID ${MINIO_PID}"
+
+wait_for_health
+
+create_bucket "${PAN_DOMAIN_BUCKET}"
+create_bucket "${SNAPSHOT_BUCKET}"
+
+echo "Ensured buckets exist: ${PAN_DOMAIN_BUCKET}, ${SNAPSHOT_BUCKET}"
+
+echo "Waiting on MinIO process ${MINIO_PID}"
+wait "${MINIO_PID}"
