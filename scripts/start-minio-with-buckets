@@ -9,6 +9,9 @@ MINIO_API_PORT="${MINIO_API_PORT:-9000}"
 MINIO_CONSOLE_PORT="${MINIO_CONSOLE_PORT:-9001}"
 PAN_DOMAIN_BUCKET="${PAN_DOMAIN_BUCKET:-pan-domain-auth-settings}"
 SNAPSHOT_BUCKET="${SNAPSHOT_BUCKET:-flexible-snapshotter-code}"
+PERMISSIONS_BUCKET="${PERMISSIONS_BUCKET:-permissions-cache}"
+PERMISSIONS_OBJECT_KEY="${PERMISSIONS_OBJECT_KEY:-CODE/permissions.json}"
+PERMISSIONS_FIXTURE_FILE="${PERMISSIONS_FIXTURE_FILE:-/opt/minio-fixtures/permissions.json}"
 MINIO_ENDPOINT="http://127.0.0.1:${MINIO_API_PORT}"
 AWS_ACCESS_KEY_ID="${MINIO_ROOT_USER}"
 AWS_SECRET_ACCESS_KEY="${MINIO_ROOT_PASSWORD}"
@@ -65,6 +68,17 @@ create_bucket() {
   fi
 }
 
+upload_permissions_fixture() {
+  if [ ! -f "${PERMISSIONS_FIXTURE_FILE}" ]; then
+    echo "Permissions fixture not found at ${PERMISSIONS_FIXTURE_FILE}; skipping upload"
+    return
+  fi
+
+  aws s3 cp "${PERMISSIONS_FIXTURE_FILE}" \
+    "s3://${PERMISSIONS_BUCKET}/${PERMISSIONS_OBJECT_KEY}" \
+    --endpoint-url "${MINIO_ENDPOINT}" >/dev/null
+}
+
 trap on_signal INT TERM HUP
 
 minio server "${MINIO_DATA_DIR}" --address ":${MINIO_API_PORT}" --console-address ":${MINIO_CONSOLE_PORT}" &
@@ -76,8 +90,12 @@ wait_for_health
 
 create_bucket "${PAN_DOMAIN_BUCKET}"
 create_bucket "${SNAPSHOT_BUCKET}"
+create_bucket "${PERMISSIONS_BUCKET}"
 
-echo "Ensured buckets exist: ${PAN_DOMAIN_BUCKET}, ${SNAPSHOT_BUCKET}"
+upload_permissions_fixture
+
+echo "Ensured buckets exist: ${PAN_DOMAIN_BUCKET}, ${SNAPSHOT_BUCKET}, ${PERMISSIONS_BUCKET}"
+echo "Ensured permissions object exists: s3://${PERMISSIONS_BUCKET}/${PERMISSIONS_OBJECT_KEY}"
 
 echo "Waiting on MinIO process ${MINIO_PID}"
 wait "${MINIO_PID}"

@@ -128,3 +128,24 @@ PAN_DOMAIN_BUCKET=pan-domain-auth-settings \
 SNAPSHOT_BUCKET=flexible-snapshotter-code \
 ./scripts/run-docker-local-domain
 ```
+
+## Run end-to-end tests with newer Node
+
+The app build remains on `.nvmrc` (Node 12), but Playwright requires Node 18+.
+
+Use:
+
+```
+npm run test:e2e
+```
+
+This command runs through `scripts/test-e2e`, which:
+
+- uses current Node when it is already >= 18
+- otherwise uses `nvm` to run tests with Node 20 by default
+
+Optional override:
+
+```
+E2E_NODE_VERSION=22 npm run test:e2e
+```
