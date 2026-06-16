@@ -8,6 +8,9 @@ ROOT_DIR=${DIR}/..
 IMAGE_NAME="${IMAGE_NAME:-flexible-restorer}"
 DOCKERFILE_PATH="${DOCKERFILE_PATH:-images/restorer.Dockerfile}"
 
+S3_ENDPOINT="${S3_ENDPOINT:-http://localhost:9002}"
+S3_PATH_STYLE_ACCESS="${S3_PATH_STYLE_ACCESS:-true}"
+
 cd "$ROOT_DIR"
 
 docker build -t "$IMAGE_NAME" -f "$DOCKERFILE_PATH" .
@@ -20,6 +23,8 @@ CONTAINER_ID="$(docker run --rm -d \
   -e AWS_SECRET_ACCESS_KEY \
   -e AWS_SESSION_TOKEN \
   -e AWS_PROFILE \
+  -e S3_ENDPOINT \
+  -e S3_PATH_STYLE_ACCESS \
   -v "$HOME/.aws:/root/.aws:ro" \
   "$IMAGE_NAME")"
 
