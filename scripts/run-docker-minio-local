@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ROOT_DIR=${DIR}/..
+
+IMAGE_NAME="${IMAGE_NAME:-flexible-restorer-minio}"
+DOCKERFILE_PATH="${DOCKERFILE_PATH:-images/minio.Dockerfile}"
+PAN_DOMAIN_BUCKET="${PAN_DOMAIN_BUCKET:-pan-domain-auth-settings}"
+SNAPSHOT_BUCKET="${SNAPSHOT_BUCKET:-flexible-snapshotter-code}"
+MINIO_ROOT_USER="${MINIO_ROOT_USER:-minioadmin}"
+MINIO_ROOT_PASSWORD="${MINIO_ROOT_PASSWORD:-minioadmin}"
+MINIO_DATA_VOLUME="${MINIO_DATA_VOLUME:-flexible-restorer-minio-data}"
+
+cd "$ROOT_DIR"
+
+docker build -t "$IMAGE_NAME" -f "$DOCKERFILE_PATH" .
+
+CONTAINER_ID="$(docker run --rm -d \
+  -p 9000:9000 \
+  -p 9001:9001 \
+  -e MINIO_ROOT_USER="$MINIO_ROOT_USER" \
+  -e MINIO_ROOT_PASSWORD="$MINIO_ROOT_PASSWORD" \
+  -e PAN_DOMAIN_BUCKET="$PAN_DOMAIN_BUCKET" \
+  -e SNAPSHOT_BUCKET="$SNAPSHOT_BUCKET" \
+  -v "$MINIO_DATA_VOLUME:/data" \
+  "$IMAGE_NAME")"
+
+cleanup() {
+  echo ""
+  echo "Stopping container ${CONTAINER_ID}..."
+  docker stop "$CONTAINER_ID"
+}
+trap cleanup INT TERM
+
+echo "MinIO container started: ${CONTAINER_ID}"
+echo "S3 API: http://localhost:9000"
+echo "Console: http://localhost:9001"
+echo "Buckets: ${PAN_DOMAIN_BUCKET}, ${SNAPSHOT_BUCKET}"
+echo "Press Ctrl+C to stop."
+docker logs -f "$CONTAINER_ID"
+wait
