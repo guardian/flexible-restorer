@@ -8,4 +8,11 @@ ROOT_DIR=${DIR}/..
 dev-nginx setup-app "$ROOT_DIR/nginx/nginx-mapping.yml"
 
 nginx
-exec sbt run
+
+# Inside Docker, localhost points at this container, not the host machine.
+export AWS_ENDPOINT_URL_S3="${AWS_ENDPOINT_URL_S3:-http://host.docker.internal:9002}"
+export S3_PATH_STYLE_ACCESS="${S3_PATH_STYLE_ACCESS:-true}"
+export AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID:-minioadmin}"
+export AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY:-minioadmin}"
+
+exec sbt -Dlocal=true run
