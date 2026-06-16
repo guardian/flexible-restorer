@@ -9,6 +9,7 @@ IMAGE_NAME="${IMAGE_NAME:-flexible-restorer-minio}"
 DOCKERFILE_PATH="${DOCKERFILE_PATH:-images/minio.Dockerfile}"
 PAN_DOMAIN_BUCKET="${PAN_DOMAIN_BUCKET:-pan-domain-auth-settings}"
 SNAPSHOT_BUCKET="${SNAPSHOT_BUCKET:-flexible-snapshotter-code}"
+PERMISSIONS_BUCKET="${PERMISSIONS_BUCKET:-permissions-cache}"
 MINIO_ROOT_USER="${MINIO_ROOT_USER:-minioadmin}"
 MINIO_ROOT_PASSWORD="${MINIO_ROOT_PASSWORD:-minioadmin}"
 MINIO_DATA_VOLUME="${MINIO_DATA_VOLUME:-flexible-restorer-minio-data}"
@@ -24,6 +25,7 @@ CONTAINER_ID="$(docker run --rm -d \
   -e MINIO_ROOT_PASSWORD="$MINIO_ROOT_PASSWORD" \
   -e PAN_DOMAIN_BUCKET="$PAN_DOMAIN_BUCKET" \
   -e SNAPSHOT_BUCKET="$SNAPSHOT_BUCKET" \
+  -e PERMISSIONS_BUCKET="$PERMISSIONS_BUCKET" \
   -v "$MINIO_DATA_VOLUME:/data" \
   "$IMAGE_NAME")"
 
@@ -37,7 +39,8 @@ trap cleanup INT TERM
 echo "MinIO container started: ${CONTAINER_ID}"
 echo "S3 API: http://localhost:9002"
 echo "Console: http://localhost:9003"
-echo "Buckets: ${PAN_DOMAIN_BUCKET}, ${SNAPSHOT_BUCKET}"
+echo "Buckets: ${PAN_DOMAIN_BUCKET}, ${SNAPSHOT_BUCKET}, ${PERMISSIONS_BUCKET}"
+echo "Permissions object: s3://${PERMISSIONS_BUCKET}/CODE/permissions.json"
 echo "Press Ctrl+C to stop."
 docker logs -f "$CONTAINER_ID" | perl -pe 's/\\n/\n/g; s/\\t/\t/g'
 wait

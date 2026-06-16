@@ -1,0 +1,16 @@
+[
+    {
+        "permission": {
+            "name": "edit_editions",
+            "app": "fronts",
+            "defaultValue": false
+        },
+        "overrides": [
+            {
+                "userId": "test@guardian.co.uk",
+                "active": true,
+                "isCasualNotOnShift": false
+            }
+        ]
+    }
+]
