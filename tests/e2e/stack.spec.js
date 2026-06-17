@@ -63,12 +63,18 @@ test.describe("Local stack via Testcontainers", () => {
 
       minioContainer = await new GenericContainer(minioImageTag)
         .withNetwork(network)
-        .withNetworkAliases("minio")
+        .withNetworkAliases(
+          "minio",
+          "permissions-cache.minio",
+          "pan-domain-auth-settings.minio",
+          "flexible-snapshotter-code.minio"
+        )
         .withEnvironment({
           MINIO_ROOT_USER,
           MINIO_ROOT_PASSWORD,
           PAN_DOMAIN_BUCKET: "pan-domain-auth-settings",
           SNAPSHOT_BUCKET: "flexible-snapshotter-code",
+          PERMISSIONS_BUCKET: "permissions-cache",
         })
         .withLogConsumer(createLogConsumer("minio"))
         .withExposedPorts(9000, 9001)
