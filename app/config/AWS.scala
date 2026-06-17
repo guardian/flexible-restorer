@@ -16,12 +16,11 @@ object AWS {
   lazy val defaultStack = "flexible"
   lazy val defaultAppName = "restorer"
   lazy val defaultRegion: Region = Region.EU_WEST_1
-  lazy val hasSdkEndpointOverride: Boolean =
-    sys.env.get("AWS_ENDPOINT_URL_S3").exists(_.nonEmpty) ||
-      sys.env.get("AWS_ENDPOINT_URL").exists(_.nonEmpty)
   lazy val s3PathStyleAccess: Boolean = sys.env
     .get("S3_PATH_STYLE_ACCESS")
-    .exists(_.toBoolean) || hasSdkEndpointOverride
+    .exists(_.toBoolean) ||
+    sys.env.get("AWS_ENDPOINT_URL_S3").exists(_.nonEmpty) ||
+    sys.env.get("AWS_ENDPOINT_URL").exists(_.nonEmpty)
 
   val credentials: AwsCredentialsProviderChain = AwsCredentialsProviderChain
     .builder()

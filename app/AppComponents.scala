@@ -1,6 +1,11 @@
 import com.gu.AppIdentity
 import com.gu.pandomainauth.{PanDomainAuthSettingsRefresher, S3BucketLoader}
-import com.gu.permissions.{PermissionsConfig, PermissionsProvider}
+import com.gu.permissions.{
+  PermissionsConfig,
+  PermissionsProvider,
+  PermissionsS3,
+  S3PermissionsProvider
+}
 import config.AppConfig
 import config.AWS._
 import controllers._
@@ -21,11 +26,27 @@ class AppComponents(context: Context, identity: AppIdentity) extends BuiltInComp
 
   val config = new AppConfig(configuration, identity)
 
-  val permissions = PermissionsProvider(PermissionsConfig(
+  private val permissionsConfig = PermissionsConfig(
     stage = config.effectiveStage,
     region = config.region,
     awsCredentials = credentials
-  ))
+  )
+
+  // In local mode, use our app-level S3 client so path-style and endpoint overrides apply to permissions fetches too.
+  val permissions: PermissionsProvider = if (sys.props.get("local").contains("true")) {
+    // AWS_ENDPOINT_URL_S3 only changes endpoint selection; it does not force path-style addressing.
+    // Reusing the app-configured s3Client keeps MinIO-compatible path-style behavior for permissions fetches.
+    val provider = new S3PermissionsProvider(
+      permissionsConfig.s3Bucket,
+      PermissionsConfig.getPermissionsFileKey(permissionsConfig),
+      permissionsConfig.refreshFrequency,
+      PermissionsS3(s3Client)
+    )
+    provider.start()
+    provider
+  } else {
+    PermissionsProvider(permissionsConfig)
+  }
 
   val panDomainSettings: PanDomainAuthSettingsRefresher = PanDomainAuthSettingsRefresher(
     domain = config.domain,
