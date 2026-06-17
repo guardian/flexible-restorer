@@ -1,13 +1,13 @@
 [
     {
         "permission": {
-            "name": "edit_editions",
-            "app": "fronts",
-            "defaultValue": false
+            "name": "restorer_access",
+            "app": "composer-restorer",
+            "defaultValue": true
         },
         "overrides": [
             {
-                "userId": "test@guardian.co.uk",
+                "userId": "composer.application@guardian.co.uk",
                 "active": true,
                 "isCasualNotOnShift": false
             }
