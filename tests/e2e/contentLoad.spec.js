@@ -7,6 +7,8 @@ test.describe("Local stack via Testcontainers", () => {
     test("starts MinIO first, injects its host/port into Restorer, then loads app", async ({
         page,
     }) => {
+        test.setTimeout(120 * 1000);
+
         const projectRoot = path.resolve(__dirname, "../..");
         let stack;
 
@@ -37,6 +39,25 @@ test.describe("Local stack via Testcontainers", () => {
                 response.status(),
                 "Expected restorer to avoid server error on startup route",
             ).toBeLessThan(500);
+
+            let composerUrlInput = page.getByLabel("Enter a composer url:");
+
+            await expect(composerUrlInput).toBeVisible({
+                timeout: 5 * 1000,
+            });
+
+            await composerUrlInput.fill("568c4110e4b0c73bdb0e52df");
+            await expect(composerUrlInput).toHaveValue(
+                "568c4110e4b0c73bdb0e52df",
+            );
+
+            const searchButton = page.getByRole("button", { name: "Search" });
+            await expect(searchButton).toBeEnabled();
+            await searchButton.click();
+
+            await expect(
+                page.getByText("568c4110e4b0c73bdb0e52df", { exact: false }),
+            ).toBeVisible({ timeout: 5 * 1000 });
         } finally {
             await stopLocalStack(stack || {});
         }
