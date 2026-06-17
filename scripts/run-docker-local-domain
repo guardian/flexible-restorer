@@ -10,6 +10,8 @@ DOCKERFILE_PATH="${DOCKERFILE_PATH:-images/restorer.Dockerfile}"
 
 cd "$ROOT_DIR"
 
+echo "Using MinIO endpoint: ${AWS_ENDPOINT_URL_S3}"
+
 docker build -t "$IMAGE_NAME" -f "$DOCKERFILE_PATH" .
 
 docker run --rm \
