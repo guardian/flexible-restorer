@@ -74,12 +74,15 @@ async function startLocalStack(projectRoot) {
                 "permissions-cache.minio",
                 "pan-domain-auth-settings.minio",
                 "flexible-snapshotter-code.minio",
+                "flexible-secondary-snapshotter-code.minio",
             )
             .withEnvironment({
                 MINIO_ROOT_USER,
                 MINIO_ROOT_PASSWORD,
                 PAN_DOMAIN_BUCKET: "pan-domain-auth-settings",
                 SNAPSHOT_BUCKET: "flexible-snapshotter-code",
+                SECONDARY_SNAPSHOT_BUCKET:
+                    "flexible-secondary-snapshotter-code",
                 PERMISSIONS_BUCKET: "permissions-cache",
             })
             .withLogConsumer(createLogConsumer("minio"))
