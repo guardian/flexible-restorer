@@ -9,6 +9,7 @@ MINIO_API_PORT="${MINIO_API_PORT:-9000}"
 MINIO_CONSOLE_PORT="${MINIO_CONSOLE_PORT:-9001}"
 PAN_DOMAIN_BUCKET="${PAN_DOMAIN_BUCKET:-pan-domain-auth-settings}"
 SNAPSHOT_BUCKET="${SNAPSHOT_BUCKET:-flexible-snapshotter-code}"
+SECONDARY_SNAPSHOT_BUCKET="${SECONDARY_SNAPSHOT_BUCKET:-flexible-secondary-snapshotter-code}"
 PERMISSIONS_BUCKET="${PERMISSIONS_BUCKET:-permissions-cache}"
 PERMISSIONS_OBJECT_KEY="${PERMISSIONS_OBJECT_KEY:-CODE/permissions.json}"
 PERMISSIONS_FIXTURE_FILE="${PERMISSIONS_FIXTURE_FILE:-/opt/minio-fixtures/permissions.json}"
@@ -16,6 +17,7 @@ PAN_DOMAIN_SETTINGS_FIXTURE_FILE="${PAN_DOMAIN_SETTINGS_FIXTURE_FILE:-/opt/minio
 PAN_DOMAIN_SETTINGS_PUBLIC_FIXTURE_FILE="${PAN_DOMAIN_SETTINGS_PUBLIC_FIXTURE_FILE:-/opt/minio-fixtures/local.dev-gutools.co.uk.settings.public}"
 PAN_DOMAIN_SETTINGS_OBJECT_KEY="${PAN_DOMAIN_SETTINGS_OBJECT_KEY:-local.dev-gutools.co.uk.settings}"
 PAN_DOMAIN_SETTINGS_PUBLIC_OBJECT_KEY="${PAN_DOMAIN_SETTINGS_PUBLIC_OBJECT_KEY:-local.dev-gutools.co.uk.settings.public}"
+SNAPSHOTS_FIXTURE_DIR="${SNAPSHOTS_FIXTURE_DIR:-/opt/minio-fixtures/snapshots}"
 MINIO_ENDPOINT="http://127.0.0.1:${MINIO_API_PORT}"
 AWS_ACCESS_KEY_ID="${MINIO_ROOT_USER}"
 AWS_SECRET_ACCESS_KEY="${MINIO_ROOT_PASSWORD}"
@@ -101,6 +103,20 @@ upload_pan_domain_settings_fixtures() {
   fi
 }
 
+upload_snapshot_fixtures() {
+  bucket_name=$1
+
+  if [ ! -d "${SNAPSHOTS_FIXTURE_DIR}" ]; then
+    echo "Snapshots fixture directory not found at ${SNAPSHOTS_FIXTURE_DIR}; skipping upload"
+    return
+  fi
+
+  aws s3 cp "${SNAPSHOTS_FIXTURE_DIR}" "s3://${bucket_name}" \
+    --recursive \
+    --exclude ".DS_Store" \
+    --endpoint-url "${MINIO_ENDPOINT}" >/dev/null
+}
+
 trap on_signal INT TERM HUP
 
 minio server "${MINIO_DATA_DIR}" --address ":${MINIO_API_PORT}" --console-address ":${MINIO_CONSOLE_PORT}" &
@@ -112,15 +128,19 @@ wait_for_health
 
 create_bucket "${PAN_DOMAIN_BUCKET}"
 create_bucket "${SNAPSHOT_BUCKET}"
+create_bucket "${SECONDARY_SNAPSHOT_BUCKET}"
 create_bucket "${PERMISSIONS_BUCKET}"
 
 upload_permissions_fixture
 upload_pan_domain_settings_fixtures
+upload_snapshot_fixtures "${SNAPSHOT_BUCKET}"
+upload_snapshot_fixtures "${SECONDARY_SNAPSHOT_BUCKET}"
 
-echo "Ensured buckets exist: ${PAN_DOMAIN_BUCKET}, ${SNAPSHOT_BUCKET}, ${PERMISSIONS_BUCKET}"
+echo "Ensured buckets exist: ${PAN_DOMAIN_BUCKET}, ${SNAPSHOT_BUCKET}, ${SECONDARY_SNAPSHOT_BUCKET}, ${PERMISSIONS_BUCKET}"
 echo "Ensured permissions object exists: s3://${PERMISSIONS_BUCKET}/${PERMISSIONS_OBJECT_KEY}"
 echo "Ensured pan-domain settings object exists: s3://${PAN_DOMAIN_BUCKET}/${PAN_DOMAIN_SETTINGS_OBJECT_KEY}"
 echo "Ensured pan-domain public settings object exists: s3://${PAN_DOMAIN_BUCKET}/${PAN_DOMAIN_SETTINGS_PUBLIC_OBJECT_KEY}"
+echo "Ensured snapshot fixtures copied into: s3://${SNAPSHOT_BUCKET} and s3://${SECONDARY_SNAPSHOT_BUCKET}"
 
 echo "Waiting on MinIO process ${MINIO_PID}"
 wait "${MINIO_PID}"

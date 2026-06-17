@@ -56,7 +56,11 @@ test.describe("Local stack via Testcontainers", () => {
             await searchButton.click();
 
             await expect(
-                page.getByText("568c4110e4b0c73bdb0e52df", { exact: false }),
+                page
+                    .getByRole("heading", {
+                        name: /Irish fury at Thierry Henry/i,
+                    })
+                    .first(),
             ).toBeVisible({ timeout: 5 * 1000 });
         } finally {
             await stopLocalStack(stack || {});
