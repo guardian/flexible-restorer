@@ -3,16 +3,22 @@
 set -euo pipefail
 
 E2E_NODE_VERSION="${E2E_NODE_VERSION:-20}"
+TEST_ARGS=("$@")
 
 current_major="$(node -p "process.versions.node.split('.')[0]" 2>/dev/null || echo 0)"
 
 run_playwright() {
-  npm exec playwright install chromium
-  npm exec playwright test -- "$@"
+  local -a cmd_prefix=("$@")
+  "${cmd_prefix[@]}" npm exec playwright install chromium
+  if [ "${#TEST_ARGS[@]}" -gt 0 ]; then
+    "${cmd_prefix[@]}" npm exec playwright test -- "${TEST_ARGS[@]}"
+  else
+    "${cmd_prefix[@]}" npm exec playwright test
+  fi
 }
 
 if [ "$current_major" -ge 18 ]; then
-  run_playwright "$@"
+  run_playwright
   exit 0
 fi
 
@@ -21,8 +27,7 @@ if [ -s "$NVM_DIR/nvm.sh" ]; then
   # shellcheck disable=SC1090
   . "$NVM_DIR/nvm.sh"
   nvm install "$E2E_NODE_VERSION" >/dev/null
-  nvm exec "$E2E_NODE_VERSION" npm exec playwright install chromium
-  nvm exec "$E2E_NODE_VERSION" npm exec playwright test -- "$@"
+  run_playwright nvm exec "$E2E_NODE_VERSION"
   exit 0
 fi
 
