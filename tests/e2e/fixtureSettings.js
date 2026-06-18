@@ -21,7 +21,7 @@ function parseSettingsFile(settingsText) {
 
 function readFixtureSettings(
     projectRoot,
-    fileName = "local.dev-gutools.co.uk.settings",
+    fileName = path.join("pan-domain-settings", "local.dev-gutools.co.uk.settings"),
 ) {
     const settingsFilePath = path.join(projectRoot, "fixtures", fileName);
     const settingsText = fs.readFileSync(settingsFilePath, "utf8");
