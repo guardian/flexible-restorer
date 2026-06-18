@@ -79,6 +79,7 @@ async function startLocalStack(projectRoot) {
             .withEnvironment({
                 MINIO_ROOT_USER,
                 MINIO_ROOT_PASSWORD,
+                MINIO_DOMAIN: "minio",
                 PAN_DOMAIN_BUCKET: "pan-domain-auth-settings",
                 SNAPSHOT_BUCKET: "flexible-snapshotter-code",
                 SECONDARY_SNAPSHOT_BUCKET:
@@ -87,7 +88,8 @@ async function startLocalStack(projectRoot) {
             })
             .withLogConsumer(createLogConsumer("minio"))
             .withExposedPorts(9000, 9001)
-            .withWaitStrategy(Wait.forListeningPorts())
+            .withWaitStrategy(Wait.forLogMessage(/Ensured buckets exist:/, 1))
+            .withStartupTimeout(2 * 60 * 1000)
             .start();
 
         await buildDockerImage({
@@ -103,7 +105,6 @@ async function startLocalStack(projectRoot) {
             .withNetwork(network)
             .withEnvironment({
                 AWS_ENDPOINT_URL_S3: "http://minio:9000",
-                S3_PATH_STYLE_ACCESS: "true",
                 AWS_ACCESS_KEY_ID: MINIO_ROOT_USER,
                 AWS_SECRET_ACCESS_KEY: MINIO_ROOT_PASSWORD,
                 // Keep local mode enabled in case scripts are bypassed in future changes.
