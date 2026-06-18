@@ -1,27 +1,19 @@
 import com.gu.AppIdentity
 import com.gu.pandomainauth.{PanDomainAuthSettingsRefresher, S3BucketLoader}
-import com.gu.permissions.{
-  PermissionsConfig,
-  PermissionsProvider,
-  PermissionsS3,
-  S3PermissionsProvider
-}
+import com.gu.permissions.{PermissionsConfig, PermissionsProvider}
 import config.AppConfig
 import config.AWS._
 import controllers._
 import helpers.{HSTSFilter, Loggable}
 import logic.{FlexibleApi, SnapshotApi}
 import play.api.ApplicationLoader.Context
-import scala.io.Source
 import play.api.libs.ws.ahc.AhcWSComponents
 import play.api.mvc.EssentialFilter
 import play.api.routing.Router
 import play.api.BuiltInComponentsFromContext
 import router.Routes
 
-import scala.concurrent.ExecutionContext.Implicits.{
-  global => globalExecutionContext
-}
+import scala.concurrent.ExecutionContext.Implicits.{global => globalExecutionContext}
 
 class AppComponents(context: Context, identity: AppIdentity) extends BuiltInComponentsFromContext(context) with AhcWSComponents with Loggable with AssetsComponents {
 
@@ -29,36 +21,17 @@ class AppComponents(context: Context, identity: AppIdentity) extends BuiltInComp
 
   val config = new AppConfig(configuration, identity)
 
-  private val permissionsConfig = PermissionsConfig(
+  val permissions = PermissionsProvider(PermissionsConfig(
     stage = config.effectiveStage,
     region = config.region,
     awsCredentials = credentials
+  ))
+
+  val panDomainSettings: PanDomainAuthSettingsRefresher = PanDomainAuthSettingsRefresher(
+    domain = config.domain,
+    system = "restorer",
+    S3BucketLoader.forAwsSdkV2(s3Client, "pan-domain-auth-settings")
   )
-
-  // In local mode, use our app-level S3 client so path-style and endpoint overrides apply to permissions fetches too.
-  val permissions: PermissionsProvider =
-    if (sys.props.get("local").contains("true")) {
-      // AWS_ENDPOINT_URL_S3 only changes endpoint selection; it does not force path-style addressing.
-      // Reusing the app-configured s3Client keeps MinIO-compatible path-style behavior for permissions fetches.
-      val provider = new S3PermissionsProvider(
-        permissionsConfig.s3Bucket,
-        PermissionsConfig.getPermissionsFileKey(permissionsConfig),
-        permissionsConfig.refreshFrequency,
-        PermissionsS3(s3Client)
-      )
-      provider.start()
-      provider
-    } else {
-      val provider = PermissionsProvider(permissionsConfig)
-      provider
-    }
-
-  val panDomainSettings: PanDomainAuthSettingsRefresher =
-    PanDomainAuthSettingsRefresher(
-      domain = config.domain,
-      system = "restorer",
-      S3BucketLoader.forAwsSdkV2(s3Client, "pan-domain-auth-settings")
-    )
 
   val snapshotApi = new SnapshotApi(s3Client)
 
