@@ -11,6 +11,9 @@ DOCKERFILE_PATH="${DOCKERFILE_PATH:-images/restorer.Dockerfile}"
 AWS_ENDPOINT_URL_S3="${AWS_ENDPOINT_URL_S3:-http://host.docker.internal:9002}"
 AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID:-minioadmin}"
 AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY:-minioadmin}"
+AWS_SESSION_TOKEN="${AWS_SESSION_TOKEN:-}"
+AWS_PROFILE="${AWS_PROFILE:-composer}"
+AWS_REGION="${AWS_REGION:-eu-west-1}"
 PERMISSIONS_BUCKET="${PERMISSIONS_BUCKET:-permissions-cache}"
 PAN_DOMAIN_BUCKET="${PAN_DOMAIN_BUCKET:-pan-domain-auth-settings}"
 SNAPSHOT_BUCKET="${SNAPSHOT_BUCKET:-flexible-snapshotter-code}"
@@ -28,11 +31,13 @@ CONTAINER_ID="$(docker run --rm -d \
   --add-host host.docker.internal:host-gateway \
   -e AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" \
   -e AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" \
+  -e AWS_SESSION_TOKEN="$AWS_SESSION_TOKEN" \
+  -e AWS_PROFILE="$AWS_PROFILE" \
+  -e AWS_REGION="$AWS_REGION" \
   -e AWS_ENDPOINT_URL_S3="$AWS_ENDPOINT_URL_S3" \
   --add-host "${PERMISSIONS_BUCKET}.host.docker.internal:host-gateway" \
   --add-host "${PAN_DOMAIN_BUCKET}.host.docker.internal:host-gateway" \
   --add-host "${SNAPSHOT_BUCKET}.host.docker.internal:host-gateway" \
-  -v "$HOME/.aws:/root/.aws:ro" \
   "$IMAGE_NAME")"
 
 cleanup() {

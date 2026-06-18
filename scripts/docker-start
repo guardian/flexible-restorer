@@ -11,8 +11,36 @@ nginx
 
 # Inside Docker, localhost points at this container, not the host machine.
 export AWS_ENDPOINT_URL_S3="${AWS_ENDPOINT_URL_S3:-http://host.docker.internal:9002}"
-export AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID:-minioadmin}"
-export AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY:-minioadmin}"
+export AWS_PROFILE="${AWS_PROFILE:-composer}"
+export AWS_REGION="${AWS_REGION:-eu-west-1}"
+export AWS_SDK_LOAD_CONFIG=1
+
+AWS_ACCESS_KEY_ID_VALUE="${AWS_ACCESS_KEY_ID:-minioadmin}"
+AWS_SECRET_ACCESS_KEY_VALUE="${AWS_SECRET_ACCESS_KEY:-minioadmin}"
+AWS_SESSION_TOKEN_VALUE="${AWS_SESSION_TOKEN:-}"
+
+mkdir -p /root/.aws
+
+cat > /root/.aws/credentials <<EOF
+[${AWS_PROFILE}]
+aws_access_key_id=${AWS_ACCESS_KEY_ID_VALUE}
+aws_secret_access_key=${AWS_SECRET_ACCESS_KEY_VALUE}
+EOF
+
+if [ -n "${AWS_SESSION_TOKEN_VALUE}" ]; then
+	cat >> /root/.aws/credentials <<EOF
+aws_session_token=${AWS_SESSION_TOKEN_VALUE}
+EOF
+fi
+
+cat > /root/.aws/config <<EOF
+[profile ${AWS_PROFILE}]
+region=${AWS_REGION}
+output=json
+EOF
+
+# Force profile-backed auth even when AWS credential env vars are present.
+unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
 # Work around sporadic Graal/JVMCI compilation assertion failures in this Docker runtime.
 # Prefer SBT_OPTS here so these JVM flags apply directly to the sbt JVM process.
 export SBT_OPTS="${SBT_OPTS:+$SBT_OPTS }-XX:+UnlockExperimentalVMOptions -XX:-UseJVMCICompiler -Dgraal.CompilationFailureAction=Silent"

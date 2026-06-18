@@ -40,7 +40,7 @@ The app will then be accessible locally at: <https://restorer.local.dev-gutools.
 
 ## Run with Docker (including AWS credentials)
 
-You can pass your current shell AWS credentials and profile into the container.
+The startup script writes a profile for the app from the AWS env vars you pass in.
 
 ```
 docker build -t flexible-restorer -f images/restorer.Dockerfile .
@@ -58,7 +58,7 @@ docker run --rm -p 9001:9000 \
 	-e AWS_SECRET_ACCESS_KEY \
 	-e AWS_SESSION_TOKEN \
 	-e AWS_PROFILE \
-	-v "$HOME/.aws:/root/.aws:ro" \
+	-e AWS_REGION \
 	flexible-restorer
 ```
 
@@ -70,17 +70,17 @@ docker run --rm -p 80:80 -p 443:443 -p 9000:9000 \
 	-e AWS_SECRET_ACCESS_KEY \
 	-e AWS_SESSION_TOKEN \
 	-e AWS_PROFILE \
-	-v "$HOME/.aws:/root/.aws:ro" \
+	-e AWS_REGION \
 	flexible-restorer
 ```
 
 Notes:
 
 - Using `-e VAR_NAME` (without `=value`) forwards the current value from your shell.
-- Mounting `~/.aws` lets profile-based auth work inside the container.
+- The container entrypoint writes `/root/.aws/credentials` and `/root/.aws/config` from those env vars before running sbt.
 - This project image sets `AWS_SDK_LOAD_CONFIG=1`, so Java AWS SDK profile loading works as expected.
 - If port 9001 is busy, switch to another host port (for example `-p 9002:9000`).
-- For local MinIO, pass `S3_ENDPOINT=http://host.docker.internal:9000`
+- For local MinIO, pass `AWS_ENDPOINT_URL_S3=http://host.docker.internal:9000`
 
 ## Run local MinIO S3 with startup buckets
 
@@ -122,7 +122,7 @@ The startup script runs MinIO as a background child process, traps `INT`/`TERM`/
 To point the restorer app container at that MinIO instance, start it with:
 
 ```
-S3_ENDPOINT=http://host.docker.internal:9000 \
+AWS_ENDPOINT_URL_S3=http://host.docker.internal:9000 \
 PAN_DOMAIN_BUCKET=pan-domain-auth-settings \
 SNAPSHOT_BUCKET=flexible-snapshotter-code \
 ./scripts/run-docker-local-domain
