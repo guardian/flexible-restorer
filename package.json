@@ -3,6 +3,7 @@
     "scripts": {
         "build": "webpack --mode=production",
         "watch": "webpack --mode=development --watch",
+        "local:stack": "./scripts/docker/run-local-stack",
         "test:e2e": "./scripts/test-e2e",
         "test:e2e:headed": "./scripts/test-e2e --headed",
         "test:e2e:debug": "./scripts/test-e2e --debug"
@@ -27,6 +28,7 @@
         "sass-loader": "^8.0.2",
         "svg-url-loader": "^6.0.0",
         "testcontainers": "^10.17.1",
+        "tsx": "^4.22.4",
         "url-loader": "^4.1.0",
         "webpack": "^4.43.0",
         "webpack-cli": "^3.3.12"
