@@ -49,7 +49,7 @@ docker build -t flexible-restorer -f images/restorer.Dockerfile .
 Single command:
 
 ```
-./scripts/run-docker-local-domain
+./scripts/docker/run-docker-local-domain
 ```
 
 ```
@@ -92,7 +92,7 @@ Build and run a dedicated MinIO container that creates these buckets on startup:
 Single command:
 
 ```
-./scripts/run-docker-minio-local
+./scripts/docker/run-docker-minio-local
 ```
 
 Environment variables you can override:
@@ -125,7 +125,7 @@ To point the restorer app container at that MinIO instance, start it with:
 AWS_ENDPOINT_URL_S3=http://host.docker.internal:9000 \
 PAN_DOMAIN_BUCKET=pan-domain-auth-settings \
 SNAPSHOT_BUCKET=flexible-snapshotter-code \
-./scripts/run-docker-local-domain
+./scripts/docker/run-docker-local-domain
 ```
 
 ## Run end-to-end tests with newer Node

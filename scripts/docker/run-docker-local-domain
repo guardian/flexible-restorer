@@ -3,7 +3,7 @@
 set -euo pipefail
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-ROOT_DIR=${DIR}/..
+ROOT_DIR=${DIR}/../..
 
 IMAGE_NAME="${IMAGE_NAME:-flexible-restorer}"
 DOCKERFILE_PATH="${DOCKERFILE_PATH:-images/restorer.Dockerfile}"
