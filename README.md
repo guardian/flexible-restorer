@@ -36,50 +36,6 @@ $ sbt
 
 The app will then be accessible locally at: <https://restorer.local.dev-gutools.co.uk/>
 
-## Run with Docker (including AWS credentials)
-
-The startup script writes a profile for the app from the AWS env vars you pass in.
-
-```
-docker build -t flexible-restorer -f images/restorer.Dockerfile .
-```
-
-Single command:
-
-```
-./scripts/docker/run-docker-local-domain
-```
-
-```
-docker run --rm -p 9001:9000 \
-	-e AWS_ACCESS_KEY_ID \
-	-e AWS_SECRET_ACCESS_KEY \
-	-e AWS_SESSION_TOKEN \
-	-e AWS_PROFILE \
-	-e AWS_REGION \
-	flexible-restorer
-```
-
-To run with local domain proxy support via nginx (inside the container), expose 80/443 as well:
-
-```
-docker run --rm -p 80:80 -p 443:443 -p 9000:9000 \
-	-e AWS_ACCESS_KEY_ID \
-	-e AWS_SECRET_ACCESS_KEY \
-	-e AWS_SESSION_TOKEN \
-	-e AWS_PROFILE \
-	-e AWS_REGION \
-	flexible-restorer
-```
-
-Notes:
-
-- Using `-e VAR_NAME` (without `=value`) forwards the current value from your shell.
-- The container entrypoint writes `/root/.aws/credentials` and `/root/.aws/config` from those env vars before running sbt.
-- This project image sets `AWS_SDK_LOAD_CONFIG=1`, so Java AWS SDK profile loading works as expected.
-- If port 9001 is busy, switch to another host port (for example `-p 9002:9000`).
-- For local MinIO, pass `AWS_ENDPOINT_URL_S3=http://host.docker.internal:9000`
-
 ## Run end-to-end tests
 
 The app build remains on `.nvmrc` (Node 12), but Playwright requires Node 18+.
