@@ -22,6 +22,14 @@ RUN curl -fsSL https://raw.githubusercontent.com/dwijnand/sbt-extras/master/sbt 
 
 WORKDIR /app
 
+# Copy SBT build definition first so dependency resolution can be cached across
+# source changes.
+COPY build.sbt ./
+COPY project ./project
+
+# Pre-fetch JVM dependencies/plugins in a cacheable layer.
+RUN sbt -batch update
+
 # Use the exact Node version family from .nvmrc for frontend build.
 COPY .nvmrc .
 RUN rm -rf "$NVM_DIR" \
@@ -35,6 +43,10 @@ RUN npm install
 
 COPY . .
 RUN npm run build
+
+# Compile Scala sources during image build so runtime startup does not need a
+# full cold compile when build inputs are unchanged.
+RUN sbt -batch compile
 RUN chmod +x /app/scripts/docker-start
 
 COPY images/dev-nginx /usr/local/bin/dev-nginx
