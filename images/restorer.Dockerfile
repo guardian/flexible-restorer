@@ -11,7 +11,6 @@ RUN apt-get update \
     curl \
     bash \
     git \
-    nginx \
     openssl \
     scala \
     && rm -rf /var/lib/apt/lists/*
@@ -49,9 +48,6 @@ RUN npm run build
 RUN sbt -batch compile
 RUN chmod +x /app/scripts/docker/docker-start
 
-COPY images/dev-nginx /usr/local/bin/dev-nginx
-RUN chmod +x /usr/local/bin/dev-nginx
-
-EXPOSE 80 443 9000
+EXPOSE 9000
 
 CMD ["/app/scripts/docker/docker-start"]

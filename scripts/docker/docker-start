@@ -5,10 +5,6 @@ set -euo pipefail
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT_DIR=${DIR}/../..
 
-dev-nginx setup-app "$ROOT_DIR/nginx/nginx-mapping.yml"
-
-nginx
-
 # Inside Docker, localhost points at this container, not the host machine.
 export AWS_ENDPOINT_URL_S3="${AWS_ENDPOINT_URL_S3:-http://host.docker.internal:9002}"
 export AWS_PROFILE="${AWS_PROFILE:-composer}"
