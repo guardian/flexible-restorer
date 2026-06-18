@@ -5,7 +5,7 @@ RUN apk add --no-cache aws-cli curl && \
     chmod +x /usr/local/bin/minio
 
 COPY scripts/start-minio-with-buckets /usr/local/bin/start-minio-with-buckets
-COPY fixtures/permissions.json /opt/minio-fixtures/permissions.json
+COPY fixtures/permissions/permissions.json /opt/minio-fixtures/permissions/permissions.json
 COPY fixtures/pan-domain-settings/local.dev-gutools.co.uk.settings /opt/minio-fixtures/pan-domain-settings/local.dev-gutools.co.uk.settings
 COPY fixtures/pan-domain-settings/local.dev-gutools.co.uk.settings.public /opt/minio-fixtures/pan-domain-settings/local.dev-gutools.co.uk.settings.public
 COPY fixtures/snapshots /opt/minio-fixtures/snapshots
