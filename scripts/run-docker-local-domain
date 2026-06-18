@@ -9,7 +9,6 @@ IMAGE_NAME="${IMAGE_NAME:-flexible-restorer}"
 DOCKERFILE_PATH="${DOCKERFILE_PATH:-images/restorer.Dockerfile}"
 
 AWS_ENDPOINT_URL_S3="${AWS_ENDPOINT_URL_S3:-http://host.docker.internal:9002}"
-S3_PATH_STYLE_ACCESS="${S3_PATH_STYLE_ACCESS:-true}"
 AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID:-minioadmin}"
 AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY:-minioadmin}"
 PERMISSIONS_BUCKET="${PERMISSIONS_BUCKET:-permissions-cache}"
@@ -30,7 +29,6 @@ CONTAINER_ID="$(docker run --rm -d \
   -e AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" \
   -e AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" \
   -e AWS_ENDPOINT_URL_S3="$AWS_ENDPOINT_URL_S3" \
-  -e S3_PATH_STYLE_ACCESS="$S3_PATH_STYLE_ACCESS" \
   --add-host "${PERMISSIONS_BUCKET}.host.docker.internal:host-gateway" \
   --add-host "${PAN_DOMAIN_BUCKET}.host.docker.internal:host-gateway" \
   --add-host "${SNAPSHOT_BUCKET}.host.docker.internal:host-gateway" \

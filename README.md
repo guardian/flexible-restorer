@@ -78,7 +78,7 @@ Notes:
 - Mounting `~/.aws` lets profile-based auth work inside the container.
 - This project image sets `AWS_SDK_LOAD_CONFIG=1`, so Java AWS SDK profile loading works as expected.
 - If port 9001 is busy, switch to another host port (for example `-p 9002:9000`).
-- For local MinIO, pass `S3_ENDPOINT=http://host.docker.internal:9000` and `S3_PATH_STYLE_ACCESS=true`
+- For local MinIO, pass `S3_ENDPOINT=http://host.docker.internal:9000`
 
 ## Run local MinIO S3 with startup buckets
 
@@ -121,7 +121,6 @@ To point the restorer app container at that MinIO instance, start it with:
 
 ```
 S3_ENDPOINT=http://host.docker.internal:9000 \
-S3_PATH_STYLE_ACCESS=true \
 PAN_DOMAIN_BUCKET=pan-domain-auth-settings \
 SNAPSHOT_BUCKET=flexible-snapshotter-code \
 ./scripts/run-docker-local-domain
