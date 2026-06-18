@@ -12,11 +12,10 @@ test.describe("Local stack via Testcontainers", () => {
         const projectRoot = path.resolve(__dirname, "../..");
         let stack;
 
-        const cookieData = createPanDomainCookie(projectRoot);
-
         try {
             stack = await startLocalStack(projectRoot);
-            const { baseUrl } = stack;
+            const { baseUrl, panDomainPrivateKey } = stack;
+            const cookieData = createPanDomainCookie(panDomainPrivateKey);
 
             await page.context().addCookies([
                 {

@@ -1,6 +1,7 @@
 const path = require("path");
 const { spawn } = require("child_process");
 const { GenericContainer, Network, Wait } = require("testcontainers");
+const { generatePanDomainKeys } = require("./panDomainKeys");
 
 const MINIO_ROOT_USER = "minioadmin";
 const MINIO_ROOT_PASSWORD = "minioadmin";
@@ -59,6 +60,7 @@ async function startLocalStack(projectRoot) {
 
     let minioContainer;
     let restorerContainer;
+    const panDomainKeys = generatePanDomainKeys();
 
     try {
         await buildDockerImage({
@@ -80,6 +82,8 @@ async function startLocalStack(projectRoot) {
                 MINIO_ROOT_USER,
                 MINIO_ROOT_PASSWORD,
                 MINIO_DOMAIN: "minio",
+                PAN_DOMAIN_PRIVATE_KEY: panDomainKeys.privateKeyBase64,
+                PAN_DOMAIN_PUBLIC_KEY: panDomainKeys.publicKeyBase64,
                 PAN_DOMAIN_BUCKET: "pan-domain-auth-settings",
                 SNAPSHOT_BUCKET: "flexible-snapshotter-code",
                 SECONDARY_SNAPSHOT_BUCKET:
@@ -120,6 +124,7 @@ async function startLocalStack(projectRoot) {
 
         return {
             baseUrl,
+            panDomainPrivateKey: panDomainKeys.privateKeyPem,
             minioContainer,
             restorerContainer,
             network,
