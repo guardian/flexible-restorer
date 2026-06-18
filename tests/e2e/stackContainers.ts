@@ -1,12 +1,30 @@
-const path = require("path");
-const { spawn } = require("child_process");
-const { GenericContainer, Network, Wait } = require("testcontainers");
-const { generatePanDomainKeys } = require("./panDomainKeys");
+import path from "path";
+import { spawn } from "child_process";
+import { GenericContainer, Network, Wait } from "testcontainers";
+import { generatePanDomainKeys } from "./panDomainKeys";
 
 const MINIO_ROOT_USER = "minioadmin";
 const MINIO_ROOT_PASSWORD = "minioadmin";
 
-function buildDockerImage({ tag, dockerfilePath, contextPath }) {
+type BuildDockerImageArgs = {
+    tag: string;
+    dockerfilePath: string;
+    contextPath: string;
+};
+
+export type LocalStack = {
+    baseUrl: string;
+    panDomainPrivateKey: string;
+    minioContainer: any;
+    restorerContainer: any;
+    network: any;
+};
+
+function buildDockerImage({
+    tag,
+    dockerfilePath,
+    contextPath,
+}: BuildDockerImageArgs): Promise<void> {
     return new Promise((resolve, reject) => {
         console.log(`\n[docker-build] Building ${tag} from ${dockerfilePath}`);
         const child = spawn(
@@ -39,19 +57,19 @@ function buildDockerImage({ tag, dockerfilePath, contextPath }) {
     });
 }
 
-function createLogConsumer(prefix) {
-    return (stream) => {
+function createLogConsumer(prefix: string) {
+    return (stream: any) => {
         stream
-            .on("data", (line) => {
+            .on("data", (line: Buffer) => {
                 process.stdout.write(`[${prefix}] ${line.toString()}`);
             })
-            .on("err", (line) => {
+            .on("err", (line: Buffer) => {
                 process.stderr.write(`[${prefix}] ${line.toString()}`);
             });
     };
 }
 
-async function startLocalStack(projectRoot) {
+export async function startLocalStack(projectRoot: string): Promise<LocalStack> {
     const runId = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
     const minioImageTag = `flexible-restorer-minio-e2e:${runId}`;
     const restorerImageTag = `flexible-restorer-app-e2e:${runId}`;
@@ -141,7 +159,11 @@ async function startLocalStack(projectRoot) {
     }
 }
 
-async function stopLocalStack({ restorerContainer, minioContainer, network }) {
+export async function stopLocalStack({
+    restorerContainer,
+    minioContainer,
+    network,
+}: Partial<LocalStack> = {}): Promise<void> {
     if (restorerContainer) {
         await restorerContainer.stop();
     }
@@ -152,8 +174,3 @@ async function stopLocalStack({ restorerContainer, minioContainer, network }) {
         await network.stop();
     }
 }
-
-module.exports = {
-    startLocalStack,
-    stopLocalStack,
-};
