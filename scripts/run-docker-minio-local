@@ -14,6 +14,7 @@ PERMISSIONS_BUCKET="${PERMISSIONS_BUCKET:-permissions-cache}"
 MINIO_ROOT_USER="${MINIO_ROOT_USER:-minioadmin}"
 MINIO_ROOT_PASSWORD="${MINIO_ROOT_PASSWORD:-minioadmin}"
 MINIO_DATA_VOLUME="${MINIO_DATA_VOLUME:-flexible-restorer-minio-data}"
+MINIO_DOMAIN="${MINIO_DOMAIN:-host.docker.internal}"
 
 cd "$ROOT_DIR"
 
@@ -24,6 +25,7 @@ CONTAINER_ID="$(docker run --rm -d \
   -p 9003:9001 \
   -e MINIO_ROOT_USER="$MINIO_ROOT_USER" \
   -e MINIO_ROOT_PASSWORD="$MINIO_ROOT_PASSWORD" \
+  -e MINIO_DOMAIN="$MINIO_DOMAIN" \
   -e PAN_DOMAIN_BUCKET="$PAN_DOMAIN_BUCKET" \
   -e SNAPSHOT_BUCKET="$SNAPSHOT_BUCKET" \
   -e SECONDARY_SNAPSHOT_BUCKET="$SECONDARY_SNAPSHOT_BUCKET" \
@@ -41,6 +43,7 @@ trap cleanup INT TERM
 echo "MinIO container started: ${CONTAINER_ID}"
 echo "S3 API: http://localhost:9002"
 echo "Console: http://localhost:9003"
+echo "MinIO domain: ${MINIO_DOMAIN}"
 echo "Buckets: ${PAN_DOMAIN_BUCKET}, ${SNAPSHOT_BUCKET}, ${SECONDARY_SNAPSHOT_BUCKET}, ${PERMISSIONS_BUCKET}"
 echo "Permissions object: s3://${PERMISSIONS_BUCKET}/CODE/permissions.json"
 echo "Press Ctrl+C to stop."
