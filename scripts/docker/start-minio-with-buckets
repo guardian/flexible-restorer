@@ -17,6 +17,8 @@ PAN_DOMAIN_SETTINGS_FIXTURE_FILE="${PAN_DOMAIN_SETTINGS_FIXTURE_FILE:-/opt/minio
 PAN_DOMAIN_SETTINGS_PUBLIC_FIXTURE_FILE="${PAN_DOMAIN_SETTINGS_PUBLIC_FIXTURE_FILE:-/opt/minio-fixtures/pan-domain-settings/local.dev-gutools.co.uk.settings.public}"
 PAN_DOMAIN_SETTINGS_OBJECT_KEY="${PAN_DOMAIN_SETTINGS_OBJECT_KEY:-local.dev-gutools.co.uk.settings}"
 PAN_DOMAIN_SETTINGS_PUBLIC_OBJECT_KEY="${PAN_DOMAIN_SETTINGS_PUBLIC_OBJECT_KEY:-local.dev-gutools.co.uk.settings.public}"
+PAN_DOMAIN_PRIVATE_KEY="${PAN_DOMAIN_PRIVATE_KEY:-}"
+PAN_DOMAIN_PUBLIC_KEY="${PAN_DOMAIN_PUBLIC_KEY:-}"
 SNAPSHOTS_FIXTURE_DIR="${SNAPSHOTS_FIXTURE_DIR:-/opt/minio-fixtures/snapshots}"
 MINIO_ENDPOINT="http://127.0.0.1:${MINIO_API_PORT}"
 AWS_ACCESS_KEY_ID="${MINIO_ROOT_USER}"
@@ -26,6 +28,11 @@ AWS_DEFAULT_REGION="us-east-1"
 export AWS_ACCESS_KEY_ID
 export AWS_SECRET_ACCESS_KEY
 export AWS_DEFAULT_REGION
+
+if [ -z "${PAN_DOMAIN_PRIVATE_KEY}" ] || [ -z "${PAN_DOMAIN_PUBLIC_KEY}" ]; then
+  echo "PAN_DOMAIN_PRIVATE_KEY and PAN_DOMAIN_PUBLIC_KEY must be set" >&2
+  exit 1
+fi
 
 max_attempts="${MINIO_STARTUP_MAX_ATTEMPTS:-60}"
 
@@ -86,21 +93,35 @@ upload_permissions_fixture() {
 }
 
 upload_pan_domain_settings_fixtures() {
-  if [ -f "${PAN_DOMAIN_SETTINGS_FIXTURE_FILE}" ]; then
-    aws s3 cp "${PAN_DOMAIN_SETTINGS_FIXTURE_FILE}" \
-      "s3://${PAN_DOMAIN_BUCKET}/${PAN_DOMAIN_SETTINGS_OBJECT_KEY}" \
-      --endpoint-url "${MINIO_ENDPOINT}" >/dev/null
-  else
+  if [ ! -f "${PAN_DOMAIN_SETTINGS_FIXTURE_FILE}" ]; then
     echo "Pan-domain settings fixture not found at ${PAN_DOMAIN_SETTINGS_FIXTURE_FILE}; skipping upload"
+    return
   fi
 
-  if [ -f "${PAN_DOMAIN_SETTINGS_PUBLIC_FIXTURE_FILE}" ]; then
-    aws s3 cp "${PAN_DOMAIN_SETTINGS_PUBLIC_FIXTURE_FILE}" \
-      "s3://${PAN_DOMAIN_BUCKET}/${PAN_DOMAIN_SETTINGS_PUBLIC_OBJECT_KEY}" \
-      --endpoint-url "${MINIO_ENDPOINT}" >/dev/null
-  else
+  if [ ! -f "${PAN_DOMAIN_SETTINGS_PUBLIC_FIXTURE_FILE}" ]; then
     echo "Pan-domain public settings fixture not found at ${PAN_DOMAIN_SETTINGS_PUBLIC_FIXTURE_FILE}; skipping upload"
+    return
   fi
+
+  settings_temp_file="$(mktemp)"
+  public_temp_file="$(mktemp)"
+
+  cp "${PAN_DOMAIN_SETTINGS_FIXTURE_FILE}" "${settings_temp_file}"
+  cp "${PAN_DOMAIN_SETTINGS_PUBLIC_FIXTURE_FILE}" "${public_temp_file}"
+
+  echo "publicKey=${PAN_DOMAIN_PUBLIC_KEY}" >> "${settings_temp_file}"
+  echo "privateKey=${PAN_DOMAIN_PRIVATE_KEY}" >> "${settings_temp_file}"
+  echo "publicKey=${PAN_DOMAIN_PUBLIC_KEY}" >> "${public_temp_file}"
+
+  aws s3 cp "${settings_temp_file}" \
+    "s3://${PAN_DOMAIN_BUCKET}/${PAN_DOMAIN_SETTINGS_OBJECT_KEY}" \
+    --endpoint-url "${MINIO_ENDPOINT}" >/dev/null
+
+  aws s3 cp "${public_temp_file}" \
+    "s3://${PAN_DOMAIN_BUCKET}/${PAN_DOMAIN_SETTINGS_PUBLIC_OBJECT_KEY}" \
+    --endpoint-url "${MINIO_ENDPOINT}" >/dev/null
+
+  rm -f "${settings_temp_file}" "${public_temp_file}"
 }
 
 upload_snapshot_fixtures() {
