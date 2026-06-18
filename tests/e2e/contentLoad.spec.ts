@@ -1,7 +1,7 @@
-const path = require("path");
-const { test, expect } = require("@playwright/test");
-const { startLocalStack, stopLocalStack } = require("./stackContainers");
-const { createPanDomainCookie } = require("./panDomainCookie");
+import path from "path";
+import { test, expect } from "@playwright/test";
+import { createPanDomainCookie } from "./panDomainCookie";
+import { startLocalStack, stopLocalStack, type LocalStack } from "./stackContainers";
 
 test.describe("Local stack via Testcontainers", () => {
     test("starts MinIO first, injects its host/port into Restorer, then loads app", async ({
@@ -10,7 +10,7 @@ test.describe("Local stack via Testcontainers", () => {
         test.setTimeout(120 * 1000);
 
         const projectRoot = path.resolve(__dirname, "../..");
-        let stack;
+        let stack: LocalStack | undefined;
 
         try {
             stack = await startLocalStack(projectRoot);
@@ -62,7 +62,7 @@ test.describe("Local stack via Testcontainers", () => {
                     .first(),
             ).toBeVisible({ timeout: 5 * 1000 });
         } finally {
-            await stopLocalStack(stack || {});
+            await stopLocalStack(stack);
         }
     });
 });

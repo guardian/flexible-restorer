@@ -1,13 +1,19 @@
-const { generateKeyPairSync } = require("crypto");
+import { generateKeyPairSync } from "crypto";
 
-function pemToBase64(key) {
+export type PanDomainKeys = {
+    privateKeyPem: string;
+    privateKeyBase64: string;
+    publicKeyBase64: string;
+};
+
+export function pemToBase64(key: string): string {
     return key
         .replace(/-----BEGIN [^-]+-----/g, "")
         .replace(/-----END [^-]+-----/g, "")
         .replace(/\s+/g, "");
 }
 
-function generatePanDomainKeys() {
+export function generatePanDomainKeys(): PanDomainKeys {
     const { privateKey, publicKey } = generateKeyPairSync("rsa", {
         modulusLength: 4096,
         publicKeyEncoding: {
@@ -26,8 +32,3 @@ function generatePanDomainKeys() {
         publicKeyBase64: pemToBase64(publicKey),
     };
 }
-
-module.exports = {
-    pemToBase64,
-    generatePanDomainKeys,
-};

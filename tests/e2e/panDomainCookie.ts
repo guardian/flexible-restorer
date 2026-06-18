@@ -1,7 +1,11 @@
-const { createCookie } = require("@guardian/pan-domain-node/dist/src/panda");
-const { base64ToPEM } = require("@guardian/pan-domain-node/dist/src/utils");
+const { createCookie } = require("@guardian/pan-domain-node/dist/src/panda") as {
+    createCookie: (user: Record<string, unknown>, privateKey: string) => string;
+};
+const { base64ToPEM } = require("@guardian/pan-domain-node/dist/src/utils") as {
+    base64ToPEM: (key: string, headerFooter: string) => string;
+};
 
-function formatPrivateKeyForSigning(rawPrivateKey) {
+function formatPrivateKeyForSigning(rawPrivateKey: string): string {
     const trimmedKey = rawPrivateKey.trim();
 
     if (trimmedKey.includes("-----BEGIN")) {
@@ -15,7 +19,7 @@ function formatPrivateKeyForSigning(rawPrivateKey) {
     return base64ToPEM(normalizedBase64Key, "RSA PRIVATE");
 }
 
-function createPanDomainCookie(rawPrivateKey) {
+export function createPanDomainCookie(rawPrivateKey: string): string {
     if (!rawPrivateKey) {
         throw new Error("privateKey was not supplied to createPanDomainCookie");
     }
@@ -34,7 +38,3 @@ function createPanDomainCookie(rawPrivateKey) {
         privateKey,
     );
 }
-
-module.exports = {
-    createPanDomainCookie,
-};

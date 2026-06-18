@@ -1,7 +1,9 @@
-const path = require("path");
-const fs = require("fs");
+import fs from "fs";
+import path from "path";
 
-function parseSettingsFile(settingsText) {
+export type FixtureSettings = Record<string, string>;
+
+export function parseSettingsFile(settingsText: string): FixtureSettings {
     return settingsText
         .split(/\r?\n/)
         .map((line) => line.trim())
@@ -16,13 +18,16 @@ function parseSettingsFile(settingsText) {
             const value = line.slice(separatorIndex + 1).trim();
             acc[key] = value;
             return acc;
-        }, {});
+        }, {} as FixtureSettings);
 }
 
-function readFixtureSettings(
-    projectRoot,
-    fileName = path.join("pan-domain-settings", "local.dev-gutools.co.uk.settings"),
-) {
+export function readFixtureSettings(
+    projectRoot: string,
+    fileName = path.join(
+        "pan-domain-settings",
+        "local.dev-gutools.co.uk.settings",
+    ),
+): { settings: FixtureSettings; settingsFilePath: string } {
     const settingsFilePath = path.join(projectRoot, "fixtures", fileName);
     const settingsText = fs.readFileSync(settingsFilePath, "utf8");
     const settings = parseSettingsFile(settingsText);
@@ -32,8 +37,3 @@ function readFixtureSettings(
         settingsFilePath,
     };
 }
-
-module.exports = {
-    parseSettingsFile,
-    readFixtureSettings,
-};
