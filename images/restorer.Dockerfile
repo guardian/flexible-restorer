@@ -47,11 +47,11 @@ RUN npm run build
 # Compile Scala sources during image build so runtime startup does not need a
 # full cold compile when build inputs are unchanged.
 RUN sbt -batch compile
-RUN chmod +x /app/scripts/docker-start
+RUN chmod +x /app/scripts/docker/docker-start
 
 COPY images/dev-nginx /usr/local/bin/dev-nginx
 RUN chmod +x /usr/local/bin/dev-nginx
 
 EXPOSE 80 443 9000
 
-CMD ["/app/scripts/docker-start"]
+CMD ["/app/scripts/docker/docker-start"]
