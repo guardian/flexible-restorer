@@ -25,6 +25,8 @@ public/css
 public/build.js
 public/build.js.map
 public/dist
+test-results/
+.vscode/settings.json
 .bsp
 # Ignored files for metals
 /.bloop/
