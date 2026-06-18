@@ -10,24 +10,14 @@ class AppLoader extends ApplicationLoader {
     startLogging(context)
 
     val isLocalMode = sys.props.get("local").contains("true")
-    val identity: AppIdentity = AppIdentity
-      .whoAmI(defaultAppName, credentials)
-      .getOrElse(DevIdentity(defaultAppName))
+    val identity: AppIdentity = AppIdentity.whoAmI(defaultAppName, credentials).getOrElse(DevIdentity(defaultAppName))
     val loadedConfig = if (isLocalMode) {
       ConfigFactory.empty()
     } else {
       ConfigurationLoader.load(identity, credentials) {
         // we use `defaultAppName` here instead of `aws.app` because the app name has diverged in EC2 tags and SSM
-        case aws: AwsIdentity =>
-          SSMConfigurationLocation(
-            s"/${aws.stack}/$defaultAppName/${aws.stage}",
-            aws.region
-          )
-        case _: DevIdentity =>
-          SSMConfigurationLocation(
-            s"/$defaultStack/$defaultAppName/DEV",
-            defaultRegion.id()
-          )
+        case aws: AwsIdentity => SSMConfigurationLocation(s"/${aws.stack}/$defaultAppName/${aws.stage}", aws.region)
+        case _: DevIdentity => SSMConfigurationLocation(s"/$defaultStack/$defaultAppName/DEV", defaultRegion.id())
       }
     }
 
