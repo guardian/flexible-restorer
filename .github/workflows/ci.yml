@@ -30,6 +30,21 @@ jobs:
                   npm install
                   npm run build
 
+            - uses: actions/setup-node@v3
+              with:
+                  node-version-file: 'restorer-frontend/.nvmrc'
+                  cache: npm
+                  cache-dependency-path: "restorer-frontend/package-lock.json"
+
+            - name: Restorer Frontend install
+              working-directory: restorer-frontend
+              run: npm ci
+              shell: bash
+
+            - name: FleRestorerxible Frontend Build
+              working-directory: restorer-frontend
+              run: npm run build
+
             - uses: guardian/setup-scala@v1
 
             - name: Scala Build

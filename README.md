@@ -9,7 +9,9 @@ Restores snapshotted content back into Composer.
 Run `./scripts/setup`.
 
 ### Install client-side dependencies and build JS/CSS
+This project does not have hot module reloading so you will have to reload the page on Javascript or SCSS updates
 
+#### Angular frontend
 ```
 $ nvm use
 $ npm install
@@ -19,7 +21,17 @@ $ npm run build
 $ npm run watch
 ```
 
-This project does not have hot module reloading so you will have to reload the page on Javascript or SCSS updates
+#### React frontend
+```
+$ cd ./restorer-frontend
+$ nvm use
+$ npm install
+$ npm run build
+
+# Alternatively to continously watch for changes and rebuild
+$ npm run build-watch
+```
+
 
 ### Get credentials
 
