@@ -54,7 +54,7 @@
                     <li class="snapshot-list-secondary"
                         ng-repeat-start="model in models"
                         ng-if="model.isSecondary()">
-                        Snapshot from secondary
+                        This snapshot came from composer-secondary
                     </li>
                     <li class="snapshot-list__item index-list__item index-list__item--{{ model.get('activeState') ? 'tertiary' : 'primary' }}"
                         variant="{{ model.get('activeState') ? 'tertiary' : 'primary' }}"
