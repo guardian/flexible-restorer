@@ -11,6 +11,7 @@ RUN apt-get update \
     curl \
     bash \
     git \
+    awscli \
     openssl \
     scala \
     && rm -rf /var/lib/apt/lists/*
