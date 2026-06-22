@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 FROM eclipse-temurin:11-jdk
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -22,15 +23,13 @@ RUN curl -fsSL https://raw.githubusercontent.com/dwijnand/sbt-extras/master/sbt 
 
 WORKDIR /app
 
-# Copy SBT build definition first so dependency resolution can be cached across
-# source changes.
+# Pre-fetch JVM dependencies. Layer-cached after this point: only re-runs when
+# build.sbt or project/ changes.
 COPY build.sbt ./
 COPY project ./project
-
-# Pre-fetch JVM dependencies/plugins in a cacheable layer.
 RUN sbt -batch update
 
-# Use the exact Node version family from .nvmrc for frontend build.
+# Install Node via nvm. Only re-runs when .nvmrc changes.
 COPY .nvmrc .
 RUN rm -rf "$NVM_DIR" \
     && git clone https://github.com/nvm-sh/nvm.git "$NVM_DIR" \
@@ -38,15 +37,25 @@ RUN rm -rf "$NVM_DIR" \
     && git checkout v0.40.1 \
     && bash -lc 'set -eo pipefail; export NVM_DIR=/usr/local/nvm; . "$NVM_DIR/nvm.sh"; NODE_VERSION="$(tr -d "[:space:]" < /app/.nvmrc)"; nvm install "$NODE_VERSION"; nvm alias default "$NODE_VERSION"; nvm use default; NODE_BIN_DIR="$(dirname "$(nvm which default)")"; ln -sf "$NODE_BIN_DIR/node" /usr/local/bin/node; ln -sf "$NODE_BIN_DIR/npm" /usr/local/bin/npm; ln -sf "$NODE_BIN_DIR/npx" /usr/local/bin/npx'
 
+# Install npm dependencies. Only re-runs when package.json/lock changes.
 COPY package.json package-lock.json* ./
-RUN npm install
+RUN --mount=type=cache,target=/root/.npm \
+    npm install
 
-COPY . .
+# Compile Scala sources. Only re-runs when app/ or conf/ changes,
+# not when JS, scripts, or fixtures change.
+COPY app ./app
+COPY conf ./conf
+RUN sbt -batch compile
+
+# Build frontend assets. Only re-runs when public/ or webpack config changes,
+# not when Scala sources change.
+COPY public ./public
+COPY webpack.config.js ./
 RUN npm run build
 
-# Compile Scala sources during image build so runtime startup does not need a
-# full cold compile when build inputs are unchanged.
-RUN sbt -batch compile
+# Copy remaining runtime files (scripts, fixtures, nginx config, etc.).
+COPY . .
 RUN chmod +x /app/scripts/docker/docker-start
 
 EXPOSE 9000
