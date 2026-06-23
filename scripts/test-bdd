@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+E2E_NODE_VERSION="${E2E_NODE_VERSION:-20}"
+TEST_ARGS=("$@")
+RESULTS_ROOT="${BDD_RESULTS_DIR:-tests/bdd-results}"
+STACK_SESSION_FILE="${BDD_STACK_SESSION_FILE:-.tmp/local-stack-session.json}"
+
+RUN_ID="$(date +%Y%m%d-%H%M%S)"
+RUN_DIR="${RESULTS_ROOT}/${RUN_ID}"
+VIDEOS_DIR="${RUN_DIR}/videos"
+JSON_REPORT="${RUN_DIR}/cucumber-report.json"
+HTML_REPORT="${RUN_DIR}/cucumber-report.html"
+
+mkdir -p "$VIDEOS_DIR"
+export BDD_RUN_DIR="$RUN_DIR"
+export BDD_VIDEOS_DIR="$VIDEOS_DIR"
+export BDD_STACK_SESSION_FILE="$STACK_SESSION_FILE"
+
+current_major="$(node -p "process.versions.node.split('.')[0]" 2>/dev/null || echo 0)"
+
+run_bdd() {
+  local -a cmd_prefix=("$@")
+  local exit_code=0
+
+  local -a cucumber_args=(
+    tests/e2e/features/candidates/source-discovered-content-view.feature
+    tests/e2e/features/candidates/source-discovered-version-list.feature
+    --require 'tests/bdd/**/*.ts'
+    --tags 'not @edge-case'
+    --format progress
+    --format "json:${JSON_REPORT}"
+  )
+
+  if [ "${#TEST_ARGS[@]}" -gt 0 ]; then
+    cucumber_args+=("${TEST_ARGS[@]}")
+  fi
+
+  if [ "${#cmd_prefix[@]}" -gt 0 ]; then
+    "${cmd_prefix[@]}" npm exec playwright install chromium
+    set +e
+    "${cmd_prefix[@]}" node --import tsx ./node_modules/@cucumber/cucumber/bin/cucumber-js "${cucumber_args[@]}"
+    exit_code=$?
+    set -e
+  else
+    npm exec playwright install chromium
+    set +e
+    node --import tsx ./node_modules/@cucumber/cucumber/bin/cucumber-js "${cucumber_args[@]}"
+    exit_code=$?
+    set -e
+  fi
+
+  node ./scripts/render-bdd-report.js "$JSON_REPORT" "$HTML_REPORT" "$VIDEOS_DIR"
+
+  echo ""
+  echo "BDD artifacts:"
+  echo "  Run dir: $RUN_DIR"
+  echo "  HTML report: $HTML_REPORT"
+  echo "  JSON report: $JSON_REPORT"
+  echo "  Videos dir: $VIDEOS_DIR"
+  echo "  Stack session file: $STACK_SESSION_FILE"
+
+  return "$exit_code"
+}
+
+if [ "$current_major" -ge 18 ]; then
+  run_bdd
+  exit 0
+fi
+
+export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+  # shellcheck disable=SC1090
+  . "$NVM_DIR/nvm.sh"
+  nvm install "$E2E_NODE_VERSION" >/dev/null
+  run_bdd nvm exec "$E2E_NODE_VERSION"
+  exit 0
+fi
+
+echo "BDD tests require Node.js 18+."
+echo "Current Node: $(node -v 2>/dev/null || echo 'not found')"
+echo "Install nvm and run again, or run with Node >=18 directly."
+echo "Optional override: E2E_NODE_VERSION=22 npm run bdd:run-tests"
+exit 1

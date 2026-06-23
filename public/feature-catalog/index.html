@@ -1,0 +1,72 @@
+<!doctype html>
+<html><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>E2E Feature Catalog</title>
+<style>
+body{margin:0;font-family:"Avenir Next","Segoe UI",sans-serif;background:#f5f3ee;color:#1f1f1b}
+header{padding:20px;border-bottom:1px solid #dfd7c9;background:linear-gradient(100deg,#f9f5ea,#eef7f4)}
+main{max-width:1200px;margin:0 auto;padding:20px}
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.card{background:#fffefb;border:1px solid #dfd7c9;border-radius:12px;padding:14px;box-shadow:0 8px 20px rgba(0,0,0,.04)}
+a{color:#0a7d5a;text-decoration:none}a:hover{text-decoration:underline}
+.meta{color:#6d6a61;font-size:13px}
+</style></head>
+<body><header><h1>E2E Feature Catalog</h1><p class="meta">Interactive preview pages are generated in /assets/feature-catalog</p></header>
+<main><section class="feature-grid"><article class="card">
+  <h2><a href="source-discovered-content-view.html">Source discovered Content View capabilities</a></h2>
+  <p class="meta">9 scenarios</p>
+  <ul><li><a href="source-discovered-content-view.html#default-view-shows-text-content-for-the-latest-snapshot-1">Default view shows text content for the latest snapshot</a></li>
+<li><a href="source-discovered-content-view.html#furniture-fields-are-populated-from-the-loaded-snapshot-model-2">Furniture fields are populated from the loaded snapshot model</a></li>
+<li><a href="source-discovered-content-view.html#toggling-to-json-mode-updates-the-content-pane-and-action-label-3">Toggling to JSON mode updates the content pane and action label</a></li>
+<li><a href="source-discovered-content-view.html#toggling-back-to-text-mode-resets-the-display-label-4">Toggling back to text mode resets the display label</a></li>
+<li><a href="source-discovered-content-view.html#copy-snapshot-json-to-clipboard-5">Copy snapshot JSON to clipboard</a></li>
+<li><a href="source-discovered-content-view.html#copy-label-resets-after-loading-a-different-snapshot-6">Copy label resets after loading a different snapshot</a></li>
+<li><a href="source-discovered-content-view.html#content-view-returns-to-text-mode-after-restore-modal-closes-7">Content view returns to text mode after restore modal closes</a></li>
+<li><a href="source-discovered-content-view.html#initial-snapshot-list-load-failure-triggers-an-error-event-8">Initial snapshot list load failure triggers an error event</a></li>
+<li><a href="source-discovered-content-view.html#snapshot-content-fetch-failure-triggers-an-error-event-9">Snapshot content fetch failure triggers an error event</a></li></ul>
+</article>
+<article class="card">
+  <h2><a href="source-discovered-error-handling.html">Source discovered Error Handling capabilities</a></h2>
+  <p class="meta">1 scenario</p>
+  <ul><li><a href="source-discovered-error-handling.html#display-error-state-when-snapshot-or-restore-operations-fail-1">Display error state when snapshot or restore operations fail</a></li></ul>
+</article>
+<article class="card">
+  <h2><a href="source-discovered-export.html">Source discovered Export capabilities</a></h2>
+  <p class="meta">2 scenarios</p>
+  <ul><li><a href="source-discovered-export.html#export-snapshots-as-git-repository-1">Export snapshots as Git repository</a></li>
+<li><a href="source-discovered-export.html#export-snapshots-as-zip-archive-2">Export snapshots as zip archive</a></li></ul>
+</article>
+<article class="card">
+  <h2><a href="source-discovered-restore.html">Source discovered Restore capabilities</a></h2>
+  <p class="meta">2 scenarios</p>
+  <ul><li><a href="source-discovered-restore.html#show-restore-action-only-to-users-with-restore-permission-1">Show restore action only to users with restore permission</a></li>
+<li><a href="source-discovered-restore.html#close-restore-modal-with-escape-key-2">Close restore modal with escape key</a></li></ul>
+</article>
+<article class="card">
+  <h2><a href="source-discovered-search.html">Source discovered Search capabilities</a></h2>
+  <p class="meta">1 scenario</p>
+  <ul><li><a href="source-discovered-search.html#search-by-composer-url-opens-content-versions-page-1">Search by composer url opens content versions page</a></li></ul>
+</article>
+<article class="card">
+  <h2><a href="source-discovered-version-list.html">Source discovered Version List capabilities</a></h2>
+  <p class="meta">14 scenarios</p>
+  <ul><li><a href="source-discovered-version-list.html#view-available-snapshot-versions-for-a-content-id-1">View available snapshot versions for a content id</a></li>
+<li><a href="source-discovered-version-list.html#sidebar-loading-state-is-shown-until-snapshot-list-is-ready-2">Sidebar loading state is shown until snapshot list is ready</a></li>
+<li><a href="source-discovered-version-list.html#snapshot-list-is-sorted-newest-first-by-created-date-3">Snapshot list is sorted newest first by created date</a></li>
+<li><a href="source-discovered-version-list.html#first-snapshot-is-active-by-default-after-list-load-4">First snapshot is active by default after list load</a></li>
+<li><a href="source-discovered-version-list.html#header-metadata-comes-from-the-active-snapshot-5">Header metadata comes from the active snapshot</a></li>
+<li><a href="source-discovered-version-list.html#sidebar-activation-animation-occurs-after-load-6">Sidebar activation animation occurs after load</a></li>
+<li><a href="source-discovered-version-list.html#secondary-system-snapshots-show-a-source-banner-row-7">Secondary-system snapshots show a source banner row</a></li>
+<li><a href="source-discovered-version-list.html#revision-index-falls-back-when-revision-id-is-missing-8">Revision index falls back when revision id is missing</a></li>
+<li><a href="source-discovered-version-list.html#relative-time-and-editor-metadata-are-shown-for-each-row-9">Relative time and editor metadata are shown for each row</a></li>
+<li><a href="source-discovered-version-list.html#launch-related-snapshots-are-visually-highlighted-10">Launch-related snapshots are visually highlighted</a></li>
+<li><a href="source-discovered-version-list.html#content-settings-indicators-are-conditionally-rendered-11">Content settings indicators are conditionally rendered</a></li>
+<li><a href="source-discovered-version-list.html#published-state-label-reflects-lifecycle-conditions-12">Published state label reflects lifecycle conditions</a></li>
+<li><a href="source-discovered-version-list.html#no-snapshot-response-produces-a-user-facing-error-flow-13">No-snapshot response produces a user-facing error flow</a></li>
+<li><a href="source-discovered-version-list.html#upstream-list-request-failure-enters-error-flow-14">Upstream list request failure enters error flow</a></li></ul>
+</article>
+<article class="card">
+  <h2><a href="source-discovered-version-navigation.html">Source discovered Version Navigation capabilities</a></h2>
+  <p class="meta">2 scenarios</p>
+  <ul><li><a href="source-discovered-version-navigation.html#select-a-snapshot-version-to-load-it-into-the-main-pane-1">Select a snapshot version to load it into the main pane</a></li>
+<li><a href="source-discovered-version-navigation.html#navigate-snapshot-versions-with-keyboard-2">Navigate snapshot versions with keyboard</a></li></ul>
+</article></section></main></body></html>

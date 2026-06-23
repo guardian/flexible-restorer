@@ -4,6 +4,11 @@
         "build": "webpack --mode=production",
         "watch": "webpack --mode=development --watch",
         "local:stack": "./scripts/docker/run-local-stack",
+        "local:stack:drive": "node ./scripts/docker/drive-local-stack-browser.js",
+        "bdd:candidates": "node ./scripts/generate-cucumber-candidates.js",
+        "bdd:features:html": "node ./scripts/render-feature-catalog.js",
+        "bdd:features:serve": "node ./scripts/serve-feature-catalog.js",
+        "bdd:run-tests": "./scripts/test-bdd",
         "test:e2e": "./scripts/test-e2e",
         "test:e2e:headed": "./scripts/test-e2e --headed",
         "test:e2e:debug": "./scripts/test-e2e --debug"
@@ -19,13 +24,16 @@
         "moment": "^2.29.4"
     },
     "devDependencies": {
+        "@cucumber/cucumber": "^8.11.1",
         "@guardian/pan-domain-node": "^1.2.4",
         "@playwright/test": "^1.55.0",
+        "@types/selenium-webdriver": "^4.35.6",
         "css-loader": "^3.6.0",
         "mini-css-extract-plugin": "^0.9.0",
         "raw-loader": "^4.0.1",
         "sass": "^1.26.9",
         "sass-loader": "^8.0.2",
+        "selenium-webdriver": "^4.45.0",
         "svg-url-loader": "^6.0.0",
         "testcontainers": "^10.17.1",
         "tsx": "^4.22.4",
