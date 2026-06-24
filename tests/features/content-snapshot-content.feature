@@ -15,6 +15,15 @@ Feature: Review and act on snapshot content in version history
   # Evidence: public/javascripts/app/controllers/SnapshotContentCtrl.js
   # Evidence: public/javascripts/app/templates/restore-list.html
 
+  Scenario: Snapshot furniture shows the headline, standfirst, and trail text
+    Given snapshot content has loaded
+    When I view the content panel furniture
+    Then I should see the snapshot headline
+    And I should see the snapshot standfirst
+    And I should see the snapshot trail text
+  # Evidence: public/javascripts/app/controllers/SnapshotContentCtrl.js
+  # Evidence: public/javascripts/app/templates/restore-list.html
+
   Scenario: I can switch to JSON view and back to text view
     Given snapshot content has loaded
     When I use the display toggle to show JSON

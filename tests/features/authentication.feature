@@ -33,7 +33,9 @@ Feature: Authenticate users and gate access
     Given I am signed in through pan-domain auth
     When the frontend requests the current user permissions
     Then the API should return the permission map as JSON
-    And the permission map should include whether I have restorer access
+    And the permission map should include whether I have restore_content permission
+    And the permission map should include whether I have restore_content_to_any_stack permission
+    And the permission map should not include the restorer_access gate permission
   # Evidence: app/controllers/Login.scala
   # Evidence: app/permissions/Permissions.scala
   # Evidence: public/javascripts/app/services/UserService.js
