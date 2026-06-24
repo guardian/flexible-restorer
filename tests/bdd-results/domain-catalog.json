@@ -1,0 +1,173 @@
+{
+  "generatedFrom": "tests/bdd-results/domain-definitions.md",
+  "domains": [
+    {
+      "id": "content-search-entry",
+      "name": "Content Search & Entry",
+      "description": "Entry point where an editor submits a Composer URL or content id and is routed to that content's version history.",
+      "frontend": [
+        "public/javascripts/app/controllers/SearchFormCtrl.js",
+        "public/javascripts/app/templates/splash-screen.html"
+      ],
+      "routes": [
+        "GET /",
+        "GET /content/:contentId/versions"
+      ],
+      "controllerActions": [
+        "controllers.Application.index",
+        "controllers.Application.versionIndex"
+      ]
+    },
+    {
+      "id": "version-history-metadata",
+      "name": "Version History & Snapshot Metadata",
+      "description": "Listing of available snapshots for a piece of content with per-snapshot metadata.",
+      "frontend": [
+        "public/javascripts/app/controllers/SnapshotListCtrl.js",
+        "public/javascripts/app/models/SnapshotIdModel.js",
+        "public/javascripts/app/collections/SnapshotIdModels.js"
+      ],
+      "routes": [
+        "GET /api/1/versionList/:contentId",
+        "GET /api/1/version-count/:contentId"
+      ],
+      "controllerActions": [
+        "controllers.Versions.versionList",
+        "controllers.Versions.availableVersionsCount"
+      ]
+    },
+    {
+      "id": "snapshot-content-viewing",
+      "name": "Snapshot Content Viewing",
+      "description": "Display of a selected snapshot's rendered HTML and JSON content with copy/toggle actions.",
+      "frontend": [
+        "public/javascripts/app/controllers/SnapshotContentCtrl.js",
+        "public/javascripts/app/models/SnapshotModel.js"
+      ],
+      "routes": [
+        "GET /api/1/version/:systemId/:contentId/:timestamp"
+      ],
+      "controllerActions": [
+        "controllers.Versions.show"
+      ]
+    },
+    {
+      "id": "snapshot-interaction-navigation",
+      "name": "Snapshot Interaction & Navigation",
+      "description": "Keyboard navigation, row selection, view-mode switching, and modal open/close behavior.",
+      "frontend": [
+        "public/javascripts/app/controllers/SnapshotListInteractionCtrl.js",
+        "public/javascripts/app/controllers/ModalController.js"
+      ],
+      "routes": [],
+      "controllerActions": []
+    },
+    {
+      "id": "restore-workflow",
+      "name": "Restore Workflow",
+      "description": "Restoring a selected snapshot to a permitted destination stack, including destination loading, permission filtering, safety checks, and submission.",
+      "frontend": [
+        "public/javascripts/app/controllers/RestoreFormCtrl.js",
+        "public/javascripts/app/services/RestoreService.js"
+      ],
+      "routes": [
+        "POST /api/1/restore/:sourceId/:contentId/:timestamp/to/:destinationId",
+        "GET /api/1/restore/destinations/:contentId"
+      ],
+      "controllerActions": [
+        "controllers.Restore.restore",
+        "controllers.Restore.restoreDestinations"
+      ]
+    },
+    {
+      "id": "authentication-permissions",
+      "name": "Authentication & Permissions",
+      "description": "Pan-domain authentication gating, access-denied handling, and exposure of current user and permission data.",
+      "frontend": [
+        "public/javascripts/app/services/UserService.js"
+      ],
+      "routes": [
+        "GET /oauthCallback",
+        "GET /authError",
+        "GET /api/1/user",
+        "GET /api/1/user/permissions"
+      ],
+      "controllerActions": [
+        "controllers.Login.oauthCallback",
+        "controllers.Login.authError",
+        "controllers.Login.user",
+        "controllers.Login.usersPermissions"
+      ]
+    },
+    {
+      "id": "export",
+      "name": "Export",
+      "description": "Downloading a piece of content's snapshot history as a zip archive or as a git repository archive.",
+      "frontend": [
+        "public/javascripts/app/templates/restore-list.html"
+      ],
+      "routes": [
+        "GET /export/:contentId/git",
+        "GET /export/:contentId/zip"
+      ],
+      "controllerActions": [
+        "controllers.Export.exportAsGitRepo",
+        "controllers.Export.exportAsZip"
+      ]
+    },
+    {
+      "id": "analytics-telemetry",
+      "name": "Analytics & Telemetry",
+      "description": "Page-visit tracking and snapshot interaction events (viewed, active, copied, restored).",
+      "frontend": [
+        "public/javascripts/app/services/AnalyticsService.js",
+        "public/javascripts/app/main.js",
+        "public/javascripts/app/controllers/SnapshotContentCtrl.js",
+        "public/javascripts/app/controllers/SnapshotListCtrl.js",
+        "public/javascripts/app/controllers/SnapshotListInteractionCtrl.js",
+        "public/javascripts/app/services/RestoreService.js"
+      ],
+      "routes": [],
+      "controllerActions": []
+    },
+    {
+      "id": "operations-health",
+      "name": "Operations & Health",
+      "description": "Operational endpoints for health checking and authenticated system information.",
+      "frontend": [],
+      "routes": [
+        "GET /management/healthcheck",
+        "GET /management/info"
+      ],
+      "controllerActions": [
+        "controllers.Management.healthCheck",
+        "controllers.Management.info"
+      ]
+    },
+    {
+      "id": "error-handling",
+      "name": "Error Handling",
+      "description": "Centralized in-app error surfacing through a shared error modal driven by mediator error events.",
+      "frontend": [
+        "public/javascripts/app/controllers/ErrorCtrl.js",
+        "public/javascripts/app/utils/mediator.js",
+        "public/javascripts/app/templates/restore-list.html"
+      ],
+      "routes": [],
+      "controllerActions": []
+    }
+  ],
+  "uncategorized": {
+    "frontendLibComponents": [
+      "public/javascripts/app/lib/* (shared gu-components: box, btn, dropdown, accordion, loading-bars, status, icons, page-label)"
+    ],
+    "supportServices": [
+      "public/javascripts/app/services/DateFormatService.js",
+      "public/javascripts/app/services/SnapshotCollectionService.js"
+    ],
+    "backend": [
+      "controllers.Application.preflight (CORS preflight support)"
+    ],
+    "note": "Shared components and support services contribute evidence to multiple domains rather than forming their own user-facing domain."
+  }
+}
