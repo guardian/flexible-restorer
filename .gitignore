@@ -26,6 +26,7 @@ public/build.js
 public/build.js.map
 public/dist
 test-results/
+.features-gen/
 .vscode/settings.json
 .bsp
 # Ignored files for metals
