@@ -20,6 +20,8 @@ Before({ tags: "@pending" }, async ({ $test }) => {
     $test.skip(true, "content-search steps are not implemented yet");
 });
 
+let timeout = 4 * 1000; // 4 seconds
+
 // --- Background ---------------------------------------------------------------
 
 Given("the application stack is running", async () => {
@@ -56,12 +58,12 @@ When("I submit a valid Content API URL in the search form", async ({ page}) => {
     let composerUrlInput = page.getByLabel("Enter a composer url:");
 
     await expect(composerUrlInput).toBeVisible({
-        timeout: 5 * 1000,
+        timeout: timeout,
     });
 
-    await composerUrlInput.fill("568c4110e4b0c73bdb0e52df");
+    await composerUrlInput.fill("https://composer.code.dev-gutools.co.uk/content/568c4110e4b0c73bdb0e52df");
     await expect(composerUrlInput).toHaveValue(
-        "568c4110e4b0c73bdb0e52df",
+        "https://composer.code.dev-gutools.co.uk/content/568c4110e4b0c73bdb0e52df",
     );
 
     const searchButton = page.getByRole("button", { name: "Search" });
@@ -84,14 +86,34 @@ Then(
 
 // --- Find version history by entering only a content id -----------------------
 
-When("I submit a content id value in the search form", async () => {
-    // TODO: implement step
-});
+When("I submit a content id value in the search form", async ({ page }) => {
+    page.getByLabel("Enter a composer url:");
+    let composerUrlInput = page.getByLabel("Enter a composer url:");
 
+    await expect(composerUrlInput).toBeVisible({
+        timeout: timeout,
+    });
+
+    await composerUrlInput.fill("568c4110e4b0c73bdb0e52df");
+    await expect(composerUrlInput).toHaveValue(
+        "568c4110e4b0c73bdb0e52df",
+    );
+
+    const searchButton = page.getByRole("button", { name: "Search" });
+    await expect(searchButton).toBeEnabled();
+    await searchButton.click();
+});
+// TODO: Should we enumerate more 
 Then(
     "I should be taken to the version history route for that content id",
-    async () => {
-        // TODO: implement step
+    async ({ page }) => {
+        await expect(
+            page
+                .getByRole("heading", {
+                    name: /Irish fury at Thierry Henry/i,
+                })
+                .first(),
+        ).toBeVisible({ timeout: timeout });
     },
 );
 
@@ -103,51 +125,97 @@ When("I submit a URL with multiple path segments", async () => {
 
 Then(
     "I should be taken to the version history route using the final segment as the content id",
-    async () => {
-        // TODO: implement step
+    async ({ page }) => {
+        await expect(
+            page
+                .getByRole("heading", {
+                    name: /Irish fury at Thierry Henry/i,
+                })
+                .first(),
+        ).toBeVisible({ timeout: timeout });
     },
 );
 
 // --- Search cannot be submitted while the query is empty ----------------------
 
-When("the query input is empty", async () => {
-    // TODO: implement step
+When("the query input is empty", async ({ page }) => {
+    const composerUrlInput = page.getByLabel("Enter a composer url:");
+    await expect(composerUrlInput).toBeVisible({
+        timeout: timeout,
+    });
+    await composerUrlInput.fill("");
 });
 
-Then("the Search button should be disabled", async () => {
-    // TODO: implement step
+Then("the Search button should be disabled", async ({ page }) => {
+    const searchButton = page.getByRole("button", { name: "Search" });
+    await expect(searchButton).toBeDisabled();
 });
 
-Then("the form should require a query value", async () => {
-    // TODO: implement step
+Then("the form should require a query value", async ({ page }) => {
+    const composerUrlInput = page.getByLabel("Enter a composer url:");
+    await expect(composerUrlInput).toBeVisible({
+        timeout: timeout,
+    });
+    await expect(composerUrlInput).toHaveAttribute("required", "required");
 });
 
 // --- Trailing slash produces an empty hash segment ----------------------------
 
-When("I submit a URL that ends with a trailing slash", async () => {
-    // TODO: implement step
+When("I submit a URL that ends with a trailing slash", async ({ page }) => {
+    page.getByLabel("Enter a composer url:");
+    let composerUrlInput = page.getByLabel("Enter a composer url:");
+
+    await expect(composerUrlInput).toBeVisible({
+        timeout: timeout,
+    });
+
+    await composerUrlInput.fill("https://composer.code.dev-gutools.co.uk/content/568c4110e4b0c73bdb0e52df/");
+    await expect(composerUrlInput).toHaveValue(
+        "https://composer.code.dev-gutools.co.uk/content/568c4110e4b0c73bdb0e52df/",
+    );
+
+    const searchButton = page.getByRole("button", { name: "Search" });
+    await expect(searchButton).toBeEnabled();
+    await searchButton.click();
 });
 
-Then("navigation should be built from the final path segment", async () => {
-    // TODO: implement step
+Then("navigation should be built from the final path segment", async ({ page }) => {
+    const url = page.url();
+    expect(url).toContain("content//version");
 });
 
 Then(
     "the resulting version history route can contain an empty content id segment",
-    async () => {
-        // TODO: implement step
+    async ({ page }) => {
+        const url = page.url();
+        expect(url).toContain("content//version");
     },
 );
 
 // --- Error when no snapshots exist --------------------------------------------
 
-When("I submit a content id that has no snapshots", async () => {
-    // TODO: implement step
+When("I submit a content id that has no snapshots", async ({ page }) => {
+   page.getByLabel("Enter a composer url:");
+    let composerUrlInput = page.getByLabel("Enter a composer url:");
+
+    await expect(composerUrlInput).toBeVisible({
+        timeout: timeout,
+    });
+
+    await composerUrlInput.fill("https://composer.code.dev-gutools.co.uk/content/missingId/");
+    await expect(composerUrlInput).toHaveValue(
+        "https://composer.code.dev-gutools.co.uk/content/missingId/",
+    );
+
+    const searchButton = page.getByRole("button", { name: "Search" });
+    await expect(searchButton).toBeEnabled();
+    await searchButton.click();
 });
 
 Then(
     "I should see an error message that no snapshots are available for that piece of content",
-    async () => {
-        // TODO: implement step
+    async ({ page }) => {
+        const errorMessage = page.getByText("There are no snapshots available for this piece of content");
+        await expect(errorMessage).toBeVisible();
     },
 );
