@@ -11,7 +11,7 @@ const bddTestDir = defineBddConfig({
 module.exports = defineConfig({
     timeout: 15 * 60 * 1000,
     expect: {
-        timeout: 60 * 1000,
+        timeout: 10 * 1000,
     },
     retries: 0,
     reporter: [["list"]],
