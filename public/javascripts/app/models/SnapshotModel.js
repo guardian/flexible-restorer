@@ -30,7 +30,7 @@ SnapshotModelMod.factory('SnapshotModel', [
         this.data = {
           systemId: systemId,
           timestamp: timestamp,
-          createdDate: moment(timestamp),
+          createdDate: moment(timestamp.replace(/_/g, ':')),
           activeState: false,
           snapshot: snapshotData
         };
