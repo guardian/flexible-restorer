@@ -10,6 +10,8 @@ current_major="$(node -p "process.versions.node.split('.')[0]" 2>/dev/null || ec
 run_playwright() {
   local -a cmd_prefix=("$@")
   "${cmd_prefix[@]}" npm exec playwright install chromium
+  # Generate Playwright tests from the BDD feature files before running.
+  "${cmd_prefix[@]}" npm exec bddgen
   if [ "${#TEST_ARGS[@]}" -gt 0 ]; then
     "${cmd_prefix[@]}" npm exec playwright test -- "${TEST_ARGS[@]}"
   else
