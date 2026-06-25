@@ -202,9 +202,9 @@ When("I submit a content id that has no snapshots", async ({ page }) => {
         timeout: timeout,
     });
 
-    await composerUrlInput.fill("https://composer.code.dev-gutools.co.uk/content/missingId/");
+    await composerUrlInput.fill("https://composer.code.dev-gutools.co.uk/content/missingId");
     await expect(composerUrlInput).toHaveValue(
-        "https://composer.code.dev-gutools.co.uk/content/missingId/",
+        "https://composer.code.dev-gutools.co.uk/content/missingId",
     );
 
     const searchButton = page.getByRole("button", { name: "Search" });

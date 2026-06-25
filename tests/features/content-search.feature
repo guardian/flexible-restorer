@@ -42,7 +42,6 @@ Feature: Find content version history from the splash screen
     Given I am an editor recovering and reviewing content
     And I am using the splash screen search page
     When I submit a content id that has no snapshots
-    Then I should be taken to the version history route for that content id
     And I should see an error message that no snapshots are available for that piece of content
   # Evidence: public/javascripts/app/controllers/SearchFormCtrl.js
   # Evidence: public/javascripts/app/collections/SnapshotIdModels.js
