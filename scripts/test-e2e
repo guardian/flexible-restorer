@@ -5,17 +5,26 @@ set -euo pipefail
 E2E_NODE_VERSION="${E2E_NODE_VERSION:-20}"
 TEST_ARGS=("$@")
 
+# Quiet npm's deprecated-config warnings ("npm warn config ...") that are
+# printed before every `npm exec` call.
+export npm_config_loglevel=error
+
 current_major="$(node -p "process.versions.node.split('.')[0]" 2>/dev/null || echo 0)"
 
 run_playwright() {
-  local -a cmd_prefix=("$@")
-  "${cmd_prefix[@]}" npm exec playwright install chromium
+  # Install the Chromium browser only when it isn't already present, so repeated
+  # local runs skip the download/verify step entirely.
+  if ! npm exec -- node -e \
+    "require('fs').accessSync(require('@playwright/test').chromium.executablePath())" \
+    >/dev/null 2>&1; then
+    npm exec playwright install chromium
+  fi
   # Generate Playwright tests from the BDD feature files before running.
-  "${cmd_prefix[@]}" npm exec bddgen
+  npm exec bddgen
   if [ "${#TEST_ARGS[@]}" -gt 0 ]; then
-    "${cmd_prefix[@]}" npm exec playwright test -- "${TEST_ARGS[@]}"
+    npm exec playwright test -- "${TEST_ARGS[@]}"
   else
-    "${cmd_prefix[@]}" npm exec playwright test
+    npm exec playwright test
   fi
 }
 
@@ -29,7 +38,10 @@ if [ -s "$NVM_DIR/nvm.sh" ]; then
   # shellcheck disable=SC1090
   . "$NVM_DIR/nvm.sh"
   nvm install "$E2E_NODE_VERSION" >/dev/null
-  run_playwright nvm exec "$E2E_NODE_VERSION"
+  # Switch the shell to the right Node once, rather than wrapping every command
+  # in `nvm exec` (which prints a "Running node vX" banner per command).
+  nvm use "$E2E_NODE_VERSION" >/dev/null
+  run_playwright
   exit 0
 fi
 

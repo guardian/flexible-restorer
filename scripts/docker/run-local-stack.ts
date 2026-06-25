@@ -1,6 +1,7 @@
 const { chromium } = require("@playwright/test") as typeof import("@playwright/test");
 const { createPanDomainCookie } = require("../../tests/e2e/panDomainCookie") as typeof import("../../tests/e2e/panDomainCookie");
 const { startLocalStack, stopLocalStack } = require("../../tests/e2e/stackContainers") as typeof import("../../tests/e2e/stackContainers");
+const { writeSharedStackInfo, clearSharedStackInfo } = require("../../tests/e2e/sharedStack") as typeof import("../../tests/e2e/sharedStack");
 
 function waitForTerminationSignal(): Promise<void> {
     return new Promise((resolve) => {
@@ -24,6 +25,13 @@ async function main() {
         stack = await startLocalStack(projectRoot);
         const cookieData = createPanDomainCookie(stack.panDomainPrivateKey);
 
+        // Publish the running stack's connection details so `npm run test:e2e`
+        // can reuse this stack instead of booting fresh containers each run.
+        writeSharedStackInfo(projectRoot, {
+            baseUrl: stack.baseUrl,
+            panDomainPrivateKey: stack.panDomainPrivateKey,
+        });
+
         browser = await chromium.launch({ headless: false });
         const page = await browser.newPage();
         await page.context().addCookies([
@@ -45,6 +53,7 @@ async function main() {
             await browser.close();
         }
         process.stdin.pause();
+        clearSharedStackInfo(projectRoot);
         await stopLocalStack(stack);
     }
 }

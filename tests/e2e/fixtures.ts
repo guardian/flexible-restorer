@@ -6,6 +6,7 @@ import {
     stopLocalStack,
     type LocalStack,
 } from "./stackContainers";
+import { isStackReachable, readSharedStackInfo } from "./sharedStack";
 
 type WorkerFixtures = {
     localStack: LocalStack;
@@ -27,6 +28,25 @@ export const test = base.extend<object, WorkerFixtures>({
     localStack: [
         async ({}, use) => {
             const projectRoot = path.resolve(__dirname, "../..");
+
+            // If a stack started via `npm run local:stack` is already running,
+            // reuse it instead of booting fresh containers. This makes the inner
+            // dev loop much faster when iterating on tests.
+            const sharedStack = readSharedStackInfo(projectRoot);
+            if (sharedStack && (await isStackReachable(sharedStack.baseUrl))) {
+                console.log(
+                    `[localStack] Reusing running local stack at ${sharedStack.baseUrl}`,
+                );
+                await use({
+                    baseUrl: sharedStack.baseUrl,
+                    panDomainPrivateKey: sharedStack.panDomainPrivateKey,
+                    minioContainer: undefined,
+                    restorerContainer: undefined,
+                    network: undefined,
+                });
+                return;
+            }
+
             let stack: LocalStack | undefined;
             try {
                 stack = await startLocalStack(projectRoot);
