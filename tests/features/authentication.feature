@@ -45,6 +45,7 @@ Feature: Authenticate users and gate access
     When I open a protected route in the restorer app
     Then I should be allowed through if I have restorer access
     And I should be blocked if I do not have restorer access
+  # TODO: This should have a list of routes to test and the different permissions required for each route
   # Evidence: app/auth/PanDomainAuthActions.scala
   # Evidence: app/controllers/Application.scala
   # Evidence: app/controllers/Export.scala

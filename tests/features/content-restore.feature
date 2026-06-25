@@ -33,6 +33,7 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/controllers/RestoreFormCtrl.js
   # Evidence: public/javascripts/app/services/RestoreService.js
   # Evidence: public/javascripts/app/templates/restore-list.html
+  # TODO: We can use tags on each scenario to set running priority, browsers support
 
   Scenario: Destination choices include all available stacks when I have permission
     Given I have restore_content_to_any_stack permission
