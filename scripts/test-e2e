@@ -7,8 +7,15 @@ E2E_NODE_VERSION="${E2E_NODE_VERSION:-20}"
 current_major="$(node -p "process.versions.node.split('.')[0]" 2>/dev/null || echo 0)"
 
 run_playwright() {
-  npm exec playwright install chromium
-  npm exec playwright test -- "$@"
+  local -a cmd_prefix=("$@")
+  "${cmd_prefix[@]}" npm exec playwright install chromium
+  # Generate Playwright tests from the BDD feature files before running.
+  "${cmd_prefix[@]}" npm exec bddgen
+  if [ "${#TEST_ARGS[@]}" -gt 0 ]; then
+    "${cmd_prefix[@]}" npm exec playwright test -- "${TEST_ARGS[@]}"
+  else
+    "${cmd_prefix[@]}" npm exec playwright test
+  fi
 }
 
 if [ "$current_major" -ge 18 ]; then
