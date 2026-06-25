@@ -59,6 +59,16 @@ export const test = base.extend<object, WorkerFixtures>({
     ],
 });
 
-export const { Given, When, Then, Before, After } = createBdd(test);
+export const { Given, When, Then, Before, After, BeforeStep, AfterStep } =
+    createBdd(test);
+
+// Optional pause after every step so you can watch scenarios play out in a
+// headed browser. Enable with e.g. `STEP_DELAY=1000` (milliseconds).
+const stepDelayMs = Number(process.env.STEP_DELAY ?? 0);
+if (stepDelayMs > 0) {
+    AfterStep(async () => {
+        await new Promise((resolve) => setTimeout(resolve, stepDelayMs));
+    });
+}
 
 export { expect };
