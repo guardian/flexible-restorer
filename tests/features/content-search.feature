@@ -15,7 +15,6 @@ Feature: Find content version history from the splash screen
   # Evidence: public/javascripts/app/templates/splash-screen.html
   # Evidence: public/javascripts/app/controllers/SearchFormCtrl.js
   
-  @pending
   Scenario: An editor can find version history by entering only a content id
     Given I am an editor recovering and reviewing content
     And I am using the splash screen search page
@@ -23,15 +22,6 @@ Feature: Find content version history from the splash screen
     Then I should be taken to the version history route for that content id
   # Evidence: public/javascripts/app/controllers/SearchFormCtrl.js
 
-  @pending
-  Scenario: The search uses the final path segment from a longer URL
-    Given I am an editor recovering and reviewing content
-    And I am using the splash screen search page
-    When I submit a URL with multiple path segments
-    Then I should be taken to the version history route using the final segment as the content id
-  # Evidence: public/javascripts/app/controllers/SearchFormCtrl.js
-
-  @pending
   Scenario: Search cannot be submitted while the query is empty
     Given I am an editor recovering and reviewing content
     And I am using the splash screen search page
@@ -40,8 +30,6 @@ Feature: Find content version history from the splash screen
     And the form should require a query value
   # Evidence: public/javascripts/app/templates/splash-screen.html
 
-
-  @pending
   Scenario: A trailing slash in the submitted URL produces an empty hash segment
     Given I am an editor recovering and reviewing content
     And I am using the splash screen search page
@@ -50,7 +38,6 @@ Feature: Find content version history from the splash screen
     And the resulting version history route can contain an empty content id segment
   # Evidence: public/javascripts/app/controllers/SearchFormCtrl.js
 
-  @pending
   Scenario: An editor sees an error when no snapshots exist for the searched content
     Given I am an editor recovering and reviewing content
     And I am using the splash screen search page

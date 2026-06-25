@@ -4,6 +4,7 @@
         "build": "webpack --mode=production",
         "watch": "webpack --mode=development --watch",
         "local:stack": "./scripts/docker/run-local-stack",
+        "bdd:gen": "bddgen",
         "test:e2e": "./scripts/test-e2e",
         "test:e2e:headed": "./scripts/test-e2e --headed",
         "test:e2e:debug": "./scripts/test-e2e --debug"
@@ -23,6 +24,7 @@
         "@playwright/test": "^1.55.0",
         "css-loader": "^3.6.0",
         "mini-css-extract-plugin": "^0.9.0",
+        "playwright-bdd": "^9.2.0",
         "raw-loader": "^4.0.1",
         "sass": "^1.26.9",
         "sass-loader": "^8.0.2",
