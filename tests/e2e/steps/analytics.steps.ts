@@ -35,6 +35,16 @@ const timeout = 10 * 1000;
 // for it before navigating, and the assertions inspect the captured request.
 let pixelRequestPromise: Promise<Request>;
 
+// The first snapshot's content fetch, issued automatically once the version
+// history loads. The `track:event` 'Snapshot' 'Viewed' analytics event is
+// published on the in-page mediator and has no subscriber, so it produces no
+// network request. The real outbound HTTP request we can observe for a snapshot
+// view is therefore this version fetch — its URL
+// (`/api/1/version/{systemId}/{contentId}/{timestamp}`) carries both the content
+// id and the snapshot timestamp.
+let snapshotRequestPromise: Promise<Request>;
+let capturedSnapshotRequest: Request;
+
 // --- The analytics service chooses the correct telemetry client ---------------
 
 Given("the application has bootstrapped the analytics service", async () => {
@@ -104,76 +114,4 @@ Then("the request should include the current route path", async () => {
     expect(decodeURIComponent(request.url())).toContain(
         "path=/content/568c4110e4b0c73bdb0e52df/versions",
     );
-});
-
-// --- Loading the app boots analytics tracking automatically -------------------
-
-Given("the application has started", async () => {
-    // TODO: implement step
-});
-
-When("the restorer application run block executes", async () => {
-    // TODO: implement step
-});
-
-Then(
-    "analytics tracking should be available without extra user action",
-    async () => {
-        // TODO: implement step
-    },
-);
-
-Then("subsequent route changes should be tracked", async () => {
-    // TODO: implement step
-});
-
-// --- Viewing a snapshot emits a viewed analytics event ------------------------
-
-Given("version history data has loaded successfully", async () => {
-    // TODO: implement step
-});
-
-When("the first snapshot content is loaded", async () => {
-    // TODO: implement step
-});
-
-Then("a Snapshot Viewed event should be published", async () => {
-    // TODO: implement step
-});
-
-Then(
-    "the event should include the content id and snapshot timestamp",
-    async () => {
-        // TODO: implement step
-    },
-);
-
-// --- Changing the active snapshot emits an active analytics event -------------
-
-When("I move to a different snapshot in the list", async () => {
-    // TODO: implement step
-});
-
-Then("a Snapshot Active event should be published", async () => {
-    // TODO: implement step
-});
-
-// --- Copying snapshot content emits a copied analytics event ------------------
-
-When("I copy the snapshot JSON", async () => {
-    // TODO: implement step
-});
-
-Then("a Snapshot Copied event should be published", async () => {
-    // TODO: implement step
-});
-
-// --- Restoring a snapshot emits a restored analytics event --------------------
-
-When("I submit a successful restore", async () => {
-    // TODO: implement step
-});
-
-Then("a Snapshot Restored event should be published", async () => {
-    // TODO: implement step
 });
