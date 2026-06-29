@@ -1,5 +1,6 @@
 import type { Page } from "@playwright/test";
 import { Given, When, Then, expect } from "../fixtures";
+import { createPanDomainCookie } from "../panDomainCookie";
 
 /**
  * Playwright-style step definitions for
@@ -249,25 +250,59 @@ Given("the user permissions are loaded", async () => {
     // TODO: implement step
 });
 
-When("the user has restore_content permission", async () => {
-    // TODO: implement step
+When("the user has restore_content permission", async ( {page , localStack}) => {
+    // The default user has the `restorer_access` permission, so no action is needed to grant it. 
+    // But we update the cookie here just to ensure the test user is signed in with the correct role for this scenario.
+    const { baseUrl, panDomainPrivateKey } = localStack;
+    const cookieData = createPanDomainCookie(panDomainPrivateKey);
+    
+    await page.context().addCookies([
+        {
+            name: "gutoolsAuth-assym",
+            value: cookieData,
+            url: baseUrl,
+        },
+    ]); 
 });
 
 Then(
     "the Restore action should be visible in the snapshot content panel",
-    async () => {
-        // TODO: implement step
+    async ({ page }) => {
+        // The restore action renders as a button labelled "Restore" in the
+        // snapshot content panel header (shown only when the user has
+        // restore_content permission). Match the text exactly so it is not
+        // confused with the modal's "Restore Version" button.
+        await expect(page.getByText("Restore", { exact: true })).toBeVisible({
+            timeout: timeout,
+        });
     },
 );
 
-When("the user does not have restore_content permission", async () => {
-    // TODO: implement step
+When("the user does not have restore_content permission", async ( {page, localStack}) => {
+    const { baseUrl, panDomainPrivateKey } = localStack;
+    const cookieData = createPanDomainCookie(panDomainPrivateKey, "NoRestoreAccess");
+    
+    await page.context().addCookies([
+        {
+            name: "gutoolsAuth-assym",
+            value: cookieData,
+            url: baseUrl,
+        },
+    ]); 
+
+    await page.reload({ waitUntil: "domcontentloaded" });
 });
 
 Then(
     "the Restore action should not be visible in the snapshot content panel",
-    async () => {
-        // TODO: implement step
+    async ({ page }) => {
+        // Inverse of the visible case: when the user lacks restore_content
+        // permission the "Restore" button is not rendered (ng-if="canRestore"),
+        // so the exact-matched label must be hidden. Match the text exactly so
+        // it is not confused with the modal's "Restore Version" button.
+        await expect(page.getByText("Restore", { exact: true })).toBeHidden({
+            timeout: timeout,
+        });
     },
 );
 
