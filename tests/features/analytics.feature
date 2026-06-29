@@ -6,18 +6,6 @@ Feature: Track page visits and snapshot interactions
     Given the application stack is running
     And I am signed in through pan-domain auth
 
-  @pending
-  Scenario Outline: The analytics service chooses the correct telemetry client for the current host
-    Given the application has bootstrapped the analytics service
-    When the app is running on <host>
-    Then analytics requests should be sent to <telemetryClient>
-
-    Examples:
-      | host                             | telemetryClient                                   |
-      | restorer.gutools.co.uk           | https://user-telemetry.gutools.co.uk              |
-      | restorer.code.dev-gutools.co.uk  | https://user-telemetry.code.dev-gutools.co.uk     |
-      | restorer.local.dev-gutools.co.uk | https://user-telemetry.local.dev-gutools.co.uk    |
-  # Evidence: public/javascripts/app/services/AnalyticsService.js
 
   Scenario: A route change sends a tracking pixel for the current page path
     Given the analytics service is active
