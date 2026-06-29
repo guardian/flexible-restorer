@@ -19,7 +19,6 @@ Feature: Track page visits and snapshot interactions
       | restorer.local.dev-gutools.co.uk | https://user-telemetry.local.dev-gutools.co.uk    |
   # Evidence: public/javascripts/app/services/AnalyticsService.js
 
-  @pending
   Scenario: A route change sends a tracking pixel for the current page path
     Given the analytics service is active
     When I navigate to a new page in the application
@@ -28,15 +27,6 @@ Feature: Track page visits and snapshot interactions
     And the request should include the current route path
   # Evidence: public/javascripts/app/services/AnalyticsService.js
   # Evidence: public/javascripts/app/main.js
-
-  @pending
-  Scenario: Loading the app boots analytics tracking automatically
-    Given the application has started
-    When the restorer application run block executes
-    Then analytics tracking should be available without extra user action
-    And subsequent route changes should be tracked
-  # Evidence: public/javascripts/app/main.js
-  # Evidence: public/javascripts/app/services/AnalyticsService.js
 
   @pending
   Scenario: Viewing a snapshot emits a viewed analytics event
