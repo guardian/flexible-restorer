@@ -15,10 +15,13 @@ const { base64ToPEM } = require("@guardian/pan-domain-node/dist/src/utils") as {
  *
  * - `default`: `composer.application@guardian.co.uk` — has `restorer_access`.
  * - `NoRestoreAccess`: `no.restore@guardian.co.uk` — does NOT have `restorer_access`.
+ * - `RestoreSingleStack`: `restore.single.stack@guardian.co.uk` — has `restore_content`
+ *   but NOT `restore_content_to_any_stack`, so can only restore to the snapshot's own system.
  */
 export const roles = {
     default: "composer.application@guardian.co.uk",
     NoRestoreAccess: "no.restore@guardian.co.uk",
+    RestoreSingleStack: "restore.single.stack@guardian.co.uk",
 } as const;
 
 export type Role = keyof typeof roles;

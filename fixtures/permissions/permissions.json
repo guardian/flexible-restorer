@@ -12,6 +12,11 @@
                 "isCasualNotOnShift": false
             },
             {
+                "userId": "restore.single.stack@guardian.co.uk",
+                "active": true,
+                "isCasualNotOnShift": false
+            },
+            {
                 "userId": "no.restore@guardian.co.uk",
                 "active": false,
                 "isCasualNotOnShift": false
@@ -27,6 +32,11 @@
         "overrides": [
             {
                 "userId": "composer.application@guardian.co.uk",
+                "active": true,
+                "isCasualNotOnShift": false
+            },
+            {
+                "userId": "restore.single.stack@guardian.co.uk",
                 "active": true,
                 "isCasualNotOnShift": false
             },
@@ -47,6 +57,11 @@
             {
                 "userId": "composer.application@guardian.co.uk",
                 "active": true,
+                "isCasualNotOnShift": false
+            },
+            {
+                "userId": "restore.single.stack@guardian.co.uk",
+                "active": false,
                 "isCasualNotOnShift": false
             },
             {

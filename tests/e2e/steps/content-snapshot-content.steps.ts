@@ -24,6 +24,12 @@ import { createPanDomainCookie } from "../panDomainCookie";
 
 let timeout = 5 * 1000;
 
+// On a successful restore the app navigates the browser to the destination
+// Composer content URL. That host is a real environment that redirects to Google
+// auth, so instead of following the navigation we intercept it, record the
+// target URL, and abort — letting the redirect step assert on the URL alone.
+let capturedRedirectUrl: string | undefined;
+
 Given(
     "I have opened the version history page for a piece of content",
     async ( {page , localStack  }) => {
@@ -391,6 +397,29 @@ When("I reopen the restore modal and press Escape", async ({ page }) => {
 // --- Restore destinations and source details loaded when modal opens ----------
 
 Given(
+    "I am signed in without permission to restore to any stack",
+    async ({ page, localStack }) => {
+        // The default test user has `restore_content_to_any_stack`, which makes
+        // the UI offer every stack as a destination. Re-sign-in as a user that
+        // can restore but only to the snapshot's own system, then reload so the
+        // freshly fetched permissions drive the destination filtering.
+        const { baseUrl, panDomainPrivateKey } = localStack;
+        const cookieData = createPanDomainCookie(
+            panDomainPrivateKey,
+            "RestoreSingleStack",
+        );
+        await page.context().addCookies([
+            {
+                name: "gutoolsAuth-assym",
+                value: cookieData,
+                url: baseUrl,
+            },
+        ]);
+        await page.reload({ waitUntil: "domcontentloaded" });
+    },
+);
+
+Given(
     "the restore modal is opened for an active snapshot",
     async ({ page }) => {
         // Wait for the content panel to render so the keyboard handlers are
@@ -487,18 +516,98 @@ Then("the Restore Version action should be enabled", async ({ page }) => {
 
 // --- Successful restore redirects back to the selected Composer instance ------
 
-Given("a destination is selected", async () => {
-    // TODO: implement step
+Given("a destination is selected", async ({ page }) => {
+    // Each destination radio is labelled with the stack displayName plus the
+    // changeString built from the mock flexible API's changeDetails response,
+    // e.g. "Composer (CODE) currently has revision 10, last modified at
+    // 04:21:14 on 12th June". Select that destination and confirm it is checked.
+    const destination = page.getByRole("radio", {
+        name: "Composer (CODE) currently has revision 10, last modified at 04:21:14 on 12th June",
+    });
+    await destination.check();
+    await expect(destination).toBeChecked({ timeout: timeout });
 });
 
-When("I submit Restore Version successfully", async () => {
-    // TODO: implement step
+When("I submit Restore Version successfully", async ({ page, localStack }) => {
+    const contentId = "568c4110e4b0c73bdb0e52df";
+
+    // The Restore Version button only enables once both safety checkboxes are
+    // ticked, so select them first.
+    await page.getByLabel("You are not in content").check();
+    await page.getByLabel("No one else is in the content").check();
+
+    // Clear the mock's captured request log so the assertion below only sees the
+    // restore request produced by this submission (the modal's earlier
+    // changeDetails calls are discarded).
+    await page.request.delete(localStack.mockApiUrl + "/__admin/requests");
+
+    // On success the controller sets `window.location.href` to the destination
+    // Composer content URL. That host redirects to Google auth, so intercept the
+    // navigation, record the requested URL, and abort it — the redirect step
+    // asserts on the captured URL rather than following it.
+    capturedRedirectUrl = undefined;
+    await page.route("https://composer.code.dev-gutools.co.uk/**", async (route) => {
+        capturedRedirectUrl = route.request().url();
+        await route.abort();
+    });
+
+    const restoreButton = page.getByRole("button", { name: "Restore Version" });
+    await expect(restoreButton).toBeEnabled({ timeout: timeout });
+    await restoreButton.click();
+
+    // The restorer first attempts to restore into existing content
+    // (PUT /restorer/content/:id, see app/logic/FlexibleApi.scala#restore). The
+    // mock returns 204, so this first attempt succeeds and the /restorer/contentRaw
+    // fallback is never made. Poll the mock's captured request log until that
+    // restore PUT for this content has been recorded.
+    type MockExchange = {
+        method: string;
+        path: string;
+        responseStatus: number;
+        requestHeaders: Record<string, string | string[] | undefined>;
+        requestBody: string;
+    };
+    let restoreExchange: MockExchange | undefined;
+    await expect
+        .poll(
+            async () => {
+                const res = await page.request.get(
+                    localStack.mockApiUrl + "/__admin/requests",
+                );
+                const exchanges = (await res.json()) as MockExchange[];
+                restoreExchange = exchanges.find(
+                    (exchange) =>
+                        exchange.method === "PUT" &&
+                        exchange.path === `/restorer/content/${contentId}`,
+                );
+                return restoreExchange?.responseStatus;
+            },
+            { timeout: timeout },
+        )
+        .toBe(204);
+
+    // The restore PUT must carry the correct information: the signed-in user as a
+    // base64 header (see FlexibleApi.scala) and the snapshot body being restored.
+    expect(restoreExchange?.requestHeaders).toHaveProperty("x-gu-user-base64");
+    expect((restoreExchange?.requestBody ?? "").length).toBeGreaterThan(0);
 });
 
 Then(
     "I should be redirected to that destination Composer content URL",
     async () => {
-        // TODO: implement step
+        const contentId = "568c4110e4b0c73bdb0e52df";
+        // On success the controller redirects via
+        // `window.location.href = ${selectedDestination.composerPrefix}/content/:id`
+        // (see public/javascripts/app/controllers/RestoreFormCtrl.js#restore).
+        // The selected destination is "Composer (CODE)", whose composerPrefix is
+        // built from the CODE stage domain (code.dev-gutools.co.uk). The submit
+        // step intercepts that navigation and records the requested URL, so we
+        // assert on the captured redirect target rather than loading it (the real
+        // Composer host redirects to Google auth).
+        const expectedUrl = `https://composer.code.dev-gutools.co.uk/content/${contentId}`;
+        await expect.poll(() => capturedRedirectUrl, { timeout: timeout }).toBe(
+            expectedUrl,
+        );
     },
 );
 
