@@ -10,6 +10,49 @@
                 "userId": "composer.application@guardian.co.uk",
                 "active": true,
                 "isCasualNotOnShift": false
+            },
+            {
+                "userId": "no.restore@guardian.co.uk",
+                "active": false,
+                "isCasualNotOnShift": false
+            }
+        ]
+    },
+    {
+        "permission": {
+            "name": "restore_content",
+            "app": "composer-restorer",
+            "defaultValue": false
+        },
+        "overrides": [
+            {
+                "userId": "composer.application@guardian.co.uk",
+                "active": true,
+                "isCasualNotOnShift": false
+            },
+            {
+                "userId": "no.restore@guardian.co.uk",
+                "active": false,
+                "isCasualNotOnShift": false
+            }
+        ]
+    },
+    {
+        "permission": {
+            "name": "restore_content_to_any_stack",
+            "app": "composer-restorer",
+            "defaultValue": false
+        },
+        "overrides": [
+            {
+                "userId": "composer.application@guardian.co.uk",
+                "active": true,
+                "isCasualNotOnShift": false
+            },
+            {
+                "userId": "no.restore@guardian.co.uk",
+                "active": false,
+                "isCasualNotOnShift": false
             }
         ]
     }
