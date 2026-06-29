@@ -27,11 +27,21 @@ export type LocalStack = {
     network: any;
 };
 
-// Hostname the restorer uses to reach the mock flexible-content API inside the
-// Docker network. The restorer's stack apiPrefixes are overridden to point here
-// via the FLEXIBLE_API_BASE_URL env var below.
-const MOCK_API_ALIAS = "flexible-mock";
+// In local dev the restorer runs as the DEV identity, whose effective stage is
+// CODE, so it resolves each stack's real per-stage flexible-content API host
+// (see app/models/FlexibleStack.scala and app/config/AppConfig.scala). We
+// register those exact hostnames as network aliases on the mock container, so
+// the real hostnames resolve to the mock inside the Docker network — no
+// config/URL override required.
 const MOCK_API_PORT = 8080;
+const MOCK_API_HOSTNAMES = [
+    // primary stack (flexible)
+    "flexible-api.CODE.flexible.gudiscovery",
+    // secondary stack (flexible-secondary)
+    "apiv2.CODE.flexible-secondary.gudiscovery",
+    // local DEV stack ("Local Flexible Content")
+    "flexible-api.DEV.flexible.gudiscovery",
+];
 
 function buildDockerImage({
     tag,
@@ -140,7 +150,7 @@ export async function startLocalStack(projectRoot: string): Promise<LocalStack> 
 
         mockContainer = await new GenericContainer(mockImageTag)
             .withNetwork(network)
-            .withNetworkAliases(MOCK_API_ALIAS)
+            .withNetworkAliases(...MOCK_API_HOSTNAMES)
             .withLogConsumer(createLogConsumer("mock-api"))
             .withExposedPorts(MOCK_API_PORT)
             .withWaitStrategy(
@@ -170,9 +180,6 @@ export async function startLocalStack(projectRoot: string): Promise<LocalStack> 
                 AWS_SECRET_ACCESS_KEY: MINIO_ROOT_PASSWORD,
                 // Keep local mode enabled in case scripts are bypassed in future changes.
                 LOCAL: "true",
-                // Point every stack's flexible-content API at the in-network mock
-                // so the restore modal can load destinations and exercise restores.
-                FLEXIBLE_API_BASE_URL: `http://${MOCK_API_ALIAS}:${MOCK_API_PORT}`,
             })
             .withLogConsumer(createLogConsumer("restorer"))
             .withExposedPorts(9000)
