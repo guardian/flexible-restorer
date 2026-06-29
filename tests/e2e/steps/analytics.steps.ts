@@ -45,22 +45,6 @@ let pixelRequestPromise: Promise<Request>;
 let snapshotRequestPromise: Promise<Request>;
 let capturedSnapshotRequest: Request;
 
-// --- The analytics service chooses the correct telemetry client ---------------
-
-Given("the application has bootstrapped the analytics service", async () => {
-    // TODO: implement step
-});
-
-When(/^the app is running on (.+)$/, async ({ page: _page }, _host: string) => {
-    // TODO: implement step
-});
-
-Then(
-    /^analytics requests should be sent to (.+)$/,
-    async ({ page: _page }, _telemetryClient: string) => {
-        // TODO: implement step
-    },
-);
 
 // --- A route change sends a tracking pixel for the current page path ----------
 
