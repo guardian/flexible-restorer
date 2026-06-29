@@ -15,10 +15,23 @@ type BuildDockerImageArgs = {
 export type LocalStack = {
     baseUrl: string;
     panDomainPrivateKey: string;
+    /**
+     * Base URL of the configurable mock flexible-content API, mapped to the
+     * host. POST to `${mockApiUrl}/__admin/state` to change what restore
+     * destination/restore calls return at runtime.
+     */
+    mockApiUrl: string;
     minioContainer: any;
     restorerContainer: any;
+    mockContainer: any;
     network: any;
 };
+
+// Hostname the restorer uses to reach the mock flexible-content API inside the
+// Docker network. The restorer's stack apiPrefixes are overridden to point here
+// via the FLEXIBLE_API_BASE_URL env var below.
+const MOCK_API_ALIAS = "flexible-mock";
+const MOCK_API_PORT = 8080;
 
 function buildDockerImage({
     tag,
@@ -78,7 +91,9 @@ export async function startLocalStack(projectRoot: string): Promise<LocalStack> 
 
     let minioContainer;
     let restorerContainer;
+    let mockContainer;
     const panDomainKeys = generatePanDomainKeys();
+    const mockImageTag = `flexible-restorer-mock-api-e2e:${runId}`;
 
     try {
         await buildDockerImage({
@@ -115,6 +130,30 @@ export async function startLocalStack(projectRoot: string): Promise<LocalStack> 
             .start();
 
         await buildDockerImage({
+            tag: mockImageTag,
+            dockerfilePath: path.join(
+                projectRoot,
+                "images/mock-flexible-api.Dockerfile",
+            ),
+            contextPath: projectRoot,
+        });
+
+        mockContainer = await new GenericContainer(mockImageTag)
+            .withNetwork(network)
+            .withNetworkAliases(MOCK_API_ALIAS)
+            .withLogConsumer(createLogConsumer("mock-api"))
+            .withExposedPorts(MOCK_API_PORT)
+            .withWaitStrategy(
+                Wait.forHttp("/__admin/health", MOCK_API_PORT).forStatusCode(
+                    200,
+                ),
+            )
+            .withStartupTimeout(2 * 60 * 1000)
+            .start();
+
+        const mockApiUrl = `http://${mockContainer.getHost()}:${mockContainer.getMappedPort(MOCK_API_PORT)}`;
+
+        await buildDockerImage({
             tag: restorerImageTag,
             dockerfilePath: path.join(
                 projectRoot,
@@ -131,6 +170,9 @@ export async function startLocalStack(projectRoot: string): Promise<LocalStack> 
                 AWS_SECRET_ACCESS_KEY: MINIO_ROOT_PASSWORD,
                 // Keep local mode enabled in case scripts are bypassed in future changes.
                 LOCAL: "true",
+                // Point every stack's flexible-content API at the in-network mock
+                // so the restore modal can load destinations and exercise restores.
+                FLEXIBLE_API_BASE_URL: `http://${MOCK_API_ALIAS}:${MOCK_API_PORT}`,
             })
             .withLogConsumer(createLogConsumer("restorer"))
             .withExposedPorts(9000)
@@ -143,13 +185,18 @@ export async function startLocalStack(projectRoot: string): Promise<LocalStack> 
         return {
             baseUrl,
             panDomainPrivateKey: panDomainKeys.privateKeyPem,
+            mockApiUrl,
             minioContainer,
             restorerContainer,
+            mockContainer,
             network,
         };
     } catch (error) {
         if (restorerContainer) {
             await restorerContainer.stop();
+        }
+        if (mockContainer) {
+            await mockContainer.stop();
         }
         if (minioContainer) {
             await minioContainer.stop();
@@ -162,10 +209,14 @@ export async function startLocalStack(projectRoot: string): Promise<LocalStack> 
 export async function stopLocalStack({
     restorerContainer,
     minioContainer,
+    mockContainer,
     network,
 }: Partial<LocalStack> = {}): Promise<void> {
     if (restorerContainer) {
         await restorerContainer.stop();
+    }
+    if (mockContainer) {
+        await mockContainer.stop();
     }
     if (minioContainer) {
         await minioContainer.stop();

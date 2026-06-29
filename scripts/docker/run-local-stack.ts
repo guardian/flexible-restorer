@@ -30,6 +30,7 @@ async function main() {
         writeSharedStackInfo(projectRoot, {
             baseUrl: stack.baseUrl,
             panDomainPrivateKey: stack.panDomainPrivateKey,
+            mockApiUrl: stack.mockApiUrl,
         });
 
         browser = await chromium.launch({ headless: false });
@@ -45,6 +46,10 @@ async function main() {
 
         console.log(`\nLocal stack started at ${stack.baseUrl}`);
         console.log("Opened a browser with a local auth cookie.");
+        console.log(
+            `Mock flexible-content API: ${stack.mockApiUrl} ` +
+                `(POST ${stack.mockApiUrl}/__admin/state to change responses).`,
+        );
         console.log("Press Ctrl+C to stop.");
         process.stdin.resume();
         await waitForTerminationSignal();
