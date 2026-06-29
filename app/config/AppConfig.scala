@@ -28,7 +28,11 @@ class AppConfig(configuration: Configuration, identity: AppIdentity) {
       stack = "flexible",
       stage = "DEV",
       isSecondary = false,
-      apiPrefix = "http://localhost:9085/api",
+      // Use the same per-stage gudiscovery host convention as the other stacks
+      // (see models/FlexibleStack) so that, in local development, the host can be
+      // routed to the in-network mock flexible-content API instead of a real
+      // service. This lets the local stack report as an available destination.
+      apiPrefix = "http://flexible-api.DEV.flexible.gudiscovery.:8080",
       composerPrefix = "https://composer.local.dev-gutools.co.uk",
       snapshotBucket = "not-applicable"))
   else None
@@ -38,24 +42,12 @@ class AppConfig(configuration: Configuration, identity: AppIdentity) {
     case "CODE" => List("CODE")
   }
 
-  // When set (local dev only), every stack's flexible-content API is pointed at
-  // this base URL instead of its real per-stage host. This lets the local stack
-  // talk to the in-network mock flexible-content API. Sourced from the
-  // FLEXIBLE_API_BASE_URL env var via application.conf.
-  private val flexibleApiBaseUrlOverride: Option[String] =
-    if (underlyingConfig.hasPath("flexible.api.baseUrl")) {
-      Some(underlyingConfig.getString("flexible.api.baseUrl")).filter(_.nonEmpty)
-    } else None
-
-  private def withApiOverride(stack: FlexibleStack): FlexibleStack =
-    flexibleApiBaseUrlOverride.fold(stack)(url => stack.copy(apiPrefix = url))
-
-  val allStacks: List[FlexibleStack] = (destinationStages.flatMap { thisStage =>
+  val allStacks: List[FlexibleStack] = destinationStages.flatMap { thisStage =>
     List(
       FlexibleStack(stack, thisStage),
       FlexibleStack(s"$stack-secondary", thisStage)
     )
-  } ++ localStack).map(withApiOverride)
+  } ++ localStack
 
   val sourceStacks: List[FlexibleStack] = allStacks.filter(_.stage == effectiveStage)
 
