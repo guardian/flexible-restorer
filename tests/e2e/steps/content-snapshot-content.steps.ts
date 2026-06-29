@@ -322,6 +322,13 @@ Then(
 const restoreModalLocator = (page: Page) =>
     page.locator(".modal").filter({ hasText: "Before you restore" });
 
+// The error modal is a separate `.modal` element (driven by ErrorCtrl) that is
+// shown/hidden via the same `visually-hidden` opacity toggle, so detect it the
+// same way: opacity `1` when an error is showing, `0` otherwise. It is uniquely
+// identified by its title text.
+const errorModalLocator = (page: Page) =>
+    page.locator(".modal").filter({ hasText: "Ooops, something went wrong" });
+
 When("I press Enter", async ({ page }) => {
     // The snapshot-list keydown handler opens the modal on Enter (keyCode 13)
     // when the modal is not already displayed.
@@ -613,31 +620,97 @@ Then(
 
 // --- Error in snapshot content loading shows the error modal ------------------
 
-Given("snapshot content loading fails", async () => {
-    // TODO: implement step
+Given("snapshot content loading fails", async ({ page }) => {
+    // Make sure the page is interactive (the initial snapshot content has
+    // loaded) before arranging the failure, so the navigation in the next step
+    // actually triggers a fresh content fetch.
+    await expect(page.getByText("Show JSON", { exact: true })).toBeVisible({
+        timeout: timeout,
+    });
+
+    // Force the snapshot content endpoint to fail. The next time the app loads a
+    // snapshot's content (GET /api/1/version/:system/:content/:timestamp, see
+    // SnapshotCollectionService.js) the request returns 500, so
+    // SnapshotContentCtrl.loadContent's `.catch` publishes the 'error' event.
+    await page.route("**/api/1/version/**", async (route) => {
+        await route.fulfill({
+            status: 500,
+            contentType: "application/json",
+            body: JSON.stringify({ message: "Snapshot content load failed" }),
+        });
+    });
 });
 
-When("the error is published", async () => {
-    // TODO: implement step
+When("the error is published", async ({ page }) => {
+    // Pressing the down arrow makes the next snapshot active, which loads its
+    // content from the (now failing) endpoint. The rejected request causes
+    // SnapshotContentCtrl to publish the 'error' event the modals react to.
+    await page.keyboard.press("ArrowDown");
 });
 
-Then("I should see the error modal with an explanatory message", async () => {
-    // TODO: implement step
-});
+Then(
+    "I should see the error modal with an explanatory message",
+    async ({ page }) => {
+        // ErrorCtrl sets `hasError` true on the 'error' event, which removes the
+        // `visually-hidden` class so the error modal becomes visible (opacity 1)
+        // and shows its explanatory "Ooops, something went wrong" message.
+        const errorModal = errorModalLocator(page);
+        await expect(errorModal).toHaveCSS("opacity", "1", { timeout: timeout });
+        await expect(errorModal).toContainText("Ooops, something went wrong");
+    },
+);
 
-Then("the restore modal should close if it was open", async () => {
-    // TODO: implement step
+Then("the restore modal should close if it was open", async ({ page }) => {
+    // ModalController subscribes to the 'error' event and always closes the
+    // restore modal. It was not opened in this scenario, so it must be closed
+    // (opacity 0) once the error has been published.
+    await expect(restoreModalLocator(page)).toHaveCSS("opacity", "0", {
+        timeout: timeout,
+    });
 });
 
 // --- No restore destinations shows an error outcome ---------------------------
 
-When("there are no destinations available for the current content", async () => {
-    // TODO: implement step
-});
+When(
+    "there are no destinations available for the current content",
+    async ({ page }) => {
+        // Force the destinations endpoint to return an empty list.
+        // RestoreService.getDestinations rejects on an empty array, and
+        // RestoreFormCtrl's `.catch` then sets `$scope.destinations = []` (see
+        // RestoreService.js / RestoreFormCtrl.js), leaving no destinations.
+        await page.route(
+            "**/api/1/restore/destinations/**",
+            async (route) => {
+                await route.fulfill({
+                    status: 200,
+                    contentType: "application/json",
+                    body: JSON.stringify([]),
+                });
+            },
+        );
+
+        // The modal already loaded the real destinations when it opened, so
+        // close and reopen it to reload destinations through the now-empty
+        // endpoint.
+        await page.keyboard.press("Escape");
+        await expect(restoreModalLocator(page)).toHaveCSS("opacity", "0", {
+            timeout: timeout,
+        });
+        await page.keyboard.press("Enter");
+        await expect(restoreModalLocator(page)).toHaveCSS("opacity", "1", {
+            timeout: timeout,
+        });
+    },
+);
 
 Then(
     "I should see an error outcome for missing restore destinations",
-    async () => {
-        // TODO: implement step
+    async ({ page }) => {
+        // With no destinations returned, the `ng-repeat="dest in destinations"`
+        // renders nothing, so the restore modal offers no destination radio
+        // options to restore to.
+        await expect(page.getByRole("radio")).toHaveCount(0, {
+            timeout: timeout,
+        });
     },
 );
