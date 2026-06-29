@@ -6,6 +6,7 @@ Feature: Track page visits and snapshot interactions
     Given the application stack is running
     And I am signed in through pan-domain auth
 
+  @pending
   Scenario Outline: The analytics service chooses the correct telemetry client for the current host
     Given the application has bootstrapped the analytics service
     When the app is running on <host>
@@ -18,6 +19,7 @@ Feature: Track page visits and snapshot interactions
       | restorer.local.dev-gutools.co.uk | https://user-telemetry.local.dev-gutools.co.uk    |
   # Evidence: public/javascripts/app/services/AnalyticsService.js
 
+  @pending
   Scenario: A route change sends a tracking pixel for the current page path
     Given the analytics service is active
     When I navigate to a new page in the application
@@ -27,6 +29,7 @@ Feature: Track page visits and snapshot interactions
   # Evidence: public/javascripts/app/services/AnalyticsService.js
   # Evidence: public/javascripts/app/main.js
 
+  @pending
   Scenario: Loading the app boots analytics tracking automatically
     Given the application has started
     When the restorer application run block executes
@@ -35,6 +38,7 @@ Feature: Track page visits and snapshot interactions
   # Evidence: public/javascripts/app/main.js
   # Evidence: public/javascripts/app/services/AnalyticsService.js
 
+  @pending
   Scenario: Viewing a snapshot emits a viewed analytics event
     Given version history data has loaded successfully
     When the first snapshot content is loaded
@@ -43,6 +47,7 @@ Feature: Track page visits and snapshot interactions
   # Evidence: public/javascripts/app/controllers/SnapshotContentCtrl.js
   # Evidence: public/javascripts/app/services/AnalyticsService.js
 
+  @pending
   Scenario: Changing the active snapshot emits an active analytics event
     Given version history data has loaded successfully
     When I move to a different snapshot in the list
@@ -51,6 +56,7 @@ Feature: Track page visits and snapshot interactions
   # Evidence: public/javascripts/app/controllers/SnapshotListCtrl.js
   # Evidence: public/javascripts/app/services/AnalyticsService.js
 
+  @pending
   Scenario: Copying snapshot content emits a copied analytics event
     Given snapshot content has loaded
     When I copy the snapshot JSON
@@ -58,6 +64,7 @@ Feature: Track page visits and snapshot interactions
   # Evidence: public/javascripts/app/controllers/SnapshotListInteractionCtrl.js
   # Evidence: public/javascripts/app/services/AnalyticsService.js
 
+  @pending
   Scenario: Restoring a snapshot emits a restored analytics event
     Given the restore modal is open
     When I submit a successful restore
