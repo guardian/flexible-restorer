@@ -6,7 +6,6 @@ Feature: Track page visits and snapshot interactions
     Given the application stack is running
     And I am signed in through pan-domain auth
 
-
   Scenario: A route change sends a tracking pixel for the current page path
     Given the analytics service is active
     When I navigate to a new page in the application
