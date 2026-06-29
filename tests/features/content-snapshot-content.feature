@@ -125,7 +125,6 @@ Feature: Review and act on snapshot content in version history
   # Evidence: public/javascripts/app/controllers/RestoreFormCtrl.js
   # Evidence: public/javascripts/app/services/RestoreService.js
 
-@pending
   Scenario: Error in snapshot content loading shows the error modal
     Given snapshot content loading fails
     When the error is published
@@ -136,7 +135,6 @@ Feature: Review and act on snapshot content in version history
   # Evidence: public/javascripts/app/controllers/ModalController.js
   # Evidence: public/javascripts/app/templates/restore-list.html
 
-@pending
   Scenario: No restore destinations shows an error outcome
     Given the restore modal is open
     When there are no destinations available for the current content
