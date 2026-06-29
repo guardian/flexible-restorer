@@ -27,39 +27,3 @@ Feature: Track page visits and snapshot interactions
     And the request should include the current route path
   # Evidence: public/javascripts/app/services/AnalyticsService.js
   # Evidence: public/javascripts/app/main.js
-
-  @pending
-  Scenario: Viewing a snapshot emits a viewed analytics event
-    Given version history data has loaded successfully
-    When the first snapshot content is loaded
-    Then a Snapshot Viewed event should be published
-    And the event should include the content id and snapshot timestamp
-  # Evidence: public/javascripts/app/controllers/SnapshotContentCtrl.js
-  # Evidence: public/javascripts/app/services/AnalyticsService.js
-
-  @pending
-  Scenario: Changing the active snapshot emits an active analytics event
-    Given version history data has loaded successfully
-    When I move to a different snapshot in the list
-    Then a Snapshot Active event should be published
-    And the event should include the content id and snapshot timestamp
-  # Evidence: public/javascripts/app/controllers/SnapshotListCtrl.js
-  # Evidence: public/javascripts/app/services/AnalyticsService.js
-
-  @pending
-  Scenario: Copying snapshot content emits a copied analytics event
-    Given snapshot content has loaded
-    When I copy the snapshot JSON
-    Then a Snapshot Copied event should be published
-  # Evidence: public/javascripts/app/controllers/SnapshotListInteractionCtrl.js
-  # Evidence: public/javascripts/app/services/AnalyticsService.js
-
-  @pending
-  Scenario: Restoring a snapshot emits a restored analytics event
-    Given the restore modal is open
-    When I submit a successful restore
-    Then a Snapshot Restored event should be published
-    And the event should include the content id and snapshot timestamp
-  # Evidence: public/javascripts/app/services/RestoreService.js
-  # Evidence: public/javascripts/app/controllers/RestoreFormCtrl.js
-  # Evidence: public/javascripts/app/services/AnalyticsService.js
