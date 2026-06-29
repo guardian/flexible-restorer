@@ -38,12 +38,24 @@ class AppConfig(configuration: Configuration, identity: AppIdentity) {
     case "CODE" => List("CODE")
   }
 
-  val allStacks: List[FlexibleStack] = destinationStages.flatMap { thisStage =>
+  // When set (local dev only), every stack's flexible-content API is pointed at
+  // this base URL instead of its real per-stage host. This lets the local stack
+  // talk to the in-network mock flexible-content API. Sourced from the
+  // FLEXIBLE_API_BASE_URL env var via application.conf.
+  private val flexibleApiBaseUrlOverride: Option[String] =
+    if (underlyingConfig.hasPath("flexible.api.baseUrl")) {
+      Some(underlyingConfig.getString("flexible.api.baseUrl")).filter(_.nonEmpty)
+    } else None
+
+  private def withApiOverride(stack: FlexibleStack): FlexibleStack =
+    flexibleApiBaseUrlOverride.fold(stack)(url => stack.copy(apiPrefix = url))
+
+  val allStacks: List[FlexibleStack] = (destinationStages.flatMap { thisStage =>
     List(
       FlexibleStack(stack, thisStage),
       FlexibleStack(s"$stack-secondary", thisStage)
     )
-  } ++ localStack
+  } ++ localStack).map(withApiOverride)
 
   val sourceStacks: List[FlexibleStack] = allStacks.filter(_.stage == effectiveStage)
 

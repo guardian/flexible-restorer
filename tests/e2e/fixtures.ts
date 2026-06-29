@@ -40,8 +40,10 @@ export const test = base.extend<object, WorkerFixtures>({
                 await use({
                     baseUrl: sharedStack.baseUrl,
                     panDomainPrivateKey: sharedStack.panDomainPrivateKey,
+                    mockApiUrl: sharedStack.mockApiUrl,
                     minioContainer: undefined,
                     restorerContainer: undefined,
+                    mockContainer: undefined,
                     network: undefined,
                 });
                 return;
