@@ -24,17 +24,17 @@
     "created" : {
       "date" : 1258668300000,
       "user" : {
-        "email" : "articlemigration@guardian.co.uk",
-        "firstName" : "article",
-        "lastName" : "migration"
+        "email" : "user5@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "5"
       }
     },
     "lastMajorRevisionPublished" : {
       "date" : 1258668759000,
       "user" : {
-        "email" : "articlemigration@guardian.co.uk",
-        "firstName" : "article",
-        "lastName" : "migration"
+        "email" : "user5@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "5"
       }
     },
     "revision" : 10
@@ -45,9 +45,9 @@
     "storyBundleId" : "2723863"
   },
   "collaborators" : [ {
-    "email" : "articlemigration@guardian.co.uk",
-    "firstName" : "article",
-    "lastName" : "migration"
+    "email" : "user5@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "5"
   } ],
   "toolSettings" : {
     "slugLinked" : "false",
@@ -68,17 +68,17 @@
       "created" : {
         "date" : 1258668300000,
         "user" : {
-          "email" : "articlemigration@guardian.co.uk",
-          "firstName" : "article",
-          "lastName" : "migration"
+          "email" : "user5@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "5"
         }
       },
       "lastMajorRevisionPublished" : {
         "date" : 1258668759000,
         "user" : {
-          "email" : "articlemigration@guardian.co.uk",
-          "firstName" : "article",
-          "lastName" : "migration"
+          "email" : "user5@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "5"
         }
       },
       "revision" : 10
@@ -118,14 +118,14 @@
       "lastModified" : 1452032272486,
       "dateCreated" : 1452032272486,
       "createdBy" : {
-        "email" : "articlemigration@guardian.co.uk",
-        "firstName" : "article",
-        "lastName" : "migration"
+        "email" : "user5@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "5"
       },
       "lastModifiedBy" : {
-        "email" : "articlemigration@guardian.co.uk",
-        "firstName" : "article",
-        "lastName" : "migration"
+        "email" : "user5@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "5"
       },
       "contributors" : [ ],
       "tags" : [ ],
@@ -158,9 +158,9 @@
       "lastModified" : 1452032272482,
       "dateCreated" : 1452032272419,
       "lastModifiedBy" : {
-        "email" : "articlemigration@guardian.co.uk",
-        "firstName" : "article",
-        "lastName" : "migration"
+        "email" : "user5@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "5"
       },
       "contributors" : [ ],
       "tags" : [ ],
@@ -496,17 +496,17 @@
       "created" : {
         "date" : 1258668300000,
         "user" : {
-          "email" : "articlemigration@guardian.co.uk",
-          "firstName" : "article",
-          "lastName" : "migration"
+          "email" : "user5@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "5"
         }
       },
       "lastMajorRevisionPublished" : {
         "date" : 1258668759000,
         "user" : {
-          "email" : "articlemigration@guardian.co.uk",
-          "firstName" : "article",
-          "lastName" : "migration"
+          "email" : "user5@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "5"
         }
       },
       "revision" : 10
@@ -546,14 +546,14 @@
       "lastModified" : 1452032272486,
       "dateCreated" : 1452032272486,
       "createdBy" : {
-        "email" : "articlemigration@guardian.co.uk",
-        "firstName" : "article",
-        "lastName" : "migration"
+        "email" : "user5@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "5"
       },
       "lastModifiedBy" : {
-        "email" : "articlemigration@guardian.co.uk",
-        "firstName" : "article",
-        "lastName" : "migration"
+        "email" : "user5@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "5"
       },
       "contributors" : [ ],
       "tags" : [ ],
@@ -586,9 +586,9 @@
       "lastModified" : 1452032272482,
       "dateCreated" : 1452032272419,
       "lastModifiedBy" : {
-        "email" : "articlemigration@guardian.co.uk",
-        "firstName" : "article",
-        "lastName" : "migration"
+        "email" : "user5@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "5"
       },
       "contributors" : [ ],
       "tags" : [ ],

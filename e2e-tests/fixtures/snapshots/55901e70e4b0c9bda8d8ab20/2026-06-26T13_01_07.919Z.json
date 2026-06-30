@@ -1,0 +1,1158 @@
+{
+  "id" : "55901e70e4b0c9bda8d8ab20",
+  "type" : "article",
+  "published" : true,
+  "isGone" : false,
+  "isHosted" : false,
+  "expiry" : {
+    "rights" : {
+      "expired" : false
+    },
+    "commercial" : {
+      "expired" : false
+    }
+  },
+  "rights" : {
+    "syndicationAggregate" : true,
+    "subscriptionDatabases" : true,
+    "developerCommunity" : true
+  },
+  "contentChangeDetails" : {
+    "lastModified" : {
+      "date" : 1782478651723
+    },
+    "created" : {
+      "date" : 1435508336839,
+      "user" : {
+        "email" : "user24@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "24"
+      }
+    },
+    "published" : {
+      "date" : 1435532525360,
+      "user" : {
+        "email" : "user14@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "14"
+      }
+    },
+    "lastMajorRevisionPublished" : {
+      "date" : 1435532525360,
+      "user" : {
+        "email" : "user14@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "14"
+      }
+    },
+    "revision" : 488
+  },
+  "identifiers" : {
+    "path" : "society/2015/jun/29/nhs-staff-sorry-patients-medical-blunders",
+    "pageId" : "2328114",
+    "shortPath" : "p/4a7fc",
+    "storyBundleId" : "10534523"
+  },
+  "collaborators" : [ {
+    "email" : "user24@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "24"
+  }, {
+    "email" : "user28@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "28"
+  }, {
+    "email" : "user14@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "14"
+  }, {
+    "email" : "user11@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "11"
+  }, {
+    "email" : "user21@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "21"
+  }, {
+    "email" : "user25@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "25"
+  } ],
+  "toolSettings" : {
+    "trailTextLinked" : "true",
+    "linkTextLinked" : "true",
+    "slugLinked" : "false",
+    "seoChanged" : "false",
+    "seoOptimised" : "false"
+  },
+  "aliasPaths" : [ ],
+  "preview" : {
+    "contentChangeDetails" : {
+      "lastModified" : {
+        "date" : 1782478651723
+      },
+      "created" : {
+        "date" : 1435508336839,
+        "user" : {
+          "email" : "user24@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "24"
+        }
+      },
+      "published" : {
+        "date" : 1435532525360,
+        "user" : {
+          "email" : "user14@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "14"
+        }
+      },
+      "lastMajorRevisionPublished" : {
+        "date" : 1435532525360,
+        "user" : {
+          "email" : "user14@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "14"
+        }
+      },
+      "revision" : 488
+    },
+    "fields" : {
+      "linkText" : "NHS staff told to say 'I am sorry' to patients for medical blunders",
+      "standfirst" : "<p data-dropid=\"0\">New guidance says doctors, nurses and midwives must now offer prompt apology and explanation to those injured by mistakes during treatment</p>",
+      "slug" : "nhs-staff-sorry-patients-medical-blunders",
+      "newspaperPublicationDate" : "2015-06-29T00:00:00+00:00",
+      "byline" : "<span data-tag-id=\"15586\" class=\"contributor\">Denis Campbell</span> Health correspondent",
+      "newspaperPageNumber" : "8",
+      "trailText" : "New guidance says doctors, nurses and midwives must now offer prompt apology and explanation to those injured by mistakes during treatment",
+      "headline" : "NHS staff told to say 'I am sorry' to patients for medical blunders"
+    },
+    "thumbnail" : {
+      "fields" : {
+        "displayCredit" : "true",
+        "imageType" : "Photograph",
+        "alt" : "Professor Terence Stephenson, GMC chairman",
+        "picdarUrn" : "GD*30223001",
+        "source" : "The Guardian",
+        "photographer" : "Graham Turner",
+        "mediaId" : "9fad264aa4f737cfca22e088d5022cc8a1bc4571",
+        "mediaApiUri" : "https://api.media.gutools.co.uk/images/9fad264aa4f737cfca22e088d5022cc8a1bc4571"
+      },
+      "assets" : [ {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://media.guim.co.uk/9fad264aa4f737cfca22e088d5022cc8a1bc4571/0_0_5070_3044/2000.jpg",
+        "fields" : {
+          "width" : "2000",
+          "height" : "1201",
+          "aspectRatio" : "5:3"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://media.guim.co.uk/9fad264aa4f737cfca22e088d5022cc8a1bc4571/0_0_5070_3044/1000.jpg",
+        "fields" : {
+          "width" : "1000",
+          "height" : "600",
+          "aspectRatio" : "5:3"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://media.guim.co.uk/9fad264aa4f737cfca22e088d5022cc8a1bc4571/0_0_5070_3044/500.jpg",
+        "fields" : {
+          "width" : "500",
+          "height" : "300",
+          "aspectRatio" : "5:3"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://media.guim.co.uk/9fad264aa4f737cfca22e088d5022cc8a1bc4571/0_0_5070_3044/140.jpg",
+        "fields" : {
+          "width" : "140",
+          "height" : "84",
+          "aspectRatio" : "5:3"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://media.guim.co.uk/9fad264aa4f737cfca22e088d5022cc8a1bc4571/0_0_5070_3044/5070.jpg",
+        "fields" : {
+          "width" : "5070",
+          "height" : "3044",
+          "aspectRatio" : "5:3"
+        }
+      } ]
+    },
+    "mainBlock" : {
+      "id" : "55902a22e4b0c9bda8d8ab38",
+      "lastModified" : 1435532497554,
+      "dateCreated" : 1435511330510,
+      "createdBy" : {
+        "email" : "user28@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "28"
+      },
+      "lastModifiedBy" : {
+        "email" : "user14@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "14"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "image",
+        "fields" : {
+          "displayCredit" : "true",
+          "imageType" : "Photograph",
+          "alt" : "Professor Terence Stephenson, GMC chairman",
+          "caption" : "Professor Terence Stephenson, GMC chairman said: ‘Saying ‘I am sorry’ is intuitive. You want to avoid saying, for example, ‘my trust regrets’ or ‘the organisation that I work for regrets’.’",
+          "picdarUrn" : "GD*30223001",
+          "source" : "The Guardian",
+          "photographer" : "Graham Turner",
+          "mediaId" : "9fad264aa4f737cfca22e088d5022cc8a1bc4571",
+          "mediaApiUri" : "https://api.media.gutools.co.uk/images/9fad264aa4f737cfca22e088d5022cc8a1bc4571"
+        },
+        "assets" : [ {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/9fad264aa4f737cfca22e088d5022cc8a1bc4571/0_0_5070_3044/2000.jpg",
+          "fields" : {
+            "width" : "2000",
+            "height" : "1201",
+            "aspectRatio" : "5:3"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/9fad264aa4f737cfca22e088d5022cc8a1bc4571/0_0_5070_3044/1000.jpg",
+          "fields" : {
+            "width" : "1000",
+            "height" : "600",
+            "aspectRatio" : "5:3"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/9fad264aa4f737cfca22e088d5022cc8a1bc4571/0_0_5070_3044/500.jpg",
+          "fields" : {
+            "width" : "500",
+            "height" : "300",
+            "aspectRatio" : "5:3"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/9fad264aa4f737cfca22e088d5022cc8a1bc4571/0_0_5070_3044/140.jpg",
+          "fields" : {
+            "width" : "140",
+            "height" : "84",
+            "aspectRatio" : "5:3"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/9fad264aa4f737cfca22e088d5022cc8a1bc4571/0_0_5070_3044/5070.jpg",
+          "fields" : {
+            "width" : "5070",
+            "height" : "3044",
+            "aspectRatio" : "5:3"
+          }
+        } ]
+      } ],
+      "published" : false,
+      "attributes" : { }
+    },
+    "blocks" : [ {
+      "id" : "55901e72e4b0c9bda8d8ab21",
+      "lastModified" : 1436196150753,
+      "dateCreated" : 1435508338863,
+      "createdBy" : {
+        "email" : "user24@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "24"
+      },
+      "lastModifiedBy" : {
+        "email" : "user25@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "25"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "text",
+        "fields" : {
+          "text" : "<p><gu-note title=\"Mat Smith 28/6/2015 at 17:19\" data-note-edited-by=\"Mat Smith\" data-note-edited-date=\"2015-06-28T16:19:34.675Z\" data-click-action=\"collapse\" data-note-id=\"e8001b19-d2e1-4e48-eac5-6710e7738113\" class=\"note note--start\">EMBARGOED UNTIL 00.01 Monday 29th June: </gu-note></p><p><gu-note title=\"Mat Smith 28/6/2015 at 17:19\" data-note-edited-by=\"Mat Smith\" data-note-edited-date=\"2015-06-28T16:19:34.675Z\" data-click-action=\"collapse\" data-note-id=\"e8001b19-d2e1-4e48-eac5-6710e7738113\" class=\"note\">Denis Campbell </gu-note></p><p><gu-note title=\"Mat Smith 28/6/2015 at 17:19\" data-note-edited-by=\"Mat Smith\" data-note-edited-date=\"2015-06-28T16:19:34.675Z\" data-click-action=\"collapse\" data-note-id=\"e8001b19-d2e1-4e48-eac5-6710e7738113\" class=\"note note--end\">Health correspondent </gu-note>Doctors, nurses and midwives will have to offer patients face-to-face apologies and say <gu-note class=\"note note--start note--end\" data-note-edited-by=\"Jonathan Paige\" data-note-edited-date=\"2015-06-28T22:36:46.455Z\" data-click-action=\"collapse\" data-note-id=\"8b71ab78-292e-4514-b77e-c70fbb0f73fc\" title=\"Jonathan Paige 28/6/2015 at 23:36\">“I am sorry”</gu-note>they are personally sorry about medical blunders under tough new rules designed to make the NHS more honest.</p><p>The 920,000 members of those three professions must now offer a prompt and heartfelt apology and explanation to the patient when things go wrong under new guidance being published <gu-note title=\"Jonathan Paige 28/6/2015 at 23:37\" data-note-edited-by=\"Jonathan Paige\" data-note-edited-date=\"2015-06-28T22:37:02.941Z\" data-click-action=\"collapse\" data-note-id=\"c6013a9c-255e-450a-9142-4a3b522a921d\" class=\"note note--start\">today</gu-note><gu-note class=\"note note--end\" data-note-edited-by=\"Mat Smith\" data-note-edited-date=\"2015-06-28T16:19:44.627Z\" data-click-action=\"collapse\" data-note-id=\"c6013a9c-255e-450a-9142-4a3b522a921d\" title=\"Mat Smith 28/6/2015 at 17:19\">MON</gu-note>on Monday.</p><p>It applies to all the UK’s 234,000 doctors and 686,000 nurses and midwives. The guidance should mean that those injured by mistakes during treatment, such as being given the wrong drug, are told immediately what happened and what harm they have suffered or may suffer as a result.</p>"
+        },
+        "assets" : [ ]
+      }, {
+        "elementType" : "rich-link",
+        "fields" : {
+          "linkText" : "Why it isn't just NHS staff who need to learn to say sorry – cartoon",
+          "originalUrl" : "http://www.theguardian.com/lifeandstyle/ng-interactive/2015/jul/06/why-it-isnt-just-nhs-staff-who-need-to-learn-to-say-sorry-cartoon",
+          "linkPrefix" : "Related: ",
+          "role" : "thumbnail",
+          "url" : "http://www.theguardian.com/lifeandstyle/ng-interactive/2015/jul/06/why-it-isnt-just-nhs-staff-who-need-to-learn-to-say-sorry-cartoon"
+        },
+        "assets" : [ ]
+      }, {
+        "elementType" : "text",
+        "fields" : {
+          "text" : "<p>The General Medical Council (GMC), which regulates doctors, and the Nursing and Midwifery Council think that <gu-note title=\"Jonathan Paige 28/6/2015 at 23:44\" data-note-edited-by=\"Jonathan Paige\" data-note-edited-date=\"2015-06-28T22:44:17.973Z\" data-click-action=\"collapse\" data-note-id=\"2d99fb59-8183-4420-fe81-a1f48388edd7\" class=\"note note--start\">b</gu-note><gu-note class=\"note note--end\" data-note-edited-by=\"Jonathan Paige\" data-note-edited-date=\"2015-06-28T22:44:13.398Z\" data-click-action=\"collapse\" data-note-id=\"2d99fb59-8183-4420-fe81-a1f48388edd7\" title=\"Jonathan Paige 28/6/2015 at 23:44\">y being </gu-note>genuine, personal apologies will help patients overcome their anxiety and distress<gu-note class=\"note note--start note--end\" data-note-edited-by=\"Peter Carty (Casual)\" data-note-edited-date=\"2015-06-28T16:49:43.023Z\" data-click-action=\"collapse\" data-note-id=\"d99f7ae1-5575-4672-e668-0b384aa3ca89\" title=\"Peter Carty (Casual) 28/6/2015 at 17:49\"> by being genuine</gu-note>.</p><p>“Patients are likely to find it more meaningful if you offer a personalised apology – for example ‘I am sorry …’ – rather than a general expression of regret about the incident on the organisation’s behalf,”<gu-note title=\"Peter Carty (Casual) 28/6/2015 at 17:47\" data-note-edited-by=\"Peter Carty (Casual)\" data-note-edited-date=\"2015-06-28T16:47:41.917Z\" data-click-action=\"collapse\" data-note-id=\"ead6f2df-6946-4ff7-990b-7fdca4999f65\" class=\"note note--start note--end\">, </gu-note> says the guidance, which was prompted by the Mid Staffordshire care scandal.</p><p>“Saying ‘I am sorry’ is intuitive. You want to avoid saying, for example, ‘<gu-note title=\"Peter Carty (Casual) 28/6/2015 at 17:46\" data-note-edited-by=\"Peter Carty (Casual)\" data-note-edited-date=\"2015-06-28T16:46:54.718Z\" data-click-action=\"collapse\" data-note-id=\"ec8b8c05-c490-4376-81a0-eb13bdc5b56f\" class=\"note note--start note--end\">M</gu-note>my trust regrets’ or ‘the organisation that I work for regrets’. These could be seen by patients as slightly weasel words. They want a personal apology and for the doctor or the team to show genuine contrition,”<gu-note class=\"note note--start note--end\" data-note-edited-by=\"Peter Carty (Casual)\" data-note-edited-date=\"2015-06-28T16:55:39.743Z\" data-click-action=\"collapse\" data-note-id=\"87bde977-1639-4da4-e15f-f8e883147cc9\" title=\"Peter Carty (Casual) 28/6/2015 at 17:55\">, </gu-note> said Professor Terence Stephenson, an eminent paediatrician who is the GMC’s chairman.</p><p>The move could ultimately reduce the rising tide of medical negligence against the NHS, which now costs it about £1.3bn a year in damages and legal fees. Research shows that many patients only resort to legal action because they feel they have not been told the truth about a lapse in safety. The guidance seeks to reassure staff by emphasising that apologising “doesn’t mean that we expect you to take personal responsibility for system failures or other people’s mistakes”.</p><p>Between 10% and 20% of patients are believed to suffer some harm as a direct result of receiving healthcare, especially in hospital. Often they suffer minor damage but sometimes they have the wrong part of their body operated on or even die as a result. All harm will now have to be disclosed.</p><p>The guidance will make it much harder for any doctor, nurse or midwife to do what some have done until now, namely keep silent about a failing they have caused or witnessed for fear that that they or their colleagues or employer will be sued. Failure to comply with the regulators’ new instructions will mean that any doctor, nurse or midwife whose conduct prompts a complaint will be judged more harshly when their fitness to practise is being considered by their disciplinary body.</p><p>When explaining that a problem has occurred NHS staff must “share all you know and believe to be true … [and]<gu-note title=\"Peter Carty (Casual) 28/6/2015 at 18:20\" data-note-edited-by=\"Peter Carty (Casual)\" data-note-edited-date=\"2015-06-28T17:20:57.241Z\" data-click-action=\"collapse\" data-note-id=\"f66fb12a-ee1b-42a8-8d37-8fdd8d81cdd4\" class=\"note note--start note--end\">[</gu-note> respond honestly to any questions” whether an investigation is still ongoing or not. They should use plain English, not medical jargon, and ensure they do not answer their mobile phone or pager during the conversation so the patient knows they are taking it seriously, Stephenson added.</p><p>The guidance has been beefed-up since a draft <gu-note title=\"Peter Carty (Casual) 28/6/2015 at 18:22\" data-note-edited-by=\"Peter Carty (Casual)\" data-note-edited-date=\"2015-06-28T17:22:12.281Z\" data-click-action=\"collapse\" data-note-id=\"2e3cfa80-1e8f-4189-a73b-f28ae6848a4e\" class=\"note note--start note--end\">of it </gu-note>was released last year. It now includes a duty on NHS medical personnel not to obstruct colleagues or ex-colleagues who want to raise concerns about patient safety.</p><p>The move was backed by the Royal College of Physicians, which represents the UK’s 30,000 hospital doctors, and the Medical Defence Union, which represents doctors accused of wrongdoing. Dr Michael Devlin, its head of professional standards and liaison, said it had been advising doctors for over 50 years to tell the patient and apologise as soon as they became aware of a mishap.</p><p>But the British Medical Association, the doctors’ union, voiced concern. “Any suggestion of an enforced apology where there is a dispute over where fault lies would be inappropriate. Research shows that most poor outcomes are due to system rather than individual failures. Apologies in these circumstances should be couched in those terms if we are to have a process that is truthful and appropriate”, said Dr Mark Porter, its chair of council.</p><p>Peter Walsh, chief executive of the charity Action against Medical Accidents (AvMA), said some doctors, nurses and midwives had ignored advice from professional bodies to be open and honest.</p><p>“Most doctors and nurses have always done the right thing but some lack the awareness and skills to do it well and compassionately. Some have justified not being open because of fear of adverse consequences for them or their employer, such as litigation. In effect the system as a whole has frowned upon cover-ups but been prepared to tolerate them,” he said.</p><p>“At AvMA all too many times we have seen the devastating effect that cover-ups have on patients and their families. Sometimes the trauma is more harmful than the original mistake. It drives people to take legal or disciplinary action to achieve some accountability and learning to prevent the same thing happening to others.”<gu-note title=\"Jonathan Paige 28/6/2015 at 23:54\" data-note-edited-by=\"Jonathan Paige\" data-note-edited-date=\"2015-06-28T22:54:07.321Z\" data-click-action=\"collapse\" data-note-id=\"91361ce9-b545-4779-9587-1ef32e783632\" class=\"note note--start\">, he added.</gu-note></p><p><gu-note title=\"Mat Smith 28/6/2015 at 17:19\" data-note-edited-by=\"Mat Smith\" data-note-edited-date=\"2015-06-28T16:19:53.698Z\" data-click-action=\"collapse\" data-note-id=\"91361ce9-b545-4779-9587-1ef32e783632\" class=\"note note--end\">ends </gu-note></p>"
+        },
+        "assets" : [ ]
+      } ],
+      "published" : false,
+      "attributes" : { }
+    } ],
+    "settings" : {
+      "relatedContentOff" : "false",
+      "blockAds" : "false",
+      "isInappropriateForSponsorship" : "false",
+      "embargoedUntil" : "2015-06-29T00:01:00+01:00",
+      "commentable" : "true",
+      "timeZone" : "Europe/London",
+      "managedByComposer" : "true",
+      "usesPathManager" : "true",
+      "productionOffice" : "UK"
+    },
+    "taxonomy" : {
+      "tags" : [ {
+        "tag" : {
+          "id" : 17004,
+          "type" : "Keyword",
+          "internalName" : "NHS (Society)",
+          "externalName" : "NHS",
+          "slug" : "nhs",
+          "section" : {
+            "id" : 186,
+            "name" : "Society",
+            "pathPrefix" : "society",
+            "slug" : "society"
+          },
+          "path" : "society/nhs"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 33911,
+          "type" : "Keyword",
+          "internalName" : "Nursing (Society)",
+          "externalName" : "Nursing",
+          "slug" : "nursing",
+          "section" : {
+            "id" : 186,
+            "name" : "Society",
+            "pathPrefix" : "society",
+            "slug" : "society"
+          },
+          "path" : "society/nursing"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 41246,
+          "type" : "Keyword",
+          "internalName" : "Midwifery (Society)",
+          "externalName" : "Midwifery",
+          "slug" : "midwifery",
+          "section" : {
+            "id" : 186,
+            "name" : "Society",
+            "pathPrefix" : "society",
+            "slug" : "society"
+          },
+          "path" : "society/midwifery"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 33916,
+          "type" : "Keyword",
+          "internalName" : "Doctors (Society)",
+          "externalName" : "Doctors",
+          "slug" : "doctors",
+          "section" : {
+            "id" : 186,
+            "name" : "Society",
+            "pathPrefix" : "society",
+            "slug" : "society"
+          },
+          "path" : "society/doctors"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 9439,
+          "type" : "Keyword",
+          "internalName" : "Health (Society)",
+          "externalName" : "Health",
+          "slug" : "health",
+          "section" : {
+            "id" : 186,
+            "name" : "Society",
+            "pathPrefix" : "society",
+            "slug" : "society"
+          },
+          "path" : "society/health"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 19909,
+          "type" : "Keyword",
+          "internalName" : "Health policy",
+          "externalName" : "Health policy",
+          "slug" : "health",
+          "section" : {
+            "id" : 184,
+            "name" : "Politics",
+            "pathPrefix" : "politics",
+            "slug" : "politics"
+          },
+          "path" : "politics/health"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 8798,
+          "type" : "Keyword",
+          "internalName" : "Society",
+          "externalName" : "Society",
+          "slug" : "society",
+          "section" : {
+            "id" : 186,
+            "name" : "Society",
+            "pathPrefix" : "society",
+            "slug" : "society"
+          },
+          "path" : "society/society"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 36942,
+          "type" : "Keyword",
+          "internalName" : "Mid Staffordshire NHS Trust (Society)",
+          "externalName" : "Mid Staffordshire NHS Trust",
+          "slug" : "mid-staffordshire-nhs-trust",
+          "section" : {
+            "id" : 186,
+            "name" : "Society",
+            "pathPrefix" : "society",
+            "slug" : "society"
+          },
+          "path" : "society/mid-staffordshire-nhs-trust"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 56284,
+          "type" : "Keyword",
+          "internalName" : "Hospitals",
+          "externalName" : "Hospitals",
+          "slug" : "hospitals",
+          "section" : {
+            "id" : 186,
+            "name" : "Society",
+            "pathPrefix" : "society",
+            "slug" : "society"
+          },
+          "path" : "society/hospitals"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 8791,
+          "type" : "Keyword",
+          "internalName" : "Politics",
+          "externalName" : "Politics",
+          "slug" : "politics",
+          "section" : {
+            "id" : 184,
+            "name" : "Politics",
+            "pathPrefix" : "politics",
+            "slug" : "politics"
+          },
+          "path" : "politics/politics"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 19583,
+          "type" : "Keyword",
+          "internalName" : "Public services policy (Society)",
+          "externalName" : "Public services policy",
+          "slug" : "policy",
+          "section" : {
+            "id" : 186,
+            "name" : "Society",
+            "pathPrefix" : "society",
+            "slug" : "society"
+          },
+          "path" : "society/policy"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 9486,
+          "type" : "Keyword",
+          "internalName" : "UK news",
+          "externalName" : "UK news",
+          "slug" : "uk",
+          "section" : {
+            "id" : 341,
+            "name" : "UK news",
+            "pathPrefix" : "uk-news",
+            "slug" : "uk-news"
+          },
+          "path" : "uk/uk"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 26903,
+          "type" : "Content Type",
+          "internalName" : "Article (Content type)",
+          "externalName" : "Article",
+          "slug" : "article",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "articles"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 22641,
+          "type" : "Tone",
+          "internalName" : "News (Tone)",
+          "externalName" : "News",
+          "slug" : "news",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "tone/news"
+        },
+        "isLead" : false
+      } ],
+      "contributors" : [ {
+        "id" : 15586,
+        "type" : "Contributor",
+        "internalName" : "Denis Campbell",
+        "externalName" : "Denis Campbell",
+        "slug" : "deniscampbell",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "profile/deniscampbell"
+      } ],
+      "publication" : {
+        "id" : 4,
+        "type" : "Publication",
+        "internalName" : "guardian.co.uk publication",
+        "externalName" : "theguardian.com",
+        "slug" : "guardian",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "guardian/all"
+      },
+      "newspaper" : {
+        "book" : {
+          "id" : 16600,
+          "type" : "Newspaper Book",
+          "internalName" : "Gdn: Main section G1 (nb)",
+          "externalName" : "Main section",
+          "slug" : "mainsection",
+          "section" : {
+            "id" : 182,
+            "name" : "News",
+            "pathPrefix" : "news",
+            "slug" : "news"
+          },
+          "path" : "theguardian/mainsection"
+        },
+        "bookSection" : {
+          "id" : 16779,
+          "type" : "Newspaper Book Section",
+          "internalName" : "Gdn: UK news (nbs)",
+          "externalName" : "UK news",
+          "slug" : "uknews",
+          "section" : {
+            "id" : 341,
+            "name" : "UK news",
+            "pathPrefix" : "uk-news",
+            "slug" : "uk"
+          },
+          "path" : "theguardian/mainsection/uknews"
+        },
+        "publication" : {
+          "id" : 2,
+          "type" : "Publication",
+          "internalName" : "The Guardian publication",
+          "externalName" : "The Guardian",
+          "slug" : "theguardian",
+          "section" : {
+            "id" : 205,
+            "name" : "From the Guardian",
+            "pathPrefix" : "theguardian",
+            "slug" : "theguardian"
+          },
+          "path" : "theguardian/all"
+        }
+      },
+      "references" : [ ],
+      "tracking" : [ ]
+    },
+    "aliasPaths" : [ ]
+  },
+  "live" : {
+    "contentChangeDetails" : {
+      "lastModified" : {
+        "date" : 1782478651723
+      },
+      "created" : {
+        "date" : 1435508336839,
+        "user" : {
+          "email" : "user24@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "24"
+        }
+      },
+      "published" : {
+        "date" : 1435532525385,
+        "user" : {
+          "email" : "user14@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "14"
+        }
+      },
+      "lastMajorRevisionPublished" : {
+        "date" : 1435532525385,
+        "user" : {
+          "email" : "user14@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "14"
+        }
+      },
+      "revision" : 492
+    },
+    "fields" : {
+      "linkText" : "NHS staff told to say 'I am sorry' to patients for medical blunders",
+      "standfirst" : "<p data-dropid=\"0\">New guidance says doctors, nurses and midwives must now offer prompt apology and explanation to those injured by mistakes during treatment</p>",
+      "slug" : "nhs-staff-sorry-patients-medical-blunders",
+      "newspaperPublicationDate" : "2015-06-29T00:00:00+00:00",
+      "byline" : "<span data-tag-id=\"15586\" class=\"contributor\">Denis Campbell</span> Health correspondent",
+      "newspaperPageNumber" : "8",
+      "trailText" : "New guidance says doctors, nurses and midwives must now offer prompt apology and explanation to those injured by mistakes during treatment",
+      "headline" : "NHS staff told to say 'I am sorry' to patients for medical blunders"
+    },
+    "thumbnail" : {
+      "fields" : {
+        "displayCredit" : "true",
+        "imageType" : "Photograph",
+        "alt" : "Professor Terence Stephenson, GMC chairman",
+        "picdarUrn" : "GD*30223001",
+        "source" : "The Guardian",
+        "photographer" : "Graham Turner",
+        "mediaId" : "9fad264aa4f737cfca22e088d5022cc8a1bc4571",
+        "mediaApiUri" : "https://api.media.gutools.co.uk/images/9fad264aa4f737cfca22e088d5022cc8a1bc4571"
+      },
+      "assets" : [ {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://media.guim.co.uk/9fad264aa4f737cfca22e088d5022cc8a1bc4571/0_0_5070_3044/2000.jpg",
+        "fields" : {
+          "width" : "2000",
+          "height" : "1201",
+          "aspectRatio" : "5:3"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://media.guim.co.uk/9fad264aa4f737cfca22e088d5022cc8a1bc4571/0_0_5070_3044/1000.jpg",
+        "fields" : {
+          "width" : "1000",
+          "height" : "600",
+          "aspectRatio" : "5:3"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://media.guim.co.uk/9fad264aa4f737cfca22e088d5022cc8a1bc4571/0_0_5070_3044/500.jpg",
+        "fields" : {
+          "width" : "500",
+          "height" : "300",
+          "aspectRatio" : "5:3"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://media.guim.co.uk/9fad264aa4f737cfca22e088d5022cc8a1bc4571/0_0_5070_3044/140.jpg",
+        "fields" : {
+          "width" : "140",
+          "height" : "84",
+          "aspectRatio" : "5:3"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://media.guim.co.uk/9fad264aa4f737cfca22e088d5022cc8a1bc4571/0_0_5070_3044/5070.jpg",
+        "fields" : {
+          "width" : "5070",
+          "height" : "3044",
+          "aspectRatio" : "5:3"
+        }
+      } ]
+    },
+    "mainBlock" : {
+      "id" : "55902a22e4b0c9bda8d8ab38",
+      "lastModified" : 1435532497554,
+      "dateCreated" : 1435511330510,
+      "publishedDate" : 1435532497628,
+      "firstPublishedDate" : 1435511330605,
+      "createdBy" : {
+        "email" : "user28@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "28"
+      },
+      "lastModifiedBy" : {
+        "email" : "user14@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "14"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "image",
+        "fields" : {
+          "displayCredit" : "true",
+          "imageType" : "Photograph",
+          "alt" : "Professor Terence Stephenson, GMC chairman",
+          "caption" : "Professor Terence Stephenson, GMC chairman said: ‘Saying ‘I am sorry’ is intuitive. You want to avoid saying, for example, ‘my trust regrets’ or ‘the organisation that I work for regrets’.’",
+          "picdarUrn" : "GD*30223001",
+          "source" : "The Guardian",
+          "photographer" : "Graham Turner",
+          "mediaId" : "9fad264aa4f737cfca22e088d5022cc8a1bc4571",
+          "mediaApiUri" : "https://api.media.gutools.co.uk/images/9fad264aa4f737cfca22e088d5022cc8a1bc4571"
+        },
+        "assets" : [ {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://media.guim.co.uk/9fad264aa4f737cfca22e088d5022cc8a1bc4571/0_0_5070_3044/2000.jpg",
+          "fields" : {
+            "width" : "2000",
+            "height" : "1201",
+            "aspectRatio" : "5:3"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://media.guim.co.uk/9fad264aa4f737cfca22e088d5022cc8a1bc4571/0_0_5070_3044/1000.jpg",
+          "fields" : {
+            "width" : "1000",
+            "height" : "600",
+            "aspectRatio" : "5:3"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://media.guim.co.uk/9fad264aa4f737cfca22e088d5022cc8a1bc4571/0_0_5070_3044/500.jpg",
+          "fields" : {
+            "width" : "500",
+            "height" : "300",
+            "aspectRatio" : "5:3"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://media.guim.co.uk/9fad264aa4f737cfca22e088d5022cc8a1bc4571/0_0_5070_3044/140.jpg",
+          "fields" : {
+            "width" : "140",
+            "height" : "84",
+            "aspectRatio" : "5:3"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://media.guim.co.uk/9fad264aa4f737cfca22e088d5022cc8a1bc4571/0_0_5070_3044/5070.jpg",
+          "fields" : {
+            "width" : "5070",
+            "height" : "3044",
+            "aspectRatio" : "5:3"
+          }
+        } ]
+      } ],
+      "published" : true,
+      "attributes" : { }
+    },
+    "blocks" : [ {
+      "id" : "55901e72e4b0c9bda8d8ab21",
+      "lastModified" : 1436196150753,
+      "dateCreated" : 1435508338863,
+      "publishedDate" : 1436196150796,
+      "firstPublishedDate" : 1435508340675,
+      "createdBy" : {
+        "email" : "user24@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "24"
+      },
+      "lastModifiedBy" : {
+        "email" : "user25@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "25"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "text",
+        "fields" : {
+          "text" : "<p><gu-note title=\"Mat Smith 28/6/2015 at 17:19\" data-note-edited-by=\"Mat Smith\" data-note-edited-date=\"2015-06-28T16:19:34.675Z\" data-click-action=\"collapse\" data-note-id=\"e8001b19-d2e1-4e48-eac5-6710e7738113\" class=\"note note--start\">EMBARGOED UNTIL 00.01 Monday 29th June: </gu-note></p><p><gu-note title=\"Mat Smith 28/6/2015 at 17:19\" data-note-edited-by=\"Mat Smith\" data-note-edited-date=\"2015-06-28T16:19:34.675Z\" data-click-action=\"collapse\" data-note-id=\"e8001b19-d2e1-4e48-eac5-6710e7738113\" class=\"note\">Denis Campbell </gu-note></p><p><gu-note title=\"Mat Smith 28/6/2015 at 17:19\" data-note-edited-by=\"Mat Smith\" data-note-edited-date=\"2015-06-28T16:19:34.675Z\" data-click-action=\"collapse\" data-note-id=\"e8001b19-d2e1-4e48-eac5-6710e7738113\" class=\"note note--end\">Health correspondent </gu-note>Doctors, nurses and midwives will have to offer patients face-to-face apologies and say <gu-note class=\"note note--start note--end\" data-note-edited-by=\"Jonathan Paige\" data-note-edited-date=\"2015-06-28T22:36:46.455Z\" data-click-action=\"collapse\" data-note-id=\"8b71ab78-292e-4514-b77e-c70fbb0f73fc\" title=\"Jonathan Paige 28/6/2015 at 23:36\">“I am sorry”</gu-note>they are personally sorry about medical blunders under tough new rules designed to make the NHS more honest.</p><p>The 920,000 members of those three professions must now offer a prompt and heartfelt apology and explanation to the patient when things go wrong under new guidance being published <gu-note title=\"Jonathan Paige 28/6/2015 at 23:37\" data-note-edited-by=\"Jonathan Paige\" data-note-edited-date=\"2015-06-28T22:37:02.941Z\" data-click-action=\"collapse\" data-note-id=\"c6013a9c-255e-450a-9142-4a3b522a921d\" class=\"note note--start\">today</gu-note><gu-note class=\"note note--end\" data-note-edited-by=\"Mat Smith\" data-note-edited-date=\"2015-06-28T16:19:44.627Z\" data-click-action=\"collapse\" data-note-id=\"c6013a9c-255e-450a-9142-4a3b522a921d\" title=\"Mat Smith 28/6/2015 at 17:19\">MON</gu-note>on Monday.</p><p>It applies to all the UK’s 234,000 doctors and 686,000 nurses and midwives. The guidance should mean that those injured by mistakes during treatment, such as being given the wrong drug, are told immediately what happened and what harm they have suffered or may suffer as a result.</p>"
+        },
+        "assets" : [ ]
+      }, {
+        "elementType" : "rich-link",
+        "fields" : {
+          "linkText" : "Why it isn't just NHS staff who need to learn to say sorry – cartoon",
+          "originalUrl" : "http://www.theguardian.com/lifeandstyle/ng-interactive/2015/jul/06/why-it-isnt-just-nhs-staff-who-need-to-learn-to-say-sorry-cartoon",
+          "linkPrefix" : "Related: ",
+          "role" : "thumbnail",
+          "url" : "http://www.theguardian.com/lifeandstyle/ng-interactive/2015/jul/06/why-it-isnt-just-nhs-staff-who-need-to-learn-to-say-sorry-cartoon"
+        },
+        "assets" : [ ]
+      }, {
+        "elementType" : "text",
+        "fields" : {
+          "text" : "<p>The General Medical Council (GMC), which regulates doctors, and the Nursing and Midwifery Council think that <gu-note title=\"Jonathan Paige 28/6/2015 at 23:44\" data-note-edited-by=\"Jonathan Paige\" data-note-edited-date=\"2015-06-28T22:44:17.973Z\" data-click-action=\"collapse\" data-note-id=\"2d99fb59-8183-4420-fe81-a1f48388edd7\" class=\"note note--start\">b</gu-note><gu-note class=\"note note--end\" data-note-edited-by=\"Jonathan Paige\" data-note-edited-date=\"2015-06-28T22:44:13.398Z\" data-click-action=\"collapse\" data-note-id=\"2d99fb59-8183-4420-fe81-a1f48388edd7\" title=\"Jonathan Paige 28/6/2015 at 23:44\">y being </gu-note>genuine, personal apologies will help patients overcome their anxiety and distress<gu-note class=\"note note--start note--end\" data-note-edited-by=\"Peter Carty (Casual)\" data-note-edited-date=\"2015-06-28T16:49:43.023Z\" data-click-action=\"collapse\" data-note-id=\"d99f7ae1-5575-4672-e668-0b384aa3ca89\" title=\"Peter Carty (Casual) 28/6/2015 at 17:49\"> by being genuine</gu-note>.</p><p>“Patients are likely to find it more meaningful if you offer a personalised apology – for example ‘I am sorry …’ – rather than a general expression of regret about the incident on the organisation’s behalf,”<gu-note title=\"Peter Carty (Casual) 28/6/2015 at 17:47\" data-note-edited-by=\"Peter Carty (Casual)\" data-note-edited-date=\"2015-06-28T16:47:41.917Z\" data-click-action=\"collapse\" data-note-id=\"ead6f2df-6946-4ff7-990b-7fdca4999f65\" class=\"note note--start note--end\">, </gu-note> says the guidance, which was prompted by the Mid Staffordshire care scandal.</p><p>“Saying ‘I am sorry’ is intuitive. You want to avoid saying, for example, ‘<gu-note title=\"Peter Carty (Casual) 28/6/2015 at 17:46\" data-note-edited-by=\"Peter Carty (Casual)\" data-note-edited-date=\"2015-06-28T16:46:54.718Z\" data-click-action=\"collapse\" data-note-id=\"ec8b8c05-c490-4376-81a0-eb13bdc5b56f\" class=\"note note--start note--end\">M</gu-note>my trust regrets’ or ‘the organisation that I work for regrets’. These could be seen by patients as slightly weasel words. They want a personal apology and for the doctor or the team to show genuine contrition,”<gu-note class=\"note note--start note--end\" data-note-edited-by=\"Peter Carty (Casual)\" data-note-edited-date=\"2015-06-28T16:55:39.743Z\" data-click-action=\"collapse\" data-note-id=\"87bde977-1639-4da4-e15f-f8e883147cc9\" title=\"Peter Carty (Casual) 28/6/2015 at 17:55\">, </gu-note> said Professor Terence Stephenson, an eminent paediatrician who is the GMC’s chairman.</p><p>The move could ultimately reduce the rising tide of medical negligence against the NHS, which now costs it about £1.3bn a year in damages and legal fees. Research shows that many patients only resort to legal action because they feel they have not been told the truth about a lapse in safety. The guidance seeks to reassure staff by emphasising that apologising “doesn’t mean that we expect you to take personal responsibility for system failures or other people’s mistakes”.</p><p>Between 10% and 20% of patients are believed to suffer some harm as a direct result of receiving healthcare, especially in hospital. Often they suffer minor damage but sometimes they have the wrong part of their body operated on or even die as a result. All harm will now have to be disclosed.</p><p>The guidance will make it much harder for any doctor, nurse or midwife to do what some have done until now, namely keep silent about a failing they have caused or witnessed for fear that that they or their colleagues or employer will be sued. Failure to comply with the regulators’ new instructions will mean that any doctor, nurse or midwife whose conduct prompts a complaint will be judged more harshly when their fitness to practise is being considered by their disciplinary body.</p><p>When explaining that a problem has occurred NHS staff must “share all you know and believe to be true … [and]<gu-note title=\"Peter Carty (Casual) 28/6/2015 at 18:20\" data-note-edited-by=\"Peter Carty (Casual)\" data-note-edited-date=\"2015-06-28T17:20:57.241Z\" data-click-action=\"collapse\" data-note-id=\"f66fb12a-ee1b-42a8-8d37-8fdd8d81cdd4\" class=\"note note--start note--end\">[</gu-note> respond honestly to any questions” whether an investigation is still ongoing or not. They should use plain English, not medical jargon, and ensure they do not answer their mobile phone or pager during the conversation so the patient knows they are taking it seriously, Stephenson added.</p><p>The guidance has been beefed-up since a draft <gu-note title=\"Peter Carty (Casual) 28/6/2015 at 18:22\" data-note-edited-by=\"Peter Carty (Casual)\" data-note-edited-date=\"2015-06-28T17:22:12.281Z\" data-click-action=\"collapse\" data-note-id=\"2e3cfa80-1e8f-4189-a73b-f28ae6848a4e\" class=\"note note--start note--end\">of it </gu-note>was released last year. It now includes a duty on NHS medical personnel not to obstruct colleagues or ex-colleagues who want to raise concerns about patient safety.</p><p>The move was backed by the Royal College of Physicians, which represents the UK’s 30,000 hospital doctors, and the Medical Defence Union, which represents doctors accused of wrongdoing. Dr Michael Devlin, its head of professional standards and liaison, said it had been advising doctors for over 50 years to tell the patient and apologise as soon as they became aware of a mishap.</p><p>But the British Medical Association, the doctors’ union, voiced concern. “Any suggestion of an enforced apology where there is a dispute over where fault lies would be inappropriate. Research shows that most poor outcomes are due to system rather than individual failures. Apologies in these circumstances should be couched in those terms if we are to have a process that is truthful and appropriate”, said Dr Mark Porter, its chair of council.</p><p>Peter Walsh, chief executive of the charity Action against Medical Accidents (AvMA), said some doctors, nurses and midwives had ignored advice from professional bodies to be open and honest.</p><p>“Most doctors and nurses have always done the right thing but some lack the awareness and skills to do it well and compassionately. Some have justified not being open because of fear of adverse consequences for them or their employer, such as litigation. In effect the system as a whole has frowned upon cover-ups but been prepared to tolerate them,” he said.</p><p>“At AvMA all too many times we have seen the devastating effect that cover-ups have on patients and their families. Sometimes the trauma is more harmful than the original mistake. It drives people to take legal or disciplinary action to achieve some accountability and learning to prevent the same thing happening to others.”<gu-note title=\"Jonathan Paige 28/6/2015 at 23:54\" data-note-edited-by=\"Jonathan Paige\" data-note-edited-date=\"2015-06-28T22:54:07.321Z\" data-click-action=\"collapse\" data-note-id=\"91361ce9-b545-4779-9587-1ef32e783632\" class=\"note note--start\">, he added.</gu-note></p><p><gu-note title=\"Mat Smith 28/6/2015 at 17:19\" data-note-edited-by=\"Mat Smith\" data-note-edited-date=\"2015-06-28T16:19:53.698Z\" data-click-action=\"collapse\" data-note-id=\"91361ce9-b545-4779-9587-1ef32e783632\" class=\"note note--end\">ends </gu-note></p>"
+        },
+        "assets" : [ ]
+      } ],
+      "published" : true,
+      "attributes" : { }
+    } ],
+    "settings" : {
+      "relatedContentOff" : "false",
+      "blockAds" : "false",
+      "isInappropriateForSponsorship" : "false",
+      "embargoedUntil" : "2015-06-29T00:01:00+01:00",
+      "commentable" : "true",
+      "timeZone" : "Europe/London",
+      "managedByComposer" : "true",
+      "usesPathManager" : "true",
+      "productionOffice" : "UK"
+    },
+    "taxonomy" : {
+      "tags" : [ {
+        "tag" : {
+          "id" : 17004,
+          "type" : "Keyword",
+          "internalName" : "NHS (Society)",
+          "externalName" : "NHS",
+          "slug" : "nhs",
+          "section" : {
+            "id" : 186,
+            "name" : "Society",
+            "pathPrefix" : "society",
+            "slug" : "society"
+          },
+          "path" : "society/nhs"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 33911,
+          "type" : "Keyword",
+          "internalName" : "Nursing (Society)",
+          "externalName" : "Nursing",
+          "slug" : "nursing",
+          "section" : {
+            "id" : 186,
+            "name" : "Society",
+            "pathPrefix" : "society",
+            "slug" : "society"
+          },
+          "path" : "society/nursing"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 41246,
+          "type" : "Keyword",
+          "internalName" : "Midwifery (Society)",
+          "externalName" : "Midwifery",
+          "slug" : "midwifery",
+          "section" : {
+            "id" : 186,
+            "name" : "Society",
+            "pathPrefix" : "society",
+            "slug" : "society"
+          },
+          "path" : "society/midwifery"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 33916,
+          "type" : "Keyword",
+          "internalName" : "Doctors (Society)",
+          "externalName" : "Doctors",
+          "slug" : "doctors",
+          "section" : {
+            "id" : 186,
+            "name" : "Society",
+            "pathPrefix" : "society",
+            "slug" : "society"
+          },
+          "path" : "society/doctors"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 9439,
+          "type" : "Keyword",
+          "internalName" : "Health (Society)",
+          "externalName" : "Health",
+          "slug" : "health",
+          "section" : {
+            "id" : 186,
+            "name" : "Society",
+            "pathPrefix" : "society",
+            "slug" : "society"
+          },
+          "path" : "society/health"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 19909,
+          "type" : "Keyword",
+          "internalName" : "Health policy",
+          "externalName" : "Health policy",
+          "slug" : "health",
+          "section" : {
+            "id" : 184,
+            "name" : "Politics",
+            "pathPrefix" : "politics",
+            "slug" : "politics"
+          },
+          "path" : "politics/health"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 8798,
+          "type" : "Keyword",
+          "internalName" : "Society",
+          "externalName" : "Society",
+          "slug" : "society",
+          "section" : {
+            "id" : 186,
+            "name" : "Society",
+            "pathPrefix" : "society",
+            "slug" : "society"
+          },
+          "path" : "society/society"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 36942,
+          "type" : "Keyword",
+          "internalName" : "Mid Staffordshire NHS Trust (Society)",
+          "externalName" : "Mid Staffordshire NHS Trust",
+          "slug" : "mid-staffordshire-nhs-trust",
+          "section" : {
+            "id" : 186,
+            "name" : "Society",
+            "pathPrefix" : "society",
+            "slug" : "society"
+          },
+          "path" : "society/mid-staffordshire-nhs-trust"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 56284,
+          "type" : "Keyword",
+          "internalName" : "Hospitals",
+          "externalName" : "Hospitals",
+          "slug" : "hospitals",
+          "section" : {
+            "id" : 186,
+            "name" : "Society",
+            "pathPrefix" : "society",
+            "slug" : "society"
+          },
+          "path" : "society/hospitals"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 8791,
+          "type" : "Keyword",
+          "internalName" : "Politics",
+          "externalName" : "Politics",
+          "slug" : "politics",
+          "section" : {
+            "id" : 184,
+            "name" : "Politics",
+            "pathPrefix" : "politics",
+            "slug" : "politics"
+          },
+          "path" : "politics/politics"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 19583,
+          "type" : "Keyword",
+          "internalName" : "Public services policy (Society)",
+          "externalName" : "Public services policy",
+          "slug" : "policy",
+          "section" : {
+            "id" : 186,
+            "name" : "Society",
+            "pathPrefix" : "society",
+            "slug" : "society"
+          },
+          "path" : "society/policy"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 9486,
+          "type" : "Keyword",
+          "internalName" : "UK news",
+          "externalName" : "UK news",
+          "slug" : "uk",
+          "section" : {
+            "id" : 341,
+            "name" : "UK news",
+            "pathPrefix" : "uk-news",
+            "slug" : "uk-news"
+          },
+          "path" : "uk/uk"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 26903,
+          "type" : "Content Type",
+          "internalName" : "Article (Content type)",
+          "externalName" : "Article",
+          "slug" : "article",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "articles"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 22641,
+          "type" : "Tone",
+          "internalName" : "News (Tone)",
+          "externalName" : "News",
+          "slug" : "news",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "tone/news"
+        },
+        "isLead" : false
+      } ],
+      "contributors" : [ {
+        "id" : 15586,
+        "type" : "Contributor",
+        "internalName" : "Denis Campbell",
+        "externalName" : "Denis Campbell",
+        "slug" : "deniscampbell",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        }
+      } ],
+      "publication" : {
+        "id" : 4,
+        "type" : "Publication",
+        "internalName" : "guardian.co.uk publication",
+        "externalName" : "theguardian.com",
+        "slug" : "guardian",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        }
+      },
+      "newspaper" : {
+        "book" : {
+          "id" : 16600,
+          "type" : "Newspaper Book",
+          "internalName" : "Gdn: Main section G1 (nb)",
+          "externalName" : "Main section",
+          "slug" : "mainsection",
+          "section" : {
+            "id" : 182,
+            "name" : "News",
+            "pathPrefix" : "news",
+            "slug" : "news"
+          }
+        },
+        "bookSection" : {
+          "id" : 16779,
+          "type" : "Newspaper Book Section",
+          "internalName" : "Gdn: UK news (nbs)",
+          "externalName" : "UK news",
+          "slug" : "uknews",
+          "section" : {
+            "id" : 341,
+            "name" : "UK news",
+            "pathPrefix" : "uk-news",
+            "slug" : "uk"
+          }
+        },
+        "publication" : {
+          "id" : 2,
+          "type" : "Publication",
+          "internalName" : "The Guardian publication",
+          "externalName" : "The Guardian",
+          "slug" : "theguardian",
+          "section" : {
+            "id" : 205,
+            "name" : "From the Guardian",
+            "pathPrefix" : "theguardian",
+            "slug" : "theguardian"
+          }
+        }
+      },
+      "references" : [ ],
+      "tracking" : [ ]
+    },
+    "aliasPaths" : [ ]
+  },
+  "auxiliaryAtoms" : [ ],
+  "channels" : { }
+}

@@ -1,0 +1,24 @@
+{
+  "metadata" : {
+    "reason" : "Scheduled snapshot"
+  },
+  "summary" : {
+    "preview" : {
+      "fields" : {
+        "headline" : "Miso soup with beef and kale recipe"
+      },
+      "settings" : {
+        "commentable" : "false",
+        "legallySensitive" : "false"
+      }
+    },
+    "type" : "article",
+    "published" : true,
+    "contentChangeDetails" : {
+      "lastModified" : {
+        "date" : 1782493070432
+      },
+      "revision" : 4
+    }
+  }
+}
