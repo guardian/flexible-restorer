@@ -1,0 +1,1048 @@
+{
+  "id" : "54931ae2e4b019234074e3c8",
+  "type" : "article",
+  "published" : true,
+  "isGone" : false,
+  "isHosted" : false,
+  "expiry" : {
+    "rights" : {
+      "expired" : false
+    },
+    "commercial" : {
+      "expired" : false
+    }
+  },
+  "rights" : {
+    "syndicationAggregate" : true,
+    "subscriptionDatabases" : true,
+    "developerCommunity" : true
+  },
+  "contentChangeDetails" : {
+    "lastModified" : {
+      "date" : 1782472907328
+    },
+    "created" : {
+      "date" : 1418926818131,
+      "user" : {
+        "email" : "user3@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "3"
+      }
+    },
+    "published" : {
+      "date" : 1418931753757,
+      "user" : {
+        "email" : "user11@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "11"
+      }
+    },
+    "lastMajorRevisionPublished" : {
+      "date" : 1418931753757,
+      "user" : {
+        "email" : "user11@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "11"
+      }
+    },
+    "revision" : 38
+  },
+  "identifiers" : {
+    "path" : "commentisfree/2014/dec/18/sony-leak-juicy-gossip-blackmailers-must-not-win",
+    "pageId" : "2212540",
+    "storyBundleId" : "9901177"
+  },
+  "collaborators" : [ {
+    "email" : "user3@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "3"
+  }, {
+    "email" : "user29@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "29"
+  }, {
+    "email" : "user10@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "10"
+  } ],
+  "toolSettings" : {
+    "slugLinked" : "false",
+    "activeInInCopy" : "true",
+    "linkTextLinked" : "false",
+    "trailTextLinked" : "true"
+  },
+  "aliasPaths" : [ ],
+  "preview" : {
+    "contentChangeDetails" : {
+      "lastModified" : {
+        "date" : 1782472907328
+      },
+      "created" : {
+        "date" : 1418926818131,
+        "user" : {
+          "email" : "user3@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "3"
+        }
+      },
+      "published" : {
+        "date" : 1418931753757,
+        "user" : {
+          "email" : "user11@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "11"
+        }
+      },
+      "lastMajorRevisionPublished" : {
+        "date" : 1418931753757,
+        "user" : {
+          "email" : "user11@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "11"
+        }
+      },
+      "revision" : 38
+    },
+    "fields" : {
+      "linkText" : "The Sony leak unearthed juicy gossip, but the blackmailers must not win | Gaby Hinsliff",
+      "standfirst" : "This isn’t about a half-baked Seth Rogen comedy. It’s about the folly of letting bullies have their way",
+      "slug" : "sony-leak-juicy-gossip-blackmailers-must-not-win",
+      "newspaperPublicationDate" : "2014-12-19T00:00:00+00:00",
+      "byline" : "<span data-tag-id=\"20706\" class=\"contributor\">Gaby Hinsliff</span>",
+      "newspaperPageNumber" : "41",
+      "trailText" : "<strong>Gaby Hinsliff:</strong> This isn’t about a half-baked Seth Rogen comedy. It’s about the folly of letting bullies have their way",
+      "headline" : "The Sony leak unearthed juicy gossip, but the blackmailers must not win"
+    },
+    "thumbnail" : {
+      "fields" : {
+        "displayCredit" : "false",
+        "source" : "Nate Kitch",
+        "imageType" : "Photograph",
+        "alt" : "Illustration by Nate Kitch",
+        "caption" : "'If the North Korean government really is behind this attack, in the short term it’s arguably scored an own goal. More people will surely now watch the trailers than would have seen the film in cinemas.'",
+        "mediaId" : "0c8d8dba5b49bc242b5e1b108982f8066f67ed0f",
+        "picdarUrn" : "GD*49011509"
+      },
+      "assets" : [ {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933686425/Illustration-by-Nate-Kitc-011.jpg",
+        "fields" : {
+          "width" : "460",
+          "height" : "276"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933681116/Illustration-by-Nate-Kitc-006.jpg",
+        "fields" : {
+          "width" : "140",
+          "height" : "84"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933687592/Illustration-by-Nate-Kitc-012.jpg",
+        "fields" : {
+          "width" : "620",
+          "height" : "372"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933682232/Illustration-by-Nate-Kitc-007.jpg",
+        "fields" : {
+          "width" : "220",
+          "height" : "132"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933684303/Illustration-by-Nate-Kitc-009.jpg",
+        "fields" : {
+          "width" : "300",
+          "height" : "180"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933685349/Illustration-by-Nate-Kitc-010.jpg",
+        "fields" : {
+          "width" : "380",
+          "height" : "228"
+        }
+      } ]
+    },
+    "mainBlock" : {
+      "id" : "bc03ff94-2b22-4837-9d87-6b2df3b87b87",
+      "lastModified" : 1418933856282,
+      "dateCreated" : 1418927505235,
+      "createdBy" : {
+        "email" : "user3@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "3"
+      },
+      "lastModifiedBy" : {
+        "email" : "user10@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "10"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "image",
+        "fields" : {
+          "displayCredit" : "false",
+          "source" : "Nate Kitch",
+          "imageType" : "Photograph",
+          "alt" : "Illustration by Nate Kitch",
+          "caption" : "‘If the North Korean government really is behind this attack, in the short term it’s arguably scored an own goal. More people will surely now watch the trailers than would have seen the film in cinemas.’ Illustration by Nate Kitch",
+          "mediaId" : "0c8d8dba5b49bc242b5e1b108982f8066f67ed0f",
+          "picdarUrn" : "GD*49011509"
+        },
+        "assets" : [ {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933686425/Illustration-by-Nate-Kitc-011.jpg",
+          "fields" : {
+            "width" : "460",
+            "height" : "276"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933681116/Illustration-by-Nate-Kitc-006.jpg",
+          "fields" : {
+            "width" : "140",
+            "height" : "84"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933687592/Illustration-by-Nate-Kitc-012.jpg",
+          "fields" : {
+            "width" : "620",
+            "height" : "372"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933682232/Illustration-by-Nate-Kitc-007.jpg",
+          "fields" : {
+            "width" : "220",
+            "height" : "132"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933684303/Illustration-by-Nate-Kitc-009.jpg",
+          "fields" : {
+            "width" : "300",
+            "height" : "180"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933685349/Illustration-by-Nate-Kitc-010.jpg",
+          "fields" : {
+            "width" : "380",
+            "height" : "228"
+          }
+        } ]
+      } ],
+      "published" : false,
+      "attributes" : { }
+    },
+    "blocks" : [ {
+      "id" : "5215480b-5cc1-4ed3-9ceb-575514decc76",
+      "lastModified" : 1418933943988,
+      "dateCreated" : 1418926818366,
+      "createdBy" : {
+        "email" : "user3@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "3"
+      },
+      "lastModifiedBy" : {
+        "email" : "user10@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "10"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "text",
+        "fields" : {
+          "text" : "<p>My heart sinks, to be honest, at the prospect of having to watch <a href=\"http://www.theguardian.com/film/the-interview\" title=\"\">The Interview</a>. Judging from the trailers, it’s&nbsp;the kind&nbsp;of crass,&nbsp;juvenile slapstick that’s barely worth a bucket of&nbsp;popcorn and a babysitter – although we can scratch the babysitter, since the only way ever to watch this comedy may&nbsp; be at home now that the embattled&nbsp;<a href=\"http://www.theguardian.com/film/2014/dec/17/sony-pictures-cancels-christmas-release-the-interview\" title=\"\">Sony&nbsp;Pictures has cancelled its cinema release</a>. If only someone had mounted a repressive cyber-attack over an unflattering portrayal of North Korean politics in something that’s actually funny, like 2004’s <a href=\"http://www.theguardian.com/film/2010/oct/18/team-america-world-police-comedy\" title=\"\">Team America World Police</a>.</p><p>But just as everyone felt obliged to <a href=\"http://www.theguardian.com/commentisfree/2008/oct/13/1\" title=\"\">order Spycatcher from Australia</a> after the Thatcher government banned its publication, we’ll all feel obliged to watch this film should it ever emerge from what’s left of Sony HQ. The hacking of the company apparently in retaliation for this fictional account of a plot to assassinate the North Korean leader is pure political censorship, a chilling of free speech that threatens far better films and books and journalism. It cannot be allowed to succeed.</p><p>The attack on Sony seemed rather harmlessly entertaining at first, when it was all about squirming senior executives being forced to explain leaks&nbsp;about <a href=\"http://www.theguardian.com/film/2014/dec/12/sony-email-hack-jennifer-lawrence-paid-less-american-hustle\" title=\"\">Jennifer Lawrence earning less than her male co-stars</a>, or to grovel over racially charged private jokes dumped in the public domain. Even the mooted involvement of the North Korean government didn’t feel threatening when the studio was being held to ransom by little more than <a href=\"http://www.theguardian.com/film/filmblog/2014/dec/10/sony-email-hack-jolie-hollywood\" title=\"\">bitchy gossip about Angelina Jolie</a>. Perhaps we’re all too used to watching hackers open up secretive worlds (even if at times they have done so cavalierly, and – in the past – with <a href=\"http://www.bbc.co.uk/news/world-us-canada-11882092\" title=\"\">potentially fatal consequences</a>) to see this for what it really was, namely an attempt to shut debate down.</p><p>Or perhaps the reaction was a slow burner because, despite leading a regime described by Amnesty International as “in a category of its own” for torture and repression, Kim Jong-un is so often inexplicably treated in the west as a sort of semi-comical cartoon baddie, a bit like a Bond villain. The oddest thing about this whole saga is that had the British government slashed the BBC’s licence fee in retaliation for a show satirising George Osborne, the response would probably have been angrier and more immediate.</p><p>But we should have realised long before cinemas started to receive <a href=\"http://www.theguardian.com/us-news/2014/dec/17/the-interview-sony-screenings-canceled\" title=\"\">threats evoking the memory of 9/11</a> that this wasn’t funny. Even if the White House declined on Thursday to blame the North Korean government directly, the attack on Sony has more in common with the <a href=\"http://www.theguardian.com/politics/2006/feb/04/religion.muhammadcartoons\" title=\"\">furore over Danish cartoons of the prophet</a> than with mischievous data raids on tax-dodging corporates. Sony has been not just embarrassed but crippled by an attack on its IT infrastructure that exposes the surprising fragility of our digitised world: the ease with which the plug can be pulled.</p><p>And while making films isn’t exactly life and death stuff, no secretary should go unpaid at Christmas because someone shut down the computerised payroll in homage to a thin-skinned dictator. No legitimate business deserves to be crippled for offending a totalitarian regime, and no government can be allowed to exercise a veto over the way it is portrayed around the world, whether what we’re talking about is a hissy fit over a comedy or <a href=\"http://www.theguardian.com/technology/2012/nov/09/google-services-blocked-china-gmail\" title=\"\">China blocking Google</a>.</p><p>If the North Korean government really is behind this attack, in the short term it’s arguably scored an own goal. Sony says it has no current plans to release the film on DVD or streaming services, perhaps because of fears that any distributor could become a hacking target, but it’s hard to believe it won’t eventually emerge somehow.</p><p>If nothing else, social media is alive with jibes at Kim Jong-un’s expense, and more people will surely now watch the trailers than would have seen the film in cinemas – just as tabloid outrage over the <a href=\"http://www.theguardian.com/books/shortcuts/2014/dec/15/hilary-mantel-assassination-mrs-thatcher-other-literary-takedowns\" title=\"\">BBC serialising Hilary Mantel’s book on murdering Margaret Thatcher</a> (talking of fictional assassinations) will probably only remind more people to tune into <a href=\"http://www.bbc.co.uk/blogs/aboutthebbc/entries/093c8198-bb40-3be8-880d-c37784e0f4e7\" title=\"\">A Book at Bedtime</a>. All arts censorship really does, whether it’s prosecuting <a href=\"http://www.theguardian.com/books/2010/oct/22/dh-lawrence-lady-chatterley-trial\" title=\"\">Penguin Books over Lady Chatterley’s Lover</a> or plastering parental advisory stickers on rap CDs, is make the object more exciting.</p><p>But in the longer term, there’s cause for concern. What major Hollywood studio is raring to make a film about North Korea now? Will a TV network or publisher think twice about commissioning something on the regime? And how should any platform respond to something like this in the future?</p><p>Sony has been criticised for caving in rather than simply collaborating with those independent cinemas still willing to show the film (most of the big chains pulled out after warnings, apparently from the hackers, that the “world will be full of fear” if they screened it). There was, we’re told, no credible intelligence of a terrorist plot. But the studio has a responsibility to cinema staff and cinemagoers that makes this a little more complicated than the robust “publish and be damned” attitude you might get from a paper. Would you risk people dying, however tiny the risk, just to see a half-baked <a href=\"http://www.theguardian.com/film/2014/nov/27/seth-rogen-invites-fans-to-smoke-weed-marijuana-colorado\" title=\"\">Seth Rogen</a> vehicle?</p><p>And to criticise Sony is arguably to gloss over big questions for those media organisations that gleefully published the leaked emails, and thus became awkwardly complicit in a blackmail exercise seemingly conducted on behalf of a prolific abuser of human rights.</p><p>Whenever they’re confronted with a juicy leak, journalists need to ask themselves the cui bono question: to whose benefit? And the answer is often pretty unedifying – a spurned lover, a disgruntled MP passed over for promotion, someone wanting cash. That doesn’t mean you don’t publish private information if there is a public interest, as there arguably was in some of this material. If you don’t want to be publicly embarrassed about paying women less than men, maybe don’t pay them less, rather than begging for our sympathy when you’re caught at it.</p><p>But when all that’s being revealed is&nbsp;that <a href=\"http://www.nydailynews.com/entertainment/gossip/george-clooney-wracked-guilt-monuments-men-flop-article-1.2045847\" title=\"\">George Clooney hates getting bad&nbsp;reviews</a> – well, this is the territory of&nbsp;bears and woods and a lack of outdoor toilet facilities, and tougher questions ought to be asked before republishing it, even if the stuff is already everywhere online. We need to think this through before the next time, because there’s bound to be a next time, if only on the grounds that what happened to Sony has given every other repressive regime – or organisation, or culture – on the planet a glimpse of the possible. And that’s not funny.</p>"
+        },
+        "assets" : [ ]
+      } ],
+      "published" : false,
+      "attributes" : { }
+    } ],
+    "settings" : {
+      "relatedContentOff" : "false",
+      "blockAds" : "false",
+      "isInappropriateForSponsorship" : "false",
+      "commentable" : "true",
+      "isPremoderated" : "false",
+      "timeZone" : "Europe/London",
+      "managedByComposer" : "true",
+      "productionOffice" : "UK"
+    },
+    "taxonomy" : {
+      "tags" : [ {
+        "tag" : {
+          "id" : 10528,
+          "type" : "Blog",
+          "internalName" : "Comment is free",
+          "externalName" : "Opinion",
+          "slug" : "commentisfree",
+          "section" : {
+            "id" : 241,
+            "name" : "Opinion",
+            "pathPrefix" : "commentisfree",
+            "slug" : "commentisfree"
+          },
+          "path" : "commentisfree/commentisfree"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 64342,
+          "type" : "Keyword",
+          "internalName" : "The Interview (film)",
+          "externalName" : "The Interview",
+          "slug" : "the-interview",
+          "section" : {
+            "id" : 188,
+            "name" : "Film",
+            "pathPrefix" : "film",
+            "slug" : "film"
+          },
+          "path" : "film/the-interview"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 30054,
+          "type" : "Keyword",
+          "internalName" : "Censorship (News)",
+          "externalName" : "Censorship",
+          "slug" : "censorship",
+          "section" : {
+            "id" : 342,
+            "name" : "World news",
+            "pathPrefix" : "world",
+            "slug" : "world"
+          },
+          "path" : "world/censorship"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 31224,
+          "type" : "Keyword",
+          "internalName" : "North Korea (News)",
+          "externalName" : "North Korea",
+          "slug" : "north-korea",
+          "section" : {
+            "id" : 342,
+            "name" : "World news",
+            "pathPrefix" : "world",
+            "slug" : "world"
+          },
+          "path" : "world/north-korea"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 46895,
+          "type" : "Keyword",
+          "internalName" : "Sony Pictures",
+          "externalName" : "Sony Pictures",
+          "slug" : "sony-pictures",
+          "section" : {
+            "id" : 188,
+            "name" : "Film",
+            "pathPrefix" : "film",
+            "slug" : "film"
+          },
+          "path" : "film/sony-pictures"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 8845,
+          "type" : "Keyword",
+          "internalName" : "Media",
+          "externalName" : "Media",
+          "slug" : "media",
+          "section" : {
+            "id" : 195,
+            "name" : "Media",
+            "pathPrefix" : "media",
+            "slug" : "media"
+          },
+          "path" : "media/media"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 8804,
+          "type" : "Keyword",
+          "internalName" : "Film",
+          "externalName" : "Film",
+          "slug" : "film",
+          "section" : {
+            "id" : 188,
+            "name" : "Film",
+            "pathPrefix" : "film",
+            "slug" : "film"
+          },
+          "path" : "film/film"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 46959,
+          "type" : "Keyword",
+          "internalName" : "Asia Pacific (News)",
+          "externalName" : "Asia Pacific",
+          "slug" : "asia-pacific",
+          "section" : {
+            "id" : 342,
+            "name" : "World news",
+            "pathPrefix" : "world",
+            "slug" : "world"
+          },
+          "path" : "world/asia-pacific"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 65776,
+          "type" : "Keyword",
+          "internalName" : "US news",
+          "externalName" : "US news",
+          "slug" : "us-news",
+          "section" : {
+            "id" : 5379,
+            "name" : "US news",
+            "pathPrefix" : "us-news",
+            "slug" : "us-news"
+          },
+          "path" : "us-news/us-news"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 9234,
+          "type" : "Keyword",
+          "internalName" : "World news",
+          "externalName" : "World news",
+          "slug" : "world",
+          "section" : {
+            "id" : 342,
+            "name" : "World news",
+            "pathPrefix" : "world",
+            "slug" : "world"
+          },
+          "path" : "world/world"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 19796,
+          "type" : "Tone",
+          "internalName" : "Comment (Tone)",
+          "externalName" : "Comment",
+          "slug" : "comment",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "tone/comment"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 26903,
+          "type" : "Content Type",
+          "internalName" : "Article (Content type)",
+          "externalName" : "Article",
+          "slug" : "article",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "articles"
+        },
+        "isLead" : false
+      } ],
+      "contributors" : [ {
+        "id" : 20706,
+        "type" : "Contributor",
+        "internalName" : "Gaby Hinsliff",
+        "externalName" : "Gaby Hinsliff",
+        "slug" : "gabyhinsliff",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "profile/gabyhinsliff"
+      } ],
+      "publication" : {
+        "id" : 4,
+        "type" : "Publication",
+        "internalName" : "guardian.co.uk publication",
+        "externalName" : "theguardian.com",
+        "slug" : "guardian",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "guardian/all"
+      },
+      "newspaper" : {
+        "book" : {
+          "id" : 16600,
+          "type" : "Newspaper Book",
+          "internalName" : "Gdn: Main section G1 (nb)",
+          "externalName" : "Main section",
+          "slug" : "mainsection",
+          "section" : {
+            "id" : 182,
+            "name" : "News",
+            "pathPrefix" : "news",
+            "slug" : "news"
+          },
+          "path" : "theguardian/mainsection"
+        },
+        "bookSection" : {
+          "id" : 16632,
+          "type" : "Newspaper Book Section",
+          "internalName" : "Gdn: Comment and debate (nbs)",
+          "externalName" : "Comment & debate",
+          "slug" : "commentanddebate",
+          "section" : {
+            "id" : 205,
+            "name" : "From the Guardian",
+            "pathPrefix" : "theguardian",
+            "slug" : "theguardian"
+          },
+          "path" : "theguardian/mainsection/commentanddebate"
+        },
+        "publication" : {
+          "id" : 2,
+          "type" : "Publication",
+          "internalName" : "The Guardian publication",
+          "externalName" : "The Guardian",
+          "slug" : "theguardian",
+          "section" : {
+            "id" : 205,
+            "name" : "From the Guardian",
+            "pathPrefix" : "theguardian",
+            "slug" : "theguardian"
+          },
+          "path" : "theguardian/all"
+        }
+      },
+      "references" : [ ],
+      "tracking" : [ ]
+    },
+    "aliasPaths" : [ ]
+  },
+  "live" : {
+    "contentChangeDetails" : {
+      "lastModified" : {
+        "date" : 1782472907328
+      },
+      "created" : {
+        "date" : 1418926818131,
+        "user" : {
+          "email" : "user3@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "3"
+        }
+      },
+      "published" : {
+        "date" : 1418931753757,
+        "user" : {
+          "email" : "user11@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "11"
+        }
+      },
+      "lastMajorRevisionPublished" : {
+        "date" : 1418931753757,
+        "user" : {
+          "email" : "user11@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "11"
+        }
+      },
+      "revision" : 37
+    },
+    "fields" : {
+      "linkText" : "The Sony leak unearthed juicy gossip, but the blackmailers must not win | Gaby Hinsliff",
+      "standfirst" : "This isn’t about a half-baked Seth Rogen comedy. It’s about the folly of letting bullies have their way",
+      "slug" : "sony-leak-juicy-gossip-blackmailers-must-not-win",
+      "newspaperPublicationDate" : "2014-12-19T00:00:00+00:00",
+      "byline" : "<span data-tag-id=\"20706\" class=\"contributor\">Gaby Hinsliff</span>",
+      "newspaperPageNumber" : "41",
+      "trailText" : "<strong>Gaby Hinsliff:</strong> This isn’t about a half-baked Seth Rogen comedy. It’s about the folly of letting bullies have their way",
+      "headline" : "The Sony leak unearthed juicy gossip, but the blackmailers must not win"
+    },
+    "thumbnail" : {
+      "fields" : {
+        "displayCredit" : "false",
+        "source" : "Nate Kitch",
+        "imageType" : "Photograph",
+        "alt" : "Illustration by Nate Kitch",
+        "caption" : "'If the North Korean government really is behind this attack, in the short term it’s arguably scored an own goal. More people will surely now watch the trailers than would have seen the film in cinemas.'",
+        "mediaId" : "0c8d8dba5b49bc242b5e1b108982f8066f67ed0f",
+        "picdarUrn" : "GD*49011509"
+      },
+      "assets" : [ {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933686425/Illustration-by-Nate-Kitc-011.jpg",
+        "fields" : {
+          "width" : "460",
+          "height" : "276"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933681116/Illustration-by-Nate-Kitc-006.jpg",
+        "fields" : {
+          "width" : "140",
+          "height" : "84"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933687592/Illustration-by-Nate-Kitc-012.jpg",
+        "fields" : {
+          "width" : "620",
+          "height" : "372"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933682232/Illustration-by-Nate-Kitc-007.jpg",
+        "fields" : {
+          "width" : "220",
+          "height" : "132"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933684303/Illustration-by-Nate-Kitc-009.jpg",
+        "fields" : {
+          "width" : "300",
+          "height" : "180"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933685349/Illustration-by-Nate-Kitc-010.jpg",
+        "fields" : {
+          "width" : "380",
+          "height" : "228"
+        }
+      } ]
+    },
+    "mainBlock" : {
+      "id" : "bc03ff94-2b22-4837-9d87-6b2df3b87b87",
+      "lastModified" : 1418933856282,
+      "dateCreated" : 1418927505235,
+      "createdBy" : {
+        "email" : "user3@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "3"
+      },
+      "lastModifiedBy" : {
+        "email" : "user10@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "10"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "image",
+        "fields" : {
+          "displayCredit" : "false",
+          "source" : "Nate Kitch",
+          "imageType" : "Photograph",
+          "alt" : "Illustration by Nate Kitch",
+          "caption" : "‘If the North Korean government really is behind this attack, in the short term it’s arguably scored an own goal. More people will surely now watch the trailers than would have seen the film in cinemas.’ Illustration by Nate Kitch",
+          "mediaId" : "0c8d8dba5b49bc242b5e1b108982f8066f67ed0f",
+          "picdarUrn" : "GD*49011509"
+        },
+        "assets" : [ {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933686425/Illustration-by-Nate-Kitc-011.jpg",
+          "fields" : {
+            "width" : "460",
+            "height" : "276"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933681116/Illustration-by-Nate-Kitc-006.jpg",
+          "fields" : {
+            "width" : "140",
+            "height" : "84"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933687592/Illustration-by-Nate-Kitc-012.jpg",
+          "fields" : {
+            "width" : "620",
+            "height" : "372"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933682232/Illustration-by-Nate-Kitc-007.jpg",
+          "fields" : {
+            "width" : "220",
+            "height" : "132"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933684303/Illustration-by-Nate-Kitc-009.jpg",
+          "fields" : {
+            "width" : "300",
+            "height" : "180"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/18/1418933685349/Illustration-by-Nate-Kitc-010.jpg",
+          "fields" : {
+            "width" : "380",
+            "height" : "228"
+          }
+        } ]
+      } ],
+      "published" : true,
+      "attributes" : { }
+    },
+    "blocks" : [ {
+      "id" : "5215480b-5cc1-4ed3-9ceb-575514decc76",
+      "lastModified" : 1418933943988,
+      "dateCreated" : 1418926818366,
+      "createdBy" : {
+        "email" : "user3@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "3"
+      },
+      "lastModifiedBy" : {
+        "email" : "user10@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "10"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "text",
+        "fields" : {
+          "text" : "<p>My heart sinks, to be honest, at the prospect of having to watch <a href=\"http://www.theguardian.com/film/the-interview\" title=\"\">The Interview</a>. Judging from the trailers, it’s&nbsp;the kind&nbsp;of crass,&nbsp;juvenile slapstick that’s barely worth a bucket of&nbsp;popcorn and a babysitter – although we can scratch the babysitter, since the only way ever to watch this comedy may&nbsp; be at home now that the embattled&nbsp;<a href=\"http://www.theguardian.com/film/2014/dec/17/sony-pictures-cancels-christmas-release-the-interview\" title=\"\">Sony&nbsp;Pictures has cancelled its cinema release</a>. If only someone had mounted a repressive cyber-attack over an unflattering portrayal of North Korean politics in something that’s actually funny, like 2004’s <a href=\"http://www.theguardian.com/film/2010/oct/18/team-america-world-police-comedy\" title=\"\">Team America World Police</a>.</p><p>But just as everyone felt obliged to <a href=\"http://www.theguardian.com/commentisfree/2008/oct/13/1\" title=\"\">order Spycatcher from Australia</a> after the Thatcher government banned its publication, we’ll all feel obliged to watch this film should it ever emerge from what’s left of Sony HQ. The hacking of the company apparently in retaliation for this fictional account of a plot to assassinate the North Korean leader is pure political censorship, a chilling of free speech that threatens far better films and books and journalism. It cannot be allowed to succeed.</p><p>The attack on Sony seemed rather harmlessly entertaining at first, when it was all about squirming senior executives being forced to explain leaks&nbsp;about <a href=\"http://www.theguardian.com/film/2014/dec/12/sony-email-hack-jennifer-lawrence-paid-less-american-hustle\" title=\"\">Jennifer Lawrence earning less than her male co-stars</a>, or to grovel over racially charged private jokes dumped in the public domain. Even the mooted involvement of the North Korean government didn’t feel threatening when the studio was being held to ransom by little more than <a href=\"http://www.theguardian.com/film/filmblog/2014/dec/10/sony-email-hack-jolie-hollywood\" title=\"\">bitchy gossip about Angelina Jolie</a>. Perhaps we’re all too used to watching hackers open up secretive worlds (even if at times they have done so cavalierly, and – in the past – with <a href=\"http://www.bbc.co.uk/news/world-us-canada-11882092\" title=\"\">potentially fatal consequences</a>) to see this for what it really was, namely an attempt to shut debate down.</p><p>Or perhaps the reaction was a slow burner because, despite leading a regime described by Amnesty International as “in a category of its own” for torture and repression, Kim Jong-un is so often inexplicably treated in the west as a sort of semi-comical cartoon baddie, a bit like a Bond villain. The oddest thing about this whole saga is that had the British government slashed the BBC’s licence fee in retaliation for a show satirising George Osborne, the response would probably have been angrier and more immediate.</p><p>But we should have realised long before cinemas started to receive <a href=\"http://www.theguardian.com/us-news/2014/dec/17/the-interview-sony-screenings-canceled\" title=\"\">threats evoking the memory of 9/11</a> that this wasn’t funny. Even if the White House declined on Thursday to blame the North Korean government directly, the attack on Sony has more in common with the <a href=\"http://www.theguardian.com/politics/2006/feb/04/religion.muhammadcartoons\" title=\"\">furore over Danish cartoons of the prophet</a> than with mischievous data raids on tax-dodging corporates. Sony has been not just embarrassed but crippled by an attack on its IT infrastructure that exposes the surprising fragility of our digitised world: the ease with which the plug can be pulled.</p><p>And while making films isn’t exactly life and death stuff, no secretary should go unpaid at Christmas because someone shut down the computerised payroll in homage to a thin-skinned dictator. No legitimate business deserves to be crippled for offending a totalitarian regime, and no government can be allowed to exercise a veto over the way it is portrayed around the world, whether what we’re talking about is a hissy fit over a comedy or <a href=\"http://www.theguardian.com/technology/2012/nov/09/google-services-blocked-china-gmail\" title=\"\">China blocking Google</a>.</p><p>If the North Korean government really is behind this attack, in the short term it’s arguably scored an own goal. Sony says it has no current plans to release the film on DVD or streaming services, perhaps because of fears that any distributor could become a hacking target, but it’s hard to believe it won’t eventually emerge somehow.</p><p>If nothing else, social media is alive with jibes at Kim Jong-un’s expense, and more people will surely now watch the trailers than would have seen the film in cinemas – just as tabloid outrage over the <a href=\"http://www.theguardian.com/books/shortcuts/2014/dec/15/hilary-mantel-assassination-mrs-thatcher-other-literary-takedowns\" title=\"\">BBC serialising Hilary Mantel’s book on murdering Margaret Thatcher</a> (talking of fictional assassinations) will probably only remind more people to tune into <a href=\"http://www.bbc.co.uk/blogs/aboutthebbc/entries/093c8198-bb40-3be8-880d-c37784e0f4e7\" title=\"\">A Book at Bedtime</a>. All arts censorship really does, whether it’s prosecuting <a href=\"http://www.theguardian.com/books/2010/oct/22/dh-lawrence-lady-chatterley-trial\" title=\"\">Penguin Books over Lady Chatterley’s Lover</a> or plastering parental advisory stickers on rap CDs, is make the object more exciting.</p><p>But in the longer term, there’s cause for concern. What major Hollywood studio is raring to make a film about North Korea now? Will a TV network or publisher think twice about commissioning something on the regime? And how should any platform respond to something like this in the future?</p><p>Sony has been criticised for caving in rather than simply collaborating with those independent cinemas still willing to show the film (most of the big chains pulled out after warnings, apparently from the hackers, that the “world will be full of fear” if they screened it). There was, we’re told, no credible intelligence of a terrorist plot. But the studio has a responsibility to cinema staff and cinemagoers that makes this a little more complicated than the robust “publish and be damned” attitude you might get from a paper. Would you risk people dying, however tiny the risk, just to see a half-baked <a href=\"http://www.theguardian.com/film/2014/nov/27/seth-rogen-invites-fans-to-smoke-weed-marijuana-colorado\" title=\"\">Seth Rogen</a> vehicle?</p><p>And to criticise Sony is arguably to gloss over big questions for those media organisations that gleefully published the leaked emails, and thus became awkwardly complicit in a blackmail exercise seemingly conducted on behalf of a prolific abuser of human rights.</p><p>Whenever they’re confronted with a juicy leak, journalists need to ask themselves the cui bono question: to whose benefit? And the answer is often pretty unedifying – a spurned lover, a disgruntled MP passed over for promotion, someone wanting cash. That doesn’t mean you don’t publish private information if there is a public interest, as there arguably was in some of this material. If you don’t want to be publicly embarrassed about paying women less than men, maybe don’t pay them less, rather than begging for our sympathy when you’re caught at it.</p><p>But when all that’s being revealed is&nbsp;that <a href=\"http://www.nydailynews.com/entertainment/gossip/george-clooney-wracked-guilt-monuments-men-flop-article-1.2045847\" title=\"\">George Clooney hates getting bad&nbsp;reviews</a> – well, this is the territory of&nbsp;bears and woods and a lack of outdoor toilet facilities, and tougher questions ought to be asked before republishing it, even if the stuff is already everywhere online. We need to think this through before the next time, because there’s bound to be a next time, if only on the grounds that what happened to Sony has given every other repressive regime – or organisation, or culture – on the planet a glimpse of the possible. And that’s not funny.</p>"
+        },
+        "assets" : [ ]
+      } ],
+      "published" : true,
+      "attributes" : { }
+    } ],
+    "settings" : {
+      "relatedContentOff" : "false",
+      "blockAds" : "false",
+      "isInappropriateForSponsorship" : "false",
+      "commentable" : "true",
+      "isPremoderated" : "false",
+      "timeZone" : "Europe/London",
+      "managedByComposer" : "true",
+      "productionOffice" : "UK"
+    },
+    "taxonomy" : {
+      "tags" : [ {
+        "tag" : {
+          "id" : 10528,
+          "type" : "Blog",
+          "internalName" : "Comment is free",
+          "externalName" : "Opinion",
+          "slug" : "commentisfree",
+          "section" : {
+            "id" : 241,
+            "name" : "Opinion",
+            "pathPrefix" : "commentisfree",
+            "slug" : "commentisfree"
+          },
+          "path" : "commentisfree/commentisfree"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 64342,
+          "type" : "Keyword",
+          "internalName" : "The Interview (film)",
+          "externalName" : "The Interview",
+          "slug" : "the-interview",
+          "section" : {
+            "id" : 188,
+            "name" : "Film",
+            "pathPrefix" : "film",
+            "slug" : "film"
+          },
+          "path" : "film/the-interview"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 30054,
+          "type" : "Keyword",
+          "internalName" : "Censorship (News)",
+          "externalName" : "Censorship",
+          "slug" : "censorship",
+          "section" : {
+            "id" : 342,
+            "name" : "World news",
+            "pathPrefix" : "world",
+            "slug" : "world"
+          },
+          "path" : "world/censorship"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 31224,
+          "type" : "Keyword",
+          "internalName" : "North Korea (News)",
+          "externalName" : "North Korea",
+          "slug" : "north-korea",
+          "section" : {
+            "id" : 342,
+            "name" : "World news",
+            "pathPrefix" : "world",
+            "slug" : "world"
+          },
+          "path" : "world/north-korea"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 46895,
+          "type" : "Keyword",
+          "internalName" : "Sony Pictures",
+          "externalName" : "Sony Pictures",
+          "slug" : "sony-pictures",
+          "section" : {
+            "id" : 188,
+            "name" : "Film",
+            "pathPrefix" : "film",
+            "slug" : "film"
+          },
+          "path" : "film/sony-pictures"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 8845,
+          "type" : "Keyword",
+          "internalName" : "Media",
+          "externalName" : "Media",
+          "slug" : "media",
+          "section" : {
+            "id" : 195,
+            "name" : "Media",
+            "pathPrefix" : "media",
+            "slug" : "media"
+          },
+          "path" : "media/media"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 8804,
+          "type" : "Keyword",
+          "internalName" : "Film",
+          "externalName" : "Film",
+          "slug" : "film",
+          "section" : {
+            "id" : 188,
+            "name" : "Film",
+            "pathPrefix" : "film",
+            "slug" : "film"
+          },
+          "path" : "film/film"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 46959,
+          "type" : "Keyword",
+          "internalName" : "Asia Pacific (News)",
+          "externalName" : "Asia Pacific",
+          "slug" : "asia-pacific",
+          "section" : {
+            "id" : 342,
+            "name" : "World news",
+            "pathPrefix" : "world",
+            "slug" : "world"
+          },
+          "path" : "world/asia-pacific"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 65776,
+          "type" : "Keyword",
+          "internalName" : "US news",
+          "externalName" : "US news",
+          "slug" : "us-news",
+          "section" : {
+            "id" : 5379,
+            "name" : "US news",
+            "pathPrefix" : "us-news",
+            "slug" : "us-news"
+          },
+          "path" : "us-news/us-news"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 9234,
+          "type" : "Keyword",
+          "internalName" : "World news",
+          "externalName" : "World news",
+          "slug" : "world",
+          "section" : {
+            "id" : 342,
+            "name" : "World news",
+            "pathPrefix" : "world",
+            "slug" : "world"
+          },
+          "path" : "world/world"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 19796,
+          "type" : "Tone",
+          "internalName" : "Comment (Tone)",
+          "externalName" : "Comment",
+          "slug" : "comment",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "tone/comment"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 26903,
+          "type" : "Content Type",
+          "internalName" : "Article (Content type)",
+          "externalName" : "Article",
+          "slug" : "article",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "articles"
+        },
+        "isLead" : false
+      } ],
+      "contributors" : [ {
+        "id" : 20706,
+        "type" : "Contributor",
+        "internalName" : "Gaby Hinsliff",
+        "externalName" : "Gaby Hinsliff",
+        "slug" : "gabyhinsliff",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        }
+      } ],
+      "publication" : {
+        "id" : 4,
+        "type" : "Publication",
+        "internalName" : "guardian.co.uk publication",
+        "externalName" : "theguardian.com",
+        "slug" : "guardian",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        }
+      },
+      "newspaper" : {
+        "book" : {
+          "id" : 16600,
+          "type" : "Newspaper Book",
+          "internalName" : "Gdn: Main section G1 (nb)",
+          "externalName" : "Main section",
+          "slug" : "mainsection",
+          "section" : {
+            "id" : 182,
+            "name" : "News",
+            "pathPrefix" : "news",
+            "slug" : "news"
+          }
+        },
+        "bookSection" : {
+          "id" : 16632,
+          "type" : "Newspaper Book Section",
+          "internalName" : "Gdn: Comment and debate (nbs)",
+          "externalName" : "Comment & debate",
+          "slug" : "commentanddebate",
+          "section" : {
+            "id" : 205,
+            "name" : "From the Guardian",
+            "pathPrefix" : "theguardian",
+            "slug" : "theguardian"
+          }
+        },
+        "publication" : {
+          "id" : 2,
+          "type" : "Publication",
+          "internalName" : "The Guardian publication",
+          "externalName" : "The Guardian",
+          "slug" : "theguardian",
+          "section" : {
+            "id" : 205,
+            "name" : "From the Guardian",
+            "pathPrefix" : "theguardian",
+            "slug" : "theguardian"
+          }
+        }
+      },
+      "references" : [ ],
+      "tracking" : [ ]
+    },
+    "aliasPaths" : [ ]
+  },
+  "auxiliaryAtoms" : [ ],
+  "channels" : { }
+}

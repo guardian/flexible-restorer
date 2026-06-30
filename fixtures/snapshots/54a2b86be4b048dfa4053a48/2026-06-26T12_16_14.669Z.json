@@ -1,0 +1,1591 @@
+{
+  "id" : "54a2b86be4b048dfa4053a48",
+  "type" : "article",
+  "published" : false,
+  "isGone" : false,
+  "isHosted" : false,
+  "expiry" : {
+    "rights" : {
+      "expired" : false
+    },
+    "commercial" : {
+      "expired" : false
+    }
+  },
+  "rights" : {
+    "syndicationAggregate" : true,
+    "subscriptionDatabases" : true,
+    "developerCommunity" : true
+  },
+  "contentChangeDetails" : {
+    "lastModified" : {
+      "date" : 1782476045051
+    },
+    "created" : {
+      "date" : 1419950187989,
+      "user" : {
+        "email" : "user6@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "6"
+      }
+    },
+    "published" : {
+      "date" : 1419952470896,
+      "user" : {
+        "email" : "user9@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "9"
+      }
+    },
+    "lastMajorRevisionPublished" : {
+      "date" : 1419952680000,
+      "user" : {
+        "email" : "user6@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "6"
+      }
+    },
+    "revision" : 87
+  },
+  "identifiers" : {
+    "path" : "film/2014/dec/30/jamie-oliver-hobbit-lord-of-the-rings-peter-jackson",
+    "pageId" : "2216310",
+    "storyBundleId" : "9932389"
+  },
+  "collaborators" : [ {
+    "email" : "user6@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "6"
+  }, {
+    "email" : "user9@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "9"
+  }, {
+    "email" : "user1@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "1"
+  } ],
+  "toolSettings" : {
+    "slugLinked" : "false",
+    "activeInInCopy" : "true",
+    "linkTextLinked" : "true",
+    "trailTextLinked" : "true"
+  },
+  "aliasPaths" : [ ],
+  "preview" : {
+    "contentChangeDetails" : {
+      "lastModified" : {
+        "date" : 1782476045051
+      },
+      "created" : {
+        "date" : 1419950187989,
+        "user" : {
+          "email" : "user6@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "6"
+        }
+      },
+      "published" : {
+        "date" : 1419952470896,
+        "user" : {
+          "email" : "user9@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "9"
+        }
+      },
+      "lastMajorRevisionPublished" : {
+        "date" : 1419952680000,
+        "user" : {
+          "email" : "user6@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "6"
+        }
+      },
+      "revision" : 87
+    },
+    "fields" : {
+      "linkText" : "Jamie Oliver turned down hobbit role",
+      "standfirst" : "<p>Celebrity chef was offered cameo by director Peter Jackson in 2001, but could not take part due to work commitments</p>",
+      "slug" : "jamie-oliver-hobbit-lord-of-the-rings-peter-jackson",
+      "byline" : "<span data-tag-id=\"24984\" class=\"contributor\">Ben Child</span>",
+      "editorialNote" : "seo ok",
+      "trailText" : "<strong>Ben Child:</strong> Celebrity chef was offered cameo by director Peter Jackson in 2001, but could not take part due to work commitments",
+      "headline" : "Jamie Oliver turned down hobbit role"
+    },
+    "thumbnail" : {
+      "fields" : {
+        "displayCredit" : "true",
+        "source" : "Anthony Devlin/PA/REX",
+        "imageType" : "Photograph",
+        "alt" : "Jamie Oliver and Elijah Wood as Frodo in The Return of the King",
+        "mediaId" : "d6a6fdf65bf941ad346ad41902be00b63eb9e2a5"
+      },
+      "assets" : [ {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954220304/a48cf6c0-6a13-41a8-8476-cc56e860fa35-220x132.jpeg",
+        "fields" : {
+          "name" : "220x132",
+          "width" : "220",
+          "height" : "132"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954220459/9661a860-64c9-4519-a9f4-f70f7d25d4e0-460x276.jpeg",
+        "fields" : {
+          "name" : "460x276",
+          "width" : "460",
+          "height" : "276"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954220671/7e595b6f-20ac-40ba-951e-d5401f64ed75-540x324.jpeg",
+        "fields" : {
+          "name" : "540x324",
+          "width" : "540",
+          "height" : "324"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954220834/fa2c0914-741c-4bbd-adda-1a3e54706ba1-140x84.jpeg",
+        "fields" : {
+          "name" : "140x84",
+          "width" : "140",
+          "height" : "84"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954221083/4269cbee-a411-4abd-a136-ccd2ac3aba92-1020x612.jpeg",
+        "fields" : {
+          "name" : "1020x612",
+          "width" : "1020",
+          "height" : "612"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954221661/6e75d625-5de8-439b-b132-15e1b278cc7d-300x180.jpeg",
+        "fields" : {
+          "name" : "300x180",
+          "width" : "300",
+          "height" : "180"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954221973/8a904881-67c2-4980-bb5f-9e45f82381ff-380x228.jpeg",
+        "fields" : {
+          "name" : "380x228",
+          "width" : "380",
+          "height" : "228"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954222151/aac399e0-36b9-4943-babb-c79d9d403e1b-620x372.jpeg",
+        "fields" : {
+          "name" : "620x372",
+          "width" : "620",
+          "height" : "372"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954222712/f9e47ad7-7957-4ced-97c0-2d0d53bd8171-2060x1236.jpeg",
+        "fields" : {
+          "name" : "2060x1236",
+          "width" : "2060",
+          "height" : "1236"
+        }
+      } ]
+    },
+    "mainBlock" : {
+      "id" : "54a2c82fe4b0fa04a20dbfcf",
+      "lastModified" : 1419954223593,
+      "dateCreated" : 1419954223593,
+      "createdBy" : {
+        "email" : "user1@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "1"
+      },
+      "lastModifiedBy" : {
+        "email" : "user1@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "1"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "image",
+        "fields" : {
+          "displayCredit" : "true",
+          "source" : "Anthony Devlin/PA/REX",
+          "imageType" : "Photograph",
+          "alt" : "Jamie Oliver and Elijah Wood as Frodo in The Return of the King",
+          "caption" : "Jamie Oliver and Elijah Wood as Frodo in The Return of the King.",
+          "mediaId" : "d6a6fdf65bf941ad346ad41902be00b63eb9e2a5"
+        },
+        "assets" : [ {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954220304/a48cf6c0-6a13-41a8-8476-cc56e860fa35-220x132.jpeg",
+          "fields" : {
+            "name" : "220x132",
+            "width" : "220",
+            "height" : "132"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954220459/9661a860-64c9-4519-a9f4-f70f7d25d4e0-460x276.jpeg",
+          "fields" : {
+            "name" : "460x276",
+            "width" : "460",
+            "height" : "276"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954220671/7e595b6f-20ac-40ba-951e-d5401f64ed75-540x324.jpeg",
+          "fields" : {
+            "name" : "540x324",
+            "width" : "540",
+            "height" : "324"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954220834/fa2c0914-741c-4bbd-adda-1a3e54706ba1-140x84.jpeg",
+          "fields" : {
+            "name" : "140x84",
+            "width" : "140",
+            "height" : "84"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954221083/4269cbee-a411-4abd-a136-ccd2ac3aba92-1020x612.jpeg",
+          "fields" : {
+            "name" : "1020x612",
+            "width" : "1020",
+            "height" : "612"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954221661/6e75d625-5de8-439b-b132-15e1b278cc7d-300x180.jpeg",
+          "fields" : {
+            "name" : "300x180",
+            "width" : "300",
+            "height" : "180"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954221973/8a904881-67c2-4980-bb5f-9e45f82381ff-380x228.jpeg",
+          "fields" : {
+            "name" : "380x228",
+            "width" : "380",
+            "height" : "228"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954222151/aac399e0-36b9-4943-babb-c79d9d403e1b-620x372.jpeg",
+          "fields" : {
+            "name" : "620x372",
+            "width" : "620",
+            "height" : "372"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954222712/f9e47ad7-7957-4ced-97c0-2d0d53bd8171-2060x1236.jpeg",
+          "fields" : {
+            "name" : "2060x1236",
+            "width" : "2060",
+            "height" : "1236"
+          }
+        } ]
+      } ],
+      "published" : false,
+      "attributes" : { }
+    },
+    "blocks" : [ {
+      "id" : "6059eb22-9893-4280-9373-89357a9fb483",
+      "lastModified" : 1419952755048,
+      "dateCreated" : 1419950188290,
+      "createdBy" : {
+        "email" : "user6@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "6"
+      },
+      "lastModifiedBy" : {
+        "email" : "user6@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "6"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "text",
+        "fields" : {
+          "text" : "<p>Jamie Oliver turned down the chance to play a hobbit in Peter Jackson’s Lord of the Rings movies, <a href=\"http://www.bbc.co.uk/news/entertainment-arts-30621767\" title=\"\">the celebrity chef has revealed</a>.</p><p></p><p></p><p></p><p>Oliver said he was offered the role if he agreed to fly to New Zealand in 2001 to cook for Jackson’s 50th birthday. Speaking during the recording of his new Channel 4 series <a href=\"http://www.channel4.com/programmes/jamie-and-jimmys-friday-night-feast\" title=\"\">Jamie and Jimmy’s Friday Night Feast</a>, he said: “The worst thing that happened to me was that I got phoned up by the exec producer and asked did I want to go and cook for Peter Jackson’s birthday. And if I did, they would fly me over and I could be a hobbit in the film.</p><p></p><p>“I really wanted to do it. I would have got right into it as well. But I was working, I couldn’t get out of it.”</p>"
+        },
+        "assets" : [ ]
+      }, {
+        "elementType" : "video",
+        "fields" : {
+          "duration" : "124",
+          "source" : "Guardian",
+          "url" : "http://www.theguardian.com/film/video/2014/jul/29/hobbit-the-battle-of-the-five-armies-trailer-video",
+          "originalUrl" : "http://www.theguardian.com/film/video/2014/jul/29/hobbit-the-battle-of-the-five-armies-trailer-video",
+          "apiUrl" : "http://content.guardianapis.com/film/video/2014/jul/29/hobbit-the-battle-of-the-five-armies-trailer-video",
+          "shortUrl" : "http://gu.com/p/4vbba",
+          "guardianPageId" : "2134090",
+          "caption" : "Watch the trailer for The Hobbit: The Battle of Five Armies",
+          "mediaId" : "gu-video-443296405",
+          "description" : "Watch the first trailer for the final part of Peter Jackson's epic adaptation of JRR Tolkien's novella, in effect a prequel to The Lord of the Rings. Starring Martin Freeman as Bilbo Baggins and Ian McKellen as the wizard Gandalf the Grey, The Hobbit: The Battle of the Five Armies is released in New Zealand on UK on 11 December, in the UK on 12 December, in the US on 17 December and in Australia on Boxing day",
+          "blockAds" : "false",
+          "title" : "The Hobbit: The Battle of the Five Armies: watch the teaser trailer - video",
+          "html" : "<video data-media-id=\"gu-video-443296405\" class=\"gu-video\" controls=\"controls\" poster=\"http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649679470/The-Hobbit-The-Battle-of--007.jpg\">\n        <source src=\"https://cdn.theguardian.tv/mainwebsite/2014/07/29/140729Hobbit-16x9.mp4\"></source><source src=\"https://cdn.theguardian.tv/webM/2014/07/29/140729Hobbit.webm\"></source><source src=\"https://cdn.theguardian.tv/3gp/large/2014/07/29/140729Hobbit_3gpLg16x9.3gp\"></source><source src=\"https://cdn.theguardian.tv/HLS/2014/07/29/140729Hobbit/140729Hobbit.m3u8\"></source><source src=\"https://cdn.theguardian.tv/3gp/small/2014/07/29/140729Hobbit_3gpSml16x9.3gp\"></source>\n      </video>"
+        },
+        "assets" : [ {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649669569/The-Hobbit-The-Battle-of--001.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "54",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "54"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649671906/The-Hobbit-The-Battle-of--002.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "130",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "140"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649673586/The-Hobbit-The-Battle-of--003.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "340",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "480"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649675062/The-Hobbit-The-Battle-of--004.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "90",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "120"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649676510/The-Hobbit-The-Battle-of--005.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "225",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "300"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649677950/The-Hobbit-The-Battle-of--006.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "360",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "480"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649679470/The-Hobbit-The-Battle-of--007.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "720",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "960"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649680998/The-Hobbit-The-Battle-of--008.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "84",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "140"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649682677/The-Hobbit-The-Battle-of--009.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "132",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "220"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649684100/The-Hobbit-The-Battle-of--010.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "168",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "280"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649685567/The-Hobbit-The-Battle-of--011.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "180",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "300"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649687020/The-Hobbit-The-Battle-of--012.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "228",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "380"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649688878/The-Hobbit-The-Battle-of--013.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "276",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "460"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649690781/The-Hobbit-The-Battle-of--014.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "230",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "300"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649692365/The-Hobbit-The-Battle-of--015.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "372",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "620"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649693869/The-Hobbit-The-Battle-of--016.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "720",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "1200"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649695456/The-Hobbit-The-Battle-of--017.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "360",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "640"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649696941/The-Hobbit-The-Battle-of--018.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "720",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "1280"
+          }
+        }, {
+          "assetType" : "video",
+          "mimeType" : "video/mp4",
+          "url" : "http://cdn.theguardian.tv/mainwebsite/2014/07/29/140729Hobbit-16x9.mp4",
+          "fields" : {
+            "guardianEmbeddable" : "false",
+            "height" : "360",
+            "guardianBlockAds" : "false",
+            "guardianSource" : "Warner Bros",
+            "width" : "480"
+          }
+        }, {
+          "assetType" : "video",
+          "mimeType" : "video/3gp:small",
+          "url" : "http://cdn.theguardian.tv/3gp/small/2014/07/29/140729Hobbit_3gpSml16x9.3gp",
+          "fields" : {
+            "guardianEmbeddable" : "false",
+            "height" : "360",
+            "guardianBlockAds" : "false",
+            "guardianSource" : "Warner Bros",
+            "width" : "480"
+          }
+        }, {
+          "assetType" : "video",
+          "mimeType" : "video/3gp:large",
+          "url" : "http://cdn.theguardian.tv/3gp/large/2014/07/29/140729Hobbit_3gpLg16x9.3gp",
+          "fields" : {
+            "guardianEmbeddable" : "false",
+            "height" : "360",
+            "guardianBlockAds" : "false",
+            "guardianSource" : "Warner Bros",
+            "width" : "480"
+          }
+        }, {
+          "assetType" : "video",
+          "mimeType" : "video/m3u8",
+          "url" : "http://cdn.theguardian.tv/HLS/2014/07/29/140729Hobbit/140729Hobbit.m3u8",
+          "fields" : {
+            "guardianEmbeddable" : "false",
+            "height" : "360",
+            "guardianBlockAds" : "false",
+            "guardianSource" : "Warner Bros",
+            "width" : "480"
+          }
+        }, {
+          "assetType" : "video",
+          "mimeType" : "video/webm",
+          "url" : "http://cdn.theguardian.tv/webM/2014/07/29/140729Hobbit.webm",
+          "fields" : {
+            "guardianEmbeddable" : "false",
+            "height" : "360",
+            "guardianBlockAds" : "false",
+            "guardianSource" : "Warner Bros",
+            "width" : "480"
+          }
+        } ]
+      }, {
+        "elementType" : "text",
+        "fields" : {
+          "text" : "<p></p><p>It appears Oliver might have been offered a cameo in The Lord of the Rings: The Return of the King, which was filming around 2001. At that stage, the later Hobbit trilogy was little more than a twinkle in Jackson’s eye.</p><p></p><p>The first episode of Oliver’s new six-part series, which is filmed in a pop-up cafe on Southend pier in Essex, is due to be screened on 2 January.</p>"
+        },
+        "assets" : [ ]
+      } ],
+      "published" : false,
+      "attributes" : { }
+    } ],
+    "settings" : {
+      "relatedContentOff" : "false",
+      "blockAds" : "false",
+      "isInappropriateForSponsorship" : "false",
+      "commentable" : "true",
+      "isPremoderated" : "false",
+      "managedByComposer" : "true",
+      "productionOffice" : "UK",
+      "commentCloseDate" : "2014-01-06T14:35:00+00:00",
+      "timeZone" : "Europe/London"
+    },
+    "taxonomy" : {
+      "tags" : [ {
+        "tag" : {
+          "id" : 9048,
+          "type" : "Keyword",
+          "internalName" : "Lord of the Rings (Film)",
+          "externalName" : "Lord of the Rings",
+          "slug" : "lord-of-the-rings",
+          "section" : {
+            "id" : 188,
+            "name" : "Film",
+            "pathPrefix" : "film",
+            "slug" : "film"
+          },
+          "path" : "film/lord-of-the-rings"
+        },
+        "isLead" : true
+      }, {
+        "tag" : {
+          "id" : 27632,
+          "type" : "Keyword",
+          "internalName" : "Jamie Oliver (chef)",
+          "externalName" : "Jamie Oliver",
+          "slug" : "oliver",
+          "section" : {
+            "id" : 196,
+            "name" : "Life and style",
+            "pathPrefix" : "lifeandstyle",
+            "slug" : "lifeandstyle"
+          },
+          "path" : "lifeandstyle/oliver"
+        },
+        "isLead" : true
+      }, {
+        "tag" : {
+          "id" : 24071,
+          "type" : "Keyword",
+          "internalName" : "Science fiction and fantasy (Film genre)",
+          "externalName" : "Science fiction and fantasy",
+          "slug" : "sciencefictionandfantasy",
+          "section" : {
+            "id" : 188,
+            "name" : "Film",
+            "pathPrefix" : "film",
+            "slug" : "film"
+          },
+          "path" : "film/sciencefictionandfantasy"
+        },
+        "isLead" : true
+      }, {
+        "tag" : {
+          "id" : 8804,
+          "type" : "Keyword",
+          "internalName" : "Film",
+          "externalName" : "Film",
+          "slug" : "film",
+          "section" : {
+            "id" : 188,
+            "name" : "Film",
+            "pathPrefix" : "film",
+            "slug" : "film"
+          },
+          "path" : "film/film"
+        },
+        "isLead" : true
+      }, {
+        "tag" : {
+          "id" : 22609,
+          "type" : "Keyword",
+          "internalName" : "Culture",
+          "externalName" : "Culture",
+          "slug" : "culture",
+          "section" : {
+            "id" : 381,
+            "name" : "Culture",
+            "pathPrefix" : "culture",
+            "slug" : "culture"
+          },
+          "path" : "culture/culture"
+        },
+        "isLead" : true
+      }, {
+        "tag" : {
+          "id" : 62999,
+          "type" : "Keyword",
+          "internalName" : "The Hobbit: The Battle of the Five Armies (film)",
+          "externalName" : "The Hobbit: The Battle of the Five Armies",
+          "slug" : "hobbit-the-battle-of-the-five-armies",
+          "section" : {
+            "id" : 188,
+            "name" : "Film",
+            "pathPrefix" : "film",
+            "slug" : "film"
+          },
+          "path" : "film/hobbit-the-battle-of-the-five-armies"
+        },
+        "isLead" : true
+      }, {
+        "tag" : {
+          "id" : 22641,
+          "type" : "Tone",
+          "internalName" : "News (Tone)",
+          "externalName" : "News",
+          "slug" : "news",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "tone/news"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 26903,
+          "type" : "Content Type",
+          "internalName" : "Article (Content type)",
+          "externalName" : "Article",
+          "slug" : "article",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "articles"
+        },
+        "isLead" : false
+      } ],
+      "contributors" : [ {
+        "id" : 24984,
+        "type" : "Contributor",
+        "internalName" : "Ben Child",
+        "externalName" : "Ben Child",
+        "slug" : "benchild",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "profile/benchild"
+      } ],
+      "publication" : {
+        "id" : 4,
+        "type" : "Publication",
+        "internalName" : "guardian.co.uk publication",
+        "externalName" : "theguardian.com",
+        "slug" : "guardian",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "guardian/all"
+      },
+      "references" : [ ],
+      "tracking" : [ ]
+    },
+    "aliasPaths" : [ ]
+  },
+  "live" : {
+    "contentChangeDetails" : {
+      "lastModified" : {
+        "date" : 1782476045051
+      },
+      "created" : {
+        "date" : 1419950187989,
+        "user" : {
+          "email" : "user6@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "6"
+        }
+      },
+      "published" : {
+        "date" : 1419952470896,
+        "user" : {
+          "email" : "user9@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "9"
+        }
+      },
+      "lastMajorRevisionPublished" : {
+        "date" : 1419952680000,
+        "user" : {
+          "email" : "user6@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "6"
+        }
+      },
+      "revision" : 75
+    },
+    "fields" : {
+      "linkText" : "Jamie Oliver turned down hobbit role",
+      "standfirst" : "<p>Celebrity chef was offered cameo by director Peter Jackson in 2001, but could not take part due to work commitments</p>",
+      "slug" : "jamie-oliver-hobbit-lord-of-the-rings-peter-jackson",
+      "byline" : "<span data-tag-id=\"24984\" class=\"contributor\">Ben Child</span>",
+      "editorialNote" : "seo ok",
+      "trailText" : "<strong>Ben Child:</strong> Celebrity chef was offered cameo by director Peter Jackson in 2001, but could not take part due to work commitments",
+      "headline" : "Jamie Oliver turned down hobbit role"
+    },
+    "thumbnail" : {
+      "fields" : {
+        "displayCredit" : "true",
+        "source" : "Anthony Devlin/PA/REX",
+        "imageType" : "Photograph",
+        "alt" : "Jamie Oliver and Elijah Wood as Frodo in The Return of the King",
+        "mediaId" : "d6a6fdf65bf941ad346ad41902be00b63eb9e2a5"
+      },
+      "assets" : [ {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954220304/a48cf6c0-6a13-41a8-8476-cc56e860fa35-220x132.jpeg",
+        "fields" : {
+          "name" : "220x132",
+          "width" : "220",
+          "height" : "132"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954220459/9661a860-64c9-4519-a9f4-f70f7d25d4e0-460x276.jpeg",
+        "fields" : {
+          "name" : "460x276",
+          "width" : "460",
+          "height" : "276"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954220671/7e595b6f-20ac-40ba-951e-d5401f64ed75-540x324.jpeg",
+        "fields" : {
+          "name" : "540x324",
+          "width" : "540",
+          "height" : "324"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954220834/fa2c0914-741c-4bbd-adda-1a3e54706ba1-140x84.jpeg",
+        "fields" : {
+          "name" : "140x84",
+          "width" : "140",
+          "height" : "84"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954221083/4269cbee-a411-4abd-a136-ccd2ac3aba92-1020x612.jpeg",
+        "fields" : {
+          "name" : "1020x612",
+          "width" : "1020",
+          "height" : "612"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954221661/6e75d625-5de8-439b-b132-15e1b278cc7d-300x180.jpeg",
+        "fields" : {
+          "name" : "300x180",
+          "width" : "300",
+          "height" : "180"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954221973/8a904881-67c2-4980-bb5f-9e45f82381ff-380x228.jpeg",
+        "fields" : {
+          "name" : "380x228",
+          "width" : "380",
+          "height" : "228"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954222151/aac399e0-36b9-4943-babb-c79d9d403e1b-620x372.jpeg",
+        "fields" : {
+          "name" : "620x372",
+          "width" : "620",
+          "height" : "372"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954222712/f9e47ad7-7957-4ced-97c0-2d0d53bd8171-2060x1236.jpeg",
+        "fields" : {
+          "name" : "2060x1236",
+          "width" : "2060",
+          "height" : "1236"
+        }
+      } ]
+    },
+    "mainBlock" : {
+      "id" : "54a2c82fe4b0fa04a20dbfcf",
+      "lastModified" : 1419954223593,
+      "dateCreated" : 1419954223593,
+      "publishedDate" : 1419954234671,
+      "firstPublishedDate" : 1419952969225,
+      "createdBy" : {
+        "email" : "user1@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "1"
+      },
+      "lastModifiedBy" : {
+        "email" : "user1@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "1"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "image",
+        "fields" : {
+          "displayCredit" : "true",
+          "source" : "Anthony Devlin/PA/REX",
+          "imageType" : "Photograph",
+          "alt" : "Jamie Oliver and Elijah Wood as Frodo in The Return of the King",
+          "caption" : "Jamie Oliver and Elijah Wood as Frodo in The Return of the King.",
+          "mediaId" : "d6a6fdf65bf941ad346ad41902be00b63eb9e2a5"
+        },
+        "assets" : [ {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954220304/a48cf6c0-6a13-41a8-8476-cc56e860fa35-220x132.jpeg",
+          "fields" : {
+            "name" : "220x132",
+            "width" : "220",
+            "height" : "132"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954220459/9661a860-64c9-4519-a9f4-f70f7d25d4e0-460x276.jpeg",
+          "fields" : {
+            "name" : "460x276",
+            "width" : "460",
+            "height" : "276"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954220671/7e595b6f-20ac-40ba-951e-d5401f64ed75-540x324.jpeg",
+          "fields" : {
+            "name" : "540x324",
+            "width" : "540",
+            "height" : "324"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954220834/fa2c0914-741c-4bbd-adda-1a3e54706ba1-140x84.jpeg",
+          "fields" : {
+            "name" : "140x84",
+            "width" : "140",
+            "height" : "84"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954221083/4269cbee-a411-4abd-a136-ccd2ac3aba92-1020x612.jpeg",
+          "fields" : {
+            "name" : "1020x612",
+            "width" : "1020",
+            "height" : "612"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954221661/6e75d625-5de8-439b-b132-15e1b278cc7d-300x180.jpeg",
+          "fields" : {
+            "name" : "300x180",
+            "width" : "300",
+            "height" : "180"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954221973/8a904881-67c2-4980-bb5f-9e45f82381ff-380x228.jpeg",
+          "fields" : {
+            "name" : "380x228",
+            "width" : "380",
+            "height" : "228"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954222151/aac399e0-36b9-4943-babb-c79d9d403e1b-620x372.jpeg",
+          "fields" : {
+            "name" : "620x372",
+            "width" : "620",
+            "height" : "372"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/12/30/1419954222712/f9e47ad7-7957-4ced-97c0-2d0d53bd8171-2060x1236.jpeg",
+          "fields" : {
+            "name" : "2060x1236",
+            "width" : "2060",
+            "height" : "1236"
+          }
+        } ]
+      } ],
+      "published" : true,
+      "attributes" : { }
+    },
+    "blocks" : [ {
+      "id" : "6059eb22-9893-4280-9373-89357a9fb483",
+      "lastModified" : 1419952755048,
+      "dateCreated" : 1419950188290,
+      "createdBy" : {
+        "email" : "user6@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "6"
+      },
+      "lastModifiedBy" : {
+        "email" : "user6@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "6"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "text",
+        "fields" : {
+          "text" : "<p>Jamie Oliver turned down the chance to play a hobbit in Peter Jackson’s Lord of the Rings movies, <a href=\"http://www.bbc.co.uk/news/entertainment-arts-30621767\" title=\"\">the celebrity chef has revealed</a>.</p><p></p><p></p><p></p><p>Oliver said he was offered the role if he agreed to fly to New Zealand in 2001 to cook for Jackson’s 50th birthday. Speaking during the recording of his new Channel 4 series <a href=\"http://www.channel4.com/programmes/jamie-and-jimmys-friday-night-feast\" title=\"\">Jamie and Jimmy’s Friday Night Feast</a>, he said: “The worst thing that happened to me was that I got phoned up by the exec producer and asked did I want to go and cook for Peter Jackson’s birthday. And if I did, they would fly me over and I could be a hobbit in the film.</p><p></p><p>“I really wanted to do it. I would have got right into it as well. But I was working, I couldn’t get out of it.”</p>"
+        },
+        "assets" : [ ]
+      }, {
+        "elementType" : "video",
+        "fields" : {
+          "duration" : "124",
+          "source" : "Guardian",
+          "url" : "http://www.theguardian.com/film/video/2014/jul/29/hobbit-the-battle-of-the-five-armies-trailer-video",
+          "originalUrl" : "http://www.theguardian.com/film/video/2014/jul/29/hobbit-the-battle-of-the-five-armies-trailer-video",
+          "apiUrl" : "http://content.guardianapis.com/film/video/2014/jul/29/hobbit-the-battle-of-the-five-armies-trailer-video",
+          "shortUrl" : "http://gu.com/p/4vbba",
+          "guardianPageId" : "2134090",
+          "caption" : "Watch the trailer for The Hobbit: The Battle of Five Armies",
+          "mediaId" : "gu-video-443296405",
+          "description" : "Watch the first trailer for the final part of Peter Jackson's epic adaptation of JRR Tolkien's novella, in effect a prequel to The Lord of the Rings. Starring Martin Freeman as Bilbo Baggins and Ian McKellen as the wizard Gandalf the Grey, The Hobbit: The Battle of the Five Armies is released in New Zealand on UK on 11 December, in the UK on 12 December, in the US on 17 December and in Australia on Boxing day",
+          "blockAds" : "false",
+          "title" : "The Hobbit: The Battle of the Five Armies: watch the teaser trailer - video",
+          "html" : "<video data-media-id=\"gu-video-443296405\" class=\"gu-video\" controls=\"controls\" poster=\"http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649679470/The-Hobbit-The-Battle-of--007.jpg\">\n        <source src=\"https://cdn.theguardian.tv/mainwebsite/2014/07/29/140729Hobbit-16x9.mp4\"></source><source src=\"https://cdn.theguardian.tv/webM/2014/07/29/140729Hobbit.webm\"></source><source src=\"https://cdn.theguardian.tv/3gp/large/2014/07/29/140729Hobbit_3gpLg16x9.3gp\"></source><source src=\"https://cdn.theguardian.tv/HLS/2014/07/29/140729Hobbit/140729Hobbit.m3u8\"></source><source src=\"https://cdn.theguardian.tv/3gp/small/2014/07/29/140729Hobbit_3gpSml16x9.3gp\"></source>\n      </video>"
+        },
+        "assets" : [ {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649669569/The-Hobbit-The-Battle-of--001.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "54",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "54"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649671906/The-Hobbit-The-Battle-of--002.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "130",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "140"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649673586/The-Hobbit-The-Battle-of--003.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "340",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "480"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649675062/The-Hobbit-The-Battle-of--004.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "90",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "120"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649676510/The-Hobbit-The-Battle-of--005.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "225",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "300"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649677950/The-Hobbit-The-Battle-of--006.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "360",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "480"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649679470/The-Hobbit-The-Battle-of--007.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "720",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "960"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649680998/The-Hobbit-The-Battle-of--008.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "84",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "140"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649682677/The-Hobbit-The-Battle-of--009.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "132",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "220"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649684100/The-Hobbit-The-Battle-of--010.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "168",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "280"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649685567/The-Hobbit-The-Battle-of--011.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "180",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "300"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649687020/The-Hobbit-The-Battle-of--012.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "228",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "380"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649688878/The-Hobbit-The-Battle-of--013.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "276",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "460"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649690781/The-Hobbit-The-Battle-of--014.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "230",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "300"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649692365/The-Hobbit-The-Battle-of--015.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "372",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "620"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649693869/The-Hobbit-The-Battle-of--016.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "720",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "1200"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649695456/The-Hobbit-The-Battle-of--017.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "360",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "640"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/7/29/1406649696941/The-Hobbit-The-Battle-of--018.jpg",
+          "fields" : {
+            "guardianPhotographer" : "Warner Bros",
+            "height" : "720",
+            "guardianCaption" : "The Hobbit: The Battle of the Five Armies teaser trailer - video\r Photograph: Warner Bros",
+            "guardianCredit" : "Warner Bros/Warner Bros",
+            "guardianSource" : "Warner Bros",
+            "guardianAltText" : "The Hobbit: The Battle of the Five Armies teaser trailer - video",
+            "width" : "1280"
+          }
+        }, {
+          "assetType" : "video",
+          "mimeType" : "video/mp4",
+          "url" : "http://cdn.theguardian.tv/mainwebsite/2014/07/29/140729Hobbit-16x9.mp4",
+          "fields" : {
+            "guardianEmbeddable" : "false",
+            "height" : "360",
+            "guardianBlockAds" : "false",
+            "guardianSource" : "Warner Bros",
+            "width" : "480"
+          }
+        }, {
+          "assetType" : "video",
+          "mimeType" : "video/3gp:small",
+          "url" : "http://cdn.theguardian.tv/3gp/small/2014/07/29/140729Hobbit_3gpSml16x9.3gp",
+          "fields" : {
+            "guardianEmbeddable" : "false",
+            "height" : "360",
+            "guardianBlockAds" : "false",
+            "guardianSource" : "Warner Bros",
+            "width" : "480"
+          }
+        }, {
+          "assetType" : "video",
+          "mimeType" : "video/3gp:large",
+          "url" : "http://cdn.theguardian.tv/3gp/large/2014/07/29/140729Hobbit_3gpLg16x9.3gp",
+          "fields" : {
+            "guardianEmbeddable" : "false",
+            "height" : "360",
+            "guardianBlockAds" : "false",
+            "guardianSource" : "Warner Bros",
+            "width" : "480"
+          }
+        }, {
+          "assetType" : "video",
+          "mimeType" : "video/m3u8",
+          "url" : "http://cdn.theguardian.tv/HLS/2014/07/29/140729Hobbit/140729Hobbit.m3u8",
+          "fields" : {
+            "guardianEmbeddable" : "false",
+            "height" : "360",
+            "guardianBlockAds" : "false",
+            "guardianSource" : "Warner Bros",
+            "width" : "480"
+          }
+        }, {
+          "assetType" : "video",
+          "mimeType" : "video/webm",
+          "url" : "http://cdn.theguardian.tv/webM/2014/07/29/140729Hobbit.webm",
+          "fields" : {
+            "guardianEmbeddable" : "false",
+            "height" : "360",
+            "guardianBlockAds" : "false",
+            "guardianSource" : "Warner Bros",
+            "width" : "480"
+          }
+        } ]
+      }, {
+        "elementType" : "text",
+        "fields" : {
+          "text" : "<p></p><p>It appears Oliver might have been offered a cameo in The Lord of the Rings: The Return of the King, which was filming around 2001. At that stage, the later Hobbit trilogy was little more than a twinkle in Jackson’s eye.</p><p></p><p>The first episode of Oliver’s new six-part series, which is filmed in a pop-up cafe on Southend pier in Essex, is due to be screened on 2 January.</p>"
+        },
+        "assets" : [ ]
+      } ],
+      "published" : true,
+      "attributes" : { }
+    } ],
+    "settings" : {
+      "relatedContentOff" : "false",
+      "blockAds" : "false",
+      "isInappropriateForSponsorship" : "false",
+      "commentable" : "true",
+      "isPremoderated" : "false",
+      "managedByComposer" : "true",
+      "productionOffice" : "UK",
+      "commentCloseDate" : "2014-01-06T14:35:00+00:00",
+      "timeZone" : "Europe/London"
+    },
+    "taxonomy" : {
+      "tags" : [ {
+        "tag" : {
+          "id" : 9048,
+          "type" : "Keyword",
+          "internalName" : "Lord of the Rings (Film)",
+          "externalName" : "Lord of the Rings",
+          "slug" : "lord-of-the-rings",
+          "section" : {
+            "id" : 188,
+            "name" : "Film",
+            "pathPrefix" : "film",
+            "slug" : "film"
+          },
+          "path" : "film/lord-of-the-rings"
+        },
+        "isLead" : true
+      }, {
+        "tag" : {
+          "id" : 27632,
+          "type" : "Keyword",
+          "internalName" : "Jamie Oliver (chef)",
+          "externalName" : "Jamie Oliver",
+          "slug" : "oliver",
+          "section" : {
+            "id" : 196,
+            "name" : "Life and style",
+            "pathPrefix" : "lifeandstyle",
+            "slug" : "lifeandstyle"
+          },
+          "path" : "lifeandstyle/oliver"
+        },
+        "isLead" : true
+      }, {
+        "tag" : {
+          "id" : 24071,
+          "type" : "Keyword",
+          "internalName" : "Science fiction and fantasy (Film genre)",
+          "externalName" : "Science fiction and fantasy",
+          "slug" : "sciencefictionandfantasy",
+          "section" : {
+            "id" : 188,
+            "name" : "Film",
+            "pathPrefix" : "film",
+            "slug" : "film"
+          },
+          "path" : "film/sciencefictionandfantasy"
+        },
+        "isLead" : true
+      }, {
+        "tag" : {
+          "id" : 8804,
+          "type" : "Keyword",
+          "internalName" : "Film",
+          "externalName" : "Film",
+          "slug" : "film",
+          "section" : {
+            "id" : 188,
+            "name" : "Film",
+            "pathPrefix" : "film",
+            "slug" : "film"
+          },
+          "path" : "film/film"
+        },
+        "isLead" : true
+      }, {
+        "tag" : {
+          "id" : 22609,
+          "type" : "Keyword",
+          "internalName" : "Culture",
+          "externalName" : "Culture",
+          "slug" : "culture",
+          "section" : {
+            "id" : 381,
+            "name" : "Culture",
+            "pathPrefix" : "culture",
+            "slug" : "culture"
+          },
+          "path" : "culture/culture"
+        },
+        "isLead" : true
+      }, {
+        "tag" : {
+          "id" : 62999,
+          "type" : "Keyword",
+          "internalName" : "The Hobbit: The Battle of the Five Armies (film)",
+          "externalName" : "The Hobbit: The Battle of the Five Armies",
+          "slug" : "hobbit-the-battle-of-the-five-armies",
+          "section" : {
+            "id" : 188,
+            "name" : "Film",
+            "pathPrefix" : "film",
+            "slug" : "film"
+          },
+          "path" : "film/hobbit-the-battle-of-the-five-armies"
+        },
+        "isLead" : true
+      }, {
+        "tag" : {
+          "id" : 22641,
+          "type" : "Tone",
+          "internalName" : "News (Tone)",
+          "externalName" : "News",
+          "slug" : "news",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "tone/news"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 26903,
+          "type" : "Content Type",
+          "internalName" : "Article (Content type)",
+          "externalName" : "Article",
+          "slug" : "article",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "articles"
+        },
+        "isLead" : false
+      } ],
+      "contributors" : [ {
+        "id" : 24984,
+        "type" : "Contributor",
+        "internalName" : "Ben Child",
+        "externalName" : "Ben Child",
+        "slug" : "benchild",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "profile/benchild"
+      } ],
+      "publication" : {
+        "id" : 4,
+        "type" : "Publication",
+        "internalName" : "guardian.co.uk publication",
+        "externalName" : "theguardian.com",
+        "slug" : "guardian",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "guardian/all"
+      },
+      "references" : [ ],
+      "tracking" : [ ]
+    },
+    "aliasPaths" : [ ]
+  },
+  "auxiliaryAtoms" : [ ],
+  "channels" : { }
+}

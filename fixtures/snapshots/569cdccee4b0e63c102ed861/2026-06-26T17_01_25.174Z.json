@@ -1,0 +1,681 @@
+{
+  "id" : "569cdccee4b0e63c102ed861",
+  "type" : "article",
+  "published" : true,
+  "isGone" : false,
+  "isHosted" : false,
+  "expiry" : {
+    "rights" : {
+      "expired" : false
+    },
+    "commercial" : {
+      "expired" : false
+    }
+  },
+  "rights" : {
+    "syndicationAggregate" : true,
+    "subscriptionDatabases" : true,
+    "developerCommunity" : false
+  },
+  "contentChangeDetails" : {
+    "lastModified" : {
+      "date" : 1782493070432
+    },
+    "created" : {
+      "date" : 1356025062000,
+      "user" : {
+        "email" : "user19@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "19"
+      }
+    },
+    "lastMajorRevisionPublished" : {
+      "date" : 1356826021000,
+      "user" : {
+        "email" : "user19@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "19"
+      }
+    },
+    "revision" : 4
+  },
+  "identifiers" : {
+    "path" : "lifeandstyle/2012/dec/30/miso-soup-beef-kale-recipe",
+    "pageId" : "1845536",
+    "storyBundleId" : "7052481"
+  },
+  "collaborators" : [ {
+    "email" : "user19@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "19"
+  } ],
+  "toolSettings" : {
+    "slugLinked" : "false",
+    "activeInInCopy" : "true",
+    "seoChanged" : "false",
+    "seoOptimised" : "false",
+    "republished" : "false",
+    "trailTextLinked" : "true",
+    "pathLocked" : "true",
+    "linkTextLinked" : "false"
+  },
+  "aliasPaths" : [ ],
+  "preview" : {
+    "contentChangeDetails" : {
+      "lastModified" : {
+        "date" : 1782493070432
+      },
+      "created" : {
+        "date" : 1356025062000,
+        "user" : {
+          "email" : "user19@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "19"
+        }
+      },
+      "lastMajorRevisionPublished" : {
+        "date" : 1356826021000,
+        "user" : {
+          "email" : "user19@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "19"
+        }
+      },
+      "revision" : 4
+    },
+    "fields" : {
+      "linkText" : "Miso soup with beef and kale recipe | Nigel Slater",
+      "standfirst" : "A soup full of greenery and colour",
+      "slug" : "miso-soup-beef-kale-recipe",
+      "newspaperPublicationDate" : "2012-12-30T00:00:00+00:00",
+      "byline" : "<span data-tag-id=\"16196\" class=\"contributor\">Nigel Slater</span>",
+      "newspaperPageNumber" : "37",
+      "trailText" : "A soup full of greenery and colour",
+      "headline" : "Miso soup with beef and kale recipe"
+    },
+    "thumbnail" : {
+      "fields" : {
+        "displayCredit" : "false",
+        "imageType" : "Photograph",
+        "alt" : "nigel cavolo nero steak miso soup",
+        "caption" : "\"Shredded savoy cabbage, purple sprouting and any of the Chinese greens, such as bok choi, would \nbe perfect here instead of the cabbage\": Nigel Slater's miso soup with beef and kale midweek dinner. Photograph: Jonathan Lovekin for the Observer",
+        "mediaId" : "gu-image-401417683",
+        "source" : "Observer",
+        "photographer" : "Jonathan Lovekin"
+      },
+      "assets" : [ {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "http://static.guim.co.uk/sys-images/Observer/Pix/pictures/2012/12/20/1356025525628/nigel-cavolo-nero-steak-m-003.jpg",
+        "fields" : {
+          "width" : "140",
+          "height" : "84"
+        }
+      } ]
+    },
+    "mainBlock" : {
+      "id" : "3b9b84d6-b372-4e39-9548-f0e63fe16bd9",
+      "lastModified" : 1453120718655,
+      "dateCreated" : 1453120718655,
+      "createdBy" : {
+        "email" : "user19@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "19"
+      },
+      "lastModifiedBy" : {
+        "email" : "user19@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "19"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "image",
+        "fields" : {
+          "displayCredit" : "false",
+          "imageType" : "Photograph",
+          "alt" : "nigel cavolo nero steak miso soup",
+          "caption" : "\"Shredded savoy cabbage, purple sprouting and any of the Chinese greens, such as bok choi, would \nbe perfect here instead of the cabbage\": Nigel Slater's miso soup with beef and kale midweek dinner. Photograph: Jonathan Lovekin for the Observer",
+          "mediaId" : "gu-image-401417682",
+          "source" : "Observer",
+          "photographer" : "Jonathan Lovekin"
+        },
+        "assets" : [ {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://static.guim.co.uk/sys-images/Observer/Pix/pictures/2012/12/20/1356025532005/nigel-cavolo-nero-steak-m-008.jpg",
+          "fields" : {
+            "width" : "460",
+            "height" : "276"
+          }
+        } ]
+      } ],
+      "published" : false,
+      "attributes" : { }
+    },
+    "blocks" : [ {
+      "id" : "3a5c34d7-24b2-4393-b750-36bd6ff12db2",
+      "lastModified" : 1453120718649,
+      "dateCreated" : 1453120718611,
+      "lastModifiedBy" : {
+        "email" : "user19@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "19"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "text",
+        "fields" : {
+          "text" : "<p>A light, sustaining and cheapish dinner.</p><p></p><h2>The recipe </h2><p>Pull the leaves from the stalks of 100g of cavolo nero, shred them, then chop the stems finely. Pour a&nbsp;little oil into a shallow pan, add the chopped stems, cook briefly, then add a 240g piece of rump steak. When it browns, turn and add  3 chopped spring onions. Remove the steak, cover it, then pour  800ml of boiling water into the pan,&nbsp;stir, add 1 tbsp of bouillon, 2&nbsp;tbsp of white miso, then the cavolo&nbsp;nero leaves and the steak, sliced into thin strips. Serves 2.</p><h2>The trick </h2><p>Allowing the miso to boil will  make it cloudy and alter its flavour.  A brief simmer will do no harm.  Cook the pieces of meat for seconds rather than minutes, to keep them supple and rare.</p><p></p><h2>The twist </h2><p>Shredded savoy cabbage, purple sprouting and any of the Chinese greens, such as bok choi, would  be perfect here instead of the  cabbage. Add wide or thin ribbon noodles as you wish, or even cooked rice to make a more substantial  bowl of soup.</p><p></p><p><br />Email Nigel at <a href=\"http://user26@observer.co.uk\" title=\"\">user26@observer.co.uk</a></p>"
+        },
+        "assets" : [ ]
+      } ],
+      "published" : false,
+      "attributes" : { }
+    } ],
+    "settings" : {
+      "relatedContentOff" : "false",
+      "blockAds" : "false",
+      "legallySensitive" : "false",
+      "commentable" : "false",
+      "managedByComposer" : "true",
+      "productionOffice" : "UK"
+    },
+    "taxonomy" : {
+      "tags" : [ {
+        "tag" : {
+          "id" : 50404,
+          "type" : "Series",
+          "internalName" : "Nigel Slater's midweek dinner (series)",
+          "externalName" : "Nigel Slater's midweek dinner",
+          "slug" : "nigel-slater-midweek-dinner",
+          "section" : {
+            "id" : 196,
+            "name" : "Life and style",
+            "pathPrefix" : "lifeandstyle",
+            "slug" : "lifeandstyle"
+          },
+          "path" : "lifeandstyle/series/nigel-slater-midweek-dinner"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 8958,
+          "type" : "Keyword",
+          "internalName" : "Food and drink  (Life and style)",
+          "externalName" : "Food & drink",
+          "slug" : "food-and-drink",
+          "section" : {
+            "id" : 196,
+            "name" : "Life and style",
+            "pathPrefix" : "lifeandstyle",
+            "slug" : "lifeandstyle"
+          },
+          "path" : "lifeandstyle/food-and-drink"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 8857,
+          "type" : "Keyword",
+          "internalName" : "Life and style",
+          "externalName" : "Life and style",
+          "slug" : "lifeandstyle",
+          "section" : {
+            "id" : 196,
+            "name" : "Life and style",
+            "pathPrefix" : "lifeandstyle",
+            "slug" : "lifeandstyle"
+          },
+          "path" : "lifeandstyle/lifeandstyle"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 33407,
+          "type" : "Tone",
+          "internalName" : "Recipe (Tone)",
+          "externalName" : "Recipes",
+          "slug" : "recipes",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "tone/recipes"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 20401,
+          "type" : "Tone",
+          "internalName" : "Feature (Tone)",
+          "externalName" : "Features",
+          "slug" : "features",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "tone/features"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 60179,
+          "type" : "Keyword",
+          "internalName" : "Beef",
+          "externalName" : "Beef",
+          "slug" : "beef",
+          "section" : {
+            "id" : 196,
+            "name" : "Life and style",
+            "pathPrefix" : "lifeandstyle",
+            "slug" : "lifeandstyle"
+          },
+          "path" : "lifeandstyle/beef"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 26903,
+          "type" : "Content Type",
+          "internalName" : "Article (Content type)",
+          "externalName" : "Article",
+          "slug" : "article",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "articles"
+        },
+        "isLead" : false
+      } ],
+      "contributors" : [ {
+        "id" : 16196,
+        "type" : "Contributor",
+        "internalName" : "Nigel Slater",
+        "externalName" : "Nigel Slater",
+        "slug" : "nigelslater",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        }
+      } ],
+      "publication" : {
+        "id" : 4,
+        "type" : "Publication",
+        "internalName" : "guardian.co.uk publication",
+        "externalName" : "theguardian.com",
+        "slug" : "guardian",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        }
+      },
+      "newspaper" : {
+        "book" : {
+          "id" : 16718,
+          "type" : "Newspaper Book",
+          "internalName" : "Obs: Magazine (nb)",
+          "externalName" : "Observer Magazine",
+          "slug" : "magazine",
+          "section" : {
+            "id" : 196,
+            "name" : "Life and style",
+            "pathPrefix" : "lifeandstyle",
+            "slug" : "lifeandstyle"
+          }
+        },
+        "bookSection" : {
+          "id" : 33155,
+          "type" : "Newspaper Book Section",
+          "internalName" : "Obs: Magazine Life and style (nbs)",
+          "externalName" : "Life & style",
+          "slug" : "life-and-style",
+          "section" : {
+            "id" : 196,
+            "name" : "Life and style",
+            "pathPrefix" : "lifeandstyle",
+            "slug" : "lifeandstyle"
+          }
+        },
+        "publication" : {
+          "id" : 8,
+          "type" : "Publication",
+          "internalName" : "The Observer publication",
+          "externalName" : "The Observer",
+          "slug" : "theobserver",
+          "section" : {
+            "id" : 203,
+            "name" : "From the Observer",
+            "pathPrefix" : "theobserver",
+            "slug" : "theobserver"
+          }
+        }
+      },
+      "references" : [ ],
+      "tracking" : [ ]
+    },
+    "aliasPaths" : [ ]
+  },
+  "live" : {
+    "contentChangeDetails" : {
+      "lastModified" : {
+        "date" : 1782493070432
+      },
+      "created" : {
+        "date" : 1356025062000,
+        "user" : {
+          "email" : "user19@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "19"
+        }
+      },
+      "lastMajorRevisionPublished" : {
+        "date" : 1356826021000,
+        "user" : {
+          "email" : "user19@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "19"
+        }
+      },
+      "revision" : 4
+    },
+    "fields" : {
+      "linkText" : "Miso soup with beef and kale recipe | Nigel Slater",
+      "standfirst" : "A soup full of greenery and colour",
+      "slug" : "miso-soup-beef-kale-recipe",
+      "newspaperPublicationDate" : "2012-12-30T00:00:00+00:00",
+      "byline" : "<span data-tag-id=\"16196\" class=\"contributor\">Nigel Slater</span>",
+      "newspaperPageNumber" : "37",
+      "trailText" : "A soup full of greenery and colour",
+      "headline" : "Miso soup with beef and kale recipe"
+    },
+    "thumbnail" : {
+      "fields" : {
+        "displayCredit" : "false",
+        "imageType" : "Photograph",
+        "alt" : "nigel cavolo nero steak miso soup",
+        "caption" : "\"Shredded savoy cabbage, purple sprouting and any of the Chinese greens, such as bok choi, would \nbe perfect here instead of the cabbage\": Nigel Slater's miso soup with beef and kale midweek dinner. Photograph: Jonathan Lovekin for the Observer",
+        "mediaId" : "gu-image-401417683",
+        "source" : "Observer",
+        "photographer" : "Jonathan Lovekin"
+      },
+      "assets" : [ {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "http://static.guim.co.uk/sys-images/Observer/Pix/pictures/2012/12/20/1356025525628/nigel-cavolo-nero-steak-m-003.jpg",
+        "fields" : {
+          "width" : "140",
+          "height" : "84"
+        }
+      } ]
+    },
+    "mainBlock" : {
+      "id" : "3b9b84d6-b372-4e39-9548-f0e63fe16bd9",
+      "lastModified" : 1453120718655,
+      "dateCreated" : 1453120718655,
+      "createdBy" : {
+        "email" : "user19@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "19"
+      },
+      "lastModifiedBy" : {
+        "email" : "user19@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "19"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "image",
+        "fields" : {
+          "displayCredit" : "false",
+          "imageType" : "Photograph",
+          "alt" : "nigel cavolo nero steak miso soup",
+          "caption" : "\"Shredded savoy cabbage, purple sprouting and any of the Chinese greens, such as bok choi, would \nbe perfect here instead of the cabbage\": Nigel Slater's miso soup with beef and kale midweek dinner. Photograph: Jonathan Lovekin for the Observer",
+          "mediaId" : "gu-image-401417682",
+          "source" : "Observer",
+          "photographer" : "Jonathan Lovekin"
+        },
+        "assets" : [ {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Observer/Pix/pictures/2012/12/20/1356025532005/nigel-cavolo-nero-steak-m-008.jpg",
+          "fields" : {
+            "width" : "460",
+            "height" : "276"
+          }
+        } ]
+      } ],
+      "published" : true,
+      "attributes" : { }
+    },
+    "blocks" : [ {
+      "id" : "3a5c34d7-24b2-4393-b750-36bd6ff12db2",
+      "lastModified" : 1453120718649,
+      "dateCreated" : 1453120718611,
+      "lastModifiedBy" : {
+        "email" : "user19@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "19"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "text",
+        "fields" : {
+          "text" : "<p>A light, sustaining and cheapish dinner.</p><p></p><h2>The recipe </h2><p>Pull the leaves from the stalks of 100g of cavolo nero, shred them, then chop the stems finely. Pour a&nbsp;little oil into a shallow pan, add the chopped stems, cook briefly, then add a 240g piece of rump steak. When it browns, turn and add  3 chopped spring onions. Remove the steak, cover it, then pour  800ml of boiling water into the pan,&nbsp;stir, add 1 tbsp of bouillon, 2&nbsp;tbsp of white miso, then the cavolo&nbsp;nero leaves and the steak, sliced into thin strips. Serves 2.</p><h2>The trick </h2><p>Allowing the miso to boil will  make it cloudy and alter its flavour.  A brief simmer will do no harm.  Cook the pieces of meat for seconds rather than minutes, to keep them supple and rare.</p><p></p><h2>The twist </h2><p>Shredded savoy cabbage, purple sprouting and any of the Chinese greens, such as bok choi, would  be perfect here instead of the  cabbage. Add wide or thin ribbon noodles as you wish, or even cooked rice to make a more substantial  bowl of soup.</p><p></p><p><br />Email Nigel at <a href=\"http://user26@observer.co.uk\" title=\"\">user26@observer.co.uk</a></p>"
+        },
+        "assets" : [ ]
+      } ],
+      "published" : true,
+      "attributes" : { }
+    } ],
+    "settings" : {
+      "relatedContentOff" : "false",
+      "blockAds" : "false",
+      "legallySensitive" : "false",
+      "commentable" : "false",
+      "managedByComposer" : "true",
+      "productionOffice" : "UK"
+    },
+    "taxonomy" : {
+      "tags" : [ {
+        "tag" : {
+          "id" : 50404,
+          "type" : "Series",
+          "internalName" : "Nigel Slater's midweek dinner (series)",
+          "externalName" : "Nigel Slater's midweek dinner",
+          "slug" : "nigel-slater-midweek-dinner",
+          "section" : {
+            "id" : 196,
+            "name" : "Life and style",
+            "pathPrefix" : "lifeandstyle",
+            "slug" : "lifeandstyle"
+          },
+          "path" : "lifeandstyle/series/nigel-slater-midweek-dinner"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 8958,
+          "type" : "Keyword",
+          "internalName" : "Food and drink  (Life and style)",
+          "externalName" : "Food & drink",
+          "slug" : "food-and-drink",
+          "section" : {
+            "id" : 196,
+            "name" : "Life and style",
+            "pathPrefix" : "lifeandstyle",
+            "slug" : "lifeandstyle"
+          },
+          "path" : "lifeandstyle/food-and-drink"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 8857,
+          "type" : "Keyword",
+          "internalName" : "Life and style",
+          "externalName" : "Life and style",
+          "slug" : "lifeandstyle",
+          "section" : {
+            "id" : 196,
+            "name" : "Life and style",
+            "pathPrefix" : "lifeandstyle",
+            "slug" : "lifeandstyle"
+          },
+          "path" : "lifeandstyle/lifeandstyle"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 33407,
+          "type" : "Tone",
+          "internalName" : "Recipe (Tone)",
+          "externalName" : "Recipes",
+          "slug" : "recipes",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "tone/recipes"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 20401,
+          "type" : "Tone",
+          "internalName" : "Feature (Tone)",
+          "externalName" : "Features",
+          "slug" : "features",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "tone/features"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 60179,
+          "type" : "Keyword",
+          "internalName" : "Beef",
+          "externalName" : "Beef",
+          "slug" : "beef",
+          "section" : {
+            "id" : 196,
+            "name" : "Life and style",
+            "pathPrefix" : "lifeandstyle",
+            "slug" : "lifeandstyle"
+          },
+          "path" : "lifeandstyle/beef"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 26903,
+          "type" : "Content Type",
+          "internalName" : "Article (Content type)",
+          "externalName" : "Article",
+          "slug" : "article",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "articles"
+        },
+        "isLead" : false
+      } ],
+      "contributors" : [ {
+        "id" : 16196,
+        "type" : "Contributor",
+        "internalName" : "Nigel Slater",
+        "externalName" : "Nigel Slater",
+        "slug" : "nigelslater",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        }
+      } ],
+      "publication" : {
+        "id" : 4,
+        "type" : "Publication",
+        "internalName" : "guardian.co.uk publication",
+        "externalName" : "theguardian.com",
+        "slug" : "guardian",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        }
+      },
+      "newspaper" : {
+        "book" : {
+          "id" : 16718,
+          "type" : "Newspaper Book",
+          "internalName" : "Obs: Magazine (nb)",
+          "externalName" : "Observer Magazine",
+          "slug" : "magazine",
+          "section" : {
+            "id" : 196,
+            "name" : "Life and style",
+            "pathPrefix" : "lifeandstyle",
+            "slug" : "lifeandstyle"
+          }
+        },
+        "bookSection" : {
+          "id" : 33155,
+          "type" : "Newspaper Book Section",
+          "internalName" : "Obs: Magazine Life and style (nbs)",
+          "externalName" : "Life & style",
+          "slug" : "life-and-style",
+          "section" : {
+            "id" : 196,
+            "name" : "Life and style",
+            "pathPrefix" : "lifeandstyle",
+            "slug" : "lifeandstyle"
+          }
+        },
+        "publication" : {
+          "id" : 8,
+          "type" : "Publication",
+          "internalName" : "The Observer publication",
+          "externalName" : "The Observer",
+          "slug" : "theobserver",
+          "section" : {
+            "id" : 203,
+            "name" : "From the Observer",
+            "pathPrefix" : "theobserver",
+            "slug" : "theobserver"
+          }
+        }
+      },
+      "references" : [ ],
+      "tracking" : [ ]
+    },
+    "aliasPaths" : [ ]
+  },
+  "auxiliaryAtoms" : [ ],
+  "channels" : { }
+}

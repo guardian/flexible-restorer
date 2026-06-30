@@ -33,6 +33,7 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/controllers/SnapshotListCtrl.js
 	# Evidence: public/javascripts/app/templates/restore-list.html
 
+	@pending
 	Scenario: A secondary-system snapshot displays a secondary source notice
 		Given version history data contains a snapshot from composer-secondary
 		When I view the list row for that snapshot
@@ -40,6 +41,7 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/templates/restore-list.html
 	# Evidence: public/javascripts/app/models/SnapshotIdModel.js
 
+	@pending
 	Scenario: Revision index falls back to list position when revision id is missing
 		Given version history data contains a snapshot without an explicit revision id
 		When I view the index value for that row
@@ -47,6 +49,7 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/templates/restore-list.html
 	# Evidence: public/javascripts/app/models/SnapshotIdModel.js
 
+	@pending
 	Scenario: Active snapshot row is visually distinguished and selects HTML mode on click
 		Given version history data has loaded successfully
 		When I click a snapshot row in the list
@@ -57,6 +60,7 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/controllers/SnapshotListInteractionCtrl.js
 	# Evidence: public/javascripts/app/controllers/SnapshotListCtrl.js
 
+	@pending
 	Scenario: Snapshot rows show created date, relative age, editor, and snapshot reason
 		Given version history data has loaded successfully
 		When I inspect a snapshot row
@@ -67,6 +71,7 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/templates/restore-list.html
 	# Evidence: public/javascripts/app/models/SnapshotIdModel.js
 
+	@pending
 	Scenario: Launch-related snapshots are highlighted in row and reason styling
 		Given version history data contains a launch-related snapshot reason
 		When I inspect that snapshot row
@@ -75,6 +80,7 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/templates/restore-list.html
 	# Evidence: public/javascripts/app/models/SnapshotIdModel.js
 
+	@pending
 	Scenario: Legally sensitive snapshots show the legally sensitive indicator
 		Given version history data contains a legally sensitive snapshot
 		When I inspect the status indicators for that row
@@ -82,6 +88,7 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/templates/restore-list.html
 	# Evidence: public/javascripts/app/models/SnapshotIdModel.js
 
+	@pending
 	Scenario: Comment settings show comments on indicator when commentable is true
 		Given version history data contains a snapshot with comments enabled
 		When I inspect the status indicators for that row
@@ -89,6 +96,7 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/templates/restore-list.html
 	# Evidence: public/javascripts/app/models/SnapshotIdModel.js
 
+	@pending
 	Scenario: Comment settings show comments off indicator when commentable is false
 		Given version history data contains a snapshot with comments disabled
 		When I inspect the status indicators for that row
@@ -96,6 +104,7 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/templates/restore-list.html
 	# Evidence: public/javascripts/app/models/SnapshotIdModel.js
 
+	@pending
 	Scenario: Published state displays the right status label
 		Given version history data contains published state variations
 		When I inspect the right-hand status area for each row
@@ -106,6 +115,7 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/templates/restore-list.html
 	# Evidence: public/javascripts/app/models/SnapshotIdModel.js
 
+	@pending
 	Scenario: Delta rows show time difference between consecutive snapshots
 		Given version history data has multiple snapshots
 		When I view the delta row between two snapshots
@@ -113,6 +123,7 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/templates/restore-list.html
 	# Evidence: public/javascripts/app/models/SnapshotIdModel.js
 
+	@pending
 	Scenario: Keyboard navigation changes active snapshot when modal is not open
 		Given version history data has loaded successfully
 		And the restore modal is not open
@@ -121,6 +132,7 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/controllers/SnapshotListInteractionCtrl.js
 	# Evidence: public/javascripts/app/controllers/SnapshotListCtrl.js
 
+	@pending
 	Scenario: Keyboard shortcuts do not navigate the list while modal is open
 		Given the restore modal is open
 		When I press list navigation keys
