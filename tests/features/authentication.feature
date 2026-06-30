@@ -5,14 +5,15 @@ Feature: Authenticate users and gate access
   Background:
     Given the application stack is running
 
-  Scenario: A protected page is only available to signed-in users with access
-    When I request the restorer homepage without an authenticated session
+  Scenario: A protected page is only available to signed-in users with restorer access
+    When I request the restorer homepage signed in without restorer access
     Then I am redirected to the access denied page
     And the page title should say Composer Restorer - Access denied
     And the page should explain how to contact Central Production for help
   # Evidence: app/auth/PanDomainAuthActions.scala
   # Evidence: app/views/authError.scala.html
   # Evidence: conf/routes
+
 
   Scenario: The access denied page shows the message returned by auth
     When authentication fails with a message
@@ -40,12 +41,26 @@ Feature: Authenticate users and gate access
   # Evidence: app/permissions/Permissions.scala
   # Evidence: public/javascripts/app/services/UserService.js
 
-  Scenario: Protected routes use the same auth gate as the main app
-    Given I am signed in through pan-domain auth
-    When I open a protected route in the restorer app
-    Then I should be allowed through if I have restorer access
-    And I should be blocked if I do not have restorer access
-  # TODO: This should have a list of routes to test and the different permissions required for each route
+  Scenario Outline: Protected routes use the same auth gate as the main app
+    When I open the protected route <route>
+    Then I should be allowed through with restorer access
+    And I should be blocked without restorer access
+
+    Examples:
+      | route                                                |
+      | /                                                    |
+      | /content/568c4110e4b0c73bdb0e52df/versions           |
+      | /api/1/versionList/568c4110e4b0c73bdb0e52df          |
+      | /api/1/version-count/568c4110e4b0c73bdb0e52df        |
+      | /api/1/user                                          |
+      | /api/1/user/permissions                              |
+      | /export/568c4110e4b0c73bdb0e52df/zip                 |
+      | /export/568c4110e4b0c73bdb0e52df/git                 |
+      | /api/1/restore/destinations/568c4110e4b0c73bdb0e52df |
+  # All protected controllers share the restorer_access gate
+  # (PanDomainAuthActions.validateUser). The restore POST endpoint additionally
+  # requires restore_content / restore_content_to_any_stack, which is covered by
+  # the content snapshot restore scenarios.
   # Evidence: app/auth/PanDomainAuthActions.scala
   # Evidence: app/controllers/Application.scala
   # Evidence: app/controllers/Export.scala
