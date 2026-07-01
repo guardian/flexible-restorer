@@ -211,11 +211,31 @@ Then("the selected snapshot content should be requested", async ( { page }) => {
     ).toBeVisible({ timeout: timeout });
 });
 
-When("I inspect a snapshot row", async () => {});
-Then("I should see the formatted snapshot date and time", async () => {});
-Then("I should see a relative age value", async () => {});
-Then("I should see who last modified the content", async () => {});
-Then("I should see the snapshot reason text", async () => {});
+When("I inspect a snapshot row", async ({ page }) => {
+    // Make sure at least one snapshot row has rendered before the Then steps
+    // assert on its metadata. Rows always surface the editor line.
+    await expect(page.getByText(/Last modified by:/).first()).toBeVisible({ timeout });
+});
+Then("I should see the formatted snapshot date and time", async ({ page }) => {
+    // DateFormatService renders "HH:mm:ss on D<ordinal> Month",
+    // e.g. "03:21:15 on 12th June".
+    await expect(
+        page.getByText(/\d{2}:\d{2}:\d{2} on \d{1,2}(st|nd|rd|th) \w+/).first(),
+    ).toBeVisible({ timeout });
+});
+Then("I should see a relative age value", async ({ page }) => {
+    // The relative-age line reads "{{ getRelativeDate() }} ago", e.g. "8 months ago".
+    await expect(page.getByText(/\bago$/).first()).toBeVisible({ timeout });
+});
+Then("I should see who last modified the content", async ({ page }) => {
+    // The editor line reads "Last modified by: {{ getUserEmail() }}" (the
+    // background fixture has no editor, so the name falls back to "-").
+    await expect(page.getByText(/Last modified by:/).first()).toBeVisible({ timeout });
+});
+Then("I should see the snapshot reason text", async ({ page }) => {
+    // The background fixture's snapshots use the reason "Scheduled snapshot".
+    await expect(page.getByText("Scheduled snapshot").first()).toBeVisible({ timeout });
+});
 
 Given("version history data contains a launch-related snapshot reason", async () => {});
 When("I inspect that snapshot row", async () => {});

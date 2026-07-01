@@ -57,7 +57,6 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/controllers/SnapshotListInteractionCtrl.js
 	# Evidence: public/javascripts/app/controllers/SnapshotListCtrl.js
 
-	@pending
 	Scenario: Snapshot rows show created date, relative age, editor, and snapshot reason
 		Given version history data has loaded successfully
 		When I inspect a snapshot row
