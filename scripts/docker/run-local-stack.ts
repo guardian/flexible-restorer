@@ -50,6 +50,19 @@ async function main() {
             `Mock flexible-content API: ${stack.mockApiUrl} ` +
                 `(POST ${stack.mockApiUrl}/__admin/state to change responses).`,
         );
+
+        // When PICK_LOCATOR is set, open the Playwright Inspector against this
+        // already-authenticated page. Use its "Pick locator" tool to grab
+        // selectors without re-doing auth. Click "Resume" in the Inspector to
+        // return here; the stack and browser stay up until you press Ctrl+C.
+        if (process.env.PICK_LOCATOR) {
+            console.log(
+                "PICK_LOCATOR set: opening Playwright Inspector. " +
+                    'Use "Pick locator", then click "Resume" when done.',
+            );
+            await page.pause();
+        }
+
         console.log("Press Ctrl+C to stop.");
         process.stdin.resume();
         await waitForTerminationSignal();
