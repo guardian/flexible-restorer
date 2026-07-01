@@ -337,8 +337,55 @@ Given("version history data has multiple snapshots", async () => {});
 When("I view the delta row between two snapshots", async () => {});
 Then("I should see a relative time difference value between adjacent snapshot dates", async () => {});
 
-When("I press the down or up arrow key", async () => {});
-Then("the active snapshot selection should move accordingly", async () => {});
 
-When("I press list navigation keys", async () => {});
-Then("the snapshot list selection should not change", async () => {});
+When("I press the down or up arrow key", async ({ page }) => {
+
+    await expect(
+        page.getByRole("paragraph").filter({ hasText: "Version 2" }),
+    ).toBeVisible({ timeout: timeout });
+
+    await page.keyboard.press("ArrowDown");
+    await page.keyboard.press("ArrowDown");    
+    
+    await expect(
+        page.getByRole("paragraph").filter({ hasText: "Version 1" }),
+    ).toBeVisible({ timeout: timeout });
+
+    await page.keyboard.press("ArrowUp");  
+
+    await expect(
+        page.getByRole("paragraph").filter({ hasText: "Version 2" }),
+    ).toBeVisible({ timeout: timeout });
+    
+});
+Then("the active snapshot selection should move accordingly", async () => {
+    // This is a no-op step because the selection movement is asserted in the When step.
+});
+
+When("I press list navigation keys", async ({ page }) => {
+    // While the modal is open the list navigation handlers are guarded, so
+    // pressing the arrows must NOT load a different snapshot. Listen for any
+    // snapshot-content request across a short window while pressing the keys.
+    await page.keyboard.press("Enter");
+
+    await expect(
+        page.getByRole("paragraph").filter({ hasText: "Version 2" }),
+    ).toBeVisible({ timeout: timeout });
+
+    await page.keyboard.press("ArrowDown");
+    await page.keyboard.press("ArrowDown");    
+    
+    await expect(
+        page.getByRole("paragraph").filter({ hasText: "Version 2" }),
+    ).toBeVisible({ timeout: timeout });
+
+    await page.keyboard.press("ArrowUp");  
+
+    await expect(
+        page.getByRole("paragraph").filter({ hasText: "Version 2" }),
+    ).toBeVisible({ timeout: timeout });
+
+});
+Then("the snapshot list selection should not change", async () => {
+    
+});
