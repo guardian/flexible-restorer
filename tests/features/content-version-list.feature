@@ -82,7 +82,6 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/templates/restore-list.html
 	# Evidence: public/javascripts/app/models/SnapshotIdModel.js
 
-	@pending
 	Scenario: Comment settings show comments on indicator when commentable is true
 		Given version history data contains a snapshot with comments enabled
 		When I inspect the status indicators for that row
@@ -90,7 +89,6 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/templates/restore-list.html
 	# Evidence: public/javascripts/app/models/SnapshotIdModel.js
 
-	@pending
 	Scenario: Comment settings show comments off indicator when commentable is false
 		Given version history data contains a snapshot with comments disabled
 		When I inspect the status indicators for that row

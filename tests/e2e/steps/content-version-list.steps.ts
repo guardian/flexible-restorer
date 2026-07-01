@@ -298,11 +298,33 @@ Then("I should see the legally sensitive marker", async ({ page }) => {
     expect(backgroundImage).toContain("svg+xml");
 });
 
-Given("version history data contains a snapshot with comments enabled", async () => {});
-Then("I should see the comments on indicator", async () => {});
+Given("version history data contains a snapshot with comments enabled", async ({ page, localStack }) => {
+    // Comments-on fixture (fixtures/snapshots/STATE_FIXTURES.md): a single
+    // snapshot with settings.commentable = "true" for the Sony leak article.
+    await page.goto(`${localStack.baseUrl}/content/54931ae2e4b019234074e3c8/versions`, {
+        waitUntil: "domcontentloaded",
+    });
+    await expect(page.getByRole("heading", { name: /The Sony leak/ })).toBeVisible({
+        timeout: loadTimeout,
+    });
+});
+Then("I should see the comments on indicator", async ({ page }) => {
+    await expect(page.getByText("on", { exact: true }).first()).toBeVisible({ timeout });
+});
 
-Given("version history data contains a snapshot with comments disabled", async () => {});
-Then("I should see the comments off indicator", async () => {});
+Given("version history data contains a snapshot with comments disabled", async ({ page, localStack }) => {
+    // Comments-off fixture (fixtures/snapshots/STATE_FIXTURES.md): a single
+    // snapshot with settings.commentable = "false" for the miso soup recipe.
+    await page.goto(`${localStack.baseUrl}/content/569cdccee4b0e63c102ed861/versions`, {
+        waitUntil: "domcontentloaded",
+    });
+    await expect(page.getByRole("heading", { name: /Miso soup/ })).toBeVisible({
+        timeout: loadTimeout,
+    });
+});
+Then("I should see the comments off indicator", async ({ page }) => {
+    await expect(page.getByText("off", { exact: true }).first()).toBeVisible({ timeout });
+});
 
 Given("version history data contains published state variations", async () => {});
 When("I inspect the right-hand status area for each row", async () => {});
