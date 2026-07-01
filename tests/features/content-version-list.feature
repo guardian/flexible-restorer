@@ -107,7 +107,6 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/templates/restore-list.html
 	# Evidence: public/javascripts/app/models/SnapshotIdModel.js
 
-	@pending
 	Scenario: Delta rows show time difference between consecutive snapshots
 		Given version history data has multiple snapshots
 		When I view the delta row between two snapshots
