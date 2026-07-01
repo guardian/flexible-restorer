@@ -326,16 +326,23 @@ Then("I should see the comments off indicator", async ({ page }) => {
     await expect(page.getByText("off", { exact: true }).first()).toBeVisible({ timeout });
 });
 
-Given("version history data contains published state variations", async () => {});
+Given("version history data contains published state variations", async ( {page , localStack  }) => {
+    await page.goto(localStack.baseUrl + '/content/568c4110e4b0c73bdb0e52df/versions' , { waitUntil: "domcontentloaded" });
+});
+
 When("I inspect the right-hand status area for each row", async () => {});
 Then("I should see Published for published snapshots", async () => {});
 Then("I should see Taken down for unpublished snapshots with prior publish details", async () => {});
 Then("I should see Scheduled with a date when a scheduled launch date exists", async () => {});
 Then("I should see Embargoed until with a date when embargo settings exist", async () => {});
 
-Given("version history data has multiple snapshots", async () => {});
-When("I view the delta row between two snapshots", async () => {});
-Then("I should see a relative time difference value between adjacent snapshot dates", async () => {});
+Given("version history data has multiple snapshots", async () => {
+    // The fixture used in the Background has 2 snapshots, so no additional setup is required.
+});
+When("I view the delta row between two snapshots", async ({ page }) => {});
+Then("I should see a relative time difference value between adjacent snapshot dates", async ({ page }) => {
+    await expect(page.getByText("a few seconds", { exact: true }).first()).toBeVisible({ timeout });
+});
 
 
 When("I press the down or up arrow key", async ({ page }) => {
