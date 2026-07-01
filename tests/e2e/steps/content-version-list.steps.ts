@@ -30,6 +30,12 @@ import { Given, When, Then, expect } from "../fixtures";
 const timeout = 5 * 1000; // 5 seconds for steady-state assertions
 const loadTimeout = 15 * 1000; // 15 seconds to allow the initial collection load
 
+// Content id documented in fixtures/snapshots/STATE_FIXTURES.md. Secondary is
+// derived from stack config, not snapshot content: the whole fixture tree is
+// mirrored into the secondary bucket, so this content id's version list includes
+// a composer-secondary row (see app/controllers/Versions.scala versionList).
+const SECONDARY_CONTENT_ID = "54931ae2e4b019234074e3c8";
+
 // ---------------------------------------------------------------------------
 // Scenario: The snapshot list header shows the expected columns and content identity
 // Scenario: The sidebar becomes active after initial snapshot data is ready
@@ -39,7 +45,7 @@ Given("version history data has loaded successfully", async ({ page }) => {
     // The Background already navigated to the versions page. Once the version
     // list request resolves, the loading state ends and the sidebar shows the
     // article headline.
-    await expect(page.getByRole("heading", { name: "Irish fury at Thierry Henry's handball in World Cup qualifier"; })).toBeVisible({
+    await expect(page.getByRole("heading", { name: "Irish fury at Thierry Henry's handball in World Cup qualifier" })).toBeVisible({
         timeout: loadTimeout,
     });
 });
@@ -49,7 +55,7 @@ When("I view the fixed snapshot list header", async () => {
 });
 
 Then("I should see the article headline", async ({ page }) => {
-    await expect(page.getByRole("heading", { name: "Irish fury at Thierry Henry's handball in World Cup qualifier"; })).toBeVisible({ timeout });
+    await expect(page.getByRole("heading", { name: "Irish fury at Thierry Henry's handball in World Cup qualifier" })).toBeVisible({ timeout });
 });
 
 Then("I should see the article hash as a link to Composer", async ({ page }) => {
@@ -120,9 +126,34 @@ Then("I should not yet see the snapshot list content area", async ({ page }) => 
 // `bddgen` can resolve every step in the feature.
 // ---------------------------------------------------------------------------
 
-Given("version history data contains a snapshot from composer-secondary", async () => {});
-When("I view the list row for that snapshot", async () => {});
-Then("I should see a notice that the snapshot came from composer-secondary", async () => {});
+Given(
+    "version history data contains a snapshot from composer-secondary",
+    async ({ page, localStack }) => {
+        // Navigate to a content id documented in STATE_FIXTURES.md; because the
+        // fixture tree is mirrored into the secondary bucket, its version list
+        // contains the same snapshots again marked as coming from the secondary
+        // system, then wait for the list to finish loading.
+        await page.goto(`${localStack.baseUrl}/content/${SECONDARY_CONTENT_ID}/versions`, {
+            waitUntil: "domcontentloaded",
+        });
+        await expect(page.getByText("Snapped at & last modified", { exact: true })).toBeVisible({
+            timeout: loadTimeout,
+        });
+    },
+);
+
+When("I view the list row for that snapshot", async () => {
+    // No action required — the notice is asserted in the following Then step.
+});
+
+Then(
+    "I should see a notice that the snapshot came from composer-secondary",
+    async ({ page }) => {
+        await expect(
+            page.getByText("This snapshot came from composer-secondary").first(),
+        ).toBeVisible({ timeout });
+    },
+);
 
 Given("version history data contains a snapshot without an explicit revision id", async () => {});
 When("I view the index value for that row", async () => {});

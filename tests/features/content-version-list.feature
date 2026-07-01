@@ -33,7 +33,6 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/controllers/SnapshotListCtrl.js
 	# Evidence: public/javascripts/app/templates/restore-list.html
 
-	@pending
 	Scenario: A secondary-system snapshot displays a secondary source notice
 		Given version history data contains a snapshot from composer-secondary
 		When I view the list row for that snapshot
