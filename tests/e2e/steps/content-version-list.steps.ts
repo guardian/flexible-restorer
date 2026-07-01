@@ -274,9 +274,29 @@ Then("the reason text should be highlighted for launch activity", async ({ page 
     expect(isHighlighted).toBe(true);
 });
 
-Given("version history data contains a legally sensitive snapshot", async () => {});
-When("I inspect the status indicators for that row", async () => {});
-Then("I should see the legally sensitive marker", async () => {});
+Given("version history data contains a legally sensitive snapshot", async ({ page, localStack }) => {
+    // The legally sensitive fixture (fixtures/snapshots/STATE_FIXTURES.md) has
+    // settings.legallySensitive = "true". Its single snapshot is for the
+    // "Finsbury Park attacker…" article.
+    await page.goto(`${localStack.baseUrl}/content/5a65beade4b063d00a114104/versions`, {
+        waitUntil: "domcontentloaded",
+    });
+    await expect(
+        page.getByRole("heading", { name: /Finsbury Park attacker/ }),
+    ).toBeVisible({ timeout: loadTimeout });
+});
+When("I inspect the status indicators for that row", async ({ page }) => {
+    await expect(page.getByText(/Last modified by:/).first()).toBeVisible({ timeout });
+});
+Then("I should see the legally sensitive marker", async ({ page }) => {
+    // The marker is an icon-only div (no text/role/label), so it can only be
+    // located by class. Verify it is shown and renders the legal-check icon.
+    const marker = page.locator(".snapshot-list__item__settings__legally-sensitive").first();
+    await expect(marker).toBeVisible({ timeout });
+    // The icon is a webpack-inlined SVG data URI; confirm an icon is rendered.
+    const backgroundImage = await marker.evaluate((el) => getComputedStyle(el).backgroundImage);
+    expect(backgroundImage).toContain("svg+xml");
+});
 
 Given("version history data contains a snapshot with comments enabled", async () => {});
 Then("I should see the comments on indicator", async () => {});

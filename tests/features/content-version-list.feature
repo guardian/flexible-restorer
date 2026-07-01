@@ -75,7 +75,6 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/templates/restore-list.html
 	# Evidence: public/javascripts/app/models/SnapshotIdModel.js
 
-	@pending
 	Scenario: Legally sensitive snapshots show the legally sensitive indicator
 		Given version history data contains a legally sensitive snapshot
 		When I inspect the status indicators for that row
