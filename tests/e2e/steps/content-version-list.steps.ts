@@ -237,10 +237,42 @@ Then("I should see the snapshot reason text", async ({ page }) => {
     await expect(page.getByText("Scheduled snapshot").first()).toBeVisible({ timeout });
 });
 
-Given("version history data contains a launch-related snapshot reason", async () => {});
-When("I inspect that snapshot row", async () => {});
-Then("the row should be highlighted for launch activity", async () => {});
-Then("the reason text should be highlighted for launch activity", async () => {});
+Given("version history data contains a launch-related snapshot reason", async ({ page, localStack }) => {
+    // The launch fixture (fixtures/snapshots/STATE_FIXTURES.md) has
+    // metadata.reason = "Published", which SnapshotIdModel.isBecauseOfLaunch()
+    // treats as launch activity. Its only snapshot was last modified by User 2.
+    await page.goto(`${localStack.baseUrl}/content/6a43d6fe8f08e1753109a384/versions`, {
+        waitUntil: "domcontentloaded",
+    });
+    await expect(page.getByText("Last modified by: User 2").first()).toBeVisible({
+        timeout: loadTimeout,
+    });
+});
+When("I inspect that snapshot row", async ({ page }) => {
+    await expect(page.getByText("Last modified by: User 2").first()).toBeVisible({ timeout });
+});
+Then("the row should be highlighted for launch activity", async ({ page }) => {
+    // Launch rows gain a 2px border to stand out; ordinary rows have none.
+    const borderWidth = await page
+        .getByText("Last modified by: User 2")
+        .first()
+        .evaluate((el) => {
+            const row = el.closest("li");
+            return row ? getComputedStyle(row).borderTopWidth : null;
+        });
+    expect(borderWidth).toBe("2px");
+});
+Then("the reason text should be highlighted for launch activity", async ({ page }) => {
+    // The launch reason ("Published") is rendered bold and larger (15px) than a
+    // regular reason (normal weight, 13px).
+    const isHighlighted = await page.getByText("Published").evaluateAll((els) =>
+        els.some((el) => {
+            const style = getComputedStyle(el);
+            return Number(style.fontWeight) >= 700 && style.fontSize === "15px";
+        }),
+    );
+    expect(isHighlighted).toBe(true);
+});
 
 Given("version history data contains a legally sensitive snapshot", async () => {});
 When("I inspect the status indicators for that row", async () => {});
