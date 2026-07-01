@@ -1,0 +1,566 @@
+{
+  "id" : "5a65beade4b063d00a114104",
+  "type" : "article",
+  "published" : true,
+  "isGone" : false,
+  "isHosted" : false,
+  "expiry" : {
+    "rights" : {
+      "expired" : false
+    },
+    "commercial" : {
+      "expired" : false
+    }
+  },
+  "rights" : {
+    "syndicationAggregate" : true,
+    "subscriptionDatabases" : true,
+    "developerCommunity" : true
+  },
+  "contentChangeDetails" : {
+    "lastModified" : {
+      "date" : 1782490517839
+    },
+    "created" : {
+      "date" : 1516617391706,
+      "user" : {
+        "email" : "user17@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "17"
+      }
+    },
+    "published" : {
+      "date" : 1516623811653,
+      "user" : {
+        "email" : "user23@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "23"
+      }
+    },
+    "lastMajorRevisionPublished" : {
+      "date" : 1516649713576,
+      "user" : {
+        "email" : "user20@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "20"
+      }
+    },
+    "revision" : 406,
+    "minutesActive" : 132,
+    "contentSource" : "flexible"
+  },
+  "identifiers" : {
+    "path" : "global/2018/jan/22/darren-osborne-appears-in-court-over-finsbury-park-attt",
+    "pageId" : "2424413",
+    "shortPath" : "p/4f4t2"
+  },
+  "collaborators" : [ {
+    "email" : "user17@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "17"
+  }, {
+    "email" : "user8@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "8"
+  }, {
+    "email" : "user23@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "23"
+  }, {
+    "email" : "user7@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "7"
+  }, {
+    "email" : "user12@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "12"
+  }, {
+    "email" : "user16@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "16"
+  }, {
+    "email" : "user27@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "27"
+  }, {
+    "email" : "user18@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "18"
+  }, {
+    "email" : "user4@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "4"
+  }, {
+    "email" : "user20@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "20"
+  } ],
+  "toolSettings" : {
+    "suggestedEmbeds" : "true",
+    "slugLinked" : "true",
+    "seoChanged" : "false",
+    "seoOptimised" : "true",
+    "atomPoweredVideo" : "false",
+    "republished" : "false",
+    "trailTextLinked" : "true",
+    "includedSuggestedEmbeds" : "",
+    "pathLocked" : "false",
+    "linkTextLinked" : "true"
+  },
+  "aliasPaths" : [ ],
+  "preview" : {
+    "contentChangeDetails" : {
+      "lastModified" : {
+        "date" : 1782490517839
+      },
+      "created" : {
+        "date" : 1516617391706,
+        "user" : {
+          "email" : "user17@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "17"
+        }
+      },
+      "published" : {
+        "date" : 1516623811653,
+        "user" : {
+          "email" : "user23@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "23"
+        }
+      },
+      "lastMajorRevisionPublished" : {
+        "date" : 1516649713576,
+        "user" : {
+          "email" : "user20@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "20"
+        }
+      },
+      "revision" : 406,
+      "minutesActive" : 132,
+      "contentSource" : "flexible"
+    },
+    "fields" : {
+      "linkText" : "Finsbury Park attacker 'brainwashed by BBC drama and right-wing propaganda'",
+      "standfirst" : "<p>Court hears Darren Osborne’s anger was fuelled by BBC drama and rightwing propaganda</p>",
+      "slug" : "darren-osborne-appears-in-court-over-finsbury-park-attack",
+      "byline" : "<span data-tag-id=\"16558\" class=\"contributor\">Vikram Dodd</span> and  <span data-tag-id=\"58554\" class=\"contributor\">Kevin Rawlinson</span>",
+      "trailText" : "Darren Osborne denies murder after a van was driven into group near north London mosque",
+      "headline" : "Finsbury Park attacker 'wanted to kill as many Muslims as possible'"
+    },
+    "thumbnail" : {
+      "fields" : {
+        "displayCredit" : "true",
+        "isMandatory" : "true",
+        "imageType" : "Photograph",
+        "suppliersReference" : "FA0057",
+        "alt" : "Finsbury Park mosque in north London.",
+        "source" : "EPA",
+        "photographer" : "Facundo Arrizabalaga",
+        "mediaId" : "f0b6fcdf94d5f40c5427e82f3830e3f86446af25",
+        "mediaApiUri" : "https://api.media.gutools.co.uk/images/f0b6fcdf94d5f40c5427e82f3830e3f86446af25"
+      },
+      "assets" : [ {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "http://media.guim.co.uk/f0b6fcdf94d5f40c5427e82f3830e3f86446af25/0_206_5160_3097/master/5160.jpg",
+        "fields" : {
+          "width" : "5160",
+          "height" : "3097",
+          "isMaster" : "true",
+          "aspectRatio" : "5:3"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://media.guim.co.uk/f0b6fcdf94d5f40c5427e82f3830e3f86446af25/0_206_5160_3097/5160.jpg",
+        "fields" : {
+          "width" : "5160",
+          "height" : "3097",
+          "aspectRatio" : "5:3"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://media.guim.co.uk/f0b6fcdf94d5f40c5427e82f3830e3f86446af25/0_206_5160_3097/500.jpg",
+        "fields" : {
+          "width" : "500",
+          "height" : "300",
+          "aspectRatio" : "5:3"
+        }
+      } ]
+    },
+    "mainBlock" : {
+      "id" : "5a65d1b0e4b0307acc121298",
+      "lastModified" : 1516649699545,
+      "dateCreated" : 1516622258499,
+      "createdBy" : {
+        "email" : "user23@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "23"
+      },
+      "lastModifiedBy" : {
+        "email" : "user20@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "20"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "image",
+        "fields" : {
+          "isMandatory" : "true",
+          "imageType" : "Photograph",
+          "suppliersReference" : "AFP_XH2SV",
+          "alt" : "People stopping to read tributes and look at plawers placed in the Finsbury Park area of north London on June 20, 2017, for the victims of a alleged van attack on pedestrians nearby on June 19. ",
+          "caption" : "Tributes and look at flowers placed in the Finsbury Park area of north London on 20 June 2017 for the victims of the alleged van attack on pedestrians nearby.",
+          "copyright" : "AFP or licensors",
+          "displayCredit" : "true",
+          "source" : "AFP/Getty Images",
+          "photographer" : "Tolga Akmen",
+          "mediaId" : "6cfbbda34461b94fadeff69ba848f438d7a4c942",
+          "mediaApiUri" : "https://api.media.gutools.co.uk/images/6cfbbda34461b94fadeff69ba848f438d7a4c942"
+        },
+        "assets" : [ {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/6cfbbda34461b94fadeff69ba848f438d7a4c942/310_0_5739_3446/140.jpg",
+          "fields" : {
+            "width" : "140",
+            "height" : "84",
+            "aspectRatio" : "5:3"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/6cfbbda34461b94fadeff69ba848f438d7a4c942/310_0_5739_3446/500.jpg",
+          "fields" : {
+            "width" : "500",
+            "height" : "300",
+            "aspectRatio" : "5:3"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/6cfbbda34461b94fadeff69ba848f438d7a4c942/310_0_5739_3446/1000.jpg",
+          "fields" : {
+            "width" : "1000",
+            "height" : "600",
+            "aspectRatio" : "5:3"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/6cfbbda34461b94fadeff69ba848f438d7a4c942/310_0_5739_3446/2000.jpg",
+          "fields" : {
+            "width" : "2000",
+            "height" : "1200",
+            "aspectRatio" : "5:3"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/6cfbbda34461b94fadeff69ba848f438d7a4c942/310_0_5739_3446/5739.jpg",
+          "fields" : {
+            "width" : "5739",
+            "height" : "3446",
+            "aspectRatio" : "5:3"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://media.guim.co.uk/6cfbbda34461b94fadeff69ba848f438d7a4c942/310_0_5739_3446/master/5739.jpg",
+          "fields" : {
+            "width" : "5739",
+            "height" : "3446",
+            "isMaster" : "true",
+            "aspectRatio" : "5:3"
+          }
+        } ]
+      } ],
+      "published" : false,
+      "attributes" : { }
+    },
+    "blocks" : [ {
+      "id" : "5a65beb3e4b063d00a114105",
+      "lastModified" : 1516646527739,
+      "dateCreated" : 1516617395711,
+      "createdBy" : {
+        "email" : "user17@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "17"
+      },
+      "lastModifiedBy" : {
+        "email" : "user18@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "18"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "text",
+        "fields" : {
+          "text" : "<p>A man who drove a van into a crowd near a mosque intend<gu-note title=\"Jenny Forsyth 22/1/2018 at 17:39\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T17:39:13.173Z\" data-click-action=\"collapse\" data-note-id=\"0c8ba561-ef54-4024-fe1a-3544401047d3\" class=\"note note--start note--end\">ing</gu-note>ed to kill as many Muslims as possible and had been “brainwashed” by extremist right wing propaganda <gu-note class=\"note note--start note--end\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T17:39:42.072Z\" data-click-action=\"collapse\" data-note-id=\"5d63176c-05be-4401-c14e-b264b509cdd4\" tabindex=\"-1\" title=\"Jenny Forsyth 22/1/2018 at 17:39\">and had watched</gu-note>after watching a primetime BBC drama about a Muslim grooming gang, a jury has heard.<br tabindex=\"-1\"></p><p>Darren Osborne, 48, denies murdering Makram Ali,51, and trying to murder others as they left a mosque in Finsbury Park, north London, on 19 June.</p><p>The prosecution claims the act was a terrorist one <gu-note title=\"Jenny Forsyth 22/1/2018 at 17:02\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T17:02:31.864Z\" data-click-action=\"collapse\" data-note-id=\"c074c096-a884-4a8e-a58c-1fd13a2ece3b\" class=\"note note--start note--end\">and </gu-note>driven by Osborne’s hatred of Muslims, which his partner said <gu-note class=\"note note--start note--end\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T17:03:31.093Z\" data-click-action=\"collapse\" data-note-id=\"abeb4d54-ecad-489c-ebd3-24e680a02085\" tabindex=\"-1\" title=\"Jenny Forsyth 22/1/2018 at 17:03\">happened</gu-note>developed rapidly in the weeks before the attack, leaving Osborne “a ticking time bomb”.</p><p>Osborne drove the van into a crowd of people, some wearing traditional Islamic clothing, flinging some several metres and leaving one with life-changing injuries. Ali died an hour after being run over<gu-note title=\"Jenny Forsyth 22/1/2018 at 17:06\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T17:06:47.356Z\" data-click-action=\"collapse\" data-note-id=\"139dae74-535e-4f50-a8aa-a12df91ba310\" class=\"note note--start note--end\"> in the attack</gu-note>. <gu-note class=\"note note--start\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T17:06:30.502Z\" data-click-action=\"collapse\" data-note-id=\"ee7e1bb6-5b4b-42ed-833d-1d008fbb0a2a\" title=\"Jenny Forsyth 22/1/2018 at 17:06\">and </gu-note><gu-note class=\"note\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T17:03:59.123Z\" data-click-action=\"collapse\" data-note-id=\"ee7e1bb6-5b4b-42ed-833d-1d008fbb0a2a\" title=\"Jenny Forsyth 22/1/2018 at 17:03\">Mr </gu-note><gu-note class=\"note note--end\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T17:06:30.502Z\" data-click-action=\"collapse\" data-note-id=\"ee7e1bb6-5b4b-42ed-833d-1d008fbb0a2a\" tabindex=\"-1\" title=\"Jenny Forsyth 22/1/2018 at 17:06\">Ali with a tyre mark across his torso and dead an hour after being struck.</gu-note></p><p>The attack came after <gu-note title=\"Owen Gibson 22/1/2018 at 16:51\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:51:48.458Z\" data-click-action=\"collapse\" data-note-id=\"29d3f110-81bd-4de3-f478-917b0a267e0d\" class=\"note note--start note--end\">the</gu-note> London and Manchester had suffered terrorist attacks blamed on <gu-note class=\"note note--start note--end\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:53:24.575Z\" data-click-action=\"collapse\" data-note-id=\"e0c12c4d-9dae-4038-e356-1e14ef3ae179\" tabindex=\"-1\" title=\"Owen Gibson 22/1/2018 at 16:53\">the</gu-note> Islamist ideology. A note recovered from the van Osborne had driven down from Wales <gu-note class=\"note note--start note--end\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T17:21:02.017Z\" data-click-action=\"collapse\" data-note-id=\"51b5b318-b827-4e1f-e5b0-95699ab58c94\" title=\"Jenny Forsyth 22/1/2018 at 17:21\">to carry out the attack </gu-note>railed against Muslims<gu-note class=\"note note--start note--end\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:53:39.966Z\" data-click-action=\"collapse\" data-note-id=\"02b82abe-cf87-473f-ecfc-474ad452d19b\" tabindex=\"-1\" title=\"Owen Gibson 22/1/2018 at 16:53\">, containing abuse,</gu-note> and also <gu-note class=\"note note--start note--end\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:53:41.862Z\" data-click-action=\"collapse\" data-note-id=\"9e2a917b-a094-436f-be21-98d297690e99\" tabindex=\"-1\" title=\"Owen Gibson 22/1/2018 at 16:53\">attacking</gu-note>attacked London mayor Sadiq Khan and Labour leader Jeremy Corbyn.</p><p>The jury at Woolwich crown court heard after the attack Osborne had been saved by an <gu-note title=\"Kirsty McEwen 22/1/2018 at 18:17\" data-note-edited-by=\"Kirsty McEwen\" data-note-edited-date=\"2018-01-22T18:17:52.996Z\" data-click-action=\"collapse\" data-note-id=\"12419f85-3d51-4a0b-da74-b6e4d7e291d1\" class=\"note note--start note--end\">I</gu-note>imam, who protected him despite his attempt to run down Muslims. Osborne was also seen to smile and say: “I’ve done my bit.”</p><p>Opening the case, Jonathan Rees QC, told the jury: “The evidence establishes that the defendant was trying to kill as many of the group as possible.</p><p>“...The prosecution say that the note and the comments he made after his detention establish that this act of extreme violence was, indeed, an act of terrorism, designed to influence government and intimidate the Muslim community, and done for the purpose of advancing a political, religious, ideological or racial cause.”</p><p>The attack happened barely one hundred yards away from a mosque, and <gu-note title=\"Jenny Forsyth 22/1/2018 at 17:10\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T17:10:47.851Z\" data-click-action=\"collapse\" data-note-id=\"35bb5cc3-b73d-40f2-e21b-1cf23a258264\" class=\"note note--start note--end\">Mr </gu-note>Ali had become ill and fallen to floor two minutes before Osborne struck. It was just after 12.15am and Muslims were thronging the streets of Finsbury Park, north London, after prayers at two nearby mosques to mark the festival of Ramadan.</p><p>Rees said: “To seek to kill someone merely because of their religion is a terrible thing. And what makes this act particularly horrific is that the group he drove into had gathered in the street in order to help Makram Ali, the deceased, who had collapsed as he walked along Seven Sisters Road a couple of minutes before the defendant carried out his attack.”</p><p>Rees told the jury that one witness heard the van “accelerate and the noise of changing gears” as the engine revved up.</p><p>Ali’s family were in court and were visibly moved as they watched CCTV footage of the <gu-note title=\"Jenny Forsyth 22/1/2018 at 17:11\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T17:11:58.223Z\" data-click-action=\"collapse\" data-note-id=\"c2fea3b0-81f3-4998-df53-b9234ac32896\" class=\"note note--start note--end\">actual </gu-note>attack<gu-note class=\"note note--start note--end\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T17:12:02.831Z\" data-click-action=\"collapse\" data-note-id=\"68b3853d-9153-4e5b-e04c-0298810e1960\" tabindex=\"-1\" title=\"Jenny Forsyth 22/1/2018 at 17:12\">, and were visibly moved</gu-note>.</p><p>Ali was found by a pathologist to have been alive when Osborne’s hired van struck him. Rees told the jury: “Makram Ali was run over by the van and his body moved a short distance. He appeared dead. There was a tyre mark across his torso and his tongue was hanging out.”</p><p>The prosecution said Osborne did not show remorse after the attack, but was heard by witnesses to say: “I’ve done my job. You can kill me now.” Rees said a witness claimed the attacker was “constantly smiling”. </p><p><gu-note title=\"Jenny Forsyth 22/1/2018 at 17:14\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T17:14:26.105Z\" data-click-action=\"collapse\" data-note-id=\"78af5569-23bb-4c0d-b63f-13a057607ab0\" class=\"note note--start note--end\">Osborne was hitting out at people in his way as he tried to escape the melee. </gu-note>Rees said Osborne was seen hitting out at people as he tried to escape the throng, and said: “I want to kill more Muslims.”</p><p>An <gu-note title=\"Kirsty McEwen 22/1/2018 at 18:38\" data-note-edited-by=\"Kirsty McEwen\" data-note-edited-date=\"2018-01-22T18:38:27.618Z\" data-click-action=\"collapse\" data-note-id=\"804cdfbb-c790-4a45-910f-ffba23d047ff\" class=\"note note--start note--end\">I</gu-note>imam stepped in to save Osborne and Rees told the jury: “So, it was a Muslim who stepped in to save the defendant from suffering any further violence.<gu-note class=\"note note--start note--end\" data-note-edited-by=\"Kirsty McEwen\" data-note-edited-date=\"2018-01-22T18:38:36.083Z\" data-click-action=\"collapse\" data-note-id=\"c950666e-5313-4c46-c204-057f90257e1c\" tabindex=\"-1\" title=\"Kirsty McEwen 22/1/2018 at 18:38\"> “</gu-note>”</p><p><gu-note title=\"Jenny Forsyth 22/1/2018 at 17:17\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T17:17:36.810Z\" data-click-action=\"collapse\" data-note-id=\"fd3e1a91-b53b-4a5f-a959-768fd2531c41\" class=\"note note--start\">Osborne was arrested by police and taken away.</gu-note></p><p><gu-note title=\"Jenny Forsyth 22/1/2018 at 17:17\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T17:17:36.810Z\" data-click-action=\"collapse\" data-note-id=\"fd3e1a91-b53b-4a5f-a959-768fd2531c41\" class=\"note\">In a police van he made comments to police, caught on </gu-note><gu-note title=\"Jenny Forsyth 22/1/2018 at 17:15\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T17:15:39.622Z\" data-click-action=\"collapse\" data-note-id=\"fd3e1a91-b53b-4a5f-a959-768fd2531c41\" class=\"note\">body worn </gu-note><gu-note title=\"Jenny Forsyth 22/1/2018 at 17:17\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T17:17:36.810Z\" data-click-action=\"collapse\" data-note-id=\"fd3e1a91-b53b-4a5f-a959-768fd2531c41\" class=\"note\">video, over 90 minutes.</gu-note></p><p><gu-note title=\"Jenny Forsyth 22/1/2018 at 17:17\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T17:17:36.810Z\" data-click-action=\"collapse\" data-note-id=\"fd3e1a91-b53b-4a5f-a959-768fd2531c41\" class=\"note\">Osborne said: “Up and down the country hunting in packs, raping and raping, inbred fucking bastards”, also uttering “at least I had a proper fucking go” and “every Tom, Dick and Harry over here...taking the fucking piss....well, a few off tonight, a few less”.</gu-note> </p><p><gu-note title=\"Jenny Forsyth 22/1/2018 at 17:17\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T17:17:48.409Z\" data-click-action=\"collapse\" data-note-id=\"fd3e1a91-b53b-4a5f-a959-768fd2531c41\" class=\"note note--end\">The investigation</gu-note>Investigators spoke to Osborne’s partner Sarah Andrews, who said that in the weeks before the attack his attitude changed after he watched Three Girls, a BBC TV drama about the Rochdale grooming scandal. He also read extremist rightwing propaganda online that left him “brainwashed” and a “ticking time bomb”.</p><p>The jury heard that Andrews said in a witness statement that Osborne had become “obsessed” with Muslims and an avid follower of social media postings by the former EDL leader Tommy Robinson, as well as members of the far-right group, Britain First<gu-note title=\"Jenny Forsyth 22/1/2018 at 17:18\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T17:18:26.840Z\" data-click-action=\"collapse\" data-note-id=\"23a30f10-f539-4042-b1c5-8243ca98a428\" class=\"note note--start note--end\">, in the weeks beforehand</gu-note>.</p><p>The jury heard the pair had watched <gu-note title=\"Kirsty McEwen 22/1/2018 at 18:40\" data-note-edited-by=\"Kirsty McEwen\" data-note-edited-date=\"2018-01-22T18:40:08.582Z\" data-click-action=\"collapse\" data-note-id=\"28d45229-2e1f-4e67-e031-18d18166e778\" class=\"note note--start note--end\">the BBC drama </gu-note>Three Girls and, in her statement, Andrews said she believed Osborne had become angry “about seeing young girls exploited” and developed his fixation with Muslims from that point.</p><p>“In recent weeks, he has become obsessed with Muslims, accusing them all of being rapists and being part of paedophile gangs,” she said.</p><p>Later, she added that Osborne “seemed brainwashed” and had been watching content posted online by Robinson and a woman she thought may be the deputy leader of Britain First, <gu-correct title=\"Jenny Forsyth 22/1/2018 at 17:19\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T17:19:09.991Z\" data-click-action=\"toggle-tag\" data-note-id=\"e8709bdf-1d49-4b25-96be-1211dfc3a03f\" class=\"note note--start note--end\">Jayda Fransen</gu-correct>, leading him to seek out more online.</p><p>Smartphones and computers showed Osborne viewing material from Britain First, that “campaigns primarily against multi-culturalism and what it sees as the Islamisisation of the UK”, Rees told the jury.</p><p>Rees said that, according to Osborne’s partner, he had not worked for a decade and had mental health issues. He added: “Ms Andrews says that the defendant has an unpredictable temperament; she describes him as a loner and a functioning alcoholic.”</p><p>Weeks before the attack Osborne tried to kill himself and felt worthless.</p><p>The jury heard that Osborne had written a note about his motivation for the attack. It had been found in the van and bore his fingerprints. It railed against the terrorist attacks in London and Manchester in the preceding months, and the Rotherham child abuse scandal.</p><p>It also said “Islam’s ideology does not belong here”, and taunted <gu-note title=\"Kirsty McEwen 22/1/2018 at 18:40\" data-note-edited-by=\"Kirsty McEwen\" data-note-edited-date=\"2018-01-22T18:40:47.219Z\" data-click-action=\"collapse\" data-note-id=\"8e70da54-c1a1-4f6a-e709-64425d03d054\" class=\"note note--start note--end\">the London mayor, </gu-note>Khan, <gu-note class=\"note note--start note--end\" data-note-edited-by=\"Kirsty McEwen\" data-note-edited-date=\"2018-01-22T18:40:51.676Z\" data-click-action=\"collapse\" data-note-id=\"c3a14170-98f3-4129-bfda-d3516f3a5d8f\" tabindex=\"-1\" title=\"Kirsty McEwen 22/1/2018 at 18:40\">the Labour leader, </gu-note>Corbyn<gu-note class=\"note note--start note--end\" data-note-edited-by=\"Kirsty McEwen\" data-note-edited-date=\"2018-01-22T18:40:55.251Z\" data-click-action=\"collapse\" data-note-id=\"677804fc-27dd-4b6b-ba08-7d999504789d\" tabindex=\"-1\" title=\"Kirsty McEwen 22/1/2018 at 18:40\">,</gu-note> and the singer Lily Allen, jurors heard.</p><p>The jury heard that Osborne spent the night before the incident in a pub, where he was heard to say he was “going to kill all the Muslims” and to accuse all Muslims of being terrorists.</p><p>The trial continues. </p><p><gu-note title=\"Owen Gibson 22/1/2018 at 16:52\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"ffe82d56-b8c4-48dc-efe9-b8f25b6fa766\" class=\"note note--start\">A man who drove a van into a crowd near a mosque in a terrorist act intended to kill as many Muslims as possible after becoming “brainwashed” by extremist rightwing propaganda and watching a BBC drama about the Rochdale grooming scandal, a jury has heard.</gu-note><gu-note title=\"Chris Johnston 22/1/2018 at 13:32\" data-note-edited-by=\"Chris Johnston\" data-note-edited-date=\"2018-01-22T13:32:29.691Z\" data-click-action=\"collapse\" data-note-id=\"ffe82d56-b8c4-48dc-efe9-b8f25b6fa766\" class=\"note\">A man drove a van into a crowd near a mosque in a terrorist act intended to kill as many Muslims as possible, a jury has heard on Monday.</gu-note><gu-note title=\"Owen Gibson 22/1/2018 at 16:52\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"ffe82d56-b8c4-48dc-efe9-b8f25b6fa766\" class=\"note\">Darren Osborne, 48, denies murdering one man, Makram Ali, and injuring others in Finsbury Park, north London, on 19 June</gu-note><gu-note class=\"note\" data-note-edited-by=\"Marina McIntyre\" data-note-edited-date=\"2018-01-22T12:39:50.724Z\" data-click-action=\"collapse\" data-note-id=\"ffe82d56-b8c4-48dc-efe9-b8f25b6fa766\" title=\"Marina McIntyre 22/1/2018 at 12:39\"> 19 2017</gu-note><gu-note title=\"Owen Gibson 22/1/2018 at 16:52\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"ffe82d56-b8c4-48dc-efe9-b8f25b6fa766\" class=\"note\">.</gu-note><gu-note title=\"Owen Gibson 22/1/2018 at 16:52\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"ffe82d56-b8c4-48dc-efe9-b8f25b6fa766\" class=\"note\">Jonathan Rees QC, for the prosecution, told the jury at Woolwich crown court on Monday: “On 19</gu-note><gu-note title=\"Marina McIntyre 22/1/2018 at 12:35\" data-note-edited-by=\"Marina McIntyre\" data-note-edited-date=\"2018-01-22T12:35:24.503Z\" data-click-action=\"collapse\" data-note-id=\"ffe82d56-b8c4-48dc-efe9-b8f25b6fa766\" class=\"note\">th </gu-note><gu-note title=\"Owen Gibson 22/1/2018 at 16:52\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"ffe82d56-b8c4-48dc-efe9-b8f25b6fa766\" class=\"note note--end\">June 2017, at just after a quarter past midnight, the defendant, Mr Osborne, deliberately drove a heavy Luton box van into a group of Muslims who had gathered in the junction of Seven Sisters Road and Whadcoat Street, in the Finsbury Park area of London.</gu-note>“The evidence establishes that the defendant was trying to kill as many of the group as possible. In the event, he killed one person, a 51-year-old man called Makram Ali, and in addition injured many others, some of them seriously.”<gu-note class=\"note note--start\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"ab8f623a-e316-4cd3-ae20-76345816e819\" title=\"Owen Gibson 22/1/2018 at 16:52\">Rees said the hatred and extremism shown in the note Osborne wrote, </gu-note><gu-note class=\"note\" data-note-edited-by=\"Chaihong Lim\" data-note-edited-date=\"2018-01-22T13:03:52.928Z\" data-click-action=\"collapse\" data-note-id=\"ab8f623a-e316-4cd3-ae20-76345816e819\" title=\"Chaihong Lim 22/1/2018 at 13:03\">and</gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"ab8f623a-e316-4cd3-ae20-76345816e819\" title=\"Owen Gibson 22/1/2018 at 16:52\"> which was recovered from the van</gu-note><gu-note class=\"note\" data-note-edited-by=\"Jonathan Casson\" data-note-edited-date=\"2018-01-22T14:49:37.188Z\" data-click-action=\"collapse\" data-note-id=\"ab8f623a-e316-4cd3-ae20-76345816e819\" title=\"Jonathan Casson 22/1/2018 at 14:49\"> he used to stage the attack</gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"ab8f623a-e316-4cd3-ae20-76345816e819\" title=\"Owen Gibson 22/1/2018 at 16:52\">, showed </gu-note><gu-note class=\"note\" data-note-edited-by=\"Chaihong Lim\" data-note-edited-date=\"2018-01-22T13:05:07.829Z\" data-click-action=\"collapse\" data-note-id=\"ab8f623a-e316-4cd3-ae20-76345816e819\" title=\"Chaihong Lim 22/1/2018 at 13:05\">the death of</gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"ab8f623a-e316-4cd3-ae20-76345816e819\" title=\"Owen Gibson 22/1/2018 at 16:52\"> Ali’s death and the injur</gu-note><gu-note class=\"note\" data-note-edited-by=\"Chaihong Lim\" data-note-edited-date=\"2018-01-22T13:05:21.364Z\" data-click-action=\"collapse\" data-note-id=\"ab8f623a-e316-4cd3-ae20-76345816e819\" title=\"Chaihong Lim 22/1/2018 at 13:05\">ing</gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"ab8f623a-e316-4cd3-ae20-76345816e819\" title=\"Owen Gibson 22/1/2018 at 16:52\">ies </gu-note><gu-note class=\"note\" data-note-edited-by=\"Chaihong Lim\" data-note-edited-date=\"2018-01-22T13:05:26.652Z\" data-click-action=\"collapse\" data-note-id=\"ab8f623a-e316-4cd3-ae20-76345816e819\" title=\"Chaihong Lim 22/1/2018 at 13:05\">of</gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"ab8f623a-e316-4cd3-ae20-76345816e819\" title=\"Owen Gibson 22/1/2018 at 16:52\">to others near the mosque was a terrorist act.</gu-note><gu-note class=\"note\" data-note-edited-by=\"Chaihong Lim\" data-note-edited-date=\"2018-01-22T13:04:31.816Z\" data-click-action=\"collapse\" data-note-id=\"ab8f623a-e316-4cd3-ae20-76345816e819\" title=\"Chaihong Lim 22/1/2018 at 13:04\">The jury were told by </gu-note><gu-note class=\"note note--end\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"ab8f623a-e316-4cd3-ae20-76345816e819\" tabindex=\"-1\" title=\"Owen Gibson 22/1/2018 at 16:52\">Rees told the jury: “Although there is no terrorist offence for you to consider in this case, the prosecution say that the note and the comments he made after his detention establish that this act of extreme violence was, indeed, an act of terrorism, designed to influence government and intimidate the Muslim community, and done for the purpose of advancing a political, religious, ideological or racial cause.”</gu-note>Rees added: “The evidence shows that, although unwell, Mr Ali was alive just before the incident and his death resulted from the defendant driving the heavy van over him as he lay on the roadway.”<gu-note class=\"note note--start\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"d31fa861-6d3a-4243-b6ef-7f0acae1778a\" title=\"Owen Gibson 22/1/2018 at 16:52\">The jury </gu-note><gu-note class=\"note\" data-note-edited-by=\"Chaihong Lim\" data-note-edited-date=\"2018-01-22T13:08:00.221Z\" data-click-action=\"collapse\" data-note-id=\"d31fa861-6d3a-4243-b6ef-7f0acae1778a\" title=\"Chaihong Lim 22/1/2018 at 13:08\">were told</gu-note><gu-note title=\"Owen Gibson 22/1/2018 at 16:52\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"d31fa861-6d3a-4243-b6ef-7f0acae1778a\" class=\"note\">heard Osborne had hired the van in Wales</gu-note><gu-note class=\"note\" data-note-edited-by=\"Chaihong Lim\" data-note-edited-date=\"2018-01-22T13:08:12.981Z\" data-click-action=\"collapse\" data-note-id=\"d31fa861-6d3a-4243-b6ef-7f0acae1778a\" tabindex=\"-1\" title=\"Chaihong Lim 22/1/2018 at 13:08\">, </gu-note><gu-note class=\"note note--end\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"d31fa861-6d3a-4243-b6ef-7f0acae1778a\" title=\"Owen Gibson 22/1/2018 at 16:52\">and driven from Cardiff to London the previous day “looking for a target”. He had intended to attack the al-Quds march but had then decided to attack a mosque in Finsbury Park.</gu-note>Rees said: “To seek to kill someone merely because of their religion is a terrible thing. And what makes this act particularly horrific is that the group he drove into had gathered in the street in order to help Makram Ali, the deceased, who had collapsed as he walked along Seven Sisters Road a couple of minutes before the defendant carried out his attack.”<gu-note class=\"note note--start\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"720991ea-cfa7-4e4a-ca19-91547f57eb73\" title=\"Owen Gibson 22/1/2018 at 16:52\">The crown said that Sarah Andrews, Osborne’s partner, had not previously regarded him as prejudiced. </gu-note><gu-note class=\"note\" data-note-edited-by=\"Jonathan Casson\" data-note-edited-date=\"2018-01-22T14:51:52.166Z\" data-click-action=\"collapse\" data-note-id=\"720991ea-cfa7-4e4a-ca19-91547f57eb73\" title=\"Jonathan Casson 22/1/2018 at 14:51\">But</gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"720991ea-cfa7-4e4a-ca19-91547f57eb73\" title=\"Owen Gibson 22/1/2018 at 16:52\">However, in the weeks before the attack </gu-note><gu-note class=\"note\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T13:48:35.004Z\" data-click-action=\"collapse\" data-note-id=\"720991ea-cfa7-4e4a-ca19-91547f57eb73\" title=\"Jenny Forsyth 22/1/2018 at 13:48\">that</gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"720991ea-cfa7-4e4a-ca19-91547f57eb73\" title=\"Owen Gibson 22/1/2018 at 16:52\">his attitude changed after he watched Three Girls, a BBC </gu-note><gu-note class=\"note\" data-note-edited-by=\"Jonathan Casson\" data-note-edited-date=\"2018-01-22T14:52:05.390Z\" data-click-action=\"collapse\" data-note-id=\"720991ea-cfa7-4e4a-ca19-91547f57eb73\" title=\"Jonathan Casson 22/1/2018 at 14:52\">television</gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"720991ea-cfa7-4e4a-ca19-91547f57eb73\" title=\"Owen Gibson 22/1/2018 at 16:52\">TV drama about the Rochdale grooming scandal, and read extremist rightwing propaganda online that left him “brainwashed” and a “ticking time bomb”.</gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"720991ea-cfa7-4e4a-ca19-91547f57eb73\" tabindex=\"-1\" title=\"Owen Gibson 22/1/2018 at 16:52\">Rees told the jury: “Importantly, Ms Andrews will say she noticed that the defendant had become obsessed with Muslims in the weeks leading up to the incident. </gu-note><gu-note class=\"note\" data-note-edited-by=\"Jonathan Casson\" data-note-edited-date=\"2018-01-22T14:52:41.676Z\" data-click-action=\"collapse\" data-note-id=\"720991ea-cfa7-4e4a-ca19-91547f57eb73\" title=\"Jonathan Casson 22/1/2018 at 14:52\">“</gu-note><gu-note class=\"note note--end\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"720991ea-cfa7-4e4a-ca19-91547f57eb73\" title=\"Owen Gibson 22/1/2018 at 16:52\">He accused them all of being rapists and belonging to paedophile gangs. The catalyst for his obsession appears to have been the broadcast of the BBC drama Three Girls, which they had watched together on the television. The drama was based on the true stories of victims of the Rochdale grooming gangs which comprised men of mainly British Pakistani origin.”</gu-note>Osborne became obsessed with the scandal, the court heard, researching material on the internet from Tommy Robinson, co-founder of the English Defence League, and became increasingly vitriolic in his anti-Muslim rhetoric.Rees told the jury: “The defendant started making racist comments about all Muslims raping children and being capable of blowing people up. It appeared to her that he was becoming brainwashed.”<gu-note class=\"note note--start\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"78adf022-fa26-4ea6-a47b-da8f5f5d08b4\" title=\"Owen Gibson 22/1/2018 at 16:52\">Rees, for the crown, </gu-note><gu-note class=\"note\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T13:51:10.322Z\" data-click-action=\"collapse\" data-note-id=\"78adf022-fa26-4ea6-a47b-da8f5f5d08b4\" title=\"Jenny Forsyth 22/1/2018 at 13:51\">told how Osborne’s partner pleaded with him</gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"78adf022-fa26-4ea6-a47b-da8f5f5d08b4\" title=\"Owen Gibson 22/1/2018 at 16:52\">said: “Ms Andrews pleaded with the defendant to stop, telling him that all Muslims did not behave in this manner, but he was not interested in her views. With the benefit of hindsight, she describes him as a ticking time bomb.”</gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"78adf022-fa26-4ea6-a47b-da8f5f5d08b4\" title=\"Owen Gibson 22/1/2018 at 16:52\">After the BBC drama was broadcast, Islamist terrorism was blamed for attacks on the Manchester Arena, on 22 May </gu-note><gu-note class=\"note\" data-note-edited-by=\"Jonathan Casson\" data-note-edited-date=\"2018-01-22T14:53:17.980Z\" data-click-action=\"collapse\" data-note-id=\"78adf022-fa26-4ea6-a47b-da8f5f5d08b4\" tabindex=\"-1\" title=\"Jonathan Casson 22/1/2018 at 14:53\">22,</gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"78adf022-fa26-4ea6-a47b-da8f5f5d08b4\" title=\"Owen Gibson 22/1/2018 at 16:52\"> 2017, and then London Bridge on 3 June</gu-note><gu-note class=\"note\" data-note-edited-by=\"Jonathan Casson\" data-note-edited-date=\"2018-01-22T14:53:23.379Z\" data-click-action=\"collapse\" data-note-id=\"78adf022-fa26-4ea6-a47b-da8f5f5d08b4\" title=\"Jonathan Casson 22/1/2018 at 14:53\"> 3,</gu-note><gu-note class=\"note note--end\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"78adf022-fa26-4ea6-a47b-da8f5f5d08b4\" title=\"Owen Gibson 22/1/2018 at 16:52\"> 2017.</gu-note>These attacks, according to Osborne’s partner, seemed to “fuel the rage inside him”.<gu-note class=\"note note--start\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"06ac6a4e-3dff-42bc-b1ee-d87a769e195b\" title=\"Owen Gibson 22/1/2018 at 16:52\">Smartphones and computers</gu-note><gu-note class=\"note\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T13:52:59.183Z\" data-click-action=\"collapse\" data-note-id=\"06ac6a4e-3dff-42bc-b1ee-d87a769e195b\" title=\"Jenny Forsyth 22/1/2018 at 13:52\">, the crown will say, </gu-note><gu-note class=\"note\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T13:52:19.423Z\" data-click-action=\"collapse\" data-note-id=\"06ac6a4e-3dff-42bc-b1ee-d87a769e195b\" title=\"Jenny Forsyth 22/1/2018 at 13:52\">linked to Osborne </gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"06ac6a4e-3dff-42bc-b1ee-d87a769e195b\" title=\"Owen Gibson 22/1/2018 at 16:52\">showed Osborne viewing </gu-note><gu-note class=\"note\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T13:52:32.407Z\" data-click-action=\"collapse\" data-note-id=\"06ac6a4e-3dff-42bc-b1ee-d87a769e195b\" title=\"Jenny Forsyth 22/1/2018 at 13:52\">of </gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"06ac6a4e-3dff-42bc-b1ee-d87a769e195b\" title=\"Owen Gibson 22/1/2018 at 16:52\">material from Britain First, that</gu-note><gu-note title=\"Jonathan Casson 22/1/2018 at 14:53\" data-note-edited-by=\"Jonathan Casson\" data-note-edited-date=\"2018-01-22T14:53:37.251Z\" data-click-action=\"collapse\" data-note-id=\"06ac6a4e-3dff-42bc-b1ee-d87a769e195b\" class=\"note\">which</gu-note><gu-note title=\"Owen Gibson 22/1/2018 at 16:52\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"06ac6a4e-3dff-42bc-b1ee-d87a769e195b\" class=\"note\"> “campaigns primarily against multi-culturalism and what it sees as the Islamisisation of the UK”, Rees told the jury.</gu-note><gu-note title=\"Owen Gibson 22/1/2018 at 16:52\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"06ac6a4e-3dff-42bc-b1ee-d87a769e195b\" class=\"note\">Rees sa</gu-note><gu-note class=\"note\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T13:53:59.467Z\" data-click-action=\"collapse\" data-note-id=\"06ac6a4e-3dff-42bc-b1ee-d87a769e195b\" title=\"Jenny Forsyth 22/1/2018 at 13:53\">ys</gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"06ac6a4e-3dff-42bc-b1ee-d87a769e195b\" tabindex=\"-1\" title=\"Owen Gibson 22/1/2018 at 16:52\">id that, according to Osborne’s partner, </gu-note><gu-note class=\"note\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T13:54:12.714Z\" data-click-action=\"collapse\" data-note-id=\"06ac6a4e-3dff-42bc-b1ee-d87a769e195b\" title=\"Jenny Forsyth 22/1/2018 at 13:54\">said </gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"06ac6a4e-3dff-42bc-b1ee-d87a769e195b\" title=\"Owen Gibson 22/1/2018 at 16:52\">he had not worked for a decade and had mental health issues. He </gu-note><gu-note class=\"note\" data-note-edited-by=\"Jenny Forsyth\" data-note-edited-date=\"2018-01-22T13:54:24.538Z\" data-click-action=\"collapse\" data-note-id=\"06ac6a4e-3dff-42bc-b1ee-d87a769e195b\" title=\"Jenny Forsyth 22/1/2018 at 13:54\">and he </gu-note><gu-note class=\"note note--end\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"06ac6a4e-3dff-42bc-b1ee-d87a769e195b\" title=\"Owen Gibson 22/1/2018 at 16:52\">added: “Ms Andrews says that the defendant has an unpredictable temperament; she describes him as a loner and a functioning alcoholic.”</gu-note>“Ms Andrews recalls that the defendant threatened to take his life on two occasions in the weeks leading up to the incident by putting cable ties around his neck. She says he felt worthless and thought he did not fit in.”<gu-note title=\"Owen Gibson 22/1/2018 at 16:52\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"e8ec7b93-ea2d-4692-b107-8785899727c4\" class=\"note note--start\">The jury heard that Osborne </gu-note><gu-note title=\"Marina McIntyre 22/1/2018 at 12:42\" data-note-edited-by=\"Marina McIntyre\" data-note-edited-date=\"2018-01-22T12:42:45.562Z\" data-click-action=\"collapse\" data-note-id=\"e8ec7b93-ea2d-4692-b107-8785899727c4\" class=\"note\">wrote</gu-note><gu-note title=\"Owen Gibson 22/1/2018 at 16:52\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"e8ec7b93-ea2d-4692-b107-8785899727c4\" class=\"note\">had written a note about his motivation for the attack. It </gu-note><gu-note class=\"note\" data-note-edited-by=\"Marina McIntyre\" data-note-edited-date=\"2018-01-22T12:42:54.242Z\" data-click-action=\"collapse\" data-note-id=\"e8ec7b93-ea2d-4692-b107-8785899727c4\" title=\"Marina McIntyre 22/1/2018 at 12:42\">was</gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"e8ec7b93-ea2d-4692-b107-8785899727c4\" tabindex=\"-1\" title=\"Owen Gibson 22/1/2018 at 16:52\">had been found in the van and bore his fingerprints. It railed against the terrorist attacks in London and Manchester </gu-note><gu-note class=\"note\" data-note-edited-by=\"Chaihong Lim\" data-note-edited-date=\"2018-01-22T13:12:31.824Z\" data-click-action=\"collapse\" data-note-id=\"e8ec7b93-ea2d-4692-b107-8785899727c4\" title=\"Chaihong Lim 22/1/2018 at 13:12\">had suffered</gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"e8ec7b93-ea2d-4692-b107-8785899727c4\" title=\"Owen Gibson 22/1/2018 at 16:52\"> in the preceding months, and the Rotherham child abuse scandal.</gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"e8ec7b93-ea2d-4692-b107-8785899727c4\" title=\"Owen Gibson 22/1/2018 at 16:52\">It also said “Islam’s ideology does not belong here”, and taunted the London </gu-note><gu-note class=\"note\" data-note-edited-by=\"Marina McIntyre\" data-note-edited-date=\"2018-01-22T12:37:10.490Z\" data-click-action=\"collapse\" data-note-id=\"e8ec7b93-ea2d-4692-b107-8785899727c4\" title=\"Marina McIntyre 22/1/2018 at 12:37\">M </gu-note><gu-note class=\"note note--end\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"e8ec7b93-ea2d-4692-b107-8785899727c4\" title=\"Owen Gibson 22/1/2018 at 16:52\">mayor, Sadiq Khan, the Labour leader, Jeremy Corbyn, and the singer Lily Allen, jurors heard.</gu-note>The jury heard that Osborne spent the night before the incident in a pub, where he was heard to say he was “going to kill all the Muslims” and to accuse all Muslims of being terrorists.The court heard that Osborne falsely claimed to be in the army and, challenged by a soldier on which regiment he had served with, he said: “You will find out tomorrow.”<gu-note title=\"Owen Gibson 22/1/2018 at 16:52\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"68d0e652-b105-4605-abac-e03ae37c0e0f\" class=\"note note--start\">The trial began on Monday at Woolwich crown court</gu-note><gu-note title=\"Marina McIntyre 22/1/2018 at 12:47\" data-note-edited-by=\"Marina McIntyre\" data-note-edited-date=\"2018-01-22T12:47:17.959Z\" data-click-action=\"collapse\" data-note-id=\"68d0e652-b105-4605-abac-e03ae37c0e0f\" class=\"note\">,</gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"68d0e652-b105-4605-abac-e03ae37c0e0f\" title=\"Owen Gibson 22/1/2018 at 16:52\"> in south-east London. </gu-note><gu-note class=\"note\" data-note-edited-by=\"Marina McIntyre\" data-note-edited-date=\"2018-01-22T12:44:15.799Z\" data-click-action=\"collapse\" data-note-id=\"68d0e652-b105-4605-abac-e03ae37c0e0f\" title=\"Marina McIntyre 22/1/2018 at 12:44\">He</gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"68d0e652-b105-4605-abac-e03ae37c0e0f\" title=\"Owen Gibson 22/1/2018 at 16:52\">Osborne appeared in the dock on Monday wearing a dark blue shirt and grey trousers and confirmed his identity.</gu-note><gu-note class=\"note\" data-note-edited-by=\"Marina McIntyre\" data-note-edited-date=\"2018-01-22T12:45:43.491Z\" data-click-action=\"collapse\" data-note-id=\"68d0e652-b105-4605-abac-e03ae37c0e0f\" title=\"Marina McIntyre 22/1/2018 at 12:45\"> He has pleaded not guilty </gu-note><gu-note class=\"note\" data-note-edited-by=\"Marina McIntyre\" data-note-edited-date=\"2018-01-22T12:45:01.869Z\" data-click-action=\"collapse\" data-note-id=\"68d0e652-b105-4605-abac-e03ae37c0e0f\" title=\"Marina McIntyre 22/1/2018 at 12:45\">over the incident</gu-note><gu-note class=\"note\" data-note-edited-by=\"Marina McIntyre\" data-note-edited-date=\"2018-01-22T12:44:36.223Z\" data-click-action=\"collapse\" data-note-id=\"68d0e652-b105-4605-abac-e03ae37c0e0f\" title=\"Marina McIntyre 22/1/2018 at 12:44\"> near a London mosque that left one man dead and several others injured.</gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"68d0e652-b105-4605-abac-e03ae37c0e0f\" title=\"Owen Gibson 22/1/2018 at 16:52\">The attack happened just after midnight on 19 June, when a rented van was driven into worshippers leaving Muslim Welfare House after prayers for Ramadan. </gu-note><gu-note class=\"note\" data-note-edited-by=\"Marina McIntyre\" data-note-edited-date=\"2018-01-22T12:45:15.076Z\" data-click-action=\"collapse\" data-note-id=\"68d0e652-b105-4605-abac-e03ae37c0e0f\" tabindex=\"-1\" title=\"Marina McIntyre 22/1/2018 at 12:45\">Makram</gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"68d0e652-b105-4605-abac-e03ae37c0e0f\" tabindex=\"-1\" title=\"Owen Gibson 22/1/2018 at 16:52\"> Ali</gu-note><gu-note class=\"note\" data-note-edited-by=\"Marina McIntyre\" data-note-edited-date=\"2018-01-22T12:45:22.892Z\" data-click-action=\"collapse\" data-note-id=\"68d0e652-b105-4605-abac-e03ae37c0e0f\" tabindex=\"-1\" title=\"Marina McIntyre 22/1/2018 at 12:45\">, 51,</gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"68d0e652-b105-4605-abac-e03ae37c0e0f\" tabindex=\"-1\" title=\"Owen Gibson 22/1/2018 at 16:52\"> died from his injuries and others were wounded.</gu-note><gu-note class=\"note\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"68d0e652-b105-4605-abac-e03ae37c0e0f\" tabindex=\"-1\" title=\"Owen Gibson 22/1/2018 at 16:52\">Osborne denies the murder of Ali and the attempted murder of people at the junction of Seven Sisters Road and Whadcoat </gu-note><gu-note class=\"note\" data-note-edited-by=\"Marina McIntyre\" data-note-edited-date=\"2018-01-22T12:46:10.010Z\" data-click-action=\"collapse\" data-note-id=\"68d0e652-b105-4605-abac-e03ae37c0e0f\" tabindex=\"-1\" title=\"Marina McIntyre 22/1/2018 at 12:46\">s</gu-note><gu-note class=\"note note--end\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:52:48.104Z\" data-click-action=\"collapse\" data-note-id=\"68d0e652-b105-4605-abac-e03ae37c0e0f\" tabindex=\"-1\" title=\"Owen Gibson 22/1/2018 at 16:52\">Street, which is close to the mosque.</gu-note>The trial continues.</p><p><gu-note title=\"Chris Johnston 22/1/2018 at 12:30\" data-note-edited-by=\"Chris Johnston\" data-note-edited-date=\"2018-01-22T12:30:26.055Z\" data-click-action=\"collapse\" data-note-id=\"da5ee519-0718-43db-9bf5-20aa5b4295cb\" class=\"note note--start\">ends </gu-note><gu-note title=\"Chris Johnston 22/1/2018 at 12:30\" data-note-edited-by=\"Chris Johnston\" data-note-edited-date=\"2018-01-22T12:30:37.922Z\" data-click-action=\"collapse\" data-note-id=\"da5ee519-0718-43db-9bf5-20aa5b4295cb\" class=\"note\">A man has appeared in court charged in connection with an incident in Finsbury Park last summer that left one man dead and several injured. </gu-note><gu-note title=\"Chris Johnston 22/1/2018 at 12:30\" data-note-edited-by=\"Chris Johnston\" data-note-edited-date=\"2018-01-22T12:30:37.922Z\" data-click-action=\"collapse\" data-note-id=\"da5ee519-0718-43db-9bf5-20aa5b4295cb\" class=\"note\">Darren Osborne, 48, is charged with murder and attempted murder after a van was driven into worshippers near a mosque in </gu-note><gu-note class=\"note\" data-note-edited-by=\"Marina McIntyre\" data-note-edited-date=\"2018-01-22T12:22:13.443Z\" data-click-action=\"collapse\" data-note-id=\"da5ee519-0718-43db-9bf5-20aa5b4295cb\" title=\"Marina McIntyre 22/1/2018 at 12:22\">Finsbury Park,</gu-note><gu-note class=\"note\" data-note-edited-by=\"Chris Johnston\" data-note-edited-date=\"2018-01-22T12:30:37.922Z\" data-click-action=\"collapse\" data-note-id=\"da5ee519-0718-43db-9bf5-20aa5b4295cb\" title=\"Chris Johnston 22/1/2018 at 12:30\"> north London</gu-note><gu-note class=\"note\" data-note-edited-by=\"Marina McIntyre\" data-note-edited-date=\"2018-01-22T12:22:14.859Z\" data-click-action=\"collapse\" data-note-id=\"da5ee519-0718-43db-9bf5-20aa5b4295cb\" title=\"Marina McIntyre 22/1/2018 at 12:22\">,</gu-note><gu-note class=\"note\" data-note-edited-by=\"Marina McIntyre\" data-note-edited-date=\"2018-01-22T12:18:13.998Z\" data-click-action=\"collapse\" data-note-id=\"da5ee519-0718-43db-9bf5-20aa5b4295cb\" title=\"Marina McIntyre 22/1/2018 at 12:18\">on 19 </gu-note><gu-note class=\"note\" data-note-edited-by=\"Chris Johnston\" data-note-edited-date=\"2018-01-22T12:30:37.922Z\" data-click-action=\"collapse\" data-note-id=\"da5ee519-0718-43db-9bf5-20aa5b4295cb\" title=\"Chris Johnston 22/1/2018 at 12:30\">in June last year. He has pleaded not guilty. </gu-note><gu-note title=\"Chris Johnston 22/1/2018 at 12:30\" data-note-edited-by=\"Chris Johnston\" data-note-edited-date=\"2018-01-22T12:30:37.922Z\" data-click-action=\"collapse\" data-note-id=\"da5ee519-0718-43db-9bf5-20aa5b4295cb\" class=\"note\">He appeared in the dock at Woolwich crown court, south-east London, on Monday wearing a dark blue shirt and grey trousers and confirmed his identity. </gu-note><gu-note title=\"Chris Johnston 22/1/2018 at 12:30\" data-note-edited-by=\"Chris Johnston\" data-note-edited-date=\"2018-01-22T12:30:37.922Z\" data-click-action=\"collapse\" data-note-id=\"da5ee519-0718-43db-9bf5-20aa5b4295cb\" class=\"note\">The attack happened just after midnight on 19 June, when a rented van was driven into worshippers leaving Muslim Welfare House after prayers for Ramadan. </gu-note><gu-note title=\"Chris Johnston 22/1/2018 at 12:30\" data-note-edited-by=\"Chris Johnston\" data-note-edited-date=\"2018-01-22T12:30:37.922Z\" data-click-action=\"collapse\" data-note-id=\"da5ee519-0718-43db-9bf5-20aa5b4295cb\" class=\"note\">Makram Ali, 51, died from his injuries and others were wounded. </gu-note><gu-note title=\"Chris Johnston 22/1/2018 at 12:30\" data-note-edited-by=\"Chris Johnston\" data-note-edited-date=\"2018-01-22T12:30:37.922Z\" data-click-action=\"collapse\" data-note-id=\"da5ee519-0718-43db-9bf5-20aa5b4295cb\" class=\"note\">Osborne denies the murder of Ali and the attempted murder of people at the junction of Seven Sisters Road and Whadcoat </gu-note><gu-note class=\"note\" data-note-edited-by=\"Marina McIntyre\" data-note-edited-date=\"2018-01-22T11:53:20.739Z\" data-click-action=\"collapse\" data-note-id=\"da5ee519-0718-43db-9bf5-20aa5b4295cb\" title=\"Marina McIntyre 22/1/2018 at 11:53\">s</gu-note><gu-note class=\"note\" data-note-edited-by=\"Chris Johnston\" data-note-edited-date=\"2018-01-22T12:30:37.922Z\" data-click-action=\"collapse\" data-note-id=\"da5ee519-0718-43db-9bf5-20aa5b4295cb\" title=\"Chris Johnston 22/1/2018 at 12:30\">Street, which is close to the mosque. </gu-note><gu-note title=\"Chris Johnston 22/1/2018 at 11:49\" data-note-edited-by=\"Chris Johnston\" data-note-edited-date=\"2018-01-22T11:49:36.439Z\" data-click-action=\"collapse\" data-note-id=\"da5ee519-0718-43db-9bf5-20aa5b4295cb\" class=\"note\">ends</gu-note></p><p><gu-note title=\"Owen Gibson 22/1/2018 at 16:53\" data-note-edited-by=\"Owen Gibson\" data-note-edited-date=\"2018-01-22T16:53:02.295Z\" data-click-action=\"collapse\" data-note-id=\"da5ee519-0718-43db-9bf5-20aa5b4295cb\" class=\"note note--end\">Vikram Dodd and Kevin Rawlinson</gu-note></p>"
+        },
+        "assets" : [ ]
+      } ],
+      "published" : false,
+      "attributes" : { }
+    } ],
+    "settings" : {
+      "relatedContentOff" : "true",
+      "sensitive" : "true",
+      "blockAds" : "false",
+      "isInappropriateForSponsorship" : "false",
+      "legallySensitive" : "true",
+      "hideReaderRevenue" : "false",
+      "showAffiliateDisclaimer" : "false",
+      "timeZone" : "Europe/London",
+      "managedByComposer" : "true",
+      "usesPathManager" : "true"
+    },
+    "taxonomy" : {
+      "tags" : [ {
+        "tag" : {
+          "id" : 9486,
+          "type" : "Keyword",
+          "internalName" : "UK news",
+          "externalName" : "UK news",
+          "slug" : "uk",
+          "section" : {
+            "id" : 341,
+            "name" : "UK news",
+            "pathPrefix" : "uk-news",
+            "slug" : "uk-news"
+          },
+          "path" : "uk/uk"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 26903,
+          "type" : "Content Type",
+          "internalName" : "Article (Content type)",
+          "externalName" : "Article",
+          "slug" : "article",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "articles"
+        },
+        "isLead" : false
+      } ],
+      "contributors" : [ {
+        "id" : 16558,
+        "type" : "Contributor",
+        "internalName" : "Vikram Dodd",
+        "externalName" : "Vikram Dodd",
+        "slug" : "vikramdodd",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "profile/vikramdodd"
+      }, {
+        "id" : 58554,
+        "type" : "Contributor",
+        "internalName" : "Kevin Rawlinson",
+        "externalName" : "Kevin Rawlinson",
+        "slug" : "kevin-rawlinson",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "profile/kevin-rawlinson"
+      } ],
+      "publication" : {
+        "id" : 4,
+        "type" : "Publication",
+        "internalName" : "guardian.co.uk publication",
+        "externalName" : "theguardian.com",
+        "slug" : "guardian",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "guardian/all"
+      },
+      "references" : [ ],
+      "tracking" : [ ]
+    },
+    "aliasPaths" : [ ]
+  },
+  "live" : {
+    "contentChangeDetails" : {
+      "lastModified" : {
+        "date" : 1782490517839
+      },
+      "created" : {
+        "date" : 1516617391706,
+        "user" : {
+          "email" : "user17@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "17"
+        }
+      },
+      "published" : {
+        "date" : 1516623811658,
+        "user" : {
+          "email" : "user23@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "23"
+        }
+      },
+      "lastMajorRevisionPublished" : {
+        "date" : 1516649713605,
+        "user" : {
+          "email" : "user20@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "20"
+        }
+      },
+      "revision" : 321,
+      "minutesActive" : 132,
+      "contentSource" : "flexible"
+    },
+    "fields" : {
+      "linkText" : "Finsbury Park attacker 'wanted to kill as many Muslims as possible'",
+      "standfirst" : "<p>Court hears Darren Osborne’s anger was fuelled by BBC drama and rightwing propaganda</p>",
+      "slug" : "darren-osborne-appears-in-court-over-finsbury-park-attt",
+      "byline" : "<span data-tag-id=\"16558\" class=\"contributor\">Vikram Dodd</span> and  <span data-tag-id=\"58554\" class=\"contributor\">Kevin Rawlinson</span>",
+      "trailText" : "Court hears Darren Osborne’s north London attack on Muslims influenced by Three Girls series",
+      "headline" : "Finsbury Park attack: man aimed to kill Muslims, court hears"
+    },
+    "thumbnail" : {
+      "fields" : {
+        "isMandatory" : "true",
+        "imageType" : "Photograph",
+        "suppliersReference" : "AFP_XH2SV",
+        "alt" : "People stopping to read tributes and look at plawers placed in the Finsbury Park area of north London on June 20, 2017, for the victims of a alleged van attack on pedestrians nearby on June 19. ",
+        "copyright" : "AFP or licensors",
+        "displayCredit" : "true",
+        "source" : "AFP/Getty Images",
+        "photographer" : "Tolga Akmen",
+        "mediaId" : "6cfbbda34461b94fadeff69ba848f438d7a4c942",
+        "mediaApiUri" : "https://api.media.gutools.co.uk/images/6cfbbda34461b94fadeff69ba848f438d7a4c942"
+      },
+      "assets" : [ {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "http://media.guim.co.uk/6cfbbda34461b94fadeff69ba848f438d7a4c942/310_0_5739_3446/master/5739.jpg",
+        "fields" : {
+          "width" : "5739",
+          "height" : "3446",
+          "isMaster" : "true",
+          "aspectRatio" : "5:3"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://media.guim.co.uk/6cfbbda34461b94fadeff69ba848f438d7a4c942/310_0_5739_3446/5739.jpg",
+        "fields" : {
+          "width" : "5739",
+          "height" : "3446",
+          "aspectRatio" : "5:3"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://media.guim.co.uk/6cfbbda34461b94fadeff69ba848f438d7a4c942/310_0_5739_3446/500.jpg",
+        "fields" : {
+          "width" : "500",
+          "height" : "300",
+          "aspectRatio" : "5:3"
+        }
+      } ]
+    },
+    "blocks" : [ ],
+    "settings" : {
+      "relatedContentOff" : "true",
+      "blockAds" : "false",
+      "legallySensitive" : "false",
+      "showAffiliateDisclaimer" : "false",
+      "timeZone" : "Europe/London",
+      "embargoedIndefinitely" : "true",
+      "hideReaderRevenue" : "false",
+      "managedByComposer" : "true",
+      "usesPathManager" : "true",
+      "productionOffice" : "UK"
+    },
+    "taxonomy" : {
+      "tags" : [ {
+        "tag" : {
+          "id" : 26903,
+          "type" : "Content Type",
+          "internalName" : "Article (Content type)",
+          "externalName" : "Article",
+          "slug" : "article",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "articles"
+        },
+        "isLead" : false
+      } ],
+      "contributors" : [ {
+        "id" : 16558,
+        "type" : "Contributor",
+        "internalName" : "Vikram Dodd",
+        "externalName" : "Vikram Dodd",
+        "slug" : "vikramdodd",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "profile/vikramdodd"
+      }, {
+        "id" : 19201,
+        "type" : "Contributor",
+        "internalName" : "Kevin Anderson",
+        "externalName" : "Kevin Anderson",
+        "slug" : "kevinanderson",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "profile/kevinanderson"
+      } ],
+      "publication" : {
+        "id" : 4,
+        "type" : "Publication",
+        "internalName" : "guardian.co.uk publication",
+        "externalName" : "theguardian.com",
+        "slug" : "guardian",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "guardian/all"
+      },
+      "references" : [ ],
+      "tracking" : [ ]
+    },
+    "aliasPaths" : [ ]
+  },
+  "auxiliaryAtoms" : [ ],
+  "channels" : { }
+}

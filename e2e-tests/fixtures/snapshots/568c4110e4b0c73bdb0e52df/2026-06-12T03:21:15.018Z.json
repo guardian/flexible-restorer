@@ -1,0 +1,921 @@
+{
+  "id" : "568c4110e4b0c73bdb0e52df",
+  "type" : "article",
+  "published" : true,
+  "isGone" : false,
+  "isHosted" : false,
+  "expiry" : {
+    "rights" : {
+      "expired" : false
+    },
+    "commercial" : {
+      "expired" : false
+    }
+  },
+  "rights" : {
+    "syndicationAggregate" : true,
+    "subscriptionDatabases" : true,
+    "developerCommunity" : true
+  },
+  "contentChangeDetails" : {
+    "lastModified" : {
+      "date" : 1781234474425
+    },
+    "created" : {
+      "date" : 1258668300000,
+      "user" : {
+        "email" : "user5@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "5"
+      }
+    },
+    "lastMajorRevisionPublished" : {
+      "date" : 1258668759000,
+      "user" : {
+        "email" : "user5@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "5"
+      }
+    },
+    "revision" : 10
+  },
+  "identifiers" : {
+    "path" : "football/2009/nov/19/thierry-henry-handball-football-worlcup",
+    "pageId" : "1307831",
+    "storyBundleId" : "2723863"
+  },
+  "collaborators" : [ {
+    "email" : "user5@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "5"
+  } ],
+  "toolSettings" : {
+    "slugLinked" : "false",
+    "activeInInCopy" : "true",
+    "seoChanged" : "false",
+    "seoOptimised" : "false",
+    "republished" : "false",
+    "trailTextLinked" : "true",
+    "pathLocked" : "true",
+    "linkTextLinked" : "true"
+  },
+  "aliasPaths" : [ ],
+  "preview" : {
+    "contentChangeDetails" : {
+      "lastModified" : {
+        "date" : 1781234474425
+      },
+      "created" : {
+        "date" : 1258668300000,
+        "user" : {
+          "email" : "user5@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "5"
+        }
+      },
+      "lastMajorRevisionPublished" : {
+        "date" : 1258668759000,
+        "user" : {
+          "email" : "user5@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "5"
+        }
+      },
+      "revision" : 10
+    },
+    "fields" : {
+      "linkText" : "Irish fury at Thierry Henry's handball in World Cup qualifier",
+      "standfirst" : "• Politicians and fans seek replay amid 'cheat' outrage<br />• French sports minister's 'cowardly relief' at victory",
+      "slug" : "thierry-henry-handball-football-worlcup",
+      "newspaperPublicationDate" : "2009-11-20T00:00:00+00:00",
+      "byline" : "<span data-tag-id=\"15635\" class=\"contributor\">Esther Addley</span>, <span data-tag-id=\"15264\" class=\"contributor\">Henry McDonald</span> in Dublin and <span data-tag-id=\"25822\" class=\"contributor\">Lizzy Davies</span> in Paris",
+      "newspaperPageNumber" : "3",
+      "trailText" : "Ireland's politicians and football fans call for replay of match France won by 'sleight of hand'",
+      "headline" : "Irish fury at Thierry Henry's handball in World Cup qualifier"
+    },
+    "thumbnail" : {
+      "fields" : {
+        "displayCredit" : "false",
+        "imageType" : "Photograph",
+        "alt" : "Television footage captures the moment Thierry Henry handled the ball ",
+        "caption" : "Television footage captures the moment Thierry Henry handled the ball before supplying the cross that led to a French goal. Photograph: Sky Sports 1/Sky Sports",
+        "mediaId" : "gu-image-355833170",
+        "source" : "Sky Sports",
+        "photographer" : "Sky Sports 1"
+      },
+      "assets" : [ {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/About/General/2009/11/19/1258668702984/Television-footage-captur-004.jpg",
+        "fields" : {
+          "width" : "140",
+          "height" : "84"
+        }
+      } ]
+    },
+    "mainBlock" : {
+      "id" : "efa09244-ef84-43df-b3b2-68553b25f882",
+      "lastModified" : 1452032272486,
+      "dateCreated" : 1452032272486,
+      "createdBy" : {
+        "email" : "user5@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "5"
+      },
+      "lastModifiedBy" : {
+        "email" : "user5@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "5"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "image",
+        "fields" : {
+          "displayCredit" : "false",
+          "imageType" : "Photograph",
+          "alt" : "Television footage captures the moment Thierry Henry handled the ball ",
+          "caption" : "Television footage captures the moment Thierry Henry handled the ball before supplying the cross that led to a French goal. Photograph: Sky Sports 1/Sky Sports",
+          "mediaId" : "gu-image-355833169",
+          "source" : "Sky Sports",
+          "photographer" : "Sky Sports 1"
+        },
+        "assets" : [ {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://static.guim.co.uk/sys-images/Guardian/About/General/2009/11/19/1258668699684/Television-footage-captur-001.jpg",
+          "fields" : {
+            "width" : "460",
+            "height" : "276"
+          }
+        } ]
+      } ],
+      "published" : false,
+      "attributes" : { }
+    },
+    "blocks" : [ {
+      "id" : "4fa49e3f-de6e-46e2-bb8c-648a209bdab6",
+      "lastModified" : 1452032272482,
+      "dateCreated" : 1452032272419,
+      "lastModifiedBy" : {
+        "email" : "user5@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "5"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "text",
+        "fields" : {
+          "text" : "<p>Borne on a wave of tears, righteous indignation and flat Guinness, thousands of dejected Irish football fans were arriving  home from Paristoday  to a country united in fury and mourning over its controversial ejection from the World Cup finals next summer.</p><p>Having seen their team robbed of a chance to compete in South Africa after a brazen handball by the French striker Thierry Henry set up an extra-time equaliser, the Irish were in no mood to mince their words.</p><p>\"If that result remains, it reinforces the view that if you cheat, you will win,\" Ireland's justice minister, Dermot Ahern, said. \"Millions of people saw it was a blatant double handball – not to mention a double offside – and we should put the powers that be in the cosy world of Fifa on the spot and demand a replay.\"</p><p>Mary Coughlan, the deputy prime minister, joined calls in the Irish parliament for world football's governing body to \"vigorously pursue the use of video referees\", while Fine Gael MP Alan Shatter congratulated players who had been defeated by \"sleight of hand\" – a small fumble that, with some inevitability, is now being referred to as the \"hand of Frog\", or the \"hand of Gaul\".</p><p>Last night the prime minister, Brian Cowen, joined the chorus of outrage declaring that he would raise the controversy with President Nicolas Sarkozy at the European summit in Brussels.</p><p>Television footage of Wednesday's match, eight minutes into extra time, shows that Henry twice handled the ball in the box to keep it in play, before a short tap allowed William Gallas to score. Though Ireland are widely held to have played better, the goal put France 2-1 ahead on aggregate, sealing qualification for the French – and a national tragedy for the Irish.</p><p>A furious Football Association of Ireland lodged a formal complaint over Swedish referee Martin Hansson's decision to allow the goal. Chief executive, John Delaney, said: \"I really believe the integrity of the game has been questioned last night.\"</p><p>The Republic's assistant manager, Liam Brady, also backed calls for a replay, referring to Fifa's repeated insistence in the importance of fair play. \"Where is football going if a team is cheated out of fair play? Where are we going if this decision stands?\" The governing body has insisted the referee's decision is final.</p><p>Ireland's green army of fans has a reputation for good cheer in victory and defeat, but on the streets of Dublin  they were not yet ready to see the lighter side. \"I feel absolutely cheated because the better team lost and the French cheated at the end,\" said Noel Cummins, sipping a pint in the Cobblestone pub. \"Henry is no longer a god in my eyes – and I'm an avid Arsenal fan. I'll be drinking red wine again but it certainly won't be French.\"</p><p>For French fans, relief that they had made it to the finals was tinged by a nagging suspicion that the wrong side had won. Sports minister, Roselyne Bachelot, admitted that the French had benefited from a \"glaring\" error of judgment: \"My feelings are split between what I might call cowardly relief and great concern.\"</p><p>Thierry Roland, a commentator for the French channel M6, denounced \"a scandal, a disgrace with a capital D. It is very lucky for us that we were dealing with the Irish who are nice blokes, because if it had been another country, there would have been deaths in the stadium.\"</p><p>In Dublin, the general mood was summed up by the Evening Herald headline, referring to a slogan from an car advert featuring Henry: \"It's Va Va Gloom\". There was, however, one small suggestion of cheer, in indications that Henry's handball had achieved what home rule, the Good Friday agreement and Jedward could not:  fostering a sense of fellow feeling between old enemies Ireland and England.</p><p>Another fan, Liam Egan, drew parallels with the 1986 World Cup when England were knocked out by Maradona's original \"hand of God\" goal, adding that he had been surprised by the sympathy he'd received. It had even led him to consider what for most Irish football fans is the ultimate heresy. \"If England play France in the World Cup this summer I'll be cheering for England. I never thought I'd say that.\"</p>"
+        },
+        "assets" : [ ]
+      } ],
+      "published" : false,
+      "attributes" : { }
+    } ],
+    "settings" : {
+      "relatedContentOff" : "false",
+      "blockAds" : "false",
+      "legallySensitive" : "false",
+      "commentable" : "false",
+      "managedByComposer" : "true",
+      "productionOffice" : "UK"
+    },
+    "taxonomy" : {
+      "tags" : [ {
+        "tag" : {
+          "id" : 21905,
+          "type" : "Keyword",
+          "internalName" : "Republic of Ireland football team",
+          "externalName" : "Republic of Ireland",
+          "slug" : "republicofirelandfootballteam",
+          "section" : {
+            "id" : 198,
+            "name" : "Football",
+            "pathPrefix" : "football",
+            "slug" : "football"
+          },
+          "path" : "football/republicofireland"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 35274,
+          "type" : "Keyword",
+          "internalName" : "Thierry Henry",
+          "externalName" : "Thierry Henry",
+          "slug" : "thierry-henry",
+          "section" : {
+            "id" : 198,
+            "name" : "Football",
+            "pathPrefix" : "football",
+            "slug" : "football"
+          },
+          "path" : "football/thierry-henry"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 21907,
+          "type" : "Keyword",
+          "internalName" : "France football team",
+          "externalName" : "France",
+          "slug" : "france",
+          "section" : {
+            "id" : 198,
+            "name" : "Football",
+            "pathPrefix" : "football",
+            "slug" : "football"
+          },
+          "path" : "football/france"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 9013,
+          "type" : "Keyword",
+          "internalName" : "Football",
+          "externalName" : "Football",
+          "slug" : "football",
+          "section" : {
+            "id" : 198,
+            "name" : "Football",
+            "pathPrefix" : "football",
+            "slug" : "football"
+          },
+          "path" : "football/football"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 22029,
+          "type" : "Keyword",
+          "internalName" : "World Cup 2010 (Football)",
+          "externalName" : "World Cup 2010",
+          "slug" : "worldcup2010",
+          "section" : {
+            "id" : 198,
+            "name" : "Football",
+            "pathPrefix" : "football",
+            "slug" : "football"
+          },
+          "path" : "football/worldcup2010"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 8822,
+          "type" : "Keyword",
+          "internalName" : "Sport",
+          "externalName" : "Sport",
+          "slug" : "sport",
+          "section" : {
+            "id" : 191,
+            "name" : "Sport",
+            "pathPrefix" : "sport",
+            "slug" : "sport"
+          },
+          "path" : "sport/sport"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 19908,
+          "type" : "Keyword",
+          "internalName" : "Ireland (News)",
+          "externalName" : "Ireland",
+          "slug" : "ireland",
+          "section" : {
+            "id" : 342,
+            "name" : "World news",
+            "pathPrefix" : "world",
+            "slug" : "world"
+          },
+          "path" : "world/ireland"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 9602,
+          "type" : "Keyword",
+          "internalName" : "France",
+          "externalName" : "France",
+          "slug" : "france",
+          "section" : {
+            "id" : 342,
+            "name" : "World news",
+            "pathPrefix" : "world",
+            "slug" : "world"
+          },
+          "path" : "world/france"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 9234,
+          "type" : "Keyword",
+          "internalName" : "World news",
+          "externalName" : "World news",
+          "slug" : "world",
+          "section" : {
+            "id" : 342,
+            "name" : "World news",
+            "pathPrefix" : "world",
+            "slug" : "world"
+          },
+          "path" : "world/world"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 22641,
+          "type" : "Tone",
+          "internalName" : "News (Tone)",
+          "externalName" : "News",
+          "slug" : "news",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "tone/news"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 42460,
+          "type" : "Keyword",
+          "internalName" : "Europe (News)",
+          "externalName" : "Europe",
+          "slug" : "europe-news",
+          "section" : {
+            "id" : 342,
+            "name" : "World news",
+            "pathPrefix" : "world",
+            "slug" : "world"
+          },
+          "path" : "world/europe-news"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 56681,
+          "type" : "Keyword",
+          "internalName" : "World Cup (football)",
+          "externalName" : "World Cup",
+          "slug" : "world-cup-football",
+          "section" : {
+            "id" : 198,
+            "name" : "Football",
+            "pathPrefix" : "football",
+            "slug" : "football"
+          },
+          "path" : "football/world-cup-football"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 26903,
+          "type" : "Content Type",
+          "internalName" : "Article (Content type)",
+          "externalName" : "Article",
+          "slug" : "article",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "articles"
+        },
+        "isLead" : false
+      } ],
+      "contributors" : [ {
+        "id" : 15264,
+        "type" : "Contributor",
+        "internalName" : "Henry McDonald",
+        "externalName" : "Henry McDonald",
+        "slug" : "henrymcdonald",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        }
+      }, {
+        "id" : 15635,
+        "type" : "Contributor",
+        "internalName" : "Esther Addley",
+        "externalName" : "Esther Addley",
+        "slug" : "estheraddley",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        }
+      }, {
+        "id" : 25822,
+        "type" : "Contributor",
+        "internalName" : "Lizzy Davies",
+        "externalName" : "Lizzy Davies",
+        "slug" : "lizzydavies",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        }
+      } ],
+      "publication" : {
+        "id" : 4,
+        "type" : "Publication",
+        "internalName" : "guardian.co.uk publication",
+        "externalName" : "theguardian.com",
+        "slug" : "guardian",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        }
+      },
+      "newspaper" : {
+        "book" : {
+          "id" : 16600,
+          "type" : "Newspaper Book",
+          "internalName" : "Gdn: Main section G1 (nb)",
+          "externalName" : "Main section",
+          "slug" : "mainsection",
+          "section" : {
+            "id" : 182,
+            "name" : "News",
+            "pathPrefix" : "news",
+            "slug" : "news"
+          }
+        },
+        "bookSection" : {
+          "id" : 16771,
+          "type" : "Newspaper Book Section",
+          "internalName" : "Gdn: Top stories (nbs)",
+          "externalName" : "Top stories",
+          "slug" : "topstories",
+          "section" : {
+            "id" : 205,
+            "name" : "From the Guardian",
+            "pathPrefix" : "theguardian",
+            "slug" : "theguardian"
+          }
+        },
+        "publication" : {
+          "id" : 2,
+          "type" : "Publication",
+          "internalName" : "The Guardian publication",
+          "externalName" : "The Guardian",
+          "slug" : "theguardian",
+          "section" : {
+            "id" : 205,
+            "name" : "From the Guardian",
+            "pathPrefix" : "theguardian",
+            "slug" : "theguardian"
+          }
+        }
+      },
+      "references" : [ ],
+      "tracking" : [ ]
+    },
+    "aliasPaths" : [ ]
+  },
+  "live" : {
+    "contentChangeDetails" : {
+      "lastModified" : {
+        "date" : 1781234474425
+      },
+      "created" : {
+        "date" : 1258668300000,
+        "user" : {
+          "email" : "user5@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "5"
+        }
+      },
+      "lastMajorRevisionPublished" : {
+        "date" : 1258668759000,
+        "user" : {
+          "email" : "user5@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "5"
+        }
+      },
+      "revision" : 10
+    },
+    "fields" : {
+      "linkText" : "Irish fury at Thierry Henry's handball in World Cup qualifier",
+      "standfirst" : "• Politicians and fans seek replay amid 'cheat' outrage<br />• French sports minister's 'cowardly relief' at victory",
+      "slug" : "thierry-henry-handball-football-worlcup",
+      "newspaperPublicationDate" : "2009-11-20T00:00:00+00:00",
+      "byline" : "<span data-tag-id=\"15635\" class=\"contributor\">Esther Addley</span>, <span data-tag-id=\"15264\" class=\"contributor\">Henry McDonald</span> in Dublin and <span data-tag-id=\"25822\" class=\"contributor\">Lizzy Davies</span> in Paris",
+      "newspaperPageNumber" : "3",
+      "trailText" : "Ireland's politicians and football fans call for replay of match France won by 'sleight of hand'",
+      "headline" : "Irish fury at Thierry Henry's handball in World Cup qualifier"
+    },
+    "thumbnail" : {
+      "fields" : {
+        "displayCredit" : "false",
+        "imageType" : "Photograph",
+        "alt" : "Television footage captures the moment Thierry Henry handled the ball ",
+        "caption" : "Television footage captures the moment Thierry Henry handled the ball before supplying the cross that led to a French goal. Photograph: Sky Sports 1/Sky Sports",
+        "mediaId" : "gu-image-355833170",
+        "source" : "Sky Sports",
+        "photographer" : "Sky Sports 1"
+      },
+      "assets" : [ {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://static.guim.co.uk/sys-images/Guardian/About/General/2009/11/19/1258668702984/Television-footage-captur-004.jpg",
+        "fields" : {
+          "width" : "140",
+          "height" : "84"
+        }
+      } ]
+    },
+    "mainBlock" : {
+      "id" : "efa09244-ef84-43df-b3b2-68553b25f882",
+      "lastModified" : 1452032272486,
+      "dateCreated" : 1452032272486,
+      "createdBy" : {
+        "email" : "user5@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "5"
+      },
+      "lastModifiedBy" : {
+        "email" : "user5@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "5"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "image",
+        "fields" : {
+          "displayCredit" : "false",
+          "imageType" : "Photograph",
+          "alt" : "Television footage captures the moment Thierry Henry handled the ball ",
+          "caption" : "Television footage captures the moment Thierry Henry handled the ball before supplying the cross that led to a French goal. Photograph: Sky Sports 1/Sky Sports",
+          "mediaId" : "gu-image-355833169",
+          "source" : "Sky Sports",
+          "photographer" : "Sky Sports 1"
+        },
+        "assets" : [ {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "http://static.guim.co.uk/sys-images/Guardian/About/General/2009/11/19/1258668699684/Television-footage-captur-001.jpg",
+          "fields" : {
+            "width" : "460",
+            "height" : "276"
+          }
+        } ]
+      } ],
+      "published" : true,
+      "attributes" : { }
+    },
+    "blocks" : [ {
+      "id" : "4fa49e3f-de6e-46e2-bb8c-648a209bdab6",
+      "lastModified" : 1452032272482,
+      "dateCreated" : 1452032272419,
+      "lastModifiedBy" : {
+        "email" : "user5@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "5"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "text",
+        "fields" : {
+          "text" : "<p>Borne on a wave of tears, righteous indignation and flat Guinness, thousands of dejected Irish football fans were arriving  home from Paristoday  to a country united in fury and mourning over its controversial ejection from the World Cup finals next summer.</p><p>Having seen their team robbed of a chance to compete in South Africa after a brazen handball by the French striker Thierry Henry set up an extra-time equaliser, the Irish were in no mood to mince their words.</p><p>\"If that result remains, it reinforces the view that if you cheat, you will win,\" Ireland's justice minister, Dermot Ahern, said. \"Millions of people saw it was a blatant double handball – not to mention a double offside – and we should put the powers that be in the cosy world of Fifa on the spot and demand a replay.\"</p><p>Mary Coughlan, the deputy prime minister, joined calls in the Irish parliament for world football's governing body to \"vigorously pursue the use of video referees\", while Fine Gael MP Alan Shatter congratulated players who had been defeated by \"sleight of hand\" – a small fumble that, with some inevitability, is now being referred to as the \"hand of Frog\", or the \"hand of Gaul\".</p><p>Last night the prime minister, Brian Cowen, joined the chorus of outrage declaring that he would raise the controversy with President Nicolas Sarkozy at the European summit in Brussels.</p><p>Television footage of Wednesday's match, eight minutes into extra time, shows that Henry twice handled the ball in the box to keep it in play, before a short tap allowed William Gallas to score. Though Ireland are widely held to have played better, the goal put France 2-1 ahead on aggregate, sealing qualification for the French – and a national tragedy for the Irish.</p><p>A furious Football Association of Ireland lodged a formal complaint over Swedish referee Martin Hansson's decision to allow the goal. Chief executive, John Delaney, said: \"I really believe the integrity of the game has been questioned last night.\"</p><p>The Republic's assistant manager, Liam Brady, also backed calls for a replay, referring to Fifa's repeated insistence in the importance of fair play. \"Where is football going if a team is cheated out of fair play? Where are we going if this decision stands?\" The governing body has insisted the referee's decision is final.</p><p>Ireland's green army of fans has a reputation for good cheer in victory and defeat, but on the streets of Dublin  they were not yet ready to see the lighter side. \"I feel absolutely cheated because the better team lost and the French cheated at the end,\" said Noel Cummins, sipping a pint in the Cobblestone pub. \"Henry is no longer a god in my eyes – and I'm an avid Arsenal fan. I'll be drinking red wine again but it certainly won't be French.\"</p><p>For French fans, relief that they had made it to the finals was tinged by a nagging suspicion that the wrong side had won. Sports minister, Roselyne Bachelot, admitted that the French had benefited from a \"glaring\" error of judgment: \"My feelings are split between what I might call cowardly relief and great concern.\"</p><p>Thierry Roland, a commentator for the French channel M6, denounced \"a scandal, a disgrace with a capital D. It is very lucky for us that we were dealing with the Irish who are nice blokes, because if it had been another country, there would have been deaths in the stadium.\"</p><p>In Dublin, the general mood was summed up by the Evening Herald headline, referring to a slogan from an car advert featuring Henry: \"It's Va Va Gloom\". There was, however, one small suggestion of cheer, in indications that Henry's handball had achieved what home rule, the Good Friday agreement and Jedward could not:  fostering a sense of fellow feeling between old enemies Ireland and England.</p><p>Another fan, Liam Egan, drew parallels with the 1986 World Cup when England were knocked out by Maradona's original \"hand of God\" goal, adding that he had been surprised by the sympathy he'd received. It had even led him to consider what for most Irish football fans is the ultimate heresy. \"If England play France in the World Cup this summer I'll be cheering for England. I never thought I'd say that.\"</p>"
+        },
+        "assets" : [ ]
+      } ],
+      "published" : true,
+      "attributes" : { }
+    } ],
+    "settings" : {
+      "relatedContentOff" : "false",
+      "blockAds" : "false",
+      "legallySensitive" : "false",
+      "commentable" : "false",
+      "managedByComposer" : "true",
+      "productionOffice" : "UK"
+    },
+    "taxonomy" : {
+      "tags" : [ {
+        "tag" : {
+          "id" : 21905,
+          "type" : "Keyword",
+          "internalName" : "Republic of Ireland football team",
+          "externalName" : "Republic of Ireland",
+          "slug" : "republicofirelandfootballteam",
+          "section" : {
+            "id" : 198,
+            "name" : "Football",
+            "pathPrefix" : "football",
+            "slug" : "football"
+          },
+          "path" : "football/republicofireland"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 35274,
+          "type" : "Keyword",
+          "internalName" : "Thierry Henry",
+          "externalName" : "Thierry Henry",
+          "slug" : "thierry-henry",
+          "section" : {
+            "id" : 198,
+            "name" : "Football",
+            "pathPrefix" : "football",
+            "slug" : "football"
+          },
+          "path" : "football/thierry-henry"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 21907,
+          "type" : "Keyword",
+          "internalName" : "France football team",
+          "externalName" : "France",
+          "slug" : "france",
+          "section" : {
+            "id" : 198,
+            "name" : "Football",
+            "pathPrefix" : "football",
+            "slug" : "football"
+          },
+          "path" : "football/france"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 9013,
+          "type" : "Keyword",
+          "internalName" : "Football",
+          "externalName" : "Football",
+          "slug" : "football",
+          "section" : {
+            "id" : 198,
+            "name" : "Football",
+            "pathPrefix" : "football",
+            "slug" : "football"
+          },
+          "path" : "football/football"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 22029,
+          "type" : "Keyword",
+          "internalName" : "World Cup 2010 (Football)",
+          "externalName" : "World Cup 2010",
+          "slug" : "worldcup2010",
+          "section" : {
+            "id" : 198,
+            "name" : "Football",
+            "pathPrefix" : "football",
+            "slug" : "football"
+          },
+          "path" : "football/worldcup2010"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 8822,
+          "type" : "Keyword",
+          "internalName" : "Sport",
+          "externalName" : "Sport",
+          "slug" : "sport",
+          "section" : {
+            "id" : 191,
+            "name" : "Sport",
+            "pathPrefix" : "sport",
+            "slug" : "sport"
+          },
+          "path" : "sport/sport"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 19908,
+          "type" : "Keyword",
+          "internalName" : "Ireland (News)",
+          "externalName" : "Ireland",
+          "slug" : "ireland",
+          "section" : {
+            "id" : 342,
+            "name" : "World news",
+            "pathPrefix" : "world",
+            "slug" : "world"
+          },
+          "path" : "world/ireland"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 9602,
+          "type" : "Keyword",
+          "internalName" : "France",
+          "externalName" : "France",
+          "slug" : "france",
+          "section" : {
+            "id" : 342,
+            "name" : "World news",
+            "pathPrefix" : "world",
+            "slug" : "world"
+          },
+          "path" : "world/france"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 9234,
+          "type" : "Keyword",
+          "internalName" : "World news",
+          "externalName" : "World news",
+          "slug" : "world",
+          "section" : {
+            "id" : 342,
+            "name" : "World news",
+            "pathPrefix" : "world",
+            "slug" : "world"
+          },
+          "path" : "world/world"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 22641,
+          "type" : "Tone",
+          "internalName" : "News (Tone)",
+          "externalName" : "News",
+          "slug" : "news",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "tone/news"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 42460,
+          "type" : "Keyword",
+          "internalName" : "Europe (News)",
+          "externalName" : "Europe",
+          "slug" : "europe-news",
+          "section" : {
+            "id" : 342,
+            "name" : "World news",
+            "pathPrefix" : "world",
+            "slug" : "world"
+          },
+          "path" : "world/europe-news"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 56681,
+          "type" : "Keyword",
+          "internalName" : "World Cup (football)",
+          "externalName" : "World Cup",
+          "slug" : "world-cup-football",
+          "section" : {
+            "id" : 198,
+            "name" : "Football",
+            "pathPrefix" : "football",
+            "slug" : "football"
+          },
+          "path" : "football/world-cup-football"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 26903,
+          "type" : "Content Type",
+          "internalName" : "Article (Content type)",
+          "externalName" : "Article",
+          "slug" : "article",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "articles"
+        },
+        "isLead" : false
+      } ],
+      "contributors" : [ {
+        "id" : 15264,
+        "type" : "Contributor",
+        "internalName" : "Henry McDonald",
+        "externalName" : "Henry McDonald",
+        "slug" : "henrymcdonald",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        }
+      }, {
+        "id" : 15635,
+        "type" : "Contributor",
+        "internalName" : "Esther Addley",
+        "externalName" : "Esther Addley",
+        "slug" : "estheraddley",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        }
+      }, {
+        "id" : 25822,
+        "type" : "Contributor",
+        "internalName" : "Lizzy Davies",
+        "externalName" : "Lizzy Davies",
+        "slug" : "lizzydavies",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        }
+      } ],
+      "publication" : {
+        "id" : 4,
+        "type" : "Publication",
+        "internalName" : "guardian.co.uk publication",
+        "externalName" : "theguardian.com",
+        "slug" : "guardian",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        }
+      },
+      "newspaper" : {
+        "book" : {
+          "id" : 16600,
+          "type" : "Newspaper Book",
+          "internalName" : "Gdn: Main section G1 (nb)",
+          "externalName" : "Main section",
+          "slug" : "mainsection",
+          "section" : {
+            "id" : 182,
+            "name" : "News",
+            "pathPrefix" : "news",
+            "slug" : "news"
+          }
+        },
+        "bookSection" : {
+          "id" : 16771,
+          "type" : "Newspaper Book Section",
+          "internalName" : "Gdn: Top stories (nbs)",
+          "externalName" : "Top stories",
+          "slug" : "topstories",
+          "section" : {
+            "id" : 205,
+            "name" : "From the Guardian",
+            "pathPrefix" : "theguardian",
+            "slug" : "theguardian"
+          }
+        },
+        "publication" : {
+          "id" : 2,
+          "type" : "Publication",
+          "internalName" : "The Guardian publication",
+          "externalName" : "The Guardian",
+          "slug" : "theguardian",
+          "section" : {
+            "id" : 205,
+            "name" : "From the Guardian",
+            "pathPrefix" : "theguardian",
+            "slug" : "theguardian"
+          }
+        }
+      },
+      "references" : [ ],
+      "tracking" : [ ]
+    },
+    "aliasPaths" : [ ]
+  },
+  "auxiliaryAtoms" : [ ],
+  "channels" : { }
+}
