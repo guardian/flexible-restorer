@@ -67,7 +67,6 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/templates/restore-list.html
 	# Evidence: public/javascripts/app/models/SnapshotIdModel.js
 
-	@pending
 	Scenario: Launch-related snapshots are highlighted in row and reason styling
 		Given version history data contains a launch-related snapshot reason
 		When I inspect that snapshot row
