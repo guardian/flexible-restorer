@@ -40,7 +40,6 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/templates/restore-list.html
 	# Evidence: public/javascripts/app/models/SnapshotIdModel.js
 
-	@pending
 	Scenario: Revision index falls back to list position when revision id is missing
 		Given version history data contains a snapshot without an explicit revision id
 		When I view the index value for that row
@@ -48,7 +47,6 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/templates/restore-list.html
 	# Evidence: public/javascripts/app/models/SnapshotIdModel.js
 
-	@pending
 	Scenario: Active snapshot row is visually distinguished and selects HTML mode on click
 		Given version history data has loaded successfully
 		When I click a snapshot row in the list
