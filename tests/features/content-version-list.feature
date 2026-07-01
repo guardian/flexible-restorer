@@ -115,7 +115,6 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/templates/restore-list.html
 	# Evidence: public/javascripts/app/models/SnapshotIdModel.js
 
-	@pending
 	Scenario: Keyboard navigation changes active snapshot when modal is not open
 		Given version history data has loaded successfully
 		And the restore modal is not open
@@ -124,7 +123,6 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/controllers/SnapshotListInteractionCtrl.js
 	# Evidence: public/javascripts/app/controllers/SnapshotListCtrl.js
 
-	@pending
 	Scenario: Keyboard shortcuts do not navigate the list while modal is open
 		Given the restore modal is open
 		When I press list navigation keys
