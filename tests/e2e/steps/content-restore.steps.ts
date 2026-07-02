@@ -346,10 +346,9 @@ Then(
 
 Given("I do not have restore_content permission", async ({ page, localStack }) => {
     // Sign in as the `RestorerAccessOnly` role
-    // (restorer.access.only@guardian.co.uk). That email is not listed in the
-    // permissions fixture, so it resolves via defaults: it HAS `restorer_access`
-    // (so it passes auth and reaches the controller) but does NOT have
-    // `restore_content` (defaultValue false).
+    // (restorer.access.only@guardian.co.uk). The permissions fixture grants that
+    // user `restorer_access` (so it passes auth and reaches the controller) but
+    // not `restore_content`.
     const { baseUrl, panDomainPrivateKey } = localStack;
     const cookieData = createPanDomainCookie(
         panDomainPrivateKey,
