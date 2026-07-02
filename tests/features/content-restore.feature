@@ -34,7 +34,6 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/services/RestoreService.js
   # Evidence: public/javascripts/app/templates/restore-list.html
 
-  @pending
   Scenario: Destination choices include all available stacks when I have permission
     Given I have restore_content_to_any_stack permission
     When the restore modal loads destination choices

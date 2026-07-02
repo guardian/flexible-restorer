@@ -148,7 +148,7 @@ Then("I should not see destinations from other stacks", async ({ page }) => {
     // "Local Flexible Content") must be filtered out because the user cannot
     // restore across stacks.
     await expect(
-        page.getByRole("radio", { name: /^Composer \(CODE\)/ }),
+        page.getByRole("radio", { name: /Composer \(CODE\)/ }),
     ).toHaveCount(0);
     await expect(
         page.getByRole("radio", { name: /Local Flexible Content/ }),
@@ -157,18 +157,52 @@ Then("I should not see destinations from other stacks", async ({ page }) => {
 
 // --- Destination choices include all available stacks when I have permission --
 
-Given("I have restore_content_to_any_stack permission", async () => {
-    // TODO: implement step
-});
+Given(
+    "I have restore_content_to_any_stack permission",
+    async ({ page, localStack }) => {
+        // The default user (composer.application@guardian.co.uk) is granted
+        // `restore_content_to_any_stack` by the permissions fixture. Signing in
+        // as that default role and reloading ensures the frontend has the
+        // cross-stack permission for this scenario.
+        const { baseUrl, panDomainPrivateKey } = localStack;
+        const cookieData = createPanDomainCookie(panDomainPrivateKey);
 
-Then("I should see every available restore destination", async () => {
-    // TODO: implement step
+        await page.context().addCookies([
+            {
+                name: "gutoolsAuth-assym",
+                value: cookieData,
+                url: baseUrl,
+            },
+        ]);
+
+        await page.reload({ waitUntil: "domcontentloaded" });
+    },
+);
+
+Then("I should see every available restore destination", async ({ page }) => {
+    // With the cross-stack permission the destination list is unfiltered, so
+    // every configured stack is offered: the primary "Composer (CODE)", the
+    // secondary "Composer-secondary (CODE)" and the local "Local Flexible
+    // Content". Each renders as a radio option labelled with its display name.
+    await expect(
+        page.getByRole("radio", { name: /Composer \(CODE\)/ }),
+    ).toBeVisible({ timeout: timeout });
+    await expect(
+        page.getByRole("radio", { name: /Composer-secondary \(CODE\)/ }),
+    ).toBeVisible({ timeout: timeout });
+    await expect(
+        page.getByRole("radio", { name: /Local Flexible Content/ }),
+    ).toBeVisible({ timeout: timeout });
 });
 
 Then(
     "the destination list should not be restricted to the current system",
-    async () => {
-        // TODO: implement step
+    async ({ page }) => {
+        // The active snapshot is from the secondary system, so if the list were
+        // restricted only "Composer-secondary (CODE)" would show. Seeing all
+        // three configured stacks proves the list is not restricted to the
+        // current system.
+        await expect(page.getByRole("radio")).toHaveCount(3);
     },
 );
 
