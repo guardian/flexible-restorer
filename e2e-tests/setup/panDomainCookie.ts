@@ -21,10 +21,10 @@ const { base64ToPEM } = require("@guardian/pan-domain-node/dist/src/utils") as {
  * - `NoRestoreAccess`: `no.restore@guardian.co.uk` — does NOT have `restorer_access`.
  * - `RestoreSingleStack`: `restore.single.stack@guardian.co.uk` — has `restore_content`
  *   but NOT `restore_content_to_any_stack`, so can only restore to the snapshot's own system.
- * - `RestorerAccessOnly`: `restorer.access.only@guardian.co.uk` — not listed in the
- *   fixture overrides, so it resolves via permission defaults: `restorer_access`
- *   (defaultValue `true`) is granted but `restore_content` (defaultValue `false`)
- *   is not. Use it to exercise a signed-in user who cannot restore at all.
+ * - `RestorerAccessOnly`: `restorer.access.only@guardian.co.uk` — listed in the
+ *   fixture with `restorer_access` granted but NOT `restore_content` (which the
+ *   client resolves to its default of `false` when the user is not listed for
+ *   it). Use it to exercise a signed-in user who cannot restore at all.
  */
 export const roles = {
     default: "composer.application@guardian.co.uk",

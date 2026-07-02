@@ -20,6 +20,11 @@
                 "userId": "no.restore@guardian.co.uk",
                 "active": false,
                 "isCasualNotOnShift": false
+            },
+            {
+                "userId": "restorer.access.only@guardian.co.uk",
+                "active": true,
+                "isCasualNotOnShift": false
             }
         ]
     },
