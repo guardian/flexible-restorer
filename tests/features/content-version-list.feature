@@ -96,7 +96,6 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/templates/restore-list.html
 	# Evidence: public/javascripts/app/models/SnapshotIdModel.js
 
-	@pending
 	Scenario: Published state displays the right status label
 		Given version history data contains published state variations
 		When I inspect the right-hand status area for each row
