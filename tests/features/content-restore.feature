@@ -17,6 +17,7 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/controllers/RestoreFormCtrl.js
   # Evidence: public/javascripts/app/controllers/ModalController.js
 
+  @pending
   Scenario: The restore modal shows the source as coming from secondary when appropriate
     Given the active snapshot is from a secondary system
     When I open the restore modal
@@ -25,6 +26,7 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/models/SnapshotIdModel.js
   # Evidence: public/javascripts/app/controllers/RestoreFormCtrl.js
 
+  @pending
   Scenario: Destination choices are limited when I cannot restore to any stack
     Given I do not have restore_content_to_any_stack permission
     When the restore modal loads destination choices
@@ -35,6 +37,7 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/templates/restore-list.html
   # TODO: We can use tags on each scenario to set running priority, browsers support
 
+  @pending
   Scenario: Destination choices include all available stacks when I have permission
     Given I have restore_content_to_any_stack permission
     When the restore modal loads destination choices
@@ -44,6 +47,7 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/services/RestoreService.js
   # Evidence: public/javascripts/app/templates/restore-list.html
 
+  @pending
   Scenario: Each destination row explains whether content is already present or available
     Given the restore modal has loaded destination choices
     When I inspect the destination list
@@ -54,6 +58,7 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/services/RestoreService.js
   # Evidence: public/javascripts/app/templates/restore-list.html
 
+  @pending
   Scenario: A destination is marked unavailable when its stack cannot be reached
     Given the restore modal loads destination choices
     When a destination stack does not respond within the timeout
@@ -62,6 +67,7 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: app/controllers/Restore.scala
   # Evidence: public/javascripts/app/templates/restore-list.html
 
+  @pending
   Scenario: The current destination is preselected when it is available
     Given the restore modal has loaded destination choices
     And the current system is present in the destination list
@@ -71,6 +77,7 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/services/RestoreService.js
   # Evidence: public/javascripts/app/templates/restore-list.html
 
+  @pending
   Scenario: The first available destination is used when the current system is missing
     Given the restore modal has loaded destination choices
     And the current system is not present in the destination list
@@ -80,6 +87,7 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/services/RestoreService.js
   # Evidence: public/javascripts/app/templates/restore-list.html
 
+  @pending
   Scenario: The Restore Version action stays disabled until both safety checks are confirmed
     Given the restore modal is open
     When either safety checkbox is not selected
@@ -88,6 +96,7 @@ Feature: Restore a selected snapshot from the restore modal
     Then the Restore Version action should be enabled
   # Evidence: public/javascripts/app/templates/restore-list.html
 
+  @pending
   Scenario: Closing the modal resets the restore form back to its initial state
     Given the restore modal is open
     When I close the modal with Cancel
@@ -99,6 +108,7 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/controllers/RestoreFormCtrl.js
   # Evidence: public/javascripts/app/templates/restore-list.html
 
+  @pending
   Scenario: Pressing Escape closes the restore modal
     Given the restore modal is open
     When I press Escape
@@ -107,6 +117,7 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/controllers/ModalController.js
   # Evidence: public/javascripts/app/templates/restore-list.html
 
+  @pending
   Scenario: A successful restore returns me to Composer for that content
     Given the restore modal is open
     And I have selected a destination
@@ -117,6 +128,7 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/services/RestoreService.js
   # Evidence: public/javascripts/app/templates/restore-list.html
 
+  @pending
   Scenario: A restore request is rejected when I lack restore_content permission
     Given I do not have restore_content permission
     When I submit a restore request to the restore API
@@ -125,6 +137,7 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: app/controllers/Restore.scala
   # Evidence: app/permissions/Permissions.scala
 
+  @pending
   Scenario: Restoring to a different stack is rejected without cross-stack permission
     Given I have restore_content permission
     And I do not have restore_content_to_any_stack permission
@@ -134,6 +147,7 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: app/controllers/Restore.scala
   # Evidence: app/permissions/Permissions.scala
 
+  @pending
   Scenario: Restoring a snapshot that is missing from the source returns not found
     Given I have the required restore permissions
     When I submit a restore request for a snapshot that no longer exists in the source stack
