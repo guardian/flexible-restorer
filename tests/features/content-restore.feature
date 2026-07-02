@@ -17,7 +17,6 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/controllers/RestoreFormCtrl.js
   # Evidence: public/javascripts/app/controllers/ModalController.js
 
-  @pending
   Scenario: The restore modal shows the source as coming from secondary when appropriate
     Given the active snapshot is from a secondary system
     When I open the restore modal
@@ -35,7 +34,6 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/controllers/RestoreFormCtrl.js
   # Evidence: public/javascripts/app/services/RestoreService.js
   # Evidence: public/javascripts/app/templates/restore-list.html
-  # TODO: We can use tags on each scenario to set running priority, browsers support
 
   @pending
   Scenario: Destination choices include all available stacks when I have permission
