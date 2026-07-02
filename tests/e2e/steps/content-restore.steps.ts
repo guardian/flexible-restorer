@@ -64,14 +64,27 @@ Then('I should see the "From" and "To" headings', async ({ page }) => {
 
 // --- The restore modal shows the source as coming from secondary when appropriate
 
-Given("the active snapshot is from a secondary system", async () => {
-    // TODO: implement step
+Given("the active snapshot is from a secondary system", async ({ page }) => {
+    // The fixtures load identical snapshots into both the primary and secondary
+    // snapshot buckets, and the version list is sorted newest-first. For the
+    // Background content the most recent (active) snapshot resolves to the
+    // secondary stack, so no extra selection is needed — just wait for the
+    // content panel to be ready (the "Show JSON" toggle only appears once a
+    // snapshot is active).
+    await expect(
+        page.getByText("Show JSON", { exact: true }),
+    ).toBeVisible({ timeout: timeout });
 });
 
 Then(
     "I should see the source summary indicate that it is from secondary",
-    async () => {
-        // TODO: implement step
+    async ({ page }) => {
+        // The modal's source summary renders "Snapshot of revision N taken from
+        // secondary at <date>" when the active snapshot's system is secondary
+        // (the "from secondary" text is only present for secondary sources).
+        await expect(
+            page.getByText(/Snapshot of revision \d+ taken from secondary at/),
+        ).toBeVisible({ timeout: timeout });
     },
 );
 
