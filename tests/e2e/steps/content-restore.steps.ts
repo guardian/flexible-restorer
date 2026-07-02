@@ -1,5 +1,6 @@
 import { Given, When, Then, expect } from "../fixtures";
 import { createPanDomainCookie } from "../panDomainCookie";
+import type { APIResponse } from "@playwright/test";
 
 /**
  * Playwright-style step definitions for `tests/features/content-restore.feature`.
@@ -24,6 +25,10 @@ import { createPanDomainCookie } from "../panDomainCookie";
  */
 
 let timeout = 5 * 1000;
+
+// Holds the response from a restore API request so later Then steps can assert
+// on its status/body.
+let restoreResponse: APIResponse | undefined;
 
 // --- The restore modal shows the source snapshot header and destination headings
 
@@ -348,7 +353,9 @@ When("I submit a restore request to the restore API", async () => {
 });
 
 Then("the request should be rejected as forbidden", async () => {
-    // TODO: implement step
+    // A rejected restore request returns HTTP 403 Forbidden.
+    expect(restoreResponse).toBeDefined();
+    expect(restoreResponse!.status()).toBe(403);
 });
 
 Then(
@@ -360,21 +367,56 @@ Then(
 
 // --- Restoring to a different stack is rejected without cross-stack permission -
 
-Given("I have restore_content permission", async () => {
-    // TODO: implement step
+Given("I have restore_content permission", async ({ page, localStack }) => {
+    // Reuse the existing `RestoreSingleStack` role
+    // (restore.single.stack@guardian.co.uk), which the permissions fixture
+    // grants `restore_content` (but NOT `restore_content_to_any_stack`). Swap
+    // the pan-domain cookie to that user so the restore API request is made as
+    // someone who may restore to their own stack only.
+    const { baseUrl, panDomainPrivateKey } = localStack;
+    const cookieData = createPanDomainCookie(
+        panDomainPrivateKey,
+        "RestoreSingleStack",
+    );
+
+    await page.context().addCookies([
+        {
+            name: "gutoolsAuth-assym",
+            value: cookieData,
+            url: baseUrl,
+        },
+    ]);
 });
 
 When(
     "I submit a restore request whose destination stack differs from the source stack",
-    async () => {
-        // TODO: implement step
+    async ({ page, localStack }) => {
+        // POST to the restore endpoint with a source stack id that differs from
+        // the destination stack id. The controller checks the cross-stack
+        // permission before it looks up any snapshot, so the exact
+        // content/timestamp values are irrelevant to this rejection.
+        const sourceId = "CODE:flexible";
+        const destinationId = "CODE:flexible-secondary";
+        const contentId = "568c4110e4b0c73bdb0e52df";
+        const timestamp = "2026-06-12T03:26:06.505Z";
+
+        const url =
+            `${localStack.baseUrl}/api/1/restore/` +
+            `${encodeURIComponent(sourceId)}/${contentId}/` +
+            `${encodeURIComponent(timestamp)}/to/` +
+            `${encodeURIComponent(destinationId)}`;
+
+        restoreResponse = await page.request.post(url);
     },
 );
 
 Then(
     "I should be told that the restore_content_to_any_stack permission is required",
     async () => {
-        // TODO: implement step
+        // The controller responds with a message naming the missing permission.
+        expect(restoreResponse).toBeDefined();
+        const body = await restoreResponse!.text();
+        expect(body).toContain("restore_content_to_any_stack");
     },
 );
 
