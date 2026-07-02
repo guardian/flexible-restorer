@@ -25,7 +25,6 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/models/SnapshotIdModel.js
   # Evidence: public/javascripts/app/controllers/RestoreFormCtrl.js
 
-  @pending
   Scenario: Destination choices are limited when I cannot restore to any stack
     Given I do not have restore_content_to_any_stack permission
     When the restore modal loads destination choices
