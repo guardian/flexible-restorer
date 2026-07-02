@@ -11,6 +11,7 @@ const bddTestDir = defineBddConfig({
         "tests/features/authentication.feature",
         "tests/features/content-version-list.feature",
         "tests/features/export.feature",
+        "tests/features/content-restore.feature",
     ],
     steps: ["tests/e2e/fixtures.ts", "tests/e2e/steps/*.ts"],
 });
