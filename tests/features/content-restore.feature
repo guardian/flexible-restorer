@@ -133,7 +133,6 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: app/controllers/Restore.scala
   # Evidence: app/permissions/Permissions.scala
 
-  @pending
   Scenario: Restoring to a different stack is rejected without cross-stack permission
     Given I have restore_content permission
     And I do not have restore_content_to_any_stack permission
