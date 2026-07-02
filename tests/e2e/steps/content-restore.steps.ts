@@ -344,12 +344,42 @@ Then(
 
 // --- A restore request is rejected when I lack restore_content permission ------
 
-Given("I do not have restore_content permission", async () => {
-    // TODO: implement step
+Given("I do not have restore_content permission", async ({ page, localStack }) => {
+    // Sign in as the `RestorerAccessOnly` role
+    // (restorer.access.only@guardian.co.uk). That email is not listed in the
+    // permissions fixture, so it resolves via defaults: it HAS `restorer_access`
+    // (so it passes auth and reaches the controller) but does NOT have
+    // `restore_content` (defaultValue false).
+    const { baseUrl, panDomainPrivateKey } = localStack;
+    const cookieData = createPanDomainCookie(
+        panDomainPrivateKey,
+        "RestorerAccessOnly",
+    );
+
+    await page.context().addCookies([
+        {
+            name: "gutoolsAuth-assym",
+            value: cookieData,
+            url: baseUrl,
+        },
+    ]);
 });
 
-When("I submit a restore request to the restore API", async () => {
-    // TODO: implement step
+When("I submit a restore request to the restore API", async ({ page, localStack }) => {
+    // POST to the restore endpoint. The controller checks `restore_content`
+    // before anything else, so a same-stack request (source == destination) is
+    // enough to trigger the rejection and the content/timestamp are irrelevant.
+    const systemId = "CODE:flexible";
+    const contentId = "568c4110e4b0c73bdb0e52df";
+    const timestamp = "2026-06-12T03:26:06.505Z";
+
+    const url =
+        `${localStack.baseUrl}/api/1/restore/` +
+        `${encodeURIComponent(systemId)}/${contentId}/` +
+        `${encodeURIComponent(timestamp)}/to/` +
+        `${encodeURIComponent(systemId)}`;
+
+    restoreResponse = await page.request.post(url);
 });
 
 Then("the request should be rejected as forbidden", async () => {
@@ -361,7 +391,13 @@ Then("the request should be rejected as forbidden", async () => {
 Then(
     "I should be told that the restore_content permission is required",
     async () => {
-        // TODO: implement step
+        // The controller responds with a message naming the missing permission.
+        // The cross-stack message reads "restore_content_to_any_stack
+        // permission", so match the specific "restore_content permission"
+        // phrase to be sure this is the restore_content rejection.
+        expect(restoreResponse).toBeDefined();
+        const body = await restoreResponse!.text();
+        expect(body).toContain("restore_content permission");
     },
 );
 

@@ -124,7 +124,6 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/services/RestoreService.js
   # Evidence: public/javascripts/app/templates/restore-list.html
 
-  @pending
   Scenario: A restore request is rejected when I lack restore_content permission
     Given I do not have restore_content permission
     When I submit a restore request to the restore API
