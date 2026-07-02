@@ -8,11 +8,13 @@ function waitForTerminationSignal(): Promise<void> {
         const resolveOnce = () => {
             process.off("SIGINT", resolveOnce);
             process.off("SIGTERM", resolveOnce);
+            process.off("SIGHUP", resolveOnce);
             resolve();
         };
 
         process.once("SIGINT", resolveOnce);
         process.once("SIGTERM", resolveOnce);
+        process.once("SIGHUP", resolveOnce);
     });
 }
 
@@ -33,7 +35,17 @@ async function main() {
             mockApiUrl: stack.mockApiUrl,
         });
 
-        browser = await chromium.launch({ headless: false });
+        browser = await chromium.launch({
+            headless: false,
+            // Prevent Playwright from installing its own signal handlers that
+            // force-kill the browser and call process.exit() on Ctrl+C. Those
+            // handlers bypass the `finally` block below, leaving the Docker
+            // containers running. We handle termination ourselves so the
+            // cleanup (stopLocalStack) always runs and removes the containers.
+            handleSIGINT: false,
+            handleSIGTERM: false,
+            handleSIGHUP: false,
+        });
         const page = await browser.newPage();
         await page.context().addCookies([
             {
