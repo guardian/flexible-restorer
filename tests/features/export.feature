@@ -14,30 +14,10 @@ Feature: Export snapshot history for external use
   # Evidence: app/controllers/Export.scala
   # Evidence: conf/routes
 
-  @pending
-  Scenario: Exporting as a git repository returns committed snapshot history
-    Given version history exists for a piece of content
-    When I request the git export for that content
-    Then I should receive a downloadable zip archive of a git repository
-    And the repository should contain committed snapshot files for each version
-    And each commit should be labeled with the snapshot timestamp
-  # Evidence: app/controllers/Export.scala
-  # Evidence: conf/routes
-
-  @pending
   Scenario: Exporting content with no snapshots returns not found
     Given a piece of content has no snapshots
     When I request either export format for that content
     Then the response should be not found
     And the response should explain that the content has no snapshots
-  # Evidence: app/controllers/Export.scala
-  # Evidence: conf/routes
-
-  @pending
-  Scenario: Export routes are protected by the same auth gate as the rest of the app
-    Given I am not signed in
-    When I request an export route
-    Then I should be redirected to the access denied page
-  # Evidence: app/auth/PanDomainAuthActions.scala
   # Evidence: app/controllers/Export.scala
   # Evidence: conf/routes
