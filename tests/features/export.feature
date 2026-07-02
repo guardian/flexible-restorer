@@ -14,6 +14,7 @@ Feature: Export snapshot history for external use
   # Evidence: app/controllers/Export.scala
   # Evidence: conf/routes
 
+  @pending
   Scenario: Exporting as a git repository returns committed snapshot history
     Given version history exists for a piece of content
     When I request the git export for that content
@@ -23,6 +24,7 @@ Feature: Export snapshot history for external use
   # Evidence: app/controllers/Export.scala
   # Evidence: conf/routes
 
+  @pending
   Scenario: Exporting content with no snapshots returns not found
     Given a piece of content has no snapshots
     When I request either export format for that content
@@ -31,6 +33,7 @@ Feature: Export snapshot history for external use
   # Evidence: app/controllers/Export.scala
   # Evidence: conf/routes
 
+  @pending
   Scenario: Export routes are protected by the same auth gate as the rest of the app
     Given I am not signed in
     When I request an export route
