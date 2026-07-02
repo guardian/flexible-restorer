@@ -7,7 +7,8 @@
         "bdd:gen": "bddgen",
         "test:e2e": "./scripts/test-e2e",
         "test:e2e:headed": "./scripts/test-e2e --headed",
-        "test:e2e:debug": "./scripts/test-e2e --debug"
+        "test:e2e:debug": "./scripts/test-e2e --debug",
+        "test:report": "npx http-server ./cucumber-report -c-1 -a localhost -o index.html"
     },
     "dependencies": {
         "angular": "^1.8.3",
