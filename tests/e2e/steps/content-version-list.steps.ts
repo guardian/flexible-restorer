@@ -330,11 +330,24 @@ Given("version history data contains published state variations", async ( {page 
     await page.goto(localStack.baseUrl + '/content/568c4110e4b0c73bdb0e52df/versions' , { waitUntil: "domcontentloaded" });
 });
 
-When("I inspect the right-hand status area for each row", async () => {});
-Then("I should see Published for published snapshots", async () => {});
-Then("I should see Taken down for unpublished snapshots with prior publish details", async () => {});
-Then("I should see Scheduled with a date when a scheduled launch date exists", async () => {});
-Then("I should see Embargoed until with a date when embargo settings exist", async () => {});
+When("I inspect the right-hand status area for each row", async () => {
+    //No-op
+});
+Then("I should see Published for published snapshots", async ( { page  }) => {
+    await expect(page.getByText("Published", { exact: true }).first()).toBeVisible({ timeout });
+});
+Then("I should see Taken down for unpublished snapshots with prior publish details", async ( {page, localStack}) => {
+    await page.goto(localStack.baseUrl + '/content/54a2b86be4b048dfa4053a48/versions' , { waitUntil: "domcontentloaded" });
+    await expect(page.getByText("Taken down", { exact: true }).first()).toBeVisible({ timeout });
+});
+Then("I should see Scheduled with a date when a scheduled launch date exists", async ({ page, localStack }) => {
+        await page.goto(localStack.baseUrl + '/content/58e4eab7e4b01ca21818a13e/versions' , { waitUntil: "domcontentloaded" });
+    await expect(page.getByText('Scheduled Mon 5 April').first()).toBeVisible({ timeout });
+});
+Then("I should see Embargoed until with a date when embargo settings exist", async ({ page, localStack }) => {
+    await page.goto(localStack.baseUrl + '/content/55901e70e4b0c9bda8d8ab20/versions' , { waitUntil: "domcontentloaded" });
+    await expect(page.getByText('Embargoed until Mon 29 June').first()).toBeVisible({ timeout });
+});
 
 Given("version history data has multiple snapshots", async () => {
     // The fixture used in the Background has 2 snapshots, so no additional setup is required.
