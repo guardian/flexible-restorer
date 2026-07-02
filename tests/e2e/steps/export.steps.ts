@@ -1,6 +1,9 @@
-import type { Download } from "@playwright/test";
-import { execFileSync } from "child_process";
+import type { APIResponse, Download } from "@playwright/test";
 import { Given, When, Then, expect } from "../fixtures";
+import { execFileSync } from "child_process";
+import { mkdtempSync } from "fs";
+import { tmpdir } from "os";
+import { join } from "path";
 
 /**
  * Playwright-style step definitions for `tests/features/export.feature`.
@@ -19,6 +22,15 @@ import { Given, When, Then, expect } from "../fixtures";
 // The download triggered by an export action, captured in the When step so the
 // following Then step can assert on it.
 let lastDownload: Download | undefined;
+
+// A content id that has no snapshots in any source stack. It is a well-formed
+// 24-hex id (matching SnapshotId's expected shape) that does not exist in the
+// fixtures, so listing snapshots for it returns nothing.
+const contentIdWithoutSnapshots = "000000000000000000000000";
+
+// The response captured when requesting an export for content with no
+// snapshots, asserted on by the following Then steps.
+let exportResponse: APIResponse | undefined;
 
 // --- Exporting as a zip returns snapshot files for the requested content ------
 
@@ -81,61 +93,38 @@ Then(
     },
 );
 
-// --- Exporting as a git repository returns committed snapshot history ---------
-
-When("I request the git export for that content", async () => {
-    // TODO: implement step
-});
-
-Then(
-    "I should receive a downloadable zip archive of a git repository",
-    async () => {
-        // TODO: implement step
-    },
-);
-
-Then(
-    "the repository should contain committed snapshot files for each version",
-    async () => {
-        // TODO: implement step
-    },
-);
-
-Then("each commit should be labeled with the snapshot timestamp", async () => {
-    // TODO: implement step
-});
-
 // --- Exporting content with no snapshots returns not found --------------------
 
 Given("a piece of content has no snapshots", async () => {
-    // TODO: implement step
+    // Use a well-formed content id that is absent from the fixtures, so the
+    // export controller finds no snapshots for it. No navigation is needed — the
+    // export endpoints are hit directly in the next step.
+    exportResponse = undefined;
 });
 
-When("I request either export format for that content", async () => {
-    // TODO: implement step
+When("I request either export format for that content", async ({ page, localStack }) => {
+    // Hit an export endpoint directly for the snapshot-less content id. The
+    // request shares the signed-in cookie from the browser context. Both export
+    // formats behave identically for missing content, so exercising the zip
+    // format is representative (see app/controllers/Export.scala).
+    exportResponse = await page.request.get(
+        `${localStack.baseUrl}/export/${contentIdWithoutSnapshots}/zip`,
+    );
 });
 
 Then("the response should be not found", async () => {
-    // TODO: implement step
+    // The export controller returns 404 Not Found when the content has no
+    // snapshots.
+    expect(exportResponse?.status()).toBe(404);
 });
 
 Then(
     "the response should explain that the content has no snapshots",
     async () => {
-        // TODO: implement step
+        // The 404 body is `"<contentId> does not have any snapshots"`
+        // (Export.scala), naming the requested content and the reason.
+        const body = (await exportResponse?.text()) ?? "";
+        expect(body).toContain("does not have any snapshots");
+        expect(body).toContain(contentIdWithoutSnapshots);
     },
 );
-
-// --- Export routes are protected by the same auth gate as the rest of the app -
-
-Given("I am not signed in", async () => {
-    // TODO: implement step
-});
-
-When("I request an export route", async () => {
-    // TODO: implement step
-});
-
-Then("I should be redirected to the access denied page", async () => {
-    // TODO: implement step
-});
