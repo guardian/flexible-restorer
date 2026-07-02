@@ -299,8 +299,13 @@ When("I close the modal with Cancel", async () => {
     // TODO: implement step
 });
 
-Then("the modal should close", async () => {
-    // TODO: implement step
+Then("the modal should close", async ({ page }) => {
+    // The modal is only ever hidden by toggling its opacity to 0 (it keeps its
+    // DOM node and layout), so a closed modal is detected by its computed
+    // opacity rather than by visibility. Locate it by its unique title text.
+    await expect(
+        page.locator(".modal").filter({ hasText: "Before you restore" }),
+    ).toHaveCSS("opacity", "0", { timeout: timeout });
 });
 
 Then("the destination list should be cleared", async () => {
@@ -317,13 +322,26 @@ Then("the source summary should be cleared", async () => {
 
 // --- Pressing Escape closes the restore modal ---------------------------------
 
-When("I press Escape", async () => {
-    // TODO: implement step
+When("I press Escape", async ({ page }) => {
+    // While the modal is active the modal controller closes it on Escape
+    // (keyCode 27).
+    await page.keyboard.press("Escape");
 });
 
-Then("the page should return to the version history view", async () => {
-    // TODO: implement step
-});
+Then(
+    "the page should return to the version history view",
+    async ({ page }) => {
+        // Closing the modal leaves the user on the version history page, so its
+        // URL and content remain in view. Assert both the URL and a known piece
+        // of the version history content.
+        await expect(page).toHaveURL(/\/content\/[^/]+\/versions/);
+        await expect(
+            page.getByRole("heading", {
+                name: "Irish fury at Thierry Henry's handball in World Cup qualifier",
+            }),
+        ).toBeVisible({ timeout: timeout });
+    },
+);
 
 // --- A successful restore returns me to Composer for that content -------------
 
