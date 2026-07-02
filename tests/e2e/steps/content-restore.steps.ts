@@ -1,4 +1,5 @@
 import { Given, When, Then, expect } from "../fixtures";
+import { createPanDomainCookie } from "../panDomainCookie";
 
 /**
  * Playwright-style step definitions for `tests/features/content-restore.feature`.
@@ -90,20 +91,68 @@ Then(
 
 // --- Destination choices are limited when I cannot restore to any stack -------
 
-Given("I do not have restore_content_to_any_stack permission", async () => {
-    // TODO: implement step
+Given(
+    "I do not have restore_content_to_any_stack permission",
+    async ({ page, localStack }) => {
+        // Reuse the existing `RestoreSingleStack` role
+        // (restore.single.stack@guardian.co.uk), which the permissions fixture
+        // grants `restore_content` but NOT `restore_content_to_any_stack`. Swap
+        // the pan-domain cookie to that user and reload so the frontend picks up
+        // the single-stack permission.
+        const { baseUrl, panDomainPrivateKey } = localStack;
+        const cookieData = createPanDomainCookie(
+            panDomainPrivateKey,
+            "RestoreSingleStack",
+        );
+
+        await page.context().addCookies([
+            {
+                name: "gutoolsAuth-assym",
+                value: cookieData,
+                url: baseUrl,
+            },
+        ]);
+
+        await page.reload({ waitUntil: "domcontentloaded" });
+    },
+);
+
+When("the restore modal loads destination choices", async ({ page }) => {
+    // Wait for a snapshot to be active (the "Show JSON" toggle only appears once
+    // content has loaded), open the restore modal, and wait for the destination
+    // ("To:") column to render its choices.
+    await expect(
+        page.getByText("Show JSON", { exact: true }),
+    ).toBeVisible({ timeout: timeout });
+    await page.keyboard.press("Enter");
+    await expect(
+        page.getByRole("heading", { name: "To:" }),
+    ).toBeVisible({ timeout: timeout });
 });
 
-When("the restore modal loads destination choices", async () => {
-    // TODO: implement step
-});
+Then(
+    "I should only see destinations for the current system",
+    async ({ page }) => {
+        // The active snapshot for the Background content is from the secondary
+        // system, so the only destination the single-stack user may restore to
+        // is "Composer-secondary (CODE)". Each destination renders as a radio
+        // option labelled with its display name.
+        await expect(
+            page.getByRole("radio", { name: /Composer-secondary \(CODE\)/ }),
+        ).toBeVisible({ timeout: timeout });
+    },
+);
 
-Then("I should only see destinations for the current system", async () => {
-    // TODO: implement step
-});
-
-Then("I should not see destinations from other stacks", async () => {
-    // TODO: implement step
+Then("I should not see destinations from other stacks", async ({ page }) => {
+    // The other stacks (the primary "Composer (CODE)" and the local
+    // "Local Flexible Content") must be filtered out because the user cannot
+    // restore across stacks.
+    await expect(
+        page.getByRole("radio", { name: /^Composer \(CODE\)/ }),
+    ).toHaveCount(0);
+    await expect(
+        page.getByRole("radio", { name: /Local Flexible Content/ }),
+    ).toHaveCount(0);
 });
 
 // --- Destination choices include all available stacks when I have permission --
