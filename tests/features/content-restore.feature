@@ -104,7 +104,6 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/controllers/RestoreFormCtrl.js
   # Evidence: public/javascripts/app/templates/restore-list.html
 
-  @pending
   Scenario: Pressing Escape closes the restore modal
     Given the restore modal is open
     When I press Escape
