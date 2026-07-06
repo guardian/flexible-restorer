@@ -1,5 +1,6 @@
 const { defineConfig } = require("@playwright/test");
 const { defineBddConfig, cucumberReporter } = require("playwright-bdd");
+const path = require("path");
 
 // Generate Playwright tests from the BDD feature files. Only the features that
 // currently have step definitions are included here.
@@ -18,6 +19,11 @@ const bddTestDir = defineBddConfig({
 
 module.exports = defineConfig({
     timeout: 15 * 60 * 1000,
+    // Start a single local stack once for the whole run (see
+    // tests/e2e/globalSetup.ts) and stop it afterwards, so workers all share one
+    // stack instead of each booting their own in parallel.
+    globalSetup: path.join(__dirname, "tests/e2e/globalSetup.ts"),
+    globalTeardown: path.join(__dirname, "tests/e2e/globalTeardown.ts"),
     expect: {
         timeout: 10 * 1000,
     },
