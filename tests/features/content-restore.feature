@@ -77,25 +77,21 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: app/controllers/Restore.scala
   # Evidence: public/javascripts/app/templates/restore-list.html
 
-  # @pending
-  # Scenario: The current destination is preselected when it is available
-  #   Given the restore modal has loaded destination choices
-  #   And the current system is present in the destination list
-  #   When the modal finishes loading
-  #   Then the current system destination should be preselected
-  # # Evidence: public/javascripts/app/controllers/RestoreFormCtrl.js
-  # # Evidence: public/javascripts/app/services/RestoreService.js
-  # # Evidence: public/javascripts/app/templates/restore-list.html
+  Scenario: The current destination is preselected when it is available
+    Given the restore modal has loaded destination choices with current system present
+    When the modal finishes loading
+    Then the current system destination should be preselected
+  # Evidence: public/javascripts/app/controllers/RestoreFormCtrl.js
+  # Evidence: public/javascripts/app/services/RestoreService.js
+  # Evidence: public/javascripts/app/templates/restore-list.html
 
-  # @pending
-  # Scenario: The first available destination is used when the current system is missing
-  #   Given the restore modal has loaded destination choices
-  #   And the current system is not present in the destination list
-  #   When the modal finishes loading
-  #   Then the first destination should be preselected
-  # # Evidence: public/javascripts/app/controllers/RestoreFormCtrl.js
-  # # Evidence: public/javascripts/app/services/RestoreService.js
-  # # Evidence: public/javascripts/app/templates/restore-list.html
+  Scenario: The first available destination is used when the current system is missing
+    Given the restore modal has loaded destination choices with current system missing
+    When the modal finishes loading
+    Then the first destination should be preselected
+  # Evidence: public/javascripts/app/controllers/RestoreFormCtrl.js
+  # Evidence: public/javascripts/app/services/RestoreService.js
+  # Evidence: public/javascripts/app/templates/restore-list.html
 
   @pending
   Scenario: The Restore Version action stays disabled until both safety checks are confirmed

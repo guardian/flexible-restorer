@@ -50,6 +50,15 @@ const DESTINATION_CONTENT_IDS = {
 // assertion is not flaky under load.
 const DESTINATIONS_LOAD_TIMEOUT = 25 * 1000;
 
+// The Background content. Its fixtures are uploaded to both the primary and
+// secondary snapshot buckets and the version list is sorted newest-first, so the
+// active (most recent) snapshot resolves to the secondary stack. That makes the
+// secondary stack the "current system" for this content (see
+// `RestoreFormCtrl.loadSourceAndDestinations`, which preselects the destination
+// whose systemId matches the active snapshot's system).
+const BACKGROUND_CONTENT_ID = "568c4110e4b0c73bdb0e52df";
+const CURRENT_SYSTEM_ID = "CODE:flexible-secondary";
+
 /** Point the mock flexible-content API at a per-content changeDetails response. */
 async function setDestinationChangeDetails(
     request: APIRequestContext,
@@ -184,6 +193,13 @@ When("the restore modal loads destination choices", async ({ page }) => {
     await expect(
         page.getByRole("heading", { name: "To:" }),
     ).toBeVisible({ timeout: timeout });
+});
+
+Given("the restore modal has loaded destination choices with current system present", async ({ page, localStack }) => {
+    // Open the Background content's restore modal with no interception: the
+    // destinations endpoint returns every stack, so the active snapshot's system
+    // (the secondary stack) is present in the list and can be preselected.
+    await openRestoreModalFor(page, localStack, BACKGROUND_CONTENT_ID);
 });
 
 Then(
@@ -397,26 +413,59 @@ Then(
 
 // --- The current destination is preselected when it is available --------------
 
-Given("the current system is present in the destination list", async () => {
-    // TODO: implement step
+When("the modal finishes loading", async ({ page }) => {
+    // The modal has finished loading once its destination choices have rendered
+    // as radio options.
+    await expect(
+        page.getByRole("radio").first(),
+    ).toBeVisible({ timeout: DESTINATIONS_LOAD_TIMEOUT });
 });
 
-When("the modal finishes loading", async () => {
-    // TODO: implement step
-});
-
-Then("the current system destination should be preselected", async () => {
-    // TODO: implement step
+Then("the current system destination should be preselected", async ({ page }) => {
+    // The active snapshot's system (the secondary stack) is present in the
+    // destination list, so it is the one preselected (its radio is checked).
+    await expect(
+        page.getByRole("radio", { name: /Composer-secondary \(CODE\)/ }),
+    ).toBeChecked({ timeout: timeout });
 });
 
 // --- The first available destination is used when the current system is missing
 
-Given("the current system is not present in the destination list", async () => {
-    // TODO: implement step
-});
+Given(
+    "the restore modal has loaded destination choices with current system missing",
+    async ({ page, localStack }) => {
+        // Remove the active snapshot's system (the secondary stack) from the
+        // destinations response so the current system is absent from the list.
+        // The interception must be registered before the modal opens and fires
+        // its destinations request.
+        await page.route(
+            "**/api/1/restore/destinations/*",
+            async (route) => {
+                const response = await route.fetch();
+                const destinations = (await response.json()) as Array<{
+                    systemId: string;
+                }>;
+                const withoutCurrentSystem = destinations.filter(
+                    (destination) => destination.systemId !== CURRENT_SYSTEM_ID,
+                );
+                await route.fulfill({ response, json: withoutCurrentSystem });
+            },
+        );
+        await openRestoreModalFor(page, localStack, BACKGROUND_CONTENT_ID);
+    },
+);
 
-Then("the first destination should be preselected", async () => {
-    // TODO: implement step
+Then("the first destination should be preselected", async ({ page }) => {
+    // With the current system removed, the modal falls back to preselecting the
+    // first destination in the list (the primary "Composer (CODE)" stack).
+    await expect(
+        page.getByRole("radio").first(),
+    ).toBeChecked({ timeout: timeout });
+    // Confirm the "missing" precondition held: the current (secondary) system is
+    // not offered as a destination.
+    await expect(
+        page.getByRole("radio", { name: /Composer-secondary \(CODE\)/ }),
+    ).toHaveCount(0);
 });
 
 // --- The Restore Version action stays disabled until both safety checks -------
