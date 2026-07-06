@@ -1,6 +1,7 @@
 import { Given, When, Then, expect } from "../fixtures";
 import { createPanDomainCookie } from "../panDomainCookie";
-import type { APIResponse } from "@playwright/test";
+import type { APIRequestContext, APIResponse, Page } from "@playwright/test";
+import type { LocalStack } from "../stackContainers";
 
 /**
  * Playwright-style step definitions for `tests/features/content-restore.feature`.
@@ -29,6 +30,56 @@ let timeout = 5 * 1000;
 // Holds the response from a restore API request so later Then steps can assert
 // on its status/body.
 let restoreResponse: APIResponse | undefined;
+
+// Three fixtures (each has snapshots in the MinIO buckets so the version history
+// page renders and the restore modal can open) used to exercise the three
+// destination-row states. The mock flexible-content API is configured per
+// content id (via `changeDetailsByContentId`) so each id's destinations report a
+// different state:
+//   - already has content  -> changeDetails returns a revision + last-modified
+//   - has no content        -> changeDetails returns 200 with empty data
+//   - cannot be used         -> changeDetails resets the connection so the
+//                               destination is marked unavailable
+const DESTINATION_CONTENT_IDS = {
+    hasContent: "54931ae2e4b019234074e3c8",
+    noContent: "569cdccee4b0e63c102ed861",
+    cannotBeUsed: "58e4eab7e4b01ca21818a13e",
+} as const;
+
+// Longest a destination list can take to load. Allow generous headroom so the
+// assertion is not flaky under load.
+const DESTINATIONS_LOAD_TIMEOUT = 25 * 1000;
+
+/** Point the mock flexible-content API at a per-content changeDetails response. */
+async function setDestinationChangeDetails(
+    request: APIRequestContext,
+    mockApiUrl: string,
+    contentId: string,
+    changeDetails: Record<string, unknown>,
+): Promise<void> {
+    await request.post(`${mockApiUrl}/__admin/state`, {
+        data: { changeDetailsByContentId: { [contentId]: changeDetails } },
+    });
+}
+
+/** Open the version history page for a piece of content and launch the modal. */
+async function openRestoreModalFor(
+    page: Page,
+    localStack: LocalStack,
+    contentId: string,
+): Promise<void> {
+    await page.goto(`${localStack.baseUrl}/content/${contentId}/versions`, {
+        waitUntil: "domcontentloaded",
+    });
+    // The "Show JSON" toggle only appears once a snapshot is active.
+    await expect(
+        page.getByText("Show JSON", { exact: true }),
+    ).toBeVisible({ timeout: timeout });
+    await page.keyboard.press("Enter");
+    await expect(
+        page.getByRole("heading", { name: "To:" }),
+    ).toBeVisible({ timeout: timeout });
+}
 
 // --- The restore modal shows the source snapshot header and destination headings
 
@@ -213,18 +264,94 @@ Then(
 
 // --- Each destination row explains whether content is already present ---------
 
-Given("the restore modal has loaded destination choices", async () => {
-    // TODO: implement step
+Given(
+    "the restore modal has loaded destination choices when the destination already has content",
+    async ({ page, localStack }) => {
+        // Configure the mock so this content's destinations report a current
+        // revision, which the modal renders as "currently has revision N, last
+        // modified at ...".
+        await setDestinationChangeDetails(
+            page.request,
+            localStack.mockApiUrl,
+            DESTINATION_CONTENT_IDS.hasContent,
+            { status: 200, revision: 38, lastModified: 1781234474425 },
+        );
+        await openRestoreModalFor(
+            page,
+            localStack,
+            DESTINATION_CONTENT_IDS.hasContent,
+        );
+    },
+);
+
+Given(
+    "the restore modal has loaded destination choices when the destination has no content",
+    async ({ page, localStack }) => {
+        // Configure the mock so this content's destinations return a 200 with no
+        // change details, which the modal renders as "content not on this
+        // instance".
+        await setDestinationChangeDetails(
+            page.request,
+            localStack.mockApiUrl,
+            DESTINATION_CONTENT_IDS.noContent,
+            { status: 200, revision: null, lastModified: null },
+        );
+        await openRestoreModalFor(
+            page,
+            localStack,
+            DESTINATION_CONTENT_IDS.noContent,
+        );
+    },
+);
+
+Given(
+    "the restore modal has loaded destination choices when the destination cannot be used",
+    async ({ page, localStack }) => {
+        // Configure the mock so this content's destinations reset the connection,
+        // which the restorer treats as an unreachable stack and marks the
+        // destinations unavailable so they cannot be used.
+        await setDestinationChangeDetails(
+            page.request,
+            localStack.mockApiUrl,
+            DESTINATION_CONTENT_IDS.cannotBeUsed,
+            { unreachable: true },
+        );
+        await openRestoreModalFor(
+            page,
+            localStack,
+            DESTINATION_CONTENT_IDS.cannotBeUsed,
+        );
+    },
+);
+
+When("I inspect the destination list", async ({ page }) => {
+    // Wait for the destination choices to finish loading and render as radio
+    // options. The "cannot be used" case queries each stack sequentially and
+    // times out, so allow generous headroom.
+    await expect(
+        page.getByRole("radio").first(),
+    ).toBeVisible({ timeout: DESTINATIONS_LOAD_TIMEOUT });
 });
 
-When("I inspect the destination list", async () => {
-    // TODO: implement step
+Then('I should see "content not on this instance"', async ({ page }) => {
+    // An available destination with no current content renders this message.
+    await expect(
+        page.getByText("content not on this instance").first(),
+    ).toBeVisible({ timeout: timeout });
 });
 
 Then(
-    "I should see a revision summary when the destination already has content",
-    async () => {
-        // TODO: implement step
+    "I should see a revision summary that already has content",
+    async ({ page }) => {
+        // A destination that already has content renders "currently has revision
+        // N, last modified at <date>".
+        await expect(
+            page
+                .getByRole("radio", {
+                    name: /currently has revision \d+, last modified at/,
+                })
+                .first(),
+        ).toBeVisible({ timeout: timeout });
     },
 );
 
@@ -237,8 +364,17 @@ Then(
 
 Then(
     "I should see no extra message when the destination cannot be used",
-    async () => {
-        // TODO: implement step
+    async ({ page }) => {
+        // A destination that cannot be reached is offered as a disabled radio
+        // with no change summary, so neither the "currently has revision" nor the
+        // "content not on this instance" message is shown.
+        await expect(
+            page.getByRole("radio").first(),
+        ).toBeDisabled({ timeout: timeout });
+        await expect(page.getByText(/currently has revision/)).toHaveCount(0);
+        await expect(page.getByText("content not on this instance")).toHaveCount(
+            0,
+        );
     },
 );
 
@@ -295,8 +431,14 @@ When("both safety checkboxes are selected", async () => {
 
 // --- Closing the modal resets the restore form back to its initial state ------
 
-When("I close the modal with Cancel", async () => {
-    // TODO: implement step
+Given("I choose a destination and select the safety checkboxes", async ({ page }) => { 
+    await page.getByRole('radio', { name: '✓ Composer (CODE) currently' }).check();
+    await page.getByRole('checkbox', { name: '✓ You are not in content' }).check();
+    await page.getByRole('checkbox', { name: '✓ No one else is in the' }).check();
+});
+
+When("I close the modal with Cancel", async ({ page }) => {
+    await page.getByRole('button', { name: 'Cancel' }).click();
 });
 
 Then("the modal should close", async ({ page }) => {
@@ -308,17 +450,15 @@ Then("the modal should close", async ({ page }) => {
     ).toHaveCSS("opacity", "0", { timeout: timeout });
 });
 
-Then("the destination list should be cleared", async () => {
-    // TODO: implement step
+Then("the destination list should be cleared", async ({ page }) => {
+    await expect(page.getByRole('radio', { name: /Composer \(CODE\)/ })).not.toBeChecked();
 });
 
-Then("the safety checkboxes should reset", async () => {
-    // TODO: implement step
+Then("the safety checkboxes should reset", async ({ page }) => {
+    await expect(page.getByRole('checkbox', { name: /You are not in content/ })).not.toBeChecked();
+    await expect(page.getByRole('checkbox', { name: /No one else is in the/ })).not.toBeChecked();
 });
 
-Then("the source summary should be cleared", async () => {
-    // TODO: implement step
-});
 
 // --- Pressing Escape closes the restore modal ---------------------------------
 
