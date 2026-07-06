@@ -44,6 +44,16 @@ type ChangeDetailsState = {
      * awaits each stack sequentially) and destabilise concurrent test runs.
      */
     unreachable?: boolean;
+    /**
+     * Simulate only *specific* stacks being unreachable while the rest respond
+     * normally. Each stack reaches this mock under its own hostname (registered
+     * as a network alias — see `tests/e2e/stackContainers.ts`), so a request
+     * whose `Host` header contains any of these substrings has its connection
+     * abruptly closed (as `unreachable` does), while other stacks still get the
+     * configured response. This models "a single destination stack cannot be
+     * reached" (one destination unavailable, the others still available).
+     */
+    unreachableHosts?: string[];
 };
 
 type RestoreState = {
@@ -217,15 +227,22 @@ function readBody(req: IncomingMessage): Promise<string> {
     });
 }
 
-function handleChangeDetails(res: ServerResponse, contentId: string): void {
+function handleChangeDetails(
+    res: ServerResponse,
+    contentId: string,
+    host: string,
+): void {
     // Use the per-content override when one is configured, otherwise fall back to
     // the shared default.
     const cd = state.changeDetailsByContentId[contentId] ?? state.changeDetails;
-    if (cd.unreachable) {
+    const hostUnreachable =
+        cd.unreachableHosts?.some((fragment) => host.includes(fragment)) ?? false;
+    if (cd.unreachable || hostUnreachable) {
         // Simulate a stack that cannot be reached: abruptly destroy the socket so
         // the restorer's HTTP call fails fast and marks the destination
         // unavailable, without the multi-second timeout that would otherwise
-        // block the app's request threads.
+        // block the app's request threads. `unreachableHosts` targets only the
+        // stacks whose hostname matches, leaving the others reachable.
         res.socket?.destroy();
         return;
     }
@@ -309,7 +326,11 @@ function route(
         /^\/content\/([^/]+)\/changeDetails$/,
     );
     if (method === "GET" && changeDetailsMatch) {
-        handleChangeDetails(res, decodeURIComponent(changeDetailsMatch[1]));
+        handleChangeDetails(
+            res,
+            decodeURIComponent(changeDetailsMatch[1]),
+            req.headers.host ?? "",
+        );
         return;
     }
 
