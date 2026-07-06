@@ -617,6 +617,22 @@ Then(
     },
 );
 
+Then(
+    "I should land on the same content id in that Composer instance",
+    async () => {
+        const contentId = "568c4110e4b0c73bdb0e52df";
+        // The captured redirect URL (recorded by the submit step) must point at
+        // the same content id that was restored, confirming the editor lands on
+        // that exact document in the destination Composer instance rather than a
+        // different or newly-created one.
+        await expect
+            .poll(() => capturedRedirectUrl ?? "", { timeout: timeout })
+            .toContain(`/content/${contentId}`);
+        const { pathname } = new URL(capturedRedirectUrl!);
+        expect(pathname).toBe(`/content/${contentId}`);
+    },
+);
+
 // --- Error in snapshot content loading shows the error modal ------------------
 
 Given("snapshot content loading fails", async ({ page }) => {

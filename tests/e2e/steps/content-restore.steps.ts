@@ -609,23 +609,6 @@ Then(
     },
 );
 
-// --- A successful restore returns me to Composer for that content -------------
-
-Given("I have selected a destination", async () => {
-    // TODO: implement step
-});
-
-Then("I should be redirected to the selected Composer content URL", async () => {
-    // TODO: implement step
-});
-
-Then(
-    "I should land on the same content id in that Composer instance",
-    async () => {
-        // TODO: implement step
-    },
-);
-
 // --- A restore request is rejected when I lack restore_content permission ------
 
 Given("I do not have restore_content permission", async ({ page, localStack }) => {

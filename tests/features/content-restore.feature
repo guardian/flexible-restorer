@@ -120,12 +120,11 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/controllers/ModalController.js
   # Evidence: public/javascripts/app/templates/restore-list.html
 
-  @pending
   Scenario: A successful restore returns me to Composer for that content
     Given the restore modal is open
-    And I have selected a destination
+    And a destination is selected
     When I submit Restore Version successfully
-    Then I should be redirected to the selected Composer content URL
+    Then I should be redirected to that destination Composer content URL
     And I should land on the same content id in that Composer instance
   # Evidence: public/javascripts/app/controllers/RestoreFormCtrl.js
   # Evidence: public/javascripts/app/services/RestoreService.js
