@@ -43,12 +43,26 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/services/RestoreService.js
   # Evidence: public/javascripts/app/templates/restore-list.html
 
-  @pending
-  Scenario: Each destination row explains whether content is already present or available
-    Given the restore modal has loaded destination choices
+  Scenario: A destination row shows a revision summary when it already has content
+    Given the restore modal has loaded destination choices when the destination already has content
     When I inspect the destination list
-    Then I should see a revision summary when the destination already has content
-    And I should see "content not on this instance" when the destination is available but empty
+    Then I should see a revision summary that already has content
+  # Evidence: public/javascripts/app/controllers/RestoreFormCtrl.js
+  # Evidence: public/javascripts/app/services/RestoreService.js
+  # Evidence: public/javascripts/app/templates/restore-list.html
+    
+
+  Scenario: A destination row shows content not on this instance when it has no content
+    Given the restore modal has loaded destination choices when the destination has no content
+    When I inspect the destination list
+    And I should see "content not on this instance" 
+  # Evidence: public/javascripts/app/controllers/RestoreFormCtrl.js
+  # Evidence: public/javascripts/app/services/RestoreService.js
+  # Evidence: public/javascripts/app/templates/restore-list.html
+
+  Scenario: A destination row shows no extra message when it cannot be used
+    Given the restore modal has loaded destination choices when the destination cannot be used
+    When I inspect the destination list
     And I should see no extra message when the destination cannot be used
   # Evidence: public/javascripts/app/controllers/RestoreFormCtrl.js
   # Evidence: public/javascripts/app/services/RestoreService.js
@@ -63,25 +77,25 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: app/controllers/Restore.scala
   # Evidence: public/javascripts/app/templates/restore-list.html
 
-  @pending
-  Scenario: The current destination is preselected when it is available
-    Given the restore modal has loaded destination choices
-    And the current system is present in the destination list
-    When the modal finishes loading
-    Then the current system destination should be preselected
-  # Evidence: public/javascripts/app/controllers/RestoreFormCtrl.js
-  # Evidence: public/javascripts/app/services/RestoreService.js
-  # Evidence: public/javascripts/app/templates/restore-list.html
+  # @pending
+  # Scenario: The current destination is preselected when it is available
+  #   Given the restore modal has loaded destination choices
+  #   And the current system is present in the destination list
+  #   When the modal finishes loading
+  #   Then the current system destination should be preselected
+  # # Evidence: public/javascripts/app/controllers/RestoreFormCtrl.js
+  # # Evidence: public/javascripts/app/services/RestoreService.js
+  # # Evidence: public/javascripts/app/templates/restore-list.html
 
-  @pending
-  Scenario: The first available destination is used when the current system is missing
-    Given the restore modal has loaded destination choices
-    And the current system is not present in the destination list
-    When the modal finishes loading
-    Then the first destination should be preselected
-  # Evidence: public/javascripts/app/controllers/RestoreFormCtrl.js
-  # Evidence: public/javascripts/app/services/RestoreService.js
-  # Evidence: public/javascripts/app/templates/restore-list.html
+  # @pending
+  # Scenario: The first available destination is used when the current system is missing
+  #   Given the restore modal has loaded destination choices
+  #   And the current system is not present in the destination list
+  #   When the modal finishes loading
+  #   Then the first destination should be preselected
+  # # Evidence: public/javascripts/app/controllers/RestoreFormCtrl.js
+  # # Evidence: public/javascripts/app/services/RestoreService.js
+  # # Evidence: public/javascripts/app/templates/restore-list.html
 
   @pending
   Scenario: The Restore Version action stays disabled until both safety checks are confirmed
@@ -92,14 +106,14 @@ Feature: Restore a selected snapshot from the restore modal
     Then the Restore Version action should be enabled
   # Evidence: public/javascripts/app/templates/restore-list.html
 
-  @pending
   Scenario: Closing the modal resets the restore form back to its initial state
-    Given the restore modal is open
+    Given the restore modal is open 
+    And I choose a destination and select the safety checkboxes
     When I close the modal with Cancel
     Then the modal should close
+    And the restore modal is open
     And the destination list should be cleared
     And the safety checkboxes should reset
-    And the source summary should be cleared
   # Evidence: public/javascripts/app/controllers/ModalController.js
   # Evidence: public/javascripts/app/controllers/RestoreFormCtrl.js
   # Evidence: public/javascripts/app/templates/restore-list.html

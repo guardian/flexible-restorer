@@ -35,6 +35,15 @@ type ChangeDetailsState = {
     revision: number | null;
     /** Last-modified time in epoch milliseconds, or null (see `revision`). */
     lastModified: number | null;
+    /**
+     * When true, simulate a stack that cannot be reached by abruptly closing the
+     * connection. The restorer's HTTP call then fails fast and the destination
+     * is marked unavailable (rendered as a disabled "cannot be used" option in
+     * the modal). This avoids the multi-second timeout a hung response would
+     * cause, which would block the app's request threads (`restoreDestinations`
+     * awaits each stack sequentially) and destabilise concurrent test runs.
+     */
+    unreachable?: boolean;
 };
 
 type RestoreState = {
@@ -46,6 +55,13 @@ type RestoreState = {
 
 type MockState = {
     changeDetails: ChangeDetailsState;
+    /**
+     * Per-content-id overrides for `changeDetails`. When an incoming request's
+     * contentId is present here, this entry is used instead of the default
+     * `changeDetails`, letting different pieces of content model different
+     * destination states in the same run.
+     */
+    changeDetailsByContentId: Record<string, ChangeDetailsState>;
     restore: RestoreState;
 };
 
@@ -60,6 +76,7 @@ function defaultState(): MockState {
             revision: 10,
             lastModified: 1781234474425,
         },
+        changeDetailsByContentId: {},
         restore: {
             status: 204,
             body: "",
@@ -90,14 +107,29 @@ function mergeState(current: MockState, partial: unknown): MockState {
     }
     const next: MockState = {
         changeDetails: { ...current.changeDetails },
+        changeDetailsByContentId: { ...current.changeDetailsByContentId },
         restore: { ...current.restore },
     };
     const incoming = partial as Partial<{
         changeDetails: Partial<ChangeDetailsState>;
+        changeDetailsByContentId: Record<string, Partial<ChangeDetailsState>>;
         restore: Partial<RestoreState>;
     }>;
     if (incoming.changeDetails) {
         next.changeDetails = { ...next.changeDetails, ...incoming.changeDetails };
+    }
+    if (incoming.changeDetailsByContentId) {
+        for (const [contentId, override] of Object.entries(
+            incoming.changeDetailsByContentId,
+        )) {
+            next.changeDetailsByContentId[contentId] = {
+                // Fall back to the default changeDetails for any fields the
+                // override does not set, so a partial per-content override still
+                // produces a complete response.
+                ...(next.changeDetailsByContentId[contentId] ?? next.changeDetails),
+                ...override,
+            };
+        }
     }
     if (incoming.restore) {
         next.restore = { ...next.restore, ...incoming.restore };
@@ -185,8 +217,19 @@ function readBody(req: IncomingMessage): Promise<string> {
     });
 }
 
-function handleChangeDetails(res: ServerResponse): void {
-    const { status, revision, lastModified } = state.changeDetails;
+function handleChangeDetails(res: ServerResponse, contentId: string): void {
+    // Use the per-content override when one is configured, otherwise fall back to
+    // the shared default.
+    const cd = state.changeDetailsByContentId[contentId] ?? state.changeDetails;
+    if (cd.unreachable) {
+        // Simulate a stack that cannot be reached: abruptly destroy the socket so
+        // the restorer's HTTP call fails fast and marks the destination
+        // unavailable, without the multi-second timeout that would otherwise
+        // block the app's request threads.
+        res.socket?.destroy();
+        return;
+    }
+    const { status, revision, lastModified } = cd;
     if (status !== 200) {
         res.writeHead(status);
         res.end();
@@ -262,11 +305,11 @@ function route(
     }
 
     // --- Mocked flexible-content API ------------------------------------------
-    if (
-        method === "GET" &&
-        /^\/content\/[^/]+\/changeDetails$/.test(pathname)
-    ) {
-        handleChangeDetails(res);
+    const changeDetailsMatch = pathname.match(
+        /^\/content\/([^/]+)\/changeDetails$/,
+    );
+    if (method === "GET" && changeDetailsMatch) {
+        handleChangeDetails(res, decodeURIComponent(changeDetailsMatch[1]));
         return;
     }
 
