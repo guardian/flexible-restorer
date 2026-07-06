@@ -31,6 +31,10 @@ let timeout = 5 * 1000;
 // on its status/body.
 let restoreResponse: APIResponse | undefined;
 
+// Holds the restore destinations returned by the app so later Then steps can
+// assert on their availability (populated when the restore modal loads).
+let loadedDestinations: Array<{ systemId: string; available: boolean }> = [];
+
 // Three fixtures (each has snapshots in the MinIO buckets so the version history
 // page renders and the restore modal can open) used to exercise the three
 // destination-row states. The mock flexible-content API is configured per
@@ -44,7 +48,18 @@ const DESTINATION_CONTENT_IDS = {
     hasContent: "54931ae2e4b019234074e3c8",
     noContent: "569cdccee4b0e63c102ed861",
     cannotBeUsed: "58e4eab7e4b01ca21818a13e",
+    // Used by the "a single destination stack cannot be reached" scenario: the
+    // primary stack is made unreachable while the others still respond.
+    singleStackDown: "54a2b86be4b048dfa4053a48",
 } as const;
+
+// The primary stack ("Composer (CODE)") reaches the mock under this hostname
+// alias (see `tests/e2e/stackContainers.ts` and `app/models/FlexibleStack.scala`).
+// The mock treats requests whose Host header contains this fragment as
+// unreachable, so only the primary destination is marked unavailable.
+const PRIMARY_STACK_HOST_FRAGMENT = "flexible-api.CODE.flexible.gudiscovery";
+const PRIMARY_SYSTEM_ID = "CODE:flexible";
+
 
 // Longest a destination list can take to load. Allow generous headroom so the
 // assertion is not flaky under load.
@@ -396,18 +411,74 @@ Then(
 
 // --- A destination is marked unavailable when its stack cannot be reached ------
 
-When("a destination stack does not respond within the timeout", async () => {
-    // TODO: implement step
-});
+Given(
+    "one destination stack does not respond within the timeout",
+    async ({ page, localStack }) => {
+        // Make only the primary stack unreachable (matched by its hostname) while
+        // the other stacks return a normal revision. The restorer's call to the
+        // primary stack fails fast and that destination is returned as
+        // unavailable, leaving the others available.
+        await setDestinationChangeDetails(
+            page.request,
+            localStack.mockApiUrl,
+            DESTINATION_CONTENT_IDS.singleStackDown,
+            {
+                status: 200,
+                revision: 42,
+                lastModified: 1781234474425,
+                unreachableHosts: [PRIMARY_STACK_HOST_FRAGMENT],
+            },
+        );
+    },
+);
+
+When(
+    "the restore modal loads destination choices for that content",
+    async ({ page, localStack }) => {
+        // Capture the destinations the app returns (the modal requests them when
+        // it opens) so the next step can assert on their availability.
+        const destinationsResponse = page.waitForResponse((response) =>
+            /\/api\/1\/restore\/destinations\//.test(response.url()),
+        );
+        await openRestoreModalFor(
+            page,
+            localStack,
+            DESTINATION_CONTENT_IDS.singleStackDown,
+        );
+        const response = await destinationsResponse;
+        loadedDestinations = (await response.json()) as Array<{
+            systemId: string;
+            available: boolean;
+        }>;
+    },
+);
 
 Then("that destination should be returned as unavailable", async () => {
-    // TODO: implement step
+    // The unreachable primary stack is returned with `available: false`, while
+    // the reachable stacks are still available.
+    const primary = loadedDestinations.find(
+        (destination) => destination.systemId === PRIMARY_SYSTEM_ID,
+    );
+    expect(primary, "primary destination should be present").toBeDefined();
+    expect(primary!.available).toBe(false);
+    const others = loadedDestinations.filter(
+        (destination) => destination.systemId !== PRIMARY_SYSTEM_ID,
+    );
+    expect(others.length).toBeGreaterThan(0);
+    expect(others.every((destination) => destination.available)).toBe(true);
 });
 
 Then(
     "its selection option should be disabled in the destination list",
-    async () => {
-        // TODO: implement step
+    async ({ page }) => {
+        // The unavailable primary destination is rendered as a disabled radio,
+        // while the reachable destinations remain selectable.
+        await expect(
+            page.getByRole("radio", { name: /Composer \(CODE\)/ }),
+        ).toBeDisabled({ timeout: timeout });
+        await expect(
+            page.getByRole("radio", { name: /Composer-secondary \(CODE\)/ }),
+        ).toBeEnabled({ timeout: timeout });
     },
 );
 

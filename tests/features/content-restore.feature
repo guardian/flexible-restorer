@@ -68,10 +68,9 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/services/RestoreService.js
   # Evidence: public/javascripts/app/templates/restore-list.html
 
-  @pending
   Scenario: A destination is marked unavailable when its stack cannot be reached
-    Given the restore modal loads destination choices
-    When a destination stack does not respond within the timeout
+    Given one destination stack does not respond within the timeout
+    When the restore modal loads destination choices for that content
     Then that destination should be returned as unavailable
     And its selection option should be disabled in the destination list
   # Evidence: app/controllers/Restore.scala
