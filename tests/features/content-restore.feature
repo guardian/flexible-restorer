@@ -147,7 +147,6 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: app/controllers/Restore.scala
   # Evidence: app/permissions/Permissions.scala
 
-  @pending
   Scenario: Restoring a snapshot that is missing from the source returns not found
     Given I have the required restore permissions
     When I submit a restore request for a snapshot that no longer exists in the source stack

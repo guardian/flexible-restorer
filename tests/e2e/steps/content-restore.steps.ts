@@ -1,5 +1,6 @@
 import { Given, When, Then, expect } from "../fixtures";
 import { createPanDomainCookie } from "../panDomainCookie";
+import { setLastApiResponse } from "./support/lastApiResponse";
 import type { APIRequestContext, APIResponse, Page } from "@playwright/test";
 import type { LocalStack } from "../stackContainers";
 
@@ -724,13 +725,42 @@ Then(
 
 // --- Restoring a snapshot that is missing from the source returns not found ----
 
-Given("I have the required restore permissions", async () => {
-    // TODO: implement step
+Given("I have the required restore permissions", async ({ page, localStack }) => {
+    // Sign in as the default user (composer.application@guardian.co.uk), which
+    // the permissions fixture grants both `restore_content` and
+    // `restore_content_to_any_stack`, so the request reaches the snapshot lookup
+    // rather than being rejected on permissions.
+    const { baseUrl, panDomainPrivateKey } = localStack;
+    const cookieData = createPanDomainCookie(panDomainPrivateKey);
+
+    await page.context().addCookies([
+        {
+            name: "gutoolsAuth-assym",
+            value: cookieData,
+            url: baseUrl,
+        },
+    ]);
 });
 
 When(
     "I submit a restore request for a snapshot that no longer exists in the source stack",
-    async () => {
-        // TODO: implement step
+    async ({ page, localStack }) => {
+        // A well-formed request for an existing content id but a timestamp that
+        // has no snapshot fixture in the source bucket. The controller's snapshot
+        // lookup returns None, so it responds NotFound (see
+        // app/controllers/Restore.scala). Source and destination are the same
+        // stack so only `restore_content` is exercised.
+        const systemId = "CODE:flexible";
+        const contentId = "568c4110e4b0c73bdb0e52df";
+        const timestamp = "2000-01-01T00:00:00.000Z";
+
+        const url =
+            `${localStack.baseUrl}/api/1/restore/` +
+            `${encodeURIComponent(systemId)}/${contentId}/` +
+            `${encodeURIComponent(timestamp)}/to/` +
+            `${encodeURIComponent(systemId)}`;
+
+        restoreResponse = await page.request.post(url);
+        setLastApiResponse(restoreResponse);
     },
 );
