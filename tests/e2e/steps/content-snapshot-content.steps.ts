@@ -24,6 +24,13 @@ import { createPanDomainCookie } from "../panDomainCookie";
 
 let timeout = 5 * 1000;
 
+// A generous but bounded wait for the restore modal's destination list to load.
+// Loading destinations is comparatively slow — the controller queries each
+// stack sequentially (see app/controllers/Restore.scala#restoreDestinations) —
+// and slower still under multi-worker load on the shared stack, so allow extra
+// headroom without falling back to the 15-minute test timeout.
+let destinationsLoadTimeout = 25 * 1000;
+
 // On a successful restore the app navigates the browser to the destination
 // Composer content URL. That host is a real environment that redirects to Google
 // auth, so instead of following the navigation we intercept it, record the
@@ -523,14 +530,24 @@ Then("the Restore Version action should be enabled", async ({ page }) => {
 // --- Successful restore redirects back to the selected Composer instance ------
 
 Given("a destination is selected", async ({ page }) => {
-    // Each destination radio is labelled with the stack displayName plus the
-    // changeString built from the mock flexible API's changeDetails response,
-    // e.g. "Composer (CODE) currently has revision 10, last modified at
-    // 04:21:14 on 12th June". Select that destination and confirm it is checked.
-    const destination = page.getByRole("radio", {
-        name: "Composer (CODE) currently has revision 10, last modified at 04:21:14 on 12th June",
-    });
-    await destination.check();
+    // Match the primary "Composer (CODE)" destination by its stack name only.
+    // The rest of the radio label ("currently has revision N, last modified at
+    // ...") is derived from the mock's changeDetails response, so matching the
+    // full string makes the locator brittle: when that text differs (or the
+    // destination list renders late under multi-worker load on the shared stack)
+    // `.check()` would wait for an exact, actionable match up to the 15-minute
+    // test timeout, since no action timeout is configured. The pattern excludes
+    // "Composer-secondary (CODE)" (no "Composer (CODE)" substring) and tolerates
+    // the leading "✓ " decal in the radio's accessible name.
+    const destination = page
+        .getByRole("radio", { name: /Composer \(CODE\)/ })
+        .first();
+    // Wait for the destination list to finish loading and the primary radio to
+    // be enabled (it is disabled until the stack reports available), with a
+    // generous but bounded timeout so a genuine problem fails fast rather than
+    // hanging for the whole test timeout.
+    await expect(destination).toBeEnabled({ timeout: destinationsLoadTimeout });
+    await destination.check({ timeout: timeout });
     await expect(destination).toBeChecked({ timeout: timeout });
 });
 
