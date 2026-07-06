@@ -1,5 +1,6 @@
 import type { APIResponse, Download } from "@playwright/test";
 import { Given, When, Then, expect } from "../fixtures";
+import { getLastApiResponse, setLastApiResponse } from "./support/lastApiResponse";
 import { execFileSync } from "child_process";
 import { mkdtempSync } from "fs";
 import { tmpdir } from "os";
@@ -110,12 +111,14 @@ When("I request either export format for that content", async ({ page, localStac
     exportResponse = await page.request.get(
         `${localStack.baseUrl}/export/${contentIdWithoutSnapshots}/zip`,
     );
+    setLastApiResponse(exportResponse);
 });
 
 Then("the response should be not found", async () => {
-    // The export controller returns 404 Not Found when the content has no
-    // snapshots.
-    expect(exportResponse?.status()).toBe(404);
+    // The controller returns 404 Not Found when the requested resource does not
+    // exist (export: content with no snapshots; restore: a snapshot missing from
+    // the source stack).
+    expect(getLastApiResponse()?.status()).toBe(404);
 });
 
 Then(
