@@ -92,7 +92,6 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/services/RestoreService.js
   # Evidence: public/javascripts/app/templates/restore-list.html
 
-  @pending
   Scenario: The Restore Version action stays disabled until both safety checks are confirmed
     Given the restore modal is open
     When either safety checkbox is not selected

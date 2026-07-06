@@ -541,12 +541,18 @@ Then("the first destination should be preselected", async ({ page }) => {
 
 // --- The Restore Version action stays disabled until both safety checks -------
 
-When("either safety checkbox is not selected", async () => {
-    // TODO: implement step
+When("either safety checkbox is not selected", async ({ page }) => {
+    // Select only one of the two required safety checkboxes ("You are not in
+    // content"), leaving the other ("No one else is in the content") unchecked
+    // so the "either not selected" condition holds.
+    await page.getByLabel("You are not in content").check();
 });
 
-When("both safety checkboxes are selected", async () => {
-    // TODO: implement step
+When("both safety checkboxes are selected", async ({ page }) => {
+    // Tick both safety checkboxes so the Restore Version button's `ng-disabled`
+    // condition clears.
+    await page.getByLabel("You are not in content").check();
+    await page.getByLabel("No one else is in the content").check();
 });
 
 // --- Closing the modal resets the restore form back to its initial state ------
