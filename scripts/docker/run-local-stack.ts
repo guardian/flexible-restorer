@@ -24,7 +24,7 @@ async function main() {
     let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
 
     try {
-        stack = await startLocalStack(projectRoot);
+        stack = await startLocalStack(projectRoot, { streamLogs: true });
         const cookieData = createPanDomainCookie(stack.panDomainPrivateKey);
 
         // Publish the running stack's connection details so `npm run test:e2e`

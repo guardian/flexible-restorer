@@ -18,7 +18,10 @@ const bddTestDir = defineBddConfig({
 });
 
 module.exports = defineConfig({
-    timeout: 15 * 60 * 1000,
+    // Fail an individual test fast rather than letting a hung test hold the run.
+    timeout: 15 * 1000,
+    // Cap the entire run (global setup + all tests) so nothing can hang for long.
+    globalTimeout: 3 * 60 * 1000,
     // Start a single local stack once for the whole run (see
     // tests/e2e/globalSetup.ts) and stop it afterwards, so workers all share one
     // stack instead of each booting their own in parallel.
@@ -27,7 +30,14 @@ module.exports = defineConfig({
     expect: {
         timeout: 10 * 1000,
     },
-    retries: 0,
+    // All workers share a single local stack (one restorer instance). Its
+    // destination lookups query each stack with a blocking 3s timeout, so too
+    // many concurrent requests can starve its thread pool and make reachable
+    // stacks look unavailable. Cap concurrency to keep the load it sees modest.
+    workers: process.env.CI ? 2 : 4,
+    // Retry once so an occasional load-induced flake (e.g. a destination lookup
+    // timing out under contention) doesn't fail the whole run.
+    retries: 1,
     reporter: [
         ["list"],
         // Enable the Cucumber HTML report only when REPORT is set, e.g.

@@ -80,8 +80,13 @@ function buildDockerImage({
     });
 }
 
-function createLogConsumer(prefix: string) {
+function createLogConsumer(prefix: string, streamLogs: boolean) {
     return (stream: any) => {
+        if (!streamLogs) {
+            // Discard container logs (default): they are only echoed to stdout
+            // when the stack is run directly via `npm run local:stack`.
+            return;
+        }
         stream
             .on("data", (line: Buffer) => {
                 process.stdout.write(`[${prefix}] ${line.toString()}`);
@@ -92,7 +97,20 @@ function createLogConsumer(prefix: string) {
     };
 }
 
-export async function startLocalStack(projectRoot: string): Promise<LocalStack> {
+export interface StartLocalStackOptions {
+    /**
+     * Stream each container's logs to stdout/stderr. Useful when running the
+     * stack directly (`npm run local:stack`) for debugging, but noisy when the
+     * stack is started by the e2e global setup, so it defaults to off.
+     */
+    streamLogs?: boolean;
+}
+
+export async function startLocalStack(
+    projectRoot: string,
+    options: StartLocalStackOptions = {},
+): Promise<LocalStack> {
+    const { streamLogs = false } = options;
     const runId = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
     const minioImageTag = `flexible-restorer-minio-e2e:${runId}`;
     const restorerImageTag = `flexible-restorer-app-e2e:${runId}`;
@@ -133,7 +151,7 @@ export async function startLocalStack(projectRoot: string): Promise<LocalStack> 
                     "flexible-secondary-snapshotter-code",
                 PERMISSIONS_BUCKET: "permissions-cache",
             })
-            .withLogConsumer(createLogConsumer("minio"))
+            .withLogConsumer(createLogConsumer("minio", streamLogs))
             .withExposedPorts(9000, 9001)
             .withWaitStrategy(Wait.forLogMessage(/Ensured buckets exist:/, 1))
             .withStartupTimeout(2 * 60 * 1000)
@@ -151,7 +169,7 @@ export async function startLocalStack(projectRoot: string): Promise<LocalStack> 
         mockContainer = await new GenericContainer(mockImageTag)
             .withNetwork(network)
             .withNetworkAliases(...MOCK_API_HOSTNAMES)
-            .withLogConsumer(createLogConsumer("mock-api"))
+            .withLogConsumer(createLogConsumer("mock-api", streamLogs))
             .withExposedPorts(MOCK_API_PORT)
             .withWaitStrategy(
                 Wait.forHttp("/__admin/health", MOCK_API_PORT).forStatusCode(
@@ -181,7 +199,7 @@ export async function startLocalStack(projectRoot: string): Promise<LocalStack> 
                 // Keep local mode enabled in case scripts are bypassed in future changes.
                 LOCAL: "true",
             })
-            .withLogConsumer(createLogConsumer("restorer"))
+            .withLogConsumer(createLogConsumer("restorer", streamLogs))
             .withExposedPorts(9000)
             .withStartupTimeout(10 * 60 * 1000)
             .withWaitStrategy(Wait.forListeningPorts())
