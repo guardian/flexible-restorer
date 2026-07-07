@@ -64,3 +64,31 @@ The command runs the TypeScript runner under Node 20 via nvm so it does not pick
 up an older local default Node version.
 
 This is only to help debug the test runner, rather than a stack for local development.
+
+## Testing
+
+To run locally first install dependencies with:
+
+`npm install`
+
+It may help to also have `nvm` installed
+
+Then there are 2 options:
+
+### Stand alone mode
+
+This will spin up the local stack as part of the test setup.
+
+`npm run test:e2e`
+
+### Test against an existing running stack
+
+This will run the tests against an existing running stack.
+
+In one terminal run:
+
+`npm run local:stack`
+
+And in another run:
+
+`npm run test:e2e`
