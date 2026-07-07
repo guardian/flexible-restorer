@@ -12,6 +12,9 @@ export npm_config_loglevel=error
 current_major="$(node -p "process.versions.node.split('.')[0]" 2>/dev/null || echo 0)"
 
 run_playwright() {
+  # Ensure Node dependencies are present (and built against the Node version
+  # selected above) before invoking any npm exec / Playwright commands.
+  npm install
   # Install the Chromium browser only when it isn't already present, so repeated
   # local runs skip the download/verify step entirely.
   if ! npm exec -- node -e \
