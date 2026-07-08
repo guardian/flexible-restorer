@@ -2,7 +2,6 @@ package controllers
 
 import auth.PanDomainAuthActions
 
-import java.util.concurrent.TimeoutException
 import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
 import com.gu.pandomainauth.model.{User => PandaUser}
 import com.gu.permissions.PermissionsProvider
@@ -16,9 +15,7 @@ import play.api.libs.ws.WSClient
 import play.api.mvc._
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration._
-import scala.concurrent.{Await, ExecutionContext, Future}
-import scala.language.postfixOps
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NonFatal
 
 class Restore(
@@ -55,22 +52,23 @@ class Restore(
   }
 
   def restoreDestinations(contentId: String) = AuthAction.async {
+    // Query every stack concurrently and without blocking: each call carries its
+    // own request timeout (see `FlexibleApi.changeDetails`) and fails fast to the
+    // `recover` below, so a slow or unreachable stack never ties up a request
+    // thread. Blocking here (previously `Await.ready` per stack) starved the
+    // execution context under concurrent load and caused reachable stacks to be
+    // spuriously reported as unavailable.
     val destinations = config.allStacks.map { stack =>
       val destination = Destination(stack.id, stack.displayName, stack.stage, stack.stack,
           stack.composerPrefix, stack.isSecondary, None, None, available = false)
 
-      try {
-        val changeDetails = Await.ready(flexibleApi.changeDetails(stack, contentId), 3 seconds)
-        changeDetails.map { cdOption =>
-          destination.withApiStatus(cdOption, available = true)
-        } recover {
-          // if we fail to talk to the stack's API for any reason then provide a destination with available set to false
-          case NonFatal(e) =>
-            logger.warn(s"Couldn't communicate with Flexible stack at ${stack.apiPrefix}", e)
-            destination
-        }
-      } catch {
-        case e:TimeoutException => Future.successful(destination)
+      flexibleApi.changeDetails(stack, contentId).map { cdOption =>
+        destination.withApiStatus(cdOption, available = true)
+      } recover {
+        // if we fail to talk to the stack's API for any reason then provide a destination with available set to false
+        case NonFatal(e) =>
+          logger.warn(s"Couldn't communicate with Flexible stack at ${stack.apiPrefix}", e)
+          destination
       }
     }
     Future.sequence(destinations).map(d => Ok(Json.toJson(d)))
