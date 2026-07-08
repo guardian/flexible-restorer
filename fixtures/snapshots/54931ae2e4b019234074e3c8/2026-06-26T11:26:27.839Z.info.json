@@ -1,0 +1,31 @@
+{
+  "metadata" : {
+    "reason" : "Scheduled snapshot"
+  },
+  "summary" : {
+    "preview" : {
+      "fields" : {
+        "headline" : "The Sony leak unearthed juicy gossip, but the blackmailers must not win"
+      },
+      "settings" : {
+        "commentable" : "true"
+      }
+    },
+    "type" : "article",
+    "published" : true,
+    "contentChangeDetails" : {
+      "published" : {
+        "date" : 1418931753757,
+        "user" : {
+          "email" : "user11@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "11"
+        }
+      },
+      "lastModified" : {
+        "date" : 1782472907328
+      },
+      "revision" : 38
+    }
+  }
+}

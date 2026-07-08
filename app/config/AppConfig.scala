@@ -28,7 +28,11 @@ class AppConfig(configuration: Configuration, identity: AppIdentity) {
       stack = "flexible",
       stage = "DEV",
       isSecondary = false,
-      apiPrefix = "http://localhost:9085/api",
+      // Use the same per-stage gudiscovery host convention as the other stacks
+      // (see models/FlexibleStack) so that, in local development, the host can be
+      // routed to the in-network mock flexible-content API instead of a real
+      // service. This lets the local stack report as an available destination.
+      apiPrefix = "http://flexible-api.DEV.flexible.gudiscovery.:8080",
       composerPrefix = "https://composer.local.dev-gutools.co.uk",
       snapshotBucket = "not-applicable"))
   else None

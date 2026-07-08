@@ -26,6 +26,9 @@ public/build.js
 public/build.js.map
 public/dist
 test-results/
+.features-gen/
+cucumber-report*
+playwright-report*
 .vscode/settings.json
 .bsp
 # Ignored files for metals

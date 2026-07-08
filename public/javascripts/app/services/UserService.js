@@ -2,37 +2,50 @@ import angular from 'angular';
 
 var UserServiceMod = angular.module('UserServiceMod', []);
 
-let userData;
-
 UserServiceMod.service('UserService', [
-  '$http',
+    '$http',
     '$q',
-  function($http, $q) {
-    return {
-      get: () => {
-        return $q((resolve, reject) => {
-            if (userData) {
-                resolve(userData);
-                return;
-            }
+    function($http, $q) {
+        // The single shared request for the current user and their permissions.
+        // It is memoised (see `get` below) so that every caller shares one
+        // request chain rather than each starting its own.
+        let userRequest;
 
-            $http.get('/api/1/user').
-            then((userResponse) => {
-                $http.get('/api/1/user/permissions').
-                then((permissionsResponse) => {
-                    userResponse.data["permissions"] = permissionsResponse.data;
-                    userData = userResponse.data;
-                    resolve(userData);
-                }).
-                catch((data) => {
-                    reject(data);
+        // Fetch the user, then their permissions, and return the user with the
+        // permissions attached.
+        function fetchUserWithPermissions() {
+            return $http.get('/api/1/user').then((userResponse) => {
+                return $http.get('/api/1/user/permissions').then((permissionsResponse) => {
+                    userResponse.data.permissions = permissionsResponse.data;
+                    return userResponse.data;
                 });
-            }).
-            catch((data) =>
-                reject(data)
-            );
-        })
-      }
+            });
+        }
+
+        return {
+            /**
+             * Resolve the current user (with their permissions).
+             *
+             * The request is memoised so concurrent callers — e.g.
+             * `SnapshotContentCtrl` on page load and `RestoreFormCtrl` when the
+             * restore modal opens — share a single `/api/1/user` +
+             * `/api/1/user/permissions` chain. Sharing one request avoids the
+             * race where independent chains could resolve differently (one
+             * failing under load and rejecting its caller with an incomplete
+             * user while another succeeded).
+             *
+             * On failure the memoised request is discarded so the next call can
+             * retry, rather than caching the rejection permanently.
+             */
+            get: () => {
+                if (!userRequest) {
+                    userRequest = fetchUserWithPermissions().catch((error) => {
+                        userRequest = undefined;
+                        return $q.reject(error);
+                    });
+                }
+                return userRequest;
+            }
+        };
     }
-  }
 ]);

@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+REPORT_NODE_VERSION="${REPORT_NODE_VERSION:-20}"
+
+# The Cucumber HTML report lives in the e2e sub-package (tests/) and is served
+# with tooling from there, so run it under a modern Node independently of the
+# root app's pinned Node version.
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+E2E_DIR="${DIR}/../tests"
+
+export npm_config_loglevel=error
+
+current_major="$(node -p "process.versions.node.split('.')[0]" 2>/dev/null || echo 0)"
+
+run_report() {
+  cd "$E2E_DIR"
+  npm run report
+}
+
+if [ "$current_major" -ge 18 ]; then
+  run_report
+  exit 0
+fi
+
+export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+  # shellcheck disable=SC1090
+  . "$NVM_DIR/nvm.sh"
+  nvm install "$REPORT_NODE_VERSION" >/dev/null
+  nvm use "$REPORT_NODE_VERSION" >/dev/null
+  run_report
+  exit 0
+fi
+
+echo "Serving the report requires Node.js 18+."
+echo "Current Node: $(node -v 2>/dev/null || echo 'not found')"
+echo "Install nvm and run again, or run with Node >=18 directly."
+exit 1

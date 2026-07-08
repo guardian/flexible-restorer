@@ -4,6 +4,7 @@ set -euo pipefail
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT_DIR=${DIR}/../..
+E2E_DIR="${ROOT_DIR}/tests"
 NODE_VERSION="${LOCAL_STACK_NODE_VERSION:-20}"
 NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
 
@@ -25,7 +26,16 @@ fi
 # shellcheck disable=SC1090
 . "$NVM_DIR/nvm.sh"
 
-nvm exec "$NODE_VERSION" "$ROOT_DIR/node_modules/.bin/tsx" "$ROOT_DIR/scripts/docker/run-local-stack.ts" "$@" || {
+# The e2e tooling (tsx, @playwright/test, testcontainers) lives in the tests/
+# sub-package. Ensure it's installed, then resolve modules from there while
+# keeping the working directory at the repo root so the runner's
+# `process.cwd()` (used as the Docker build context) stays correct.
+if [ ! -x "$E2E_DIR/node_modules/.bin/tsx" ]; then
+  nvm exec "$NODE_VERSION" npm --prefix "$E2E_DIR" install >/dev/null
+fi
+
+cd "$ROOT_DIR"
+NODE_PATH="$E2E_DIR/node_modules" nvm exec "$NODE_VERSION" "$E2E_DIR/node_modules/.bin/tsx" "$ROOT_DIR/scripts/docker/run-local-stack.ts" "$@" || {
   exit_code=$?
   # Exit code 130 means the process was interrupted by Ctrl+C (SIGINT), which is expected.
   if [ "$exit_code" -eq 130 ]; then

@@ -1,0 +1,484 @@
+{
+  "id" : "6a43d6fe8f08e1753109a384",
+  "type" : "article",
+  "originatingSystem" : "composer",
+  "published" : true,
+  "isGone" : false,
+  "isHosted" : false,
+  "expiry" : {
+    "rights" : {
+      "expired" : false
+    },
+    "commercial" : {
+      "expired" : false
+    }
+  },
+  "rights" : {
+    "syndicationAggregate" : false,
+    "subscriptionDatabases" : false,
+    "developerCommunity" : false
+  },
+  "contentChangeDetails" : {
+    "lastModified" : {
+      "date" : 1782830904802,
+      "user" : {
+        "email" : "user2@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "2"
+      }
+    },
+    "created" : {
+      "date" : 1782830846437,
+      "user" : {
+        "email" : "user2@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "2"
+      }
+    },
+    "published" : {
+      "date" : 1782830904628,
+      "user" : {
+        "email" : "user2@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "2"
+      }
+    },
+    "lastMajorRevisionPublished" : {
+      "date" : 1782830904628,
+      "user" : {
+        "email" : "user2@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "2"
+      }
+    },
+    "revision" : 63,
+    "minutesActive" : 0,
+    "contentSource" : "flexible"
+  },
+  "identifiers" : {
+    "path" : "thefilter/2026/jun/30/best-aardark",
+    "pageId" : "2483988",
+    "shortPath" : "p/4t5af"
+  },
+  "collaborators" : [ {
+    "email" : "user2@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "2"
+  } ],
+  "toolSettings" : {
+    "disableOctopusUpdates" : "false",
+    "suggestedEmbeds" : "false",
+    "slugLinked" : "true",
+    "affiliateLinksStatus" : "auto-enabled",
+    "seoChanged" : "false",
+    "enableTechnicalElements" : "false",
+    "seoOptimised" : "false",
+    "atomPoweredVideo" : "false",
+    "republished" : "false",
+    "trailTextLinked" : "true",
+    "includedSuggestedEmbeds" : "",
+    "pathLocked" : "false",
+    "linkTextLinked" : "true"
+  },
+  "aliasPaths" : [ ],
+  "preview" : {
+    "contentChangeDetails" : {
+      "lastModified" : {
+        "date" : 1782830904802,
+        "user" : {
+          "email" : "user2@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "2"
+        }
+      },
+      "created" : {
+        "date" : 1782830846437,
+        "user" : {
+          "email" : "user2@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "2"
+        }
+      },
+      "published" : {
+        "date" : 1782830904628,
+        "user" : {
+          "email" : "user2@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "2"
+        }
+      },
+      "lastMajorRevisionPublished" : {
+        "date" : 1782830904628,
+        "user" : {
+          "email" : "user2@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "2"
+        }
+      },
+      "revision" : 63,
+      "minutesActive" : 0,
+      "contentSource" : "flexible"
+    },
+    "fields" : {
+      "slug" : "best-aardark",
+      "headline" : "best aardark",
+      "linkText" : "best aardark",
+      "trailText" : "Test"
+    },
+    "blocks" : [ {
+      "id" : "6a43d7018f08e1753109a385",
+      "lastModified" : 1782830883115,
+      "dateCreated" : 1782830849594,
+      "createdBy" : {
+        "email" : "user2@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "2"
+      },
+      "lastModifiedBy" : {
+        "email" : "user2@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "2"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "product-summary",
+        "fields" : {
+          "title" : "At a glance",
+          "displayType" : "CTA_LIST",
+          "products" : [ {
+            "productId" : "45e40c0e495f42868e5ca8f7a1802600",
+            "ctaIndex" : 0
+          } ],
+          "id" : "7279cb9c9821451db5a9c484ba6a2dda"
+        },
+        "assets" : [ ]
+      }, {
+        "elementType" : "product",
+        "fields" : {
+          "productName" : "Trainer",
+          "brandName" : "Nike",
+          "primaryHeading" : "Best shoe",
+          "secondaryHeading" : "",
+          "displayType" : "INLINE_WITH_PRODUCT_CARD",
+          "productCtas" : [ {
+            "url" : "",
+            "text" : "",
+            "retailer" : "",
+            "price" : ""
+          }, {
+            "url" : "",
+            "text" : "",
+            "retailer" : "",
+            "price" : ""
+          } ],
+          "customAttributes" : [ ],
+          "starRating" : "none-selected",
+          "content" : [ ],
+          "id" : "45e40c0e495f42868e5ca8f7a1802600"
+        },
+        "assets" : [ ]
+      } ],
+      "published" : false,
+      "attributes" : { },
+      "revisionId" : 7
+    } ],
+    "settings" : {
+      "relatedContentOff" : "false",
+      "blockAds" : "false",
+      "isInappropriateForSponsorship" : "false",
+      "tableOfContents" : "false",
+      "legallySensitive" : "false",
+      "hideReaderRevenue" : "false",
+      "timeZone" : "Europe/London",
+      "managedByComposer" : "true",
+      "usesPathManager" : "true",
+      "productionOffice" : "UK"
+    },
+    "taxonomy" : {
+      "tags" : [ {
+        "tag" : {
+          "id" : 74253,
+          "type" : "Series",
+          "internalName" : "The Filter UK (series tag)",
+          "externalName" : "The Filter",
+          "slug" : "the-filter",
+          "section" : {
+            "id" : 6877,
+            "name" : "The Filter",
+            "pathPrefix" : "thefilter",
+            "slug" : "thefilter"
+          },
+          "path" : "thefilter/series/the-filter",
+          "adBlockingLevel" : "NONE",
+          "contributionBlockingLevel" : "NONE"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 26903,
+          "type" : "Content Type",
+          "internalName" : "Article (Content type)",
+          "externalName" : "Article",
+          "slug" : "article",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "articles"
+        },
+        "isLead" : false
+      } ],
+      "contributors" : [ ],
+      "publication" : {
+        "id" : 4,
+        "type" : "Publication",
+        "internalName" : "guardian.co.uk publication",
+        "externalName" : "theguardian.com",
+        "slug" : "guardian",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "guardian/all"
+      },
+      "references" : [ ],
+      "tracking" : [ ]
+    },
+    "aliasPaths" : [ ]
+  },
+  "live" : {
+    "contentChangeDetails" : {
+      "lastModified" : {
+        "date" : 1782830904837,
+        "user" : {
+          "email" : "user2@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "2"
+        }
+      },
+      "created" : {
+        "date" : 1782830846437,
+        "user" : {
+          "email" : "user2@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "2"
+        }
+      },
+      "published" : {
+        "date" : 1782830904628,
+        "user" : {
+          "email" : "user2@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "2"
+        }
+      },
+      "lastMajorRevisionPublished" : {
+        "date" : 1782830904628,
+        "user" : {
+          "email" : "user2@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "2"
+        }
+      },
+      "revision" : 64,
+      "minutesActive" : 0,
+      "contentSource" : "flexible"
+    },
+    "fields" : {
+      "slug" : "best-aardark",
+      "headline" : "best aardark",
+      "linkText" : "best aardark",
+      "trailText" : "Test"
+    },
+    "blocks" : [ {
+      "id" : "6a43d7018f08e1753109a385",
+      "lastModified" : 1782830883115,
+      "dateCreated" : 1782830849594,
+      "createdBy" : {
+        "email" : "user2@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "2"
+      },
+      "lastModifiedBy" : {
+        "email" : "user2@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "2"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "product-summary",
+        "fields" : {
+          "title" : "At a glance",
+          "displayType" : "CTA_LIST",
+          "products" : [ {
+            "productId" : "45e40c0e495f42868e5ca8f7a1802600",
+            "ctaIndex" : 0
+          } ],
+          "id" : "7279cb9c9821451db5a9c484ba6a2dda"
+        },
+        "assets" : [ ]
+      }, {
+        "elementType" : "product",
+        "fields" : {
+          "productName" : "Trainer",
+          "brandName" : "Nike",
+          "primaryHeading" : "Best shoe",
+          "secondaryHeading" : "",
+          "displayType" : "INLINE_WITH_PRODUCT_CARD",
+          "productCtas" : [ {
+            "url" : "",
+            "text" : "",
+            "retailer" : "",
+            "price" : ""
+          }, {
+            "url" : "",
+            "text" : "",
+            "retailer" : "",
+            "price" : ""
+          } ],
+          "customAttributes" : [ ],
+          "starRating" : "none-selected",
+          "content" : [ ],
+          "id" : "45e40c0e495f42868e5ca8f7a1802600"
+        },
+        "assets" : [ ]
+      } ],
+      "published" : true,
+      "attributes" : { },
+      "revisionId" : 7
+    } ],
+    "settings" : {
+      "relatedContentOff" : "false",
+      "blockAds" : "false",
+      "isInappropriateForSponsorship" : "false",
+      "tableOfContents" : "false",
+      "legallySensitive" : "false",
+      "hideReaderRevenue" : "false",
+      "timeZone" : "Europe/London",
+      "managedByComposer" : "true",
+      "usesPathManager" : "true",
+      "productionOffice" : "UK"
+    },
+    "taxonomy" : {
+      "tags" : [ {
+        "tag" : {
+          "id" : 74253,
+          "type" : "Series",
+          "internalName" : "The Filter UK (series tag)",
+          "externalName" : "The Filter",
+          "slug" : "the-filter",
+          "section" : {
+            "id" : 6877,
+            "name" : "The Filter",
+            "pathPrefix" : "thefilter",
+            "slug" : "thefilter"
+          },
+          "path" : "thefilter/series/the-filter",
+          "adBlockingLevel" : "NONE",
+          "contributionBlockingLevel" : "NONE"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 26903,
+          "type" : "Content Type",
+          "internalName" : "Article (Content type)",
+          "externalName" : "Article",
+          "slug" : "article",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "articles"
+        },
+        "isLead" : false
+      } ],
+      "contributors" : [ ],
+      "publication" : {
+        "id" : 4,
+        "type" : "Publication",
+        "internalName" : "guardian.co.uk publication",
+        "externalName" : "theguardian.com",
+        "slug" : "guardian",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "guardian/all"
+      },
+      "references" : [ ],
+      "tracking" : [ ]
+    },
+    "aliasPaths" : [ ]
+  },
+  "auxiliaryAtoms" : [ ],
+  "channels" : {
+    "feast" : {
+      "channelState" : "IsAvailable",
+      "firstMadeAvailable" : {
+        "date" : 1782830904591,
+        "user" : {
+          "email" : "user2@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "2"
+        }
+      },
+      "contentLastUpdated" : {
+        "date" : 1782830904733,
+        "user" : {
+          "email" : "user2@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "2"
+        }
+      }
+    },
+    "editions" : {
+      "channelState" : "IsAvailable",
+      "firstMadeAvailable" : {
+        "date" : 1782830904591,
+        "user" : {
+          "email" : "user2@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "2"
+        }
+      },
+      "contentLastUpdated" : {
+        "date" : 1782830904733,
+        "user" : {
+          "email" : "user2@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "2"
+        }
+      }
+    },
+    "newsletters" : {
+      "channelState" : "IsAvailable",
+      "firstMadeAvailable" : {
+        "date" : 1782830904591,
+        "user" : {
+          "email" : "user2@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "2"
+        }
+      },
+      "contentLastUpdated" : {
+        "date" : 1782830904733,
+        "user" : {
+          "email" : "user2@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "2"
+        }
+      }
+    }
+  }
+}

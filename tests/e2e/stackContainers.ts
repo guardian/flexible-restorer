@@ -15,10 +15,33 @@ type BuildDockerImageArgs = {
 export type LocalStack = {
     baseUrl: string;
     panDomainPrivateKey: string;
+    /**
+     * Base URL of the configurable mock flexible-content API, mapped to the
+     * host. POST to `${mockApiUrl}/__admin/state` to change what restore
+     * destination/restore calls return at runtime.
+     */
+    mockApiUrl: string;
     minioContainer: any;
     restorerContainer: any;
+    mockContainer: any;
     network: any;
 };
+
+// In local dev the restorer runs as the DEV identity, whose effective stage is
+// CODE, so it resolves each stack's real per-stage flexible-content API host
+// (see app/models/FlexibleStack.scala and app/config/AppConfig.scala). We
+// register those exact hostnames as network aliases on the mock container, so
+// the real hostnames resolve to the mock inside the Docker network — no
+// config/URL override required.
+const MOCK_API_PORT = 8080;
+const MOCK_API_HOSTNAMES = [
+    // primary stack (flexible)
+    "flexible-api.CODE.flexible.gudiscovery",
+    // secondary stack (flexible-secondary)
+    "apiv2.CODE.flexible-secondary.gudiscovery",
+    // local DEV stack ("Local Flexible Content")
+    "flexible-api.DEV.flexible.gudiscovery",
+];
 
 function buildDockerImage({
     tag,
@@ -57,8 +80,13 @@ function buildDockerImage({
     });
 }
 
-function createLogConsumer(prefix: string) {
+function createLogConsumer(prefix: string, streamLogs: boolean) {
     return (stream: any) => {
+        if (!streamLogs) {
+            // Discard container logs (default): they are only echoed to stdout
+            // when the stack is run directly via `npm run local:stack`.
+            return;
+        }
         stream
             .on("data", (line: Buffer) => {
                 process.stdout.write(`[${prefix}] ${line.toString()}`);
@@ -69,7 +97,20 @@ function createLogConsumer(prefix: string) {
     };
 }
 
-export async function startLocalStack(projectRoot: string): Promise<LocalStack> {
+export interface StartLocalStackOptions {
+    /**
+     * Stream each container's logs to stdout/stderr. Useful when running the
+     * stack directly (`npm run local:stack`) for debugging, but noisy when the
+     * stack is started by the e2e global setup, so it defaults to off.
+     */
+    streamLogs?: boolean;
+}
+
+export async function startLocalStack(
+    projectRoot: string,
+    options: StartLocalStackOptions = {},
+): Promise<LocalStack> {
+    const { streamLogs = false } = options;
     const runId = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
     const minioImageTag = `flexible-restorer-minio-e2e:${runId}`;
     const restorerImageTag = `flexible-restorer-app-e2e:${runId}`;
@@ -78,7 +119,9 @@ export async function startLocalStack(projectRoot: string): Promise<LocalStack> 
 
     let minioContainer;
     let restorerContainer;
+    let mockContainer;
     const panDomainKeys = generatePanDomainKeys();
+    const mockImageTag = `flexible-restorer-mock-api-e2e:${runId}`;
 
     try {
         await buildDockerImage({
@@ -108,11 +151,35 @@ export async function startLocalStack(projectRoot: string): Promise<LocalStack> 
                     "flexible-secondary-snapshotter-code",
                 PERMISSIONS_BUCKET: "permissions-cache",
             })
-            .withLogConsumer(createLogConsumer("minio"))
+            .withLogConsumer(createLogConsumer("minio", streamLogs))
             .withExposedPorts(9000, 9001)
             .withWaitStrategy(Wait.forLogMessage(/Ensured buckets exist:/, 1))
             .withStartupTimeout(2 * 60 * 1000)
             .start();
+
+        await buildDockerImage({
+            tag: mockImageTag,
+            dockerfilePath: path.join(
+                projectRoot,
+                "images/mock-flexible-api.Dockerfile",
+            ),
+            contextPath: projectRoot,
+        });
+
+        mockContainer = await new GenericContainer(mockImageTag)
+            .withNetwork(network)
+            .withNetworkAliases(...MOCK_API_HOSTNAMES)
+            .withLogConsumer(createLogConsumer("mock-api", streamLogs))
+            .withExposedPorts(MOCK_API_PORT)
+            .withWaitStrategy(
+                Wait.forHttp("/__admin/health", MOCK_API_PORT).forStatusCode(
+                    200,
+                ),
+            )
+            .withStartupTimeout(2 * 60 * 1000)
+            .start();
+
+        const mockApiUrl = `http://${mockContainer.getHost()}:${mockContainer.getMappedPort(MOCK_API_PORT)}`;
 
         await buildDockerImage({
             tag: restorerImageTag,
@@ -132,7 +199,7 @@ export async function startLocalStack(projectRoot: string): Promise<LocalStack> 
                 // Keep local mode enabled in case scripts are bypassed in future changes.
                 LOCAL: "true",
             })
-            .withLogConsumer(createLogConsumer("restorer"))
+            .withLogConsumer(createLogConsumer("restorer", streamLogs))
             .withExposedPorts(9000)
             .withStartupTimeout(10 * 60 * 1000)
             .withWaitStrategy(Wait.forListeningPorts())
@@ -143,13 +210,18 @@ export async function startLocalStack(projectRoot: string): Promise<LocalStack> 
         return {
             baseUrl,
             panDomainPrivateKey: panDomainKeys.privateKeyPem,
+            mockApiUrl,
             minioContainer,
             restorerContainer,
+            mockContainer,
             network,
         };
     } catch (error) {
         if (restorerContainer) {
             await restorerContainer.stop();
+        }
+        if (mockContainer) {
+            await mockContainer.stop();
         }
         if (minioContainer) {
             await minioContainer.stop();
@@ -162,10 +234,14 @@ export async function startLocalStack(projectRoot: string): Promise<LocalStack> 
 export async function stopLocalStack({
     restorerContainer,
     minioContainer,
+    mockContainer,
     network,
 }: Partial<LocalStack> = {}): Promise<void> {
     if (restorerContainer) {
         await restorerContainer.stop();
+    }
+    if (mockContainer) {
+        await mockContainer.stop();
     }
     if (minioContainer) {
         await minioContainer.stop();
