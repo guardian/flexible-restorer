@@ -1,3 +1,10 @@
+# @mode:serial pins this feature to a single worker and runs its scenarios in
+# order. Several scenarios are @state-modifying: they mutate the shared mock
+# flexible-content API's global state and reset it afterwards, so they must not
+# overlap with each other across parallel workers. Serialising the feature keeps
+# them safe in any setup (including --repeat-each / high --workers) while every
+# other feature still runs in parallel.
+@mode:serial
 Feature: Restore a selected snapshot from the restore modal
   This allows an editor to review the from and to choices
   And to confirm a safe restore from the version history page

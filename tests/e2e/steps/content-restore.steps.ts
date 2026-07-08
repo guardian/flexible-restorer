@@ -31,7 +31,9 @@ let timeout = 7 * 1000;
 
 // After any @state-modifying scenario has run its final step (and made its
 // assertions), reset the shared mock flexible-content API back to its defaults
-// so the mutated per-content state cannot leak into later scenarios.
+// so the mutated per-content state cannot leak into later scenarios. These
+// scenarios never overlap because the feature is tagged @mode:serial (runs on a
+// single worker in order), so a plain reset is sufficient.
 After({ tags: "@state-modifying" }, async ({ page, localStack }) => {
     await resetMockState(page.request, localStack.mockApiUrl);
 });
