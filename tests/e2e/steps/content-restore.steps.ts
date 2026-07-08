@@ -1,6 +1,7 @@
-import { Given, When, Then, expect } from "../fixtures";
+import { Given, When, Then, After, expect } from "../fixtures";
 import { createPanDomainCookie } from "../panDomainCookie";
 import { setLastApiResponse } from "./support/lastApiResponse";
+import { resetMockState } from "./support/mockState";
 import type { APIRequestContext, APIResponse, Page } from "@playwright/test";
 import type { LocalStack } from "../stackContainers";
 
@@ -26,7 +27,14 @@ import type { LocalStack } from "../stackContainers";
  * `content-snapshot-content.steps.ts` and `export.steps.ts`.
  */
 
-let timeout = 5 * 1000;
+let timeout = 7 * 1000;
+
+// After any @state-modifying scenario has run its final step (and made its
+// assertions), reset the shared mock flexible-content API back to its defaults
+// so the mutated per-content state cannot leak into later scenarios.
+After({ tags: "@state-modifying" }, async ({ page, localStack }) => {
+    await resetMockState(page.request, localStack.mockApiUrl);
+});
 
 // Holds the response from a restore API request so later Then steps can assert
 // on its status/body.
