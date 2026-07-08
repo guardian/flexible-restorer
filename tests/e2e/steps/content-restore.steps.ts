@@ -95,6 +95,61 @@ async function setDestinationChangeDetails(
     });
 }
 
+/** Regex matching the restore destinations XHR the modal issues on open. */
+const DESTINATIONS_URL = /\/api\/1\/restore\/destinations\//;
+
+/**
+ * Press Enter to open the restore modal and wait until its destination list has
+ * finished loading.
+ *
+ * The "To:" heading is part of the modal template and appears immediately, but
+ * the destination radios are rendered only after `RestoreFormCtrl` resolves the
+ * user's permissions and the `/api/1/restore/destinations/:id` request. Keying
+ * the wait to the settled response and the populated `<ol>` (rather than a short
+ * fixed timeout) removes the load-sensitive flake where assertions ran before
+ * the radios had rendered.
+ */
+async function openModalAndAwaitDestinations(page: Page): Promise<void> {
+    await Promise.all([
+        page.waitForResponse(
+            (response) =>
+                DESTINATIONS_URL.test(response.url()) &&
+                response.status() === 200,
+            { timeout: DESTINATIONS_LOAD_TIMEOUT },
+        ),
+        page.keyboard.press("Enter"),
+    ]);
+    await expect(
+        page.getByRole("heading", { name: "To:" }),
+    ).toBeVisible({ timeout: DESTINATIONS_LOAD_TIMEOUT });
+    // The destination <ol> is populated with one radio per stack once the
+    // request resolves; wait for the first before any per-row assertions run.
+    await expect(
+        page
+            .locator("ol.modal__content__destination-list input[type=radio]")
+            .first(),
+    ).toBeVisible({ timeout: DESTINATIONS_LOAD_TIMEOUT });
+}
+
+/**
+ * Locate a destination's radio input by the display name rendered in its list
+ * row, rather than by the radio's computed accessible name.
+ *
+ * The radios are custom-styled (`-webkit-appearance: none` with a decorative
+ * check span) and the unavailable destination is `disabled`. Resolving such a
+ * radio via `getByRole("radio", { name })` proved flaky: the accessibility-name
+ * lookup intermittently failed to match even though the row, its label text and
+ * the disabled input were all present in the DOM. Matching the row by its
+ * user-visible display name and then reading its `<input>` is deterministic
+ * because it reads DOM text directly instead of the computed a11y name.
+ */
+function destinationRadioByName(page: Page, name: RegExp) {
+    return page
+        .locator("ol.modal__content__destination-list li")
+        .filter({ has: page.getByText(name) })
+        .locator('input[type="radio"]');
+}
+
 /** Open the version history page for a piece of content and launch the modal. */
 async function openRestoreModalFor(
     page: Page,
@@ -108,10 +163,7 @@ async function openRestoreModalFor(
     await expect(
         page.getByText("Show JSON", { exact: true }),
     ).toBeVisible({ timeout: timeout });
-    await page.keyboard.press("Enter");
-    await expect(
-        page.getByRole("heading", { name: "To:" }),
-    ).toBeVisible({ timeout: timeout });
+    await openModalAndAwaitDestinations(page);
 }
 
 // --- The restore modal shows the source snapshot header and destination headings
@@ -208,15 +260,12 @@ Given(
 
 When("the restore modal loads destination choices", async ({ page }) => {
     // Wait for a snapshot to be active (the "Show JSON" toggle only appears once
-    // content has loaded), open the restore modal, and wait for the destination
-    // ("To:") column to render its choices.
+    // content has loaded), then open the restore modal and wait for its
+    // destination list to finish loading (see `openModalAndAwaitDestinations`).
     await expect(
         page.getByText("Show JSON", { exact: true }),
     ).toBeVisible({ timeout: timeout });
-    await page.keyboard.press("Enter");
-    await expect(
-        page.getByRole("heading", { name: "To:" }),
-    ).toBeVisible({ timeout: timeout });
+    await openModalAndAwaitDestinations(page);
 });
 
 Given("the restore modal has loaded destination choices with current system present", async ({ page, localStack }) => {
@@ -483,11 +532,11 @@ Then(
         // The unavailable primary destination is rendered as a disabled radio,
         // while the reachable destinations remain selectable.
         await expect(
-            page.getByRole("radio", { name: /Composer \(CODE\)/ }),
-        ).toBeDisabled({ timeout: timeout });
+            destinationRadioByName(page, /Composer \(CODE\)/),
+        ).toBeDisabled({ timeout: DESTINATIONS_LOAD_TIMEOUT });
         await expect(
-            page.getByRole("radio", { name: /Composer-secondary \(CODE\)/ }),
-        ).toBeEnabled({ timeout: timeout });
+            destinationRadioByName(page, /Composer-secondary \(CODE\)/),
+        ).toBeEnabled({ timeout: DESTINATIONS_LOAD_TIMEOUT });
     },
 );
 
