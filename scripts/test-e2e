@@ -5,6 +5,12 @@ set -euo pipefail
 E2E_NODE_VERSION="${E2E_NODE_VERSION:-20}"
 TEST_ARGS=("$@")
 
+# The e2e suite lives in its own sub-package (tests/) with its own
+# package.json / node_modules, so it can target a modern Node independently of
+# the main app build (which stays on the older Node pinned by the root .nvmrc).
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+E2E_DIR="${DIR}/../tests"
+
 # Quiet npm's deprecated-config warnings ("npm warn config ...") that are
 # printed before every `npm exec` call.
 export npm_config_loglevel=error
@@ -12,6 +18,9 @@ export npm_config_loglevel=error
 current_major="$(node -p "process.versions.node.split('.')[0]" 2>/dev/null || echo 0)"
 
 run_playwright() {
+  # Run everything inside the e2e sub-package so its own node_modules and
+  # playwright.config.js are used.
+  cd "$E2E_DIR"
   # Ensure Node dependencies are present (and built against the Node version
   # selected above) before invoking any npm exec / Playwright commands.
   npm install

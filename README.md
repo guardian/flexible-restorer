@@ -67,11 +67,14 @@ This is only to help debug the test runner, rather than a stack for local develo
 
 ## Testing
 
-To run locally first install dependencies with:
+The end-to-end (Playwright + Cucumber) suite lives in its own sub-package under
+`tests/`, with its own `package.json`, lockfile and `node_modules`. This keeps it
+on a modern Node (20, see `tests/.nvmrc`) independently of the main application
+build, which targets the older Node pinned by the root `.nvmrc`.
 
-`npm install`
-
-It may help to also have `nvm` installed
+You don't need to install the e2e dependencies by hand — the `npm run test:e2e`
+and `npm run local:stack` scripts install them into `tests/` (and switch to the
+right Node via `nvm`) automatically. It helps to have `nvm` installed.
 
 Then there are 2 options:
 

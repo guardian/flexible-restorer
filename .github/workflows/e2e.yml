@@ -19,12 +19,13 @@ jobs:
             - uses: actions/checkout@v4
 
             # The app build targets an older Node (see .nvmrc), but the Playwright
-            # e2e suite needs Node 18+. Install a modern Node explicitly.
+            # e2e suite is its own sub-package (tests/) that needs Node 18+.
+            # Install a modern Node explicitly and cache from the e2e lockfile.
             - uses: actions/setup-node@v4
               with:
                   node-version: 20
                   cache: npm
-                  cache-dependency-path: 'package-lock.json'
+                  cache-dependency-path: 'tests/package-lock.json'
 
             # Pre-build the Testcontainers images up front (the restorer image
             # compiles the Scala app, which is slow on a cold cache). The e2e
@@ -51,8 +52,8 @@ jobs:
               with:
                   name: e2e-test-results
                   path: |
-                      test-results/
-                      playwright-report/
-                      cucumber-report/
+                      tests/test-results/
+                      tests/playwright-report/
+                      tests/cucumber-report/
                   if-no-files-found: ignore
                   retention-days: 14

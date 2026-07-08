@@ -6,15 +6,15 @@ const path = require("path");
 // currently have step definitions are included here.
 const bddTestDir = defineBddConfig({
     features: [
-        "tests/features/content-search.feature",
-        "tests/features/content-snapshot-content.feature",
-        "tests/features/analytics.feature",
-        "tests/features/authentication.feature",
-        "tests/features/content-version-list.feature",
-        "tests/features/export.feature",
-        "tests/features/content-restore.feature",
+        "features/content-search.feature",
+        "features/content-snapshot-content.feature",
+        "features/analytics.feature",
+        "features/authentication.feature",
+        "features/content-version-list.feature",
+        "features/export.feature",
+        "features/content-restore.feature",
     ],
-    steps: ["tests/e2e/fixtures.ts", "tests/e2e/steps/*.ts"],
+    steps: ["e2e/fixtures.ts", "e2e/steps/*.ts"],
 });
 
 module.exports = defineConfig({
@@ -23,10 +23,10 @@ module.exports = defineConfig({
     // Cap the entire run (global setup + all tests) so nothing can hang for long.
     globalTimeout: 3 * 60 * 1000,
     // Start a single local stack once for the whole run (see
-    // tests/e2e/globalSetup.ts) and stop it afterwards, so workers all share one
+    // e2e/globalSetup.ts) and stop it afterwards, so workers all share one
     // stack instead of each booting their own in parallel.
-    globalSetup: path.join(__dirname, "tests/e2e/globalSetup.ts"),
-    globalTeardown: path.join(__dirname, "tests/e2e/globalTeardown.ts"),
+    globalSetup: path.join(__dirname, "e2e/globalSetup.ts"),
+    globalTeardown: path.join(__dirname, "e2e/globalTeardown.ts"),
     expect: {
         timeout: 10 * 1000,
     },
@@ -63,7 +63,7 @@ module.exports = defineConfig({
         screenshot: "only-on-failure",
     },
     projects: [
-        // BDD scenarios generated from tests/features/*.feature
+        // BDD scenarios generated from features/*.feature
         {
             name: "bdd",
             testDir: bddTestDir,
