@@ -43,6 +43,7 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/services/RestoreService.js
   # Evidence: public/javascripts/app/templates/restore-list.html
 
+  @state-modifying
   Scenario: A destination row shows a revision summary when it already has content
     Given the restore modal has loaded destination choices when the destination already has content
     When I inspect the destination list
@@ -52,6 +53,7 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/templates/restore-list.html
     
 
+  @state-modifying
   Scenario: A destination row shows content not on this instance when it has no content
     Given the restore modal has loaded destination choices when the destination has no content
     When I inspect the destination list
@@ -60,6 +62,7 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/services/RestoreService.js
   # Evidence: public/javascripts/app/templates/restore-list.html
 
+  @state-modifying
   Scenario: A destination row shows no extra message when it cannot be used
     Given the restore modal has loaded destination choices when the destination cannot be used
     When I inspect the destination list
@@ -68,6 +71,7 @@ Feature: Restore a selected snapshot from the restore modal
   # Evidence: public/javascripts/app/services/RestoreService.js
   # Evidence: public/javascripts/app/templates/restore-list.html
 
+  @state-modifying
   Scenario: A destination is marked unavailable when its stack cannot be reached
     Given one destination stack does not respond within the timeout
     When the restore modal loads destination choices for that content
