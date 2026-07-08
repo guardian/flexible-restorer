@@ -52,6 +52,15 @@ module.exports = defineConfig({
             : []),
     ],
     use: {
+        // Pin the browser timezone and locale so date rendering is
+        // deterministic across machines. The app formats snapshot dates with
+        // `moment(...).format(...)` in the browser's local timezone, and several
+        // fixtures use London offsets near midnight (e.g. the embargo fixture
+        // `2015-06-29T00:01:00+01:00`). Without a fixed timezone a UTC CI runner
+        // renders the previous day ("Sun 28 June") and fails assertions that a
+        // London/BST developer machine passes ("Mon 29 June").
+        timezoneId: "Europe/London",
+        locale: "en-GB",
         // Run headed (visible browser) when HEADED is set, e.g. `HEADED=1`.
         headless: !process.env.HEADED,
         // Slow down each Playwright action by SLOWMO ms, e.g. `SLOWMO=500`.
