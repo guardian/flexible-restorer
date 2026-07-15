@@ -13,7 +13,7 @@ type WorkerFixtures = {
  *
  * It exposes a worker-scoped `localStack` fixture that reuses the single local
  * stack started once for the whole run by global setup (see
- * `tests/e2e/globalSetup.ts`) — or by `npm run local:stack` during development.
+ * `tests/e2e/globalSetup.ts`) — or by `mise run local:stack` during development.
  * Every worker connects to that same stack via the shared metadata file, so we
  * never boot multiple stacks in parallel. Steps are responsible for navigating
  * to `localStack.baseUrl` and signing in. Import `Given / When / Then` from this
@@ -31,7 +31,7 @@ export const test = base.extend<object, WorkerFixtures>({
                 throw new Error(
                     "No shared local stack found. It is normally started by global " +
                         "setup; if you are running Playwright directly, start one " +
-                        "with `npm run local:stack` first.",
+                        "with `mise run local:stack` first.",
                 );
             }
 

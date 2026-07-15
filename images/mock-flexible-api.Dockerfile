@@ -1,7 +1,7 @@
 # Mock of the flexible-content (Composer) API used by the local stack.
 # Runs the TypeScript stub directly with tsx — the server only uses Node
 # built-ins, so no project dependencies need to be installed.
-FROM node:20-alpine
+FROM node:24-alpine
 
 RUN npm install -g tsx@4.22.4
 

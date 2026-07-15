@@ -8,6 +8,6 @@ ROOT_DIR=${DIR}/..
 dev-nginx setup-app "$ROOT_DIR/nginx/nginx-mapping.yml"
 
 npm install
-npm run build
+mise run build
 
 echo 'Setup complete! Run `sbt run` to run the app at https://restorer.local.dev-gutools.co.uk'

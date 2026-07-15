@@ -6,7 +6,7 @@ import { getOwnedStack } from "./ownedStack";
 /**
  * Playwright global teardown: stop the local stack that global setup started for
  * this run (and clear its published details). If the run reused a stack started
- * elsewhere (via `npm run local:stack`), there is nothing owned here, so that
+ * elsewhere (via `mise run local:stack`), there is nothing owned here, so that
  * stack is left running.
  */
 export default async function globalTeardown(): Promise<void> {
@@ -16,7 +16,9 @@ export default async function globalTeardown(): Promise<void> {
     }
 
     const projectRoot = path.resolve(__dirname, "../..");
-    console.log("[globalTeardown] Stopping the local stack started for this run...");
+    console.log(
+        "[globalTeardown] Stopping the local stack started for this run...",
+    );
     clearSharedStackInfo(projectRoot);
     await stopLocalStack(stack);
 }

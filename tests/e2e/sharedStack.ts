@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 
 /**
- * Helpers for sharing a long-running local stack (started via `npm run
+ * Helpers for sharing a long-running local stack (started via `mise run
  * local:stack`) with the e2e tests.
  *
  * When `local:stack` boots, it writes the running stack's connection details to
