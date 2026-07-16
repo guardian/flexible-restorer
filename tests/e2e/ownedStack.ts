@@ -6,7 +6,7 @@ import type { LocalStack } from "./stackContainers";
  * Playwright runs `globalSetup` and `globalTeardown` in the same (main) process,
  * so this module-level singleton lets teardown find and stop the stack that
  * setup started. It is left `undefined` when a stack started elsewhere (via
- * `npm run local:stack`) is reused, so teardown knows not to touch it.
+ * `mise run local:stack`) is reused, so teardown knows not to touch it.
  */
 let ownedStack: LocalStack | undefined;
 

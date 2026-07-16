@@ -13,7 +13,7 @@ import { setOwnedStack } from "./ownedStack";
  * of each booting its own in parallel.
  *
  * Behaviour:
- *   - If a stack started via `npm run local:stack` is already running, reuse it
+ *   - If a stack started via `mise run local:stack` is already running, reuse it
  *     and leave its lifecycle to that process (we do not stop it in teardown).
  *   - Otherwise, start one stack here, record it as "owned" so global teardown
  *     stops it, and write its details to the shared metadata file the worker

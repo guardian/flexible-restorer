@@ -1,0 +1,36 @@
+# mise is the toolchain manager for local development.
+# Tool versions are pinned in .tool-versions (node, java, sbt, scala).
+# These tasks replace the previous root package.json npm scripts.
+
+[env]
+# Make locally-installed binaries (webpack, tsx, playwright, bddgen) resolvable
+# from the mise tasks below without needing `npx`.
+_.path = ["node_modules/.bin", "tests/node_modules/.bin"]
+
+[tasks.build]
+description = "Build the production JS/CSS bundles"
+run = "webpack --mode=production"
+
+[tasks.watch]
+description = "Rebuild the bundles on change"
+run = "webpack --mode=development --watch"
+
+[tasks."local:stack"]
+description = "Run the Testcontainers local stack (MinIO + Restorer)"
+run = "./scripts/docker/run-local-stack"
+
+[tasks."test:e2e"]
+description = "Run the Playwright + Cucumber e2e suite"
+run = "./scripts/test-e2e"
+
+[tasks."test:e2e:headed"]
+description = "Run the e2e suite in headed mode"
+run = "./scripts/test-e2e --headed"
+
+[tasks."test:e2e:debug"]
+description = "Run the e2e suite in debug mode"
+run = "./scripts/test-e2e --debug"
+
+[tasks."test:report"]
+description = "Serve the Cucumber HTML report"
+run = "./scripts/test-report"

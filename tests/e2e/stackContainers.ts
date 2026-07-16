@@ -84,7 +84,7 @@ function createLogConsumer(prefix: string, streamLogs: boolean) {
     return (stream: any) => {
         if (!streamLogs) {
             // Discard container logs (default): they are only echoed to stdout
-            // when the stack is run directly via `npm run local:stack`.
+            // when the stack is run directly via `mise run local:stack`.
             return;
         }
         stream
@@ -100,7 +100,7 @@ function createLogConsumer(prefix: string, streamLogs: boolean) {
 export interface StartLocalStackOptions {
     /**
      * Stream each container's logs to stdout/stderr. Useful when running the
-     * stack directly (`npm run local:stack`) for debugging, but noisy when the
+     * stack directly (`mise run local:stack`) for debugging, but noisy when the
      * stack is started by the e2e global setup, so it defaults to off.
      */
     streamLogs?: boolean;
