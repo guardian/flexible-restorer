@@ -46,6 +46,14 @@ class Application(
     Ok(views.html.main(s"Composer Restorer - Versions of $contentId", clientConfig, config.googleTrackingId))
   }
 
+  def reactIndex = AuthAction {
+    Ok(views.html.reactMain("Composer Restorer V2", clientConfig))
+  }
+
+  def reactVersionIndex(contentId: String) = AuthAction {
+    Ok(views.html.reactMain(s"Composer Restorer V2 - Versions of $contentId", clientConfig))
+  }
+
   def preflight(routes: String) = CORSable(executionContext, config.corsableDomains: _*) {
     Action { implicit req =>
       val requestedHeaders = req.headers.get("Access-Control-Request-Headers")
