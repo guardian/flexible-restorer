@@ -40,6 +40,21 @@ jobs:
               run: |
                   mv target/restorer2_1.0.0_all.deb restorer2.deb
 
+            - name: CDK synth
+              uses: actions/setup-node@v4
+              with:
+                  node-version-file: 'cdk/.nvmrc'
+                  cache: npm
+                  cache-dependency-path: 'cdk/package-lock.json'
+
+            - name: CDK build
+              working-directory: cdk
+              run: |
+                  npm ci
+                  npm run lint
+                  npm test
+                  npm run synth
+
             # Upload our build artifacts to Riff-Raff (well, S3)
             - uses: guardian/actions-riff-raff@v4
               with:
@@ -51,3 +66,6 @@ jobs:
                   contentDirectories: |
                       restorer2:
                         - restorer2.deb
+                      cfn-restorer2:
+                        - cdk/cdk.out/Restorer2-euwest-1-CODE.template.json
+                        - cdk/cdk.out/Restorer2-euwest-1-PROD.template.json

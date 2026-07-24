@@ -2,19 +2,25 @@ regions: [eu-west-1]
 stacks: [flexible]
 
 deployments:
-  restorer2:
-    type: autoscaling
-    dependencies:
-      - restorer2-ami-update
-  restorer2-ami-update:
-    type: ami-cloudformation-parameter
+  cfn-restorer2:
+    type: cloud-formation
     app: restorer2
     parameters:
+      templateStagePaths:
+        CODE: Restorer2-euwest-1-CODE.template.json
+        PROD: Restorer2-euwest-1-PROD.template.json
+      # Continue to target the existing stack while CDK merely wraps the legacy template.
+      cloudFormationStackName: Flexible-Restorer
+      cloudFormationStackByTags: false
+      prependStackToCloudFormationStackName: false
+      # Resolve the AMI the same way the previous ami-cloudformation-parameter deployment did.
+      amiParameter: AMI
       amiTags:
         Recipe: editorial-tools-jammy-java11
         AmigoStage: PROD
         BuiltBy: amigo
       amiEncrypted: true
-      cloudFormationStackName: Flexible-Restorer
-      cloudFormationStackByTags: false
-      prependStackToCloudFormationStackName: false
+  restorer2:
+    type: autoscaling
+    dependencies:
+      - cfn-restorer2
