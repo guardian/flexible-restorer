@@ -1,0 +1,406 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Flexible Content Restorer"
+Parameters:
+  Stage:
+    Description: "Environment name"
+    Type: "String"
+    AllowedValues:
+    - "PROD"
+    - "CODE"
+  VpcId:
+    Description: "ID of the VPC onto which to launch the application eg. vpc-1234abcd"
+    Type: "AWS::EC2::VPC::Id"
+    Default: "vpc-381fa95d"
+  PublicVpcSubnets:
+    Description: "Subnets to use in VPC for public internet-facing ELB eg. subnet-abcd1234"
+    Type: "List<AWS::EC2::Subnet::Id>"
+    Default: "subnet-c3620fa6,subnet-2b37bd5c"
+  PrivateVpcSubnets:
+    Description: "Subnets to use in VPC for private EC2 instances eg. subnet-abcd1234"
+    Type: "List<AWS::EC2::Subnet::Id>"
+    Default: "subnet-c2620fa7,subnet-2a37bd5d"
+  AMI:
+    Description: "AMI id"
+    Type: "AWS::EC2::Image::Id"
+  KmsKeyARN:
+    Description: ARN of KMS key that was used to encrypt the backups
+    Type: String
+  LoggingStreamName:
+    Type: AWS::SSM::Parameter::Value<String>
+    Description: Name of the kinesis stream for logging to ELK (logs.gutools)
+    Default: /account/services/logging.stream.name
+  LoggingStreamArn:
+    Type: AWS::SSM::Parameter::Value<String>
+    Description: ARN of the kinesis stream for logging to ELK (logs.gutools)
+    Default: /account/services/logging.stream
+Conditions:
+  IsProd: !Equals [ !Ref Stage, "PROD" ]
+Mappings:
+  EnvironmentMap:
+    CODE:
+      lowercase: "code"
+      minSize: 2
+      maxSize: 4
+      # Security group id of flexible-content api, to allow access to the api elb
+      AccessToApiSecurityGroupId: "sg-4d028336"
+
+      # Security group id of flexible-content secondary api, to allow access to the secondary api elb
+      SecondaryAccessToApiSecurityGroupId: "sg-3137fa4b"
+      Domain: restorer.code.dev-gutools.co.uk
+      ValidationDomain: dev-gutools.co.uk
+    PROD:
+      lowercase: "prod"
+      minSize: 2
+      maxSize: 4
+      # Security group id of flexible-content api, to allow access to the api elb
+      AccessToApiSecurityGroupId: "sg-4744c43c"
+
+      # Security group id of flexible-content secondary api, to allow access to the secondary api elb
+      SecondaryAccessToApiSecurityGroupId: "sg-baae78c0"
+      Domain: restorer.gutools.co.uk
+      ValidationDomain: gutools.co.uk
+Resources:
+  RestorerInstanceProfile:
+    Type: "AWS::IAM::InstanceProfile"
+    Properties:
+      Path: "/"
+      Roles:
+      - Ref: "RestorerRole"
+
+  RestorerRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      ManagedPolicyArns:
+        - Fn::ImportValue: !Sub "guardian-ec2-for-ssm-GuardianEC2ForSSMPolicy"
+      AssumeRolePolicyDocument:
+        Statement:
+        -
+          Effect: "Allow"
+          Principal:
+            Service:
+            - "ec2.amazonaws.com"
+          Action:
+          - "sts:AssumeRole"
+      Path: "/"
+
+  RestorerDescribeEC2Policy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "RestorerDescribeEC2Policy"
+      PolicyDocument:
+        Statement:
+        - Action:
+          - ec2:Describe*
+          - autoscaling:DescribeAutoScalingGroups
+          - autoscaling:DescribeAutoScalingInstances
+          Effect: "Allow"
+          Resource: "*"
+      Roles:
+      - Ref: "RestorerRole"
+
+  RestorerSSMPolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "RestorerSSMPolicy"
+      PolicyDocument:
+        Statement:
+        - Action:
+          - "ssm:GetParameters"
+          - "ssm:GetParametersByPath"
+          Effect: "Allow"
+          Resource: !Sub "arn:aws:ssm:*:*:parameter/flexible/restorer/${Stage}*"
+      Roles:
+      - Ref: "RestorerRole"
+
+  RestorerGetDistributablesPolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "RestorerGetDistributablesPolicy"
+      PolicyDocument:
+        Statement:
+        - Effect: "Allow"
+          Action:
+          - "s3:GetObject"
+          Resource:
+          - "arn:aws:s3:::composer-dist/*"
+      Roles:
+      - Ref: "RestorerRole"
+
+  PanDomainPolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "PanDomainPolicy"
+      PolicyDocument:
+        Statement:
+        - Effect: "Allow"
+          Action:
+          - "s3:GetObject"
+          Resource:
+          - "arn:aws:s3:::pan-domain-auth-settings/*"
+      Roles:
+      - Ref: "RestorerRole"
+
+  PermissionsPolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "PermissionsPolicy"
+      PolicyDocument:
+        Statement:
+        - Effect: "Allow"
+          Action:
+          - "s3:GetObject"
+          Resource:
+          - "arn:aws:s3:::permissions-cache/*"
+      Roles:
+      - Ref: "RestorerRole"
+
+  RestorerSnapshotBucketPolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "RestorerSnapshotBucketPolicy"
+      PolicyDocument:
+        Statement:
+        - Effect: "Allow"
+          Action:
+          - "s3:ListBucket"
+          Resource:
+          - Fn::Join:
+            - ""
+            - - "arn:aws:s3:::flexible-snapshotter-"
+              - Fn::FindInMap:
+                - "EnvironmentMap"
+                - Ref: "Stage"
+                - "lowercase"
+        - Effect: "Allow"
+          Action:
+          - "s3:GetObject"
+          Resource:
+          - Fn::Join:
+            - ""
+            - - "arn:aws:s3:::flexible-snapshotter-"
+              - Fn::FindInMap:
+                - "EnvironmentMap"
+                - Ref: "Stage"
+                - "lowercase"
+              - "/*"
+        - Effect: "Allow"
+          Action:
+          - "s3:ListBucket"
+          Resource:
+          - Fn::Join:
+            - ""
+            - - "arn:aws:s3:::flexible-secondary-snapshotter-"
+              - Fn::FindInMap:
+                - "EnvironmentMap"
+                - Ref: "Stage"
+                - "lowercase"
+        - Effect: "Allow"
+          Action:
+          - "s3:GetObject"
+          Resource:
+          - Fn::Join:
+            - ""
+            - - "arn:aws:s3:::flexible-secondary-snapshotter-"
+              - Fn::FindInMap:
+                - "EnvironmentMap"
+                - Ref: "Stage"
+                - "lowercase"
+              - "/*"
+      Roles:
+      - Ref: "RestorerRole"
+
+  KMSKeyPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      Roles:
+      - Ref: RestorerRole
+      PolicyName: KMSKeyPolicy
+      PolicyDocument:
+        Statement:
+        - Effect: Allow
+          Action:
+          - kms:Decrypt
+          - kms:DescribeKey
+          Resource:
+            Ref: KmsKeyARN
+
+  RestorerCloudwatchPolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "RestorerCloudwatchPolicy"
+      PolicyDocument:
+        Statement:
+        - Effect: "Allow"
+          Action:
+          - "cloudwatch:*"
+          Resource: "*"
+      Roles:
+      - Ref: "RestorerRole"
+
+  LoggingPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: LoggingPolicy
+      PolicyDocument:
+        Statement:
+        - Effect: Allow
+          Action:
+            - "kinesis:PutRecord"
+            - "kinesis:PutRecords"
+            - "kinesis:DescribeStream"
+          Resource: !Ref 'LoggingStreamArn'
+      Roles:
+      - Ref: "RestorerRole"
+
+  # Ideally this'll be three separate groups, however an instance in a private VPC has a limit of five security groups.
+  # As PROD needs access to CODE (a total of four SGs), we have to combine these rules into one.
+  AppServerSecurityGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      GroupDescription: "Allows load balancer access to the app and pinging and SSH access of the instance from the office"
+      VpcId:
+        Ref: "VpcId"
+      SecurityGroupIngress:
+      - IpProtocol: "tcp"
+        FromPort: 9000
+        ToPort: 9000
+        SourceSecurityGroupId:
+          Ref: "LoadBalancerSecurityGroup"
+      - IpProtocol: "icmp"
+        FromPort: "8"
+        ToPort: "-1"
+        CidrIp: "10.249.16.133/22"
+
+  LoadBalancerSecurityGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      GroupDescription: "load balancer"
+      VpcId:
+        Ref: "VpcId"
+      SecurityGroupIngress:
+      - IpProtocol: "tcp"
+        FromPort: 443
+        ToPort: 443
+        CidrIp: "0.0.0.0/0"
+
+  RestorerLoadBalancer:
+    Type: "AWS::ElasticLoadBalancing::LoadBalancer"
+    Properties:
+      SecurityGroups:
+      - Fn::GetAtt:
+        - "LoadBalancerSecurityGroup"
+        - "GroupId"
+      CrossZone: true
+      Subnets:
+        Ref: "PublicVpcSubnets"
+      Listeners:
+      - LoadBalancerPort: "443"
+        InstancePort: "9000"
+        Protocol: "HTTPS"
+        SSLCertificateId: !Ref Certificate
+      HealthCheck:
+        Target: "HTTP:9000/management/healthcheck"
+        HealthyThreshold: "2"
+        UnhealthyThreshold: "2"
+        Interval: "10"
+        Timeout: "5"
+      Tags:
+      - Key: "Stage"
+        Value:
+          Ref: "Stage"
+      - Key: "Stack"
+        Value: "flexible"
+      - Key: "App"
+        Value: "restorer2"
+
+  AutoscalingGroup:
+    Type: "AWS::AutoScaling::AutoScalingGroup"
+    Properties:
+      AvailabilityZones:
+        - Fn::Select:
+          - 0
+          - Fn::GetAZs: !Ref "AWS::Region"
+        - Fn::Select:
+          - 1
+          - Fn::GetAZs: !Ref "AWS::Region"
+      VPCZoneIdentifier:
+        Ref: "PrivateVpcSubnets"
+      LaunchConfigurationName:
+        Ref: "RestorerLaunchConfig"
+      MinSize:
+        Fn::FindInMap:
+        - "EnvironmentMap"
+        - Ref: "Stage"
+        - "minSize"
+      MaxSize:
+        Fn::FindInMap:
+        - "EnvironmentMap"
+        - Ref: "Stage"
+        - "maxSize"
+      HealthCheckType: "ELB"
+      HealthCheckGracePeriod: 300
+      LoadBalancerNames:
+      - Ref: "RestorerLoadBalancer"
+      Tags:
+      - Key: "Stage"
+        Value:
+          Ref: "Stage"
+        PropagateAtLaunch: "true"
+      - Key: "Stack"
+        Value: "flexible"
+        PropagateAtLaunch: "true"
+      - Key: "App"
+        Value: "restorer2"
+        PropagateAtLaunch: "true"
+      - Key: LogKinesisStreamName
+        Value: !Ref 'LoggingStreamName'
+        PropagateAtLaunch: 'true'
+      - Key: SystemdUnit
+        Value: restorer2.service
+        PropagateAtLaunch: 'true'
+
+  RestorerLaunchConfig:
+    Type: "AWS::AutoScaling::LaunchConfiguration"
+    Properties:
+      ImageId:
+        Ref: "AMI"
+      SecurityGroups:
+      - Ref: AppServerSecurityGroup
+      - !FindInMap [EnvironmentMap, !Ref "Stage", AccessToApiSecurityGroupId]
+      - !FindInMap [EnvironmentMap, !Ref "Stage", SecondaryAccessToApiSecurityGroupId]
+
+      # PROD can restore content into CODE
+      - Fn::If:
+        - IsProd
+        - !FindInMap [EnvironmentMap, "CODE", AccessToApiSecurityGroupId]
+        - Ref: AWS::NoValue
+      - Fn::If:
+        - IsProd
+        - !FindInMap [EnvironmentMap, "CODE", SecondaryAccessToApiSecurityGroupId]
+        - Ref: AWS::NoValue
+      InstanceType: "t4g.micro"
+      IamInstanceProfile:
+        Ref: "RestorerInstanceProfile"
+      MetadataOptions:
+        HttpTokens: required
+      UserData:
+        "Fn::Base64": !Sub |
+          #!/bin/bash -ev
+          aws s3 cp s3://composer-dist/flexible/${Stage}/restorer2/restorer2.deb /tmp/restorer2.deb
+          dpkg -i /tmp/restorer2.deb
+
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      ValidationMethod: DNS
+      DomainName: !FindInMap [ EnvironmentMap, !Ref "Stage", Domain ]
+      DomainValidationOptions:
+        - DomainName: !FindInMap [ EnvironmentMap, !Ref "Stage", Domain ]
+          ValidationDomain: !FindInMap [ EnvironmentMap, !Ref "Stage", ValidationDomain ]
+      Tags:
+        - Key: Stage
+          Value: !Ref Stage
+        - Key: Stack
+          Value: "flexible"
+        - Key: App
+          Value: "restorer"
