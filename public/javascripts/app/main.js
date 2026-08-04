@@ -8,6 +8,7 @@ import collections  from  './collections/index';
 import services     from './services/index';
 
 import components   from './lib/gu-components';
+import reactComponents from './components/index';
 
 import '../../sass/index.scss';
 import '../../gu-noting.css';
@@ -16,6 +17,7 @@ var restorer = angular.module('restorer', [
   'ngRoute',
   'ngSanitize',
   'guComponents',
+  'reactComponents',
   'restorerControllers',
   'restorerModels',
   'restorerCollections',
