@@ -5,3 +5,5 @@ node 24.18.0
 
 sbt 1.9.7
 scala 2.13.18
+
+github:guardian/devenv 20260522-111753
