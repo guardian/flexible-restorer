@@ -4,6 +4,8 @@
         "node": ">=24"
     },
     "dependencies": {
+        "@emotion/react": "^11.14.0",
+        "@guardian/stand": "^0.0.60",
         "angular": "^1.8.3",
         "angular-route": "^1.8.3",
         "angular-sanitize": "^1.8.3",
@@ -11,9 +13,18 @@
         "flatten": "^1.0.3",
         "lodash.get": "^4.4.2",
         "mediator-js": "^0.11.0",
-        "moment": "^2.29.4"
+        "moment": "^2.29.4",
+        "prop-types": "^15.8.1",
+        "react": "^19.2.7",
+        "react-aria-components": "^1.19.0",
+        "react-dom": "^19.2.7",
+        "react2angular": "^4.0.6"
     },
     "devDependencies": {
+        "@babel/core": "^8.0.1",
+        "@babel/preset-env": "^8.0.2",
+        "@babel/preset-react": "^8.0.1",
+        "babel-loader": "^10.1.1",
         "css-loader": "^7.1.2",
         "mini-css-extract-plugin": "^2.9.2",
         "raw-loader": "^4.0.2",
