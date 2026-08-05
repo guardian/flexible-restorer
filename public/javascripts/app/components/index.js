@@ -1,6 +1,7 @@
 import angular from 'angular';
 import { react2angular } from 'react2angular';
 import { SearchForm } from './SearchForm';
+import { SnapshotSidebar } from './snapshot-sidebar/SnapshotSidebar';
 import { provideAngularServices } from './hooks/useAngularRouter';
 
 // AngularJS module hosting the React components bridged in via react2angular.
@@ -20,6 +21,13 @@ reactComponents.service('AngularBridgeService', [
 // Register migrated React components as AngularJS directives.
 // Usage in templates: <search-form></search-form>.
 reactComponents.component('searchForm', react2angular(SearchForm, ['initialQuery']));
+
+// Snapshot sidebar (article header + version list + interaction).
+// Usage in templates: <snapshot-sidebar content-id="contentId"></snapshot-sidebar>.
+reactComponents.component(
+  'snapshotSidebar',
+  react2angular(SnapshotSidebar, ['contentId'])
+);
 
 // Instantiate the bridge at bootstrap so services are provisioned before any
 // React component mounts.

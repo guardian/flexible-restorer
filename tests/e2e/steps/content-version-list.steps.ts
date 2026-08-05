@@ -174,11 +174,11 @@ When("I view the index value for that row", async () => {
     // No action required — the fallback index is asserted in the Then step.
 });
 Then("I should see the fallback revision number based on list position", async ({ page }) => {
-    const items = page.locator("li.snapshot-list__item");
+    const items = page.locator('[data-testid="snapshot-list-item"]');
     const total = await items.count();
     expect(total).toBeGreaterThan(0);
 
-    // The "1" fallback index must live inside a snapshot-list__item, and only
+    // The "1" fallback index must live inside a snapshot list item, and only
     // one row should carry it.
     const itemWithFallbackIndex = items.filter({
         has: page.getByText("1", { exact: true }),
@@ -197,7 +197,9 @@ When("I click a snapshot row in the list", async ( { page }) => {
     await page.getByRole('heading', { name: 'Scheduled snapshot' }).nth(1).click();
 });
 Then("that row should become the active row", async ({ page }) => {
-    const activeRow = page.locator("li.item-active");
+    const activeRow = page.locator(
+        '[data-testid="snapshot-list-item"][data-active="true"]',
+    );
     await expect(activeRow).toHaveCount(1);
     await expect(activeRow).toContainText("Scheduled snapshot");
 });
@@ -289,9 +291,9 @@ When("I inspect the status indicators for that row", async ({ page }) => {
     await expect(page.getByText(/Last modified by:/).first()).toBeVisible({ timeout });
 });
 Then("I should see the legally sensitive marker", async ({ page }) => {
-    // The marker is an icon-only div (no text/role/label), so it can only be
-    // located by class. Verify it is shown and renders the legal-check icon.
-    const marker = page.locator(".snapshot-list__item__settings__legally-sensitive").first();
+    // The marker is an icon-only div (no text/role/label), so it is located by
+    // its test id. Verify it is shown and renders the legal-check icon.
+    const marker = page.locator('[data-testid="legally-sensitive"]').first();
     await expect(marker).toBeVisible({ timeout });
     // The icon is a webpack-inlined SVG data URI; confirm an icon is rendered.
     const backgroundImage = await marker.evaluate((el) => getComputedStyle(el).backgroundImage);

@@ -177,18 +177,33 @@ Given("JSON content is available in the panel", async ({ page }) => {
 });
 
 When("I use the Copy JSON action", async ({ page }) => {
-    // The copy uses execCommand on a hidden textarea, so allow clipboard access
-    // before clicking the button (which is labelled "Copy JSON" until used).
-    await page
-        .context()
-        .grantPermissions(["clipboard-read", "clipboard-write"]);
+    // The app copies by selecting a temporary textarea and calling
+    // `document.execCommand("copy")`. The test stack is served from a non-secure
+    // origin (the mapped container host is not localhost), so
+    // `navigator.clipboard` is unavailable in the browser. Instead of reading the
+    // system clipboard, capture the text the browser copies by listening for the
+    // synchronous `copy` event — at that point the focused element is the
+    // textarea whose value is the snapshot JSON.
+    await page.evaluate(() => {
+        (window as unknown as { __copiedText?: string }).__copiedText = undefined;
+        document.addEventListener("copy", () => {
+            const el = document.activeElement as HTMLTextAreaElement | null;
+            if (el && typeof el.value === "string") {
+                (window as unknown as { __copiedText?: string }).__copiedText =
+                    el.value;
+            }
+        });
+    });
     await page.getByText("Copy JSON", { exact: true }).click();
 });
 
 Then("the snapshot JSON should be copied to the clipboard", async ({ page }) => {
     // The copied text is the pretty-printed snapshot JSON, so it contains the
-    // content id and JSON-only keys.
-    const clipboard = await page.evaluate(() => navigator.clipboard.readText());
+    // content id and JSON-only keys. Read the value captured from the `copy`
+    // event (see "I use the Copy JSON action") rather than the system clipboard.
+    const clipboard = await page.evaluate(
+        () => (window as unknown as { __copiedText?: string }).__copiedText,
+    );
     expect(clipboard).toContain("contentChangeDetails");
     expect(clipboard).toContain("568c4110e4b0c73bdb0e52df");
 });
@@ -677,6 +692,13 @@ When("the error is published", async ({ page }) => {
     // Pressing the down arrow makes the next snapshot active, which loads its
     // content from the (now failing) endpoint. The rejected request causes
     // SnapshotContentCtrl to publish the 'error' event the modals react to.
+    // The arrow-key handler now lives in the (React) sidebar, which loads its
+    // version list independently of the Angular content panel, so wait for the
+    // sidebar list to render before driving the keyboard — otherwise the
+    // keypress is dropped while the sidebar is still loading.
+    await expect(page.locator('[data-testid="snapshot-list-item"]').first()).toBeVisible({
+        timeout: timeout,
+    });
     await page.keyboard.press("ArrowDown");
 });
 

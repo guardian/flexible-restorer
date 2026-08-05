@@ -2,6 +2,16 @@ import angular from 'angular';
 import BaseCollection from './BaseCollection';
 
 let listCache = {};
+// Tracks the collection request that is currently in flight for a given content
+// id. Without this, concurrent callers (SnapshotListCtrl, SnapshotContentCtrl,
+// RestoreFormCtrl, RestoreService) each miss the cache and fire their own
+// request, and the last one to resolve overwrites `listCache[id]` with a fresh
+// collection instance. That instance's active model is not the one
+// SnapshotListCtrl marked active, so `collection.find(d => d.activeState)`
+// returns undefined and the restore modal shows an empty source header. Sharing
+// a single in-flight promise guarantees every caller resolves the same
+// singleton collection.
+let inFlight = {};
 
 var SnapshotIdModelsMod = angular.module('SnapshotIdModelsMod', ['SnapshotServiceMod']);
 
@@ -24,29 +34,34 @@ SnapshotIdModelsMod.factory('SnapshotIdModels', [
 
         return {
             getCollection: (id) => {
-                return $q((resolve, reject)=>{
+                //resolve with cache if we already have the collection
+                //this also results in collections being singletons within the application
+                if (listCache[id]) {
+                    return $q.resolve(listCache[id]);
+                }
 
-                    //resolve with cache if we already have the collection
-                    //this also results in collections being singletons within the application
-                    if (listCache[id]) {
-                        resolve(listCache[id]);
-                        //short circuit out of the function so we dont perform the AJAX request
-                        return;
-                    }
+                //share a single request between concurrent callers so they all
+                //receive the same collection instance
+                if (inFlight[id]) {
+                    return inFlight[id];
+                }
 
-                    //get the data from the server and build the new collections
-                    SnapshotService
-                        .getList(id)
-                        .then(function({data}){
-                            if (!Array.isArray(data) || data.length === 0) {
-                                reject(new Error('There are no snapshots available for this piece of content'));
-                                return;
-                            }
-                            listCache[id] = new SnapshotIds(data);
-                            resolve(listCache[id]);
-                        })
-                        .catch(reject);
-                })
+                const request = SnapshotService
+                    .getList(id)
+                    .then(function({data}){
+                        delete inFlight[id];
+                        if (!Array.isArray(data) || data.length === 0) {
+                            return $q.reject(new Error('There are no snapshots available for this piece of content'));
+                        }
+                        listCache[id] = new SnapshotIds(data);
+                        return listCache[id];
+                    }, function(err){
+                        delete inFlight[id];
+                        return $q.reject(err);
+                    });
+
+                inFlight[id] = request;
+                return request;
             }
         }
     }

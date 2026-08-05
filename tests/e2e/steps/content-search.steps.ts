@@ -156,7 +156,10 @@ Then("the form should require a query value", async ({ page }) => {
     await expect(composerUrlInput).toBeVisible({
         timeout: timeout,
     });
-    await expect(composerUrlInput).toHaveAttribute("required", "required");
+    // The input is rendered by react-aria, which serialises the boolean `required`
+    // attribute as `required=""` (not `required="required"`). Assert the DOM
+    // property so the check is robust to how the attribute is serialised.
+    await expect(composerUrlInput).toHaveJSProperty("required", true);
 });
 
 // --- Trailing slash produces an empty hash segment ----------------------------
