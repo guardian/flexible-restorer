@@ -9,11 +9,9 @@ deployments:
       templateStagePaths:
         CODE: Restorer2-euwest-1-CODE.template.json
         PROD: Restorer2-euwest-1-PROD.template.json
-      # Continue to target the existing stack while CDK merely wraps the legacy template.
       cloudFormationStackName: Flexible-Restorer
       cloudFormationStackByTags: false
       prependStackToCloudFormationStackName: false
-      # Resolve the AMI the same way the previous ami-cloudformation-parameter deployment did.
       amiParameter: AMI
       amiTags:
         Recipe: editorial-tools-jammy-java11
