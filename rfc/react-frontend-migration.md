@@ -164,6 +164,65 @@ We want to migrate any existing sass or other css applied styles in the followin
 A Stand theme override
 A Stand CssOverride if theming is not sufficient
 Create a new parent component and migrate styles to use emotion/react with inline styles
+
+Migrating SASS to emotion (and dropping the old class names)
+When a feature is migrated to React we want to fully move its SASS into emotion so the
+legacy BEM/Angular class names are no longer required. The class names are usually
+load-bearing in two ways, so they cannot simply be deleted:
+1. Remaining SASS rules still target them.
+2. The e2e (Playwright) suite locates elements by them.
+
+Follow this process, using a co-located `styles.ts` that exports a `styles` object of
+`css(...)` blocks (one per element/variant), consumed via the `css` prop. This keeps the
+markup class-free while matching the existing look.
+
+Step 1 — Port the styles into emotion, watching for these easily-missed cases:
+- Pseudo-elements (`::before`, `::after`) — e.g. hover overlays, or a decorative marker
+  like the launch rocket. Remember emotion needs the `content` value quoted, e.g.
+  `content: '" "'` or `content: '"\\uD83D\\uDE80"'`.
+- Styles that were split across files. Layout for a block often lived in the component
+  SASS while its fonts/`text-transform` lived in a shared file (e.g. `text.scss`). Port
+  BOTH, or the migrated element loses its font/casing.
+- Per-element fonts that relied on the element's class. Once the class is gone you must
+  set the font on each element via its own `css` block (e.g. one block per `h6` row)
+  rather than a single shared selector.
+- Specificity/load-order overrides such as a trailing `div.foo { margin-bottom: 0 }` that
+  overrode an earlier rule — fold the winning value directly into the emotion block.
+- Variant/state selectors (`&.item-active`, `[variant=...]`) become a boolean argument to
+  the style function (`item(isActive)`), returning conditional properties. Deliberately
+  drop any variant the React markup will never render, and note the decision.
+
+Step 2 — Replace class-based test hooks BEFORE removing the classes.
+- Add `data-testid` attributes for elements the e2e suite selects, and expose element
+  state as SEPARATE data attributes (`data-active`, `data-launch`) rather than encoding it
+  in the testid value or a class. Booleans render as `"true"`/`"false"`, so an active row
+  becomes `[data-testid="snapshot-list-item"][data-active="true"]`.
+- Repoint the Playwright locators from `li.snapshot-list__item` /  `li.item-active` /
+  `.…__legally-sensitive` to the new `data-testid` selectors.
+
+Step 3 — Remove the class names from the TSX. Every element should now style via `css`
+and carry only `data-testid`/`data-*` where a test needs it.
+
+Step 4 — Delete the now-dead SASS, distinguishing two cases:
+- Files used ONLY by the migrated feature (e.g. `snapshot-list.scss`, `index-list.scss`
+  and its mixins) — delete the file and remove its `@import` from `index.scss`.
+- SHARED files (e.g. `text.scss`, which also styles still-Angular modals/content) — edit
+  surgically. Remove only the migrated feature's selectors and keep everything still used
+  by Angular views (fonts/`@font-face`, `.modal__*`, `.snapshot-content`, action-link
+  rules, etc.). Never delete a shared file wholesale.
+- Before deleting, confirm the classes are not still rendered by an Angular `*.html`
+  template (grep the templates). Note that `mediator` event names like
+  `snapshot-list:set-active` look similar but are NOT css classes — do not touch them.
+
+Step 5 — Verify:
+- `npx tsc --noEmit` from the repo root.
+- Run the webpack build so the SASS entrypoint compiles without the deleted imports/mixins.
+- Run the affected e2e specs in isolation first (`mise run test:e2e -- <spec-substring>`),
+  then the full suite. The full suite can be flaky under load (page-load timeouts on
+  unrelated specs, with an early "N did not run" abort); a failure only implicates your
+  change if it references your new `data-testid`/`data-*` locators, so confirm by
+  re-running or running the affected specs in isolation.
+
 React Component guidelines
 If we need to define any components that are not covered by the Stand component library we should:
 Use React.FunctionComponent 
