@@ -21,7 +21,10 @@ module.exports = defineConfig({
     // Fail an individual test fast rather than letting a hung test hold the run.
     timeout: 15 * 1000,
     // Cap the entire run (global setup + all tests) so nothing can hang for long.
-    globalTimeout: 3 * 60 * 1000,
+    // The full suite (all features + one shared stack) does not fit in a few
+    // minutes, so allow enough headroom to complete; override with GLOBAL_TIMEOUT
+    // (minutes), e.g. `GLOBAL_TIMEOUT=15 mise run test:e2e`.
+    globalTimeout: Number(process.env.GLOBAL_TIMEOUT ?? 10) * 60 * 1000,
     // Start a single local stack once for the whole run (see
     // e2e/globalSetup.ts) and stop it afterwards, so workers all share one
     // stack instead of each booting their own in parallel.
@@ -66,9 +69,17 @@ module.exports = defineConfig({
         // Slow down each Playwright action by SLOWMO ms, e.g. `SLOWMO=500`.
         launchOptions: {
             slowMo: Number(process.env.SLOWMO ?? 0),
+            // Containers (docker-in-docker) give Chromium a tiny default
+            // /dev/shm (64MB), which causes intermittent "Page crashed"
+            // failures under load. Routing shared memory to /tmp and disabling
+            // the sandbox (unavailable in most containers) keeps runs stable.
+            args: ["--disable-dev-shm-usage", "--no-sandbox"],
         },
-        trace: "on",
-        video: "on",
+        // Traces and videos are expensive to capture on every test and slow the
+        // run down, so they default to off. Enable them for debugging with
+        // `TRACE=1` / `VIDEO=1` (e.g. `TRACE=1 mise run test:e2e`).
+        trace: process.env.TRACE ? "on" : "off",
+        video: process.env.VIDEO ? "on" : "off",
         screenshot: "only-on-failure",
     },
     projects: [
