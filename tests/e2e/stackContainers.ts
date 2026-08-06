@@ -20,6 +20,53 @@ export type LocalStack = {
     network: any;
 };
 
+// In local dev the restorer runs as the DEV identity, whose effective stage is
+// CODE, so it resolves each stack's real per-stage flexible-content API host
+// (see app/models/FlexibleStack.scala and app/config/AppConfig.scala). We
+// register those exact hostnames as network aliases on the mock container, so
+// the real hostnames resolve to the mock inside the Docker network — no
+// config/URL override required.
+const MOCK_API_PORT = 8080;
+const MOCK_API_HOSTNAMES = [
+    // primary stack (flexible)
+    "flexible-api.CODE.flexible.gudiscovery",
+    // secondary stack (flexible-secondary)
+    "apiv2.CODE.flexible-secondary.gudiscovery",
+    // local DEV stack ("Local Flexible Content")
+    "flexible-api.DEV.flexible.gudiscovery",
+];
+
+/**
+ * Remove orphaned Docker networks left behind by Testcontainers. Each stack run
+ * creates a fresh network (with its own subnet); if a run is killed abruptly
+ * instead of exiting cleanly, that network leaks. Enough leaked networks
+ * exhaust Docker's predefined address pools and every subsequent run fails with
+ * "all predefined address pools have been fully subnetted".
+ *
+ * `docker network prune` only removes networks that are not currently in use,
+ * and the label filter scopes it to Testcontainers-created networks, so this
+ * never touches the running stack or any unrelated user networks.
+ */
+function pruneOrphanedTestcontainerNetworks(): Promise<void> {
+    return new Promise((resolve) => {
+        const child = spawn(
+            "docker",
+            [
+                "network",
+                "prune",
+                "--force",
+                "--filter",
+                "label=org.testcontainers=true",
+            ],
+            { stdio: "ignore" },
+        );
+
+        // Never let cleanup failures (e.g. docker not on PATH) break teardown.
+        child.on("error", () => resolve());
+        child.on("close", () => resolve());
+    });
+}
+
 function buildDockerImage({
     tag,
     dockerfilePath,
@@ -173,4 +220,8 @@ export async function stopLocalStack({
     if (network) {
         await network.stop();
     }
+
+    // Also sweep up any networks leaked by previous runs that were killed before
+    // they could tear down, so the address pool cannot slowly fill up over time.
+    await pruneOrphanedTestcontainerNetworks();
 }
