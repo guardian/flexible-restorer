@@ -40,7 +40,7 @@ jobs:
               run: |
                   mv target/restorer2_1.0.0_all.deb restorer2.deb
 
-            - name: CDK synth
+            - name: Setup Node (CDK)
               uses: actions/setup-node@v4
               with:
                   node-version-file: 'cdk/.nvmrc'
