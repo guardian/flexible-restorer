@@ -12,13 +12,24 @@ deployments:
       cloudFormationStackName: Flexible-Restorer
       cloudFormationStackByTags: false
       prependStackToCloudFormationStackName: false
-      amiParameter: AMI
-      amiTags:
-        Recipe: editorial-tools-jammy-java11
-        AmigoStage: PROD
-        BuiltBy: amigo
+      # During the dual-stack migration there are two AMI parameters: the legacy
+      # launch configuration (AMI) and the new GuEc2App launch template
+      # (AMIRestorer2, built from the cdk-base recipe for automatic log shipping).
+      amiParametersToTags:
+        AMI:
+          Recipe: editorial-tools-jammy-java11
+          AmigoStage: PROD
+          BuiltBy: amigo
+        AMIRestorer2:
+          Recipe: editorial-tools-jammy-java11-ARM-WITH-cdk-base
+          AmigoStage: PROD
+          BuiltBy: amigo
       amiEncrypted: true
   restorer2:
     type: autoscaling
+    parameters:
+      # Both the legacy ASG and the new GuEc2App ASG are tagged App=restorer2.
+      # This tells Riff-Raff to target only the ASG tagged gu:riffraff:new-asg.
+      asgMigrationInProgress: true
     dependencies:
       - cfn-restorer2
