@@ -9,7 +9,6 @@ import { GuEc2App } from "@guardian/cdk/lib/patterns/ec2-app";
 import type { App } from "aws-cdk-lib";
 import { Duration, Tags } from "aws-cdk-lib";
 import { InstanceClass, InstanceSize, InstanceType, SecurityGroup, UserData } from "aws-cdk-lib/aws-ec2";
-import type { CfnLoadBalancer } from "aws-cdk-lib/aws-elasticloadbalancing";
 import { CfnInclude } from "aws-cdk-lib/cloudformation-include";
 
 const app = "restorer2";
@@ -154,18 +153,16 @@ export class Restorer2 extends GuStack {
     // exists (asgMigrationInProgress in riff-raff.yaml).
     Tags.of(ec2App.autoScalingGroup).add("gu:riffraff:new-asg", "true");
 
-    // Phase 3: manage the DNS record in NS1 via GuCname. It initially points at
-    // the legacy ELB so adopting the record is a no-op (no traffic change); the
-    // cutover to the new ALB is done by switching resourceRecord to
-    // `ec2App.loadBalancer.loadBalancerDnsName`. TTL is lowered ahead of the
-    // cutover so the change propagates quickly; raise it again once soaked.
-    const legacyLoadBalancer = cfnInclude.getResource("RestorerLoadBalancer") as CfnLoadBalancer;
+    // Phase 3: manage the DNS record in NS1 via GuCname. It now points at the
+    // new ALB, cutting traffic over from the legacy ELB. TTL is kept low during
+    // the soak so rollback (repointing to the ELB) propagates quickly; raise it
+    // again once confident.
     new GuCname(this, "DnsRecord", {
       app,
       domainName: stageConfig.domainName,
       ttl: Duration.seconds(60),
-      // Trailing dot to match the existing NS1 record's fully-qualified target.
-      resourceRecord: `${legacyLoadBalancer.attrDnsName}.`,
+      // Trailing dot for a fully-qualified CNAME target.
+      resourceRecord: `${ec2App.loadBalancer.loadBalancerDnsName}.`,
     });
   }
 }

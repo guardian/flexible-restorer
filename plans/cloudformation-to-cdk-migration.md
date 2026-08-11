@@ -59,7 +59,7 @@ Known benign diff artefacts (no action): (a) CDK grants the LB egress to the API
 
 1. ✅ Manage the DNS records via a `GuCname` construct, still pointing at the **old ELB** (adoption is a no-op). Note: the DNS-manager will need to adopt the existing manually-created NS1 record on first deploy.
 2. ✅ Lowered the TTL to 60 seconds (`Duration.seconds(60)` in `restorer2.ts`). Deploy, then wait for the old TTL to expire before cutting over.
-3. Update the CNAME to point at the **new ALB** by switching `resourceRecord` to `ec2App.loadBalancer.loadBalancerDnsName`.
+3. ✅ Repointed the CNAME to the **new ALB** — `resourceRecord` now uses `ec2App.loadBalancer.loadBalancerDnsName` (with a trailing dot). This is the traffic cutover; the legacy ELB is no longer referenced.
 4. Test functionality (auth via pan-domain, snapshot listing/restore, exports).
 5. Soak for a while (fast rollback = revert the DNS change). Once confident, raise the TTL again.
 

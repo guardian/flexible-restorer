@@ -489,7 +489,7 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
               [
                 {
                   "Fn::GetAtt": [
-                    "RestorerLoadBalancer",
+                    "LoadBalancerRestorer2E6E71926",
                     "DNSName",
                   ],
                 },
@@ -2352,7 +2352,7 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
               [
                 {
                   "Fn::GetAtt": [
-                    "RestorerLoadBalancer",
+                    "LoadBalancerRestorer2E6E71926",
                     "DNSName",
                   ],
                 },
