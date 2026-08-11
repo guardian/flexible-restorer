@@ -1,4 +1,3 @@
-import { join } from "path";
 import { AccessScope } from "@guardian/cdk/lib/constants";
 import type { GuStackProps } from "@guardian/cdk/lib/constructs/core";
 import { GuStack } from "@guardian/cdk/lib/constructs/core";
@@ -7,9 +6,8 @@ import { GuVpc } from "@guardian/cdk/lib/constructs/ec2";
 import { GuAllowPolicy } from "@guardian/cdk/lib/constructs/iam";
 import { GuEc2App } from "@guardian/cdk/lib/patterns/ec2-app";
 import type { App } from "aws-cdk-lib";
-import { Duration, Tags } from "aws-cdk-lib";
+import { CfnParameter, Duration } from "aws-cdk-lib";
 import { InstanceClass, InstanceSize, InstanceType, SecurityGroup, UserData } from "aws-cdk-lib/aws-ec2";
-import { CfnInclude } from "aws-cdk-lib/cloudformation-include";
 
 const app = "restorer2";
 
@@ -40,26 +38,38 @@ export class Restorer2 extends GuStack {
   constructor(scope: App, id: string, props: GuStackProps) {
     super(scope, id, props);
 
-    // Phase 1: the existing, hand-written CloudFormation template (classic ELB
-    // + launch configuration ASG). This continues to run alongside the new
-    // GuEc2App below until DNS is cut over and the legacy resources are removed.
-    const yamlTemplateFilePath = join(__dirname, "../..", "cloudformation/restorer.cfn.yaml");
-    const cfnInclude = new CfnInclude(this, "YamlTemplate", {
-      templateFile: yamlTemplateFilePath,
+    // Shared VPC/subnet and KMS parameters. These previously lived in the
+    // hand-written CloudFormation template (removed in phase 4); keep them as
+    // stack parameters with the same logical names and defaults.
+    const vpcId = new CfnParameter(this, "VpcId", {
+      type: "AWS::EC2::VPC::Id",
+      default: "vpc-381fa95d",
+      description: "ID of the VPC onto which to launch the application eg. vpc-1234abcd",
+    });
+    const publicVpcSubnets = new CfnParameter(this, "PublicVpcSubnets", {
+      type: "List<AWS::EC2::Subnet::Id>",
+      default: "subnet-c3620fa6,subnet-2b37bd5c",
+      description: "Subnets to use in VPC for public internet-facing ELB eg. subnet-abcd1234",
+    });
+    const privateVpcSubnets = new CfnParameter(this, "PrivateVpcSubnets", {
+      type: "List<AWS::EC2::Subnet::Id>",
+      default: "subnet-c2620fa7,subnet-2a37bd5d",
+      description: "Subnets to use in VPC for private EC2 instances eg. subnet-abcd1234",
+    });
+    const kmsKeyArnParameter = new CfnParameter(this, "KmsKeyARN", {
+      type: "String",
+      description: "ARN of KMS key that was used to encrypt the backups",
     });
 
-    // Phase 2: introduce a GuEc2App (ALB) running in parallel with the legacy
-    // ELB. Reuse the VPC/subnet and KMS parameters already declared by the
-    // included template so both stacks share the same network and key.
     const stageConfig = stageConfigs[this.stage as "CODE" | "PROD"];
 
     const vpc = GuVpc.fromId(this, "Vpc", {
-      vpcId: cfnInclude.getParameter("VpcId").valueAsString,
+      vpcId: vpcId.valueAsString,
     });
-    const privateSubnets = GuVpc.subnets(this, cfnInclude.getParameter("PrivateVpcSubnets").valueAsList);
-    const publicSubnets = GuVpc.subnets(this, cfnInclude.getParameter("PublicVpcSubnets").valueAsList);
+    const privateSubnets = GuVpc.subnets(this, privateVpcSubnets.valueAsList);
+    const publicSubnets = GuVpc.subnets(this, publicVpcSubnets.valueAsList);
 
-    const kmsKeyArn = cfnInclude.getParameter("KmsKeyARN").valueAsString;
+    const kmsKeyArn = kmsKeyArnParameter.valueAsString;
 
     const userData = UserData.forLinux();
     userData.addCommands(
@@ -148,10 +158,6 @@ export class Restorer2 extends GuStack {
         }),
       );
     });
-
-    // Tag the new ASG so Riff-Raff can target it while the legacy ASG still
-    // exists (asgMigrationInProgress in riff-raff.yaml).
-    Tags.of(ec2App.autoScalingGroup).add("gu:riffraff:new-asg", "true");
 
     // Phase 3: manage the DNS record in NS1 via GuCname. It now points at the
     // new ALB, cutting traffic over from the legacy ELB. TTL is kept low during

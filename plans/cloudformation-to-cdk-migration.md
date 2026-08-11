@@ -65,11 +65,14 @@ Known benign diff artefacts (no action): (a) CDK grants the LB egress to the API
 
 
 ### Phase 4 — Stage 3: cleanup
-1. In CloudWatch, confirm the **old ELB receives 0 requests**.
-2. Remove redundant legacy resources from `restorer.cfn.yaml`: the ELB, ASG, LaunchConfiguration, old security groups, old IAM role/policies, and old certificate. If the file becomes empty, remove it and the `CfnInclude` block.
-3. Remove the `gu:riffraff:new-asg` tag from the new ASG.
-4. Remove `asgMigrationInProgress` from riff-raff.yaml and set `amiParameter` to `AMIRestorer2`.
-5. Preview the change set (mostly removals + ASG tag change), apply manually, then deploy via Riff-Raff.
+
+✅ **Steps 2–4 implemented** (same branch): the legacy `CfnInclude` template is gone and the stack is now pure `GuEc2App`. Lint, tests (CODE + PROD snapshots) and synth are green.
+
+1. In CloudWatch, confirm the **old ELB receives 0 requests** (do this before deploying this change).
+2. ✅ Removed all legacy resources by deleting `cloudformation/restorer.cfn.yaml` and the `CfnInclude` block. The four shared parameters still needed by `GuEc2App` (`VpcId`, `PublicVpcSubnets`, `PrivateVpcSubnets`, `KmsKeyARN`) are now declared directly in `restorer2.ts` as `CfnParameter`s, keeping the same logical names/defaults.
+3. ✅ Removed the `gu:riffraff:new-asg` tag from the ASG.
+4. ✅ In riff-raff.yaml removed `asgMigrationInProgress` and switched `cfn-restorer2` from `amiParametersToTags` back to a single `amiParameter: AMIRestorer2` (cdk-base recipe tags).
+5. Preview the change set (large set of removals + the ASG tag change), apply manually, then deploy via Riff-Raff.
 6. Confirm the app still works end-to-end.
 
 ### Phase 5 — Follow-ups
