@@ -157,13 +157,13 @@ export class Restorer2 extends GuStack {
     // Phase 3: manage the DNS record in NS1 via GuCname. It initially points at
     // the legacy ELB so adopting the record is a no-op (no traffic change); the
     // cutover to the new ALB is done by switching resourceRecord to
-    // `ec2App.loadBalancer.loadBalancerDnsName`. Lower the TTL before cutting
-    // over so the change propagates quickly, then raise it again once soaked.
+    // `ec2App.loadBalancer.loadBalancerDnsName`. TTL is lowered ahead of the
+    // cutover so the change propagates quickly; raise it again once soaked.
     const legacyLoadBalancer = cfnInclude.getResource("RestorerLoadBalancer") as CfnLoadBalancer;
     new GuCname(this, "DnsRecord", {
       app,
       domainName: stageConfig.domainName,
-      ttl: Duration.hours(1),
+      ttl: Duration.seconds(60),
       // Trailing dot to match the existing NS1 record's fully-qualified target.
       resourceRecord: `${legacyLoadBalancer.attrDnsName}.`,
     });
