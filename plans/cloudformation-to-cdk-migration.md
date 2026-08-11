@@ -45,11 +45,10 @@ Goal: new ALB-based infrastructure running alongside the legacy ELB stack.
 2. Tag the **new** ASG `gu:riffraff:new-asg = true` — done via `Tags.of(ec2App.autoScalingGroup)`.
 3. Add `asgMigrationInProgress: true` to the `restorer2` autoscaling deployment in riff-raff.yaml — done. Also switched `cfn-restorer2` to `amiParametersToTags` with two AMIs: legacy `AMI` (`editorial-tools-jammy-java11`) and new `AMIRestorer2` (`editorial-tools-jammy-java11-ARM-WITH-cdk-base`).
    - Also renamed the legacy template's `LoggingStreamName` parameter to `LegacyLoggingStreamName` to avoid a logical-ID clash with GuCDK's own `LoggingStreamName` parameter (same SSM default; only affects the legacy ASG's `LogKinesisStreamName` tag ref).
-4. Manually apply the CFN change set via the console after main is deployed:
-   - Populate the `AMIRestorer2` parameter with the AMI currently in use.
-   - Verify the change set contains only **Add** operations (the CODE `cdk diff` confirmed this: the only change to an existing resource is the cosmetic `LoggingStreamName` → `LegacyLoggingStreamName` tag ref on the legacy ASG — no replacement).
-5. Deploy via Riff-Raff; confirm both ASGs update.
-6. Test the app via the **new ALB's DNS name** (CFN output `LoadBalancerRestorer2DnsName`) with the app's `Host` header.
+4. **Review gate (pre-merge)**: confirm `cdk diff` is Add-only for **both** stages. The only change to an existing resource is the cosmetic `LoggingStreamName` → `LegacyLoggingStreamName` tag ref on the legacy ASG — no replacement. CODE is verified; the `AMIRestorer2` parameter is resolved automatically by Riff-Raff from `amiParametersToTags` in riff-raff.yaml, so there is **no** manual parameter to populate and **no** manual console change-set step.
+5. **Test CODE first, without merging.** Riff-Raff has CD for `main` → PROD, so merging deploys straight to PROD. To validate in CODE first, trigger a **CODE-only Riff-Raff deploy of this branch's build** (uploaded by CI on the PR). `cfn-restorer2` executes the change set (new ALB + ASG created), then the `restorer2` autoscaling step rotates only the `gu:riffraff:new-asg` ASG.
+6. Test the app via the **new ALB's DNS name** (CFN output `LoadBalancerRestorer2DnsName`) with the app's `Host` header; confirm both the legacy ELB and new ALB are healthy.
+7. **Merge to main** to let CD deploy PROD (same automated CFN + autoscaling steps). Watch the deploy and confirm both ASGs update.
 
 Known benign diff artefacts (no action): (a) CDK grants the LB egress to the API SGs on 9000 (connections-model side effect; the LB never uses it), and (b) the legacy ICMP-from-office ingress was dropped (SSM Session Manager covers instance access).
 
