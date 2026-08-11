@@ -484,9 +484,17 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
         "RecordType": "CNAME",
         "ResourceRecords": [
           {
-            "Fn::GetAtt": [
-              "RestorerLoadBalancer",
-              "DNSName",
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Fn::GetAtt": [
+                    "RestorerLoadBalancer",
+                    "DNSName",
+                  ],
+                },
+                ".",
+              ],
             ],
           },
         ],
@@ -2339,9 +2347,17 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
         "RecordType": "CNAME",
         "ResourceRecords": [
           {
-            "Fn::GetAtt": [
-              "RestorerLoadBalancer",
-              "DNSName",
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Fn::GetAtt": [
+                    "RestorerLoadBalancer",
+                    "DNSName",
+                  ],
+                },
+                ".",
+              ],
             ],
           },
         ],

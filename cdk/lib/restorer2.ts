@@ -164,7 +164,8 @@ export class Restorer2 extends GuStack {
       app,
       domainName: stageConfig.domainName,
       ttl: Duration.hours(1),
-      resourceRecord: legacyLoadBalancer.attrDnsName,
+      // Trailing dot to match the existing NS1 record's fully-qualified target.
+      resourceRecord: `${legacyLoadBalancer.attrDnsName}.`,
     });
   }
 }
