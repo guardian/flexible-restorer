@@ -7,7 +7,6 @@ import models._
 import org.joda.time.DateTime
 import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
-// Scala 3 drops package objects from the implicit scope, so BodyWritable[JsValue] must be imported explicitly
 import play.api.libs.ws.JsonBodyWritables._
 
 import scala.concurrent.ExecutionContext.Implicits.global
