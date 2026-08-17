@@ -120,7 +120,7 @@ export class Restorer2 extends GuStack {
       instanceMetricGranularity: "5Minute",
       monitoringConfiguration: { noMonitoring: true },
       applicationLogging: { enabled: true },
-      imageRecipe: "editorial-tools-jammy-java11-ARM-WITH-cdk-base",
+      imageRecipe: "editorial-tools-jammy-java11",
       userData,
       certificateProps: { domainName: stageConfig.domainName },
       scaling: { minimumInstances: 2, maximumInstances: 4 },

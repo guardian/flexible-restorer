@@ -12,16 +12,17 @@ deployments:
       cloudFormationStackName: Flexible-Restorer
       cloudFormationStackByTags: false
       prependStackToCloudFormationStackName: false
-      # During the dual-stack migration there are two AMI parameters: the legacy
-      # launch configuration (AMI) and the new GuEc2App launch template
-      # (AMIRestorer2, built from the cdk-base recipe for automatic log shipping).
+      # During the dual-stack migration there are two AMI parameters, one per
+      # ASG: the legacy launch configuration (AMI) and the new GuEc2App launch
+      # template (AMIRestorer2). Same recipe for both; drop AMI once the
+      # legacy ASG/ELB is decommissioned (Phase 3).
       amiParametersToTags:
         AMI:
           Recipe: editorial-tools-jammy-java11
           AmigoStage: PROD
           BuiltBy: amigo
         AMIRestorer2:
-          Recipe: editorial-tools-jammy-java11-ARM-WITH-cdk-base
+          Recipe: editorial-tools-jammy-java11
           AmigoStage: PROD
           BuiltBy: amigo
       amiEncrypted: true
