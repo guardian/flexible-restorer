@@ -37,8 +37,12 @@ forwardPorts:
 postCreateCommand: 
   - cmd: "npm install"
     workingDirectory: "."
-  - cmd: "sudo npx playwright install-deps"
-    workingDirectory: "."
+  # Install the e2e sub-package and the Chromium browser together with its OS
+  # libraries, so Playwright works without a manual `install-deps` after every
+  # container (re)build. `--with-deps` lets Playwright invoke sudo only for the
+  # apt step, which is more robust than wrapping the whole command in sudo.
+  - cmd: "npm ci && npx playwright install --with-deps chromium"
+    workingDirectory: "tests"
 #   - cmd: "make setup"
 #     workingDirectory: "/workspaces/project"
 # postStartCommand:

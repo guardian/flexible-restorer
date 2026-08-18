@@ -2,6 +2,12 @@
 # Tool versions are pinned in .tool-versions (node, java, sbt, scala).
 # These tasks replace the previous root package.json npm scripts.
 
+# Require a mise new enough to support the first-class `github:` backend used by
+# `github:guardian/devenv` in .tool-versions. Older versions fail with a cryptic
+# "bin/list-all: No such file or directory" error; this makes them fail fast with
+# a clear message and self-update instructions. Run `mise self-update` if unmet.
+min_version = "2026.1.0"
+
 [env]
 # Make locally-installed binaries (webpack, tsx, playwright, bddgen) resolvable
 # from the mise tasks below without needing `npx`.

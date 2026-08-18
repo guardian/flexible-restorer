@@ -25,9 +25,12 @@ fi
 # Run everything inside the e2e sub-package so its own node_modules and
 # playwright.config.js are used.
 cd "$E2E_DIR"
-# Ensure Node dependencies are present before invoking any npm exec / Playwright
-# commands.
-npm install
+# Install Node dependencies only when they are missing or the lockfile has
+# changed since the last install. `npm ci` is reproducible and faster; the
+# marker file npm writes on install lets us skip it entirely on unchanged runs.
+if [ ! -d node_modules ] || [ package-lock.json -nt node_modules/.package-lock.json ]; then
+  npm ci
+fi
 # Install the Chromium browser only when it isn't already present, so repeated
 # local runs skip the download/verify step entirely.
 if ! npm exec -- node -e \
