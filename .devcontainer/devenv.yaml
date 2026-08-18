@@ -37,6 +37,7 @@ forwardPorts:
 postCreateCommand: 
   - cmd: "npm install"
     workingDirectory: "."
+    # This installs playwright dependencies to facilitate running tests in the container.
   - cmd: "sudo npx playwright install-deps"
     workingDirectory: "."
 #   - cmd: "make setup"
