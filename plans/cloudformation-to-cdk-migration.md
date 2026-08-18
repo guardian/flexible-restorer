@@ -54,11 +54,15 @@ Known benign diff artefacts (no action): (a) CDK grants the LB egress to the API
 
 
 ### Phase 3 — Stage 2: switch DNS
-1. Start managing the DNS records via a `GuCname` construct, matching current NS1 properties, still pointing at the **old ELB**.
-2. Lower the TTL to a few minutes; wait for it to expire.
-3. Update the CNAME to point at the **new ALB**.
+
+✅ **Step 1 implemented** (same branch): a per-stage `GuCname` now manages the NS1 record. `resourceRecord` is wired to the legacy ELB via `cfnInclude.getResource("RestorerLoadBalancer").attrDnsName`, so adopting the record is a no-op. Lint, tests (CODE + PROD snapshots) and synth are green; the record synthesises as a `Guardian::DNS::RecordSet` CNAME (TTL 3600) pointing at `GetAtt RestorerLoadBalancer.DNSName`.
+
+1. ✅ Manage the DNS records via a `GuCname` construct, still pointing at the **old ELB** (adoption is a no-op). Note: the DNS-manager will need to adopt the existing manually-created NS1 record on first deploy.
+2. Lower the TTL to a few minutes (drop `Duration.hours(1)` in `restorer2.ts`); wait for it to expire.
+3. Update the CNAME to point at the **new ALB** by switching `resourceRecord` to `ec2App.loadBalancer.loadBalancerDnsName`.
 4. Test functionality (auth via pan-domain, snapshot listing/restore, exports).
 5. Soak for a while (fast rollback = revert the DNS change). Once confident, raise the TTL again.
+
 
 ### Phase 4 — Stage 3: cleanup
 1. In CloudWatch, confirm the **old ELB receives 0 requests**.

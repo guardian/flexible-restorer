@@ -63,6 +63,7 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
       "GuAccessLoggingBucketParameter",
       "GuApplicationTargetGroup",
       "GuHttpsApplicationListener",
+      "GuCname",
     ],
     "gu:cdk:version": "TEST",
   },
@@ -476,6 +477,31 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
         ],
       },
       "Type": "AWS::IAM::Policy",
+    },
+    "DnsRecord": {
+      "Properties": {
+        "Name": "restorer.code.dev-gutools.co.uk",
+        "RecordType": "CNAME",
+        "ResourceRecords": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Fn::GetAtt": [
+                    "RestorerLoadBalancer",
+                    "DNSName",
+                  ],
+                },
+                ".",
+              ],
+            ],
+          },
+        ],
+        "Stage": "CODE",
+        "TTL": 3600,
+      },
+      "Type": "Guardian::DNS::RecordSet",
     },
     "GetDistributablePolicyRestorer220872BCF": {
       "Properties": {
@@ -1900,6 +1926,7 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
       "GuAccessLoggingBucketParameter",
       "GuApplicationTargetGroup",
       "GuHttpsApplicationListener",
+      "GuCname",
     ],
     "gu:cdk:version": "TEST",
   },
@@ -2313,6 +2340,31 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
         ],
       },
       "Type": "AWS::IAM::Policy",
+    },
+    "DnsRecord": {
+      "Properties": {
+        "Name": "restorer.gutools.co.uk",
+        "RecordType": "CNAME",
+        "ResourceRecords": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                {
+                  "Fn::GetAtt": [
+                    "RestorerLoadBalancer",
+                    "DNSName",
+                  ],
+                },
+                ".",
+              ],
+            ],
+          },
+        ],
+        "Stage": "PROD",
+        "TTL": 3600,
+      },
+      "Type": "Guardian::DNS::RecordSet",
     },
     "GetDistributablePolicyRestorer220872BCF": {
       "Properties": {
