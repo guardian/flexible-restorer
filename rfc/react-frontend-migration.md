@@ -1,4 +1,5 @@
-Aim
+# Aim
+
 We want to migrate the frontend of this project to React, and use the Stand UI library.
 Language
 We will use Typescript in its strictest mode.
@@ -7,29 +8,37 @@ We will use Vite to bundle the application. We will use Vitest to add unit tests
 More comprehensive assertion patterns,
 Output that is easier for humans (and robots) to parse
 An test environment that is identical to the production build
-UI Library
+
+## UI Library
+
 We will use the Guardian Stand UI library - https://guardian.github.io/stand/?path=/docs/getting-started--docs
 
-We will try to use this as much as possible but we may need to 
+We will try to use this as much as possible but we may need to
+
 - write our own application specific components
 - promote these to stand components if this is useful
-State management 
-We will use a combination of React native hooks for component local state, and Redux for inter-component state management.
-We want to use redux-toolkit to manage the async state. The point at which we will use redux over hooks will be application specific. Here are Code examples of when to use hooks vs redux
+  State management
+  We will use a combination of React native hooks for component local state, and Redux for inter-component state management.
+  We want to use redux-toolkit to manage the async state. The point at which we will use redux over hooks will be application specific. Here are Code examples of when to use hooks vs redux
 
 We would use hooks when we are managing state local to a component or a small number of tightly coupled components, for example showing and hiding a section of a webpage on screen, the show/hide state would use a hook.
 
 We would use redux when we are managing async interactions or when there is a more complex state which is shared between a larger number of components, or components that are in unrelated parts of the UI that would require a lot of prop drilling to share.
-Feature switching
+
+## Feature switching
+
 There is a widely used pattern to do this, but no shareable code. We will roll our own by setting feature flags and their defaults server side in a cookie. Our UI will then honour the server side values, but allow the user to override defaults to turn them on or off. The UI needs to provide a way to set the feature flags.
-Running Angular and React components 
-To be able to do a strangler pattern migration, we will need to run angular and react components side by side. 
+
+## Running Angular and React components
+
+To be able to do a strangler pattern migration, we will need to run angular and react components side by side.
 The best way to do this is using the https://www.npmjs.com/package/react2angular react2angular library.
 
 Aim to minimise the number of props we pass to React components from an Angular context. When interacting with foundational Angular services like $location, do not pass these directly to components — instead, create hooks that provision their own instances of these services.
 
 For example,
 
+```Typescript
 // Minimal structural types for the AngularJS services we bridge into React. We
 // only model the members we actually call, avoiding a dependency on the full
 // `angular` type surface.
@@ -116,50 +125,55 @@ const useAngularRouter = (): AngularRouter => {
 
 export { provideAngularServices, useAngularRouter };
 export type { AngularLocation, AngularRootScope };
+```
 
-Verification
+## Verification
+
 We can use mise run test:e2e to verify everything is working
 
-Using the Stand component library
+## Using the Stand component library
+
 We should use the Guardian Stand React component library — https://guardian.github.io/stand/?path=/docs/getting-started--docs
 
 Prefer Stand components over raw HTML elements
 Reach for a Stand component before writing a raw HTML element. Stand components bake in the design-system styling, accessibility (labelling, focus management, ARIA) and theming, so a raw `<input>`, `<button>` or `<select>` in migrated code should be treated as a smell. Only drop down to a raw HTML element — or a custom component (see “React Component guidelines”) — when no Stand component covers the use case, and note briefly why.
 
 When you do use a Stand component, expect its API to differ from the raw element:
+
 - Form inputs (`TextInput`, `TextArea`, `Select`, `Checkbox`, `RadioGroup`, `DatePicker`) are built on react-aria-components. They render and associate their own `<label>` via the `label` prop (so you don’t need a separate `<label htmlFor>`), expose `isRequired`/`isDisabled` rather than `required`/`disabled`, and their `onChange` receives the new value directly, not a DOM event.
 - Prefer the styling escape hatches in this order: `theme` → `cssOverrides` → `className` (mirrors the CSS priority below). Avoid raw inline styles on Stand components.
 
 HTML element → Stand component mapping
 Use this as the default first choice when migrating markup. If a pattern has no match here, check Storybook, then fall back to the CSS / React component guidelines below.
 
-| HTML element / pattern | Stand component |
-| --- | --- |
-| `<button>` | `Button` (also `IconButton`, `LinkButton`, `AvatarButton`) |
-| `<a>` / link | `Link` (also `LinkButton`, `IconLinkButton`) |
-| `<input type="text">` and most text-like inputs | `TextInput` |
-| `<textarea>` | `TextArea` |
-| `<select>` | `Select` |
-| `<input type="checkbox">` | `Checkbox` |
-| `<input type="radio">` group | `RadioGroup` |
-| `<input type="date">` | `DatePicker` |
-| `<h1>`–`<h6>`, `<p>`, `<span>` and other text | `Typography` |
-| `<svg>` / inline icon | `Icon` (favicons: `Favicon`) |
-| `<img>` avatar | `Avatar` (also `AvatarLink`, `AvatarButton`) |
-| `<dialog>` / modal | `Modal` |
-| tabbed UI | `Tabs` |
-| layout container (flex / stack / grid) | `Layout`, `Grid` |
-| header / nav / menus | `TopBar`, `Menu`, `UserMenu` |
-| alert / notification / inline validation | `AlertBanner`, `InlineMessage` |
+| HTML element / pattern                          | Stand component                                            |
+| ----------------------------------------------- | ---------------------------------------------------------- |
+| `<button>`                                      | `Button` (also `IconButton`, `LinkButton`, `AvatarButton`) |
+| `<a>` / link                                    | `Link` (also `LinkButton`, `IconLinkButton`)               |
+| `<input type="text">` and most text-like inputs | `TextInput`                                                |
+| `<textarea>`                                    | `TextArea`                                                 |
+| `<select>`                                      | `Select`                                                   |
+| `<input type="checkbox">`                       | `Checkbox`                                                 |
+| `<input type="radio">` group                    | `RadioGroup`                                               |
+| `<input type="date">`                           | `DatePicker`                                               |
+| `<h1>`–`<h6>`, `<p>`, `<span>` and other text   | `Typography`                                               |
+| `<svg>` / inline icon                           | `Icon` (favicons: `Favicon`)                               |
+| `<img>` avatar                                  | `Avatar` (also `AvatarLink`, `AvatarButton`)               |
+| `<dialog>` / modal                              | `Modal`                                                    |
+| tabbed UI                                       | `Tabs`                                                     |
+| layout container (flex / stack / grid)          | `Layout`, `Grid`                                           |
+| header / nav / menus                            | `TopBar`, `Menu`, `UserMenu`                               |
+| alert / notification / inline validation        | `AlertBanner`, `InlineMessage`                             |
 
 This reflects the components exported by `@guardian/stand` at time of writing; treat Storybook as the source of truth for the current set and exact props. There is no Stand replacement for the semantic `<form>` element itself — keep a raw `<form>` for submit handling and place Stand inputs inside it.
 
 Enabling the emotion `css` prop
 Stand and our own components rely on emotion’s `css` prop for one-off styling. tsconfig.json sets `jsxImportSource: "@emotion/react"` so `tsc` and webpack accept it. If the editor’s TypeScript server reports `Property 'css' does not exist on type ...`, add the per-file pragma as the very first line of the file:
 
-/** @jsxImportSource @emotion/react */
+/\*_ @jsxImportSource @emotion/react _/
 
-CSS
+## CSS
+
 We want to migrate any existing sass or other css applied styles in the following order of priority
 A Stand theme override
 A Stand CssOverride if theming is not sufficient
@@ -169,6 +183,7 @@ Migrating SASS to emotion (and dropping the old class names)
 When a feature is migrated to React we want to fully move its SASS into emotion so the
 legacy BEM/Angular class names are no longer required. The class names are usually
 load-bearing in two ways, so they cannot simply be deleted:
+
 1. Remaining SASS rules still target them.
 2. The e2e (Playwright) suite locates elements by them.
 
@@ -177,6 +192,7 @@ Follow this process, using a co-located `styles.ts` that exports a `styles` obje
 markup class-free while matching the existing look.
 
 Step 1 — Port the styles into emotion, watching for these easily-missed cases:
+
 - Pseudo-elements (`::before`, `::after`) — e.g. hover overlays, or a decorative marker
   like the launch rocket. Remember emotion needs the `content` value quoted, e.g.
   `content: '" "'` or `content: '"\\uD83D\\uDE80"'`.
@@ -193,17 +209,19 @@ Step 1 — Port the styles into emotion, watching for these easily-missed cases:
   drop any variant the React markup will never render, and note the decision.
 
 Step 2 — Replace class-based test hooks BEFORE removing the classes.
+
 - Add `data-testid` attributes for elements the e2e suite selects, and expose element
   state as SEPARATE data attributes (`data-active`, `data-launch`) rather than encoding it
   in the testid value or a class. Booleans render as `"true"`/`"false"`, so an active row
   becomes `[data-testid="snapshot-list-item"][data-active="true"]`.
-- Repoint the Playwright locators from `li.snapshot-list__item` /  `li.item-active` /
+- Repoint the Playwright locators from `li.snapshot-list__item` / `li.item-active` /
   `.…__legally-sensitive` to the new `data-testid` selectors.
 
 Step 3 — Remove the class names from the TSX. Every element should now style via `css`
 and carry only `data-testid`/`data-*` where a test needs it.
 
 Step 4 — Delete the now-dead SASS, distinguishing two cases:
+
 - Files used ONLY by the migrated feature (e.g. `snapshot-list.scss`, `index-list.scss`
   and its mixins) — delete the file and remove its `@import` from `index.scss`.
 - SHARED files (e.g. `text.scss`, which also styles still-Angular modals/content) — edit
@@ -215,6 +233,7 @@ Step 4 — Delete the now-dead SASS, distinguishing two cases:
   `snapshot-list:set-active` look similar but are NOT css classes — do not touch them.
 
 Step 5 — Verify:
+
 - `npx tsc --noEmit` from the repo root.
 - Run the webpack build so the SASS entrypoint compiles without the deleted imports/mixins.
 - Run the affected e2e specs in isolation first (`mise run test:e2e -- <spec-substring>`),
@@ -225,12 +244,12 @@ Step 5 — Verify:
 
 React Component guidelines
 If we need to define any components that are not covered by the Stand component library we should:
-Use React.FunctionComponent 
+Use React.FunctionComponent
 We should define any props inline in the same file
 
-For example 
+For example
 
-
+```Typescript
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
 import { palette } from '../styles/palette';
@@ -285,5 +304,4 @@ const BorderlessButton: React.FunctionComponent<BorderlessButtonProps> = ({
 
 export { BorderlessButton };
 
-
-
+```
