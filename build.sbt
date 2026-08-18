@@ -6,8 +6,7 @@ version := "1.0.0"
 
 ThisBuild / scalaVersion := "3.3.8"
 
-// -deprecation and -unchecked are already set by the Play plugin
-scalacOptions ++= Seq("-feature")
+scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
 
 val awsVersion = "2.17.276"
 val awsVersionV1 = "1.12.307"
