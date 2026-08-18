@@ -25,7 +25,7 @@ Parameters:
   KmsKeyARN:
     Description: ARN of KMS key that was used to encrypt the backups
     Type: String
-  LoggingStreamName:
+  LegacyLoggingStreamName:
     Type: AWS::SSM::Parameter::Value<String>
     Description: Name of the kinesis stream for logging to ELK (logs.gutools)
     Default: /account/services/logging.stream.name
@@ -353,7 +353,7 @@ Resources:
         Value: "restorer2"
         PropagateAtLaunch: "true"
       - Key: LogKinesisStreamName
-        Value: !Ref 'LoggingStreamName'
+        Value: !Ref 'LegacyLoggingStreamName'
         PropagateAtLaunch: 'true'
       - Key: SystemdUnit
         Value: restorer2.service
