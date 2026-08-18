@@ -30,7 +30,7 @@ deployments:
     type: autoscaling
     parameters:
       # Both the legacy ASG and the new GuEc2App ASG are tagged App=restorer2.
-      # This tells Riff-Raff to target only the ASG tagged gu:riffraff:new-asg.
+      # This tells riff-raff to expect 2 autoscaling groups rather than erroring
       asgMigrationInProgress: true
     dependencies:
       - cfn-restorer2
