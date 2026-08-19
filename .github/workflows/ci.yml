@@ -21,14 +21,14 @@ jobs:
 
             - uses: actions/setup-node@v3
               with:
-                  node-version-file: '.nvmrc'
+                  node-version-file: ".tool-versions"
                   cache: npm
-                  cache-dependency-path: 'package-lock.json'
+                  cache-dependency-path: "package-lock.json"
 
             - name: JS Build
               run: |
                   npm ci
-                  npm run build
+                  node_modules/.bin/webpack --mode=production
 
             - uses: guardian/setup-scala@v1
 

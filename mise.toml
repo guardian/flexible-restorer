@@ -1,0 +1,16 @@
+# mise is the toolchain manager for local development.
+# Tool versions are pinned in .tool-versions (node, java, sbt, scala).
+# These tasks replace the previous root package.json npm scripts.
+
+[env]
+# Make locally-installed binaries (webpack) resolvable from the mise tasks below
+# without needing `npx`.
+_.path = ["node_modules/.bin"]
+
+[tasks.build]
+description = "Build the production JS/CSS bundles"
+run = "webpack --mode=production"
+
+[tasks.watch]
+description = "Rebuild the bundles on change"
+run = "webpack --mode=development --watch"

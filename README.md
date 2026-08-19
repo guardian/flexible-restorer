@@ -10,13 +10,15 @@ Run `./scripts/setup`.
 
 ### Install client-side dependencies and build JS/CSS
 
-```
-$ nvm use
-$ npm install
-$ npm run build
+Tool versions (Node, Java, sbt, Scala) are pinned in `.tool-versions` and managed
+with [mise](https://mise.jdx.dev). Install them once with `mise install`, then:
 
-# Alternatively to continously watch for changes and rebuild
-$ npm run watch
+```
+$ npm install
+$ mise run build
+
+# Alternatively to continously watch for changes and rebuild
+$ mise run watch
 ```
 
 This project does not have hot module reloading so you will have to reload the page on Javascript or SCSS updates

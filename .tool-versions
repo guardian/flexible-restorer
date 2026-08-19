@@ -1,10 +1,11 @@
 java corretto-11.0.25.9.1
 
-node 12
+node 24.18.0
 
 # The sbt launcher; the build itself uses the sbt version pinned in project/build.properties.
 
 sbt 1.9.7
+scala 2.13.18
 
 github:guardian/devenv 20260721-123412
  
