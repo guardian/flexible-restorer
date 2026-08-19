@@ -7,6 +7,7 @@ import models._
 import org.joda.time.DateTime
 import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
+import play.api.libs.ws.JsonBodyWritables._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

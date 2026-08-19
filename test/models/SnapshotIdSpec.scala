@@ -1,6 +1,5 @@
-package scala.models
+package models
 
-import models.SnapshotId
 import org.scalatest.flatspec._
 import org.scalatest.matchers.should.Matchers._
 
