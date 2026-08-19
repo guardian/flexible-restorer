@@ -1,1 +1,11 @@
 java corretto-11.0.25.9.1
+
+node 12
+
+# The sbt launcher; the build itself uses the sbt version pinned in project/build.properties.
+
+sbt 1.9.7
+
+github:guardian/devenv 20260721-123412
+ 
+aqua:aws/aws-cli 2
