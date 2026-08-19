@@ -46,7 +46,7 @@ class Application(
     Ok(views.html.main(s"Composer Restorer - Versions of $contentId", clientConfig, config.googleTrackingId))
   }
 
-  def preflight(routes: String) = CORSable(executionContext, config.corsableDomains: _*) {
+  def preflight(routes: String) = CORSable(executionContext, config.corsableDomains*) {
     Action { implicit req =>
       val requestedHeaders = req.headers.get("Access-Control-Request-Headers")
 

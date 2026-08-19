@@ -188,7 +188,7 @@ object FormattedSnapshot {
     FormattedSnapshot(lastModifiedTime, email, name, formattedMeta, formattedPreview, formattedLive)
   }
 
-  private def format(obj: ujson.Js.Value): String = {
+  private def format(obj: ujson.Value): String = {
     val formatted = ujson.transform(obj, new FormattedHTMLRenderer()).toString
     // YAML doesn't like spaces before newlines. Two backslashes because .replace takes a regex which is not suprising AT ALL
     val oddYamlHacks = formatted.replace(" \\n", "\\n")

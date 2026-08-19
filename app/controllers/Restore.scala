@@ -18,7 +18,6 @@ import play.api.mvc._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.concurrent.{Await, ExecutionContext, Future}
-import scala.language.postfixOps
 import scala.util.control.NonFatal
 
 class Restore(
@@ -60,7 +59,7 @@ class Restore(
           stack.composerPrefix, stack.isSecondary, None, None, available = false)
 
       try {
-        val changeDetails = Await.ready(flexibleApi.changeDetails(stack, contentId), 3 seconds)
+        val changeDetails = Await.ready(flexibleApi.changeDetails(stack, contentId), 3.seconds)
         changeDetails.map { cdOption =>
           destination.withApiStatus(cdOption, available = true)
         } recover {
