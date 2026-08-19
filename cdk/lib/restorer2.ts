@@ -161,7 +161,7 @@ export class Restorer2 extends GuStack {
       app,
       domainName: stageConfig.domainName,
       ttl: Duration.seconds(60),
-      // Trailing dot for a fully-qualified CNAME target.
+      // Trailing dot to match NS1 records fully-qualified format.
       resourceRecord: `${ec2App.loadBalancer.loadBalancerDnsName}.`,
     });
   }
