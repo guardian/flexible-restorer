@@ -34,11 +34,12 @@ forwardPorts:
 # Optional: Commands to run after container creation
 # Each command has a 'cmd' field and a 'workingDirectory' field
 # e.g.
-postCreateCommand: 
-  - cmd: "npm install"
-    workingDirectory: "."
-    # This installs playwright dependencies to facilitate running tests in the container.
-  - cmd: "npx playwright install-deps"
+# Commands run in a non-interactive /bin/sh that doesn't source ~/.bashrc, so the
+# mise shims (which provide node/npm/npx) aren't on PATH. Prepend the shims dir
+# explicitly so npm/npx resolve to the mise-managed node. This is because we are not using 
+# the mise module's built-in node support, which would automatically add the shims to PATH.
+postCreateCommand:
+  - cmd: 'PATH="$HOME/.local/share/mise/shims:$PATH" npm install'
     workingDirectory: "."
 #   - cmd: "make setup"
 #     workingDirectory: "/workspaces/project"

@@ -1,6 +1,6 @@
 java corretto-11.0.25.9.1
 
-node 24.18.0
+node 12
 
 # The sbt launcher; the build itself uses the sbt version pinned in project/build.properties.
 
