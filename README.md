@@ -17,7 +17,7 @@ with [mise](https://mise.jdx.dev). Install them once with `mise install`, then:
 $ npm install
 $ npm run build
 
-# Alternatively to continously watch for changes and rebuild
+# Alternatively to continuously watch for changes and rebuild
 $ npm run watch
 ```
 
