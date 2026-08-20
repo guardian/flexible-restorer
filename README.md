@@ -15,10 +15,10 @@ with [mise](https://mise.jdx.dev). Install them once with `mise install`, then:
 
 ```
 $ npm install
-$ mise run build
+$ npm run build
 
 # Alternatively to continously watch for changes and rebuild
-$ mise run watch
+$ npm run watch
 ```
 
 This project does not have hot module reloading so you will have to reload the page on Javascript or SCSS updates

@@ -28,7 +28,7 @@ jobs:
             - name: JS Build
               run: |
                   npm ci
-                  node_modules/.bin/webpack --mode=production
+                  npm run build
 
             - uses: guardian/setup-scala@v1
 

@@ -1,5 +1,9 @@
 {
     "name": "composer-restorer",
+    "scripts": {
+        "build": "webpack --mode=production",
+        "watch": "webpack --mode=development --watch"
+    },
     "engines": {
         "node": ">=24"
     },
