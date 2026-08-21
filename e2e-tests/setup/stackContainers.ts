@@ -1,7 +1,7 @@
 import path from "path";
 import { spawn } from "child_process";
 import { GenericContainer, Network, Wait } from "testcontainers";
-import { generatePanDomainKeys } from "./panDomainKeys";
+import { generatePanDomainKeys } from "panDomainKeys";
 
 const MINIO_ROOT_USER = "minioadmin";
 const MINIO_ROOT_PASSWORD = "minioadmin";
@@ -116,7 +116,9 @@ function createLogConsumer(prefix: string) {
     };
 }
 
-export async function startLocalStack(projectRoot: string): Promise<LocalStack> {
+export async function startLocalStack(
+    projectRoot: string,
+): Promise<LocalStack> {
     const runId = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
     const minioImageTag = `flexible-restorer-minio-e2e:${runId}`;
     const restorerImageTag = `flexible-restorer-app-e2e:${runId}`;
@@ -130,7 +132,10 @@ export async function startLocalStack(projectRoot: string): Promise<LocalStack> 
     try {
         await buildDockerImage({
             tag: minioImageTag,
-            dockerfilePath: path.join(projectRoot, "images/minio.Dockerfile"),
+            dockerfilePath: path.join(
+                projectRoot,
+                "e2e-tests/images/minio.Dockerfile",
+            ),
             contextPath: projectRoot,
         });
 
@@ -165,7 +170,7 @@ export async function startLocalStack(projectRoot: string): Promise<LocalStack> 
             tag: restorerImageTag,
             dockerfilePath: path.join(
                 projectRoot,
-                "images/restorer.Dockerfile",
+                "e2e-tests/images/restorer.Dockerfile",
             ),
             contextPath: projectRoot,
         });
