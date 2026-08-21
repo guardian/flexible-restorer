@@ -1,0 +1,16 @@
+[
+    {
+        "permission": {
+            "name": "restorer_access",
+            "app": "composer-restorer",
+            "defaultValue": true
+        },
+        "overrides": [
+            {
+                "userId": "composer.application@guardian.co.uk",
+                "active": true,
+                "isCasualNotOnShift": false
+            }
+        ]
+    }
+]

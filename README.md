@@ -37,3 +37,32 @@ $ sbt
 ```
 
 The app will then be accessible locally at: <https://restorer.local.dev-gutools.co.uk/>
+
+## Run end-to-end tests
+
+The app build remains on `.nvmrc` (Node 12), but Playwright requires Node 18+.
+
+Use:
+
+```
+npm run test:e2e
+```
+
+This command runs through `scripts/test-e2e` and requires your current Node to be >= 18.
+
+## Run local stack only
+
+If you want the same Testcontainers stack used by the e2e test without running the
+spec itself, use:
+
+```
+npm run local:stack
+```
+
+This starts MinIO and Restorer using the same bootstrap code as the e2e suite and
+keeps the stack running until you press Ctrl+C.
+
+The command runs the TypeScript runner under Node 20 via nvm so it does not pick
+up an older local default Node version.
+
+This is only to help debug the test runner, rather than a stack for local development.

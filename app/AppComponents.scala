@@ -13,7 +13,7 @@ import play.api.routing.Router
 import play.api.BuiltInComponentsFromContext
 import router.Routes
 
-import scala.concurrent.ExecutionContext.Implicits.{global as globalExecutionContext}
+import scala.concurrent.ExecutionContext.Implicits.{global => globalExecutionContext}
 
 class AppComponents(context: Context, identity: AppIdentity) extends BuiltInComponentsFromContext(context) with AhcWSComponents with Loggable with AssetsComponents {
 
