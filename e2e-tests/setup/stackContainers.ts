@@ -1,7 +1,7 @@
 import path from "path";
 import { spawn } from "child_process";
 import { GenericContainer, Network, Wait } from "testcontainers";
-import { generatePanDomainKeys } from "panDomainKeys";
+import { generatePanDomainKeys } from "./panDomainKeys";
 
 const MINIO_ROOT_USER = "minioadmin";
 const MINIO_ROOT_PASSWORD = "minioadmin";
@@ -177,6 +177,40 @@ export async function startLocalStack(
 
         restorerContainer = await new GenericContainer(restorerImageTag)
             .withNetwork(network)
+            // Mount the source from the host so code changes are watched and
+            // picked up without rebuilding the image. Individual paths are
+            // mounted (rather than all of /app) so the image's baked
+            // node_modules, compiled target/, and built public/dist are
+            // preserved: `sbt run` recompiles changed Scala on the next request
+            // and webpack (run in watch mode by docker-start) rebuilds the
+            // frontend on change.
+            .withBindMounts([
+                {
+                    source: path.join(projectRoot, "app"),
+                    target: "/app/app",
+                    mode: "ro",
+                },
+                {
+                    source: path.join(projectRoot, "conf"),
+                    target: "/app/conf",
+                    mode: "ro",
+                },
+                {
+                    source: path.join(projectRoot, "public/javascripts"),
+                    target: "/app/public/javascripts",
+                    mode: "ro",
+                },
+                {
+                    source: path.join(projectRoot, "public/sass"),
+                    target: "/app/public/sass",
+                    mode: "ro",
+                },
+                {
+                    source: path.join(projectRoot, "webpack.config.js"),
+                    target: "/app/webpack.config.js",
+                    mode: "ro",
+                },
+            ])
             .withEnvironment({
                 AWS_ENDPOINT_URL_S3: "http://minio:9000",
                 AWS_ACCESS_KEY_ID: MINIO_ROOT_USER,

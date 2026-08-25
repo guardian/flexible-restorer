@@ -1,41 +1,38 @@
 # syntax=docker/dockerfile:1
-FROM eclipse-temurin:11-jdk
+FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV NVM_DIR=/usr/local/nvm
 ENV AWS_SDK_LOAD_CONFIG=1
 
-# Install system dependencies and Scala.
+# System dependencies needed for mise and for building native npm modules.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
-    bash \
     git \
-    awscli \
+    g++ \
+    make \
     openssl \
-    scala \
     && rm -rf /var/lib/apt/lists/*
 
-# Install sbt launcher.
-RUN curl -fsSL https://raw.githubusercontent.com/dwijnand/sbt-extras/master/sbt -o /usr/local/bin/sbt \
-    && chmod +x /usr/local/bin/sbt
+# Install mise and expose its binary and tool shims on PATH.
+RUN curl https://mise.run | sh
+ENV PATH="/root/.local/bin:/root/.local/share/mise/shims:${PATH}"
 
 WORKDIR /app
+
+# Install the toolchain (Java, Node, sbt, aws-cli, ...) pinned in .tool-versions.
+# Layer-cached until .tool-versions changes.
+COPY .tool-versions ./
+RUN mise trust ./.tool-versions \
+    && mise install \
+    && mise reshim
 
 # Pre-fetch JVM dependencies. Layer-cached after this point: only re-runs when
 # build.sbt or project/ changes.
 COPY build.sbt ./
 COPY project ./project
 RUN sbt -batch update
-
-# Install Node via nvm. Only re-runs when .nvmrc changes.
-COPY .nvmrc .
-RUN rm -rf "$NVM_DIR" \
-    && git clone https://github.com/nvm-sh/nvm.git "$NVM_DIR" \
-    && cd "$NVM_DIR" \
-    && git checkout v0.40.1 \
-    && bash -lc 'set -eo pipefail; export NVM_DIR=/usr/local/nvm; . "$NVM_DIR/nvm.sh"; NODE_VERSION="$(tr -d "[:space:]" < /app/.nvmrc)"; nvm install "$NODE_VERSION"; nvm alias default "$NODE_VERSION"; nvm use default; NODE_BIN_DIR="$(dirname "$(nvm which default)")"; ln -sf "$NODE_BIN_DIR/node" /usr/local/bin/node; ln -sf "$NODE_BIN_DIR/npm" /usr/local/bin/npm; ln -sf "$NODE_BIN_DIR/npx" /usr/local/bin/npx'
 
 # Install npm dependencies. Only re-runs when package.json/lock changes.
 COPY package.json package-lock.json* ./
@@ -54,8 +51,12 @@ COPY public ./public
 COPY webpack.config.js ./
 RUN npm run build
 
-# Copy remaining runtime files (scripts, fixtures, nginx config, etc.).
-COPY . .
+# Copy the startup script only. The application code (app/, conf/, public/,
+# webpack.config.js) is baked above so the image is self-contained, but at
+# runtime it is bind-mounted from the host (see
+# e2e-tests/setup/stackContainers.ts) so code changes are watched and picked up
+# without rebuilding the image.
+COPY scripts ./scripts
 RUN chmod +x /app/scripts/docker/docker-start
 
 EXPOSE 9000
