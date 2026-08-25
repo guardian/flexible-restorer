@@ -9,10 +9,12 @@
     <form novalidate name="search"
           class="splash-screen__container__form center"
           ng-submit="formCtrl.formSubmit(search)">
-      <label  class="splash-screen__container__form__label">
+            <label  class="splash-screen__container__form__label"
+              for="composer-url-input">
         Enter a composer url:
       </label>
       <input  class="splash-screen__container__form__input"
+              id="composer-url-input"
               type="text"
               ng-required="true"
               ng-model="search.query"/>
