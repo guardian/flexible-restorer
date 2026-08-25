@@ -46,7 +46,7 @@ Use:
 npm run test:e2e
 ```
 
-This command runs through `scripts/test-e2e`.
+This command runs through `e2e-tests/setup/test-e2e`.
 
 ## Run local stack only
 
