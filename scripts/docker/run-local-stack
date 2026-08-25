@@ -4,13 +4,6 @@ set -euo pipefail
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT_DIR=${DIR}/../..
-NODE_VERSION="${LOCAL_STACK_NODE_VERSION:-20}"
-NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
-
-if [ ! -s "$NVM_DIR/nvm.sh" ]; then
-  echo "nvm is required to run the local stack command" >&2
-  exit 1
-fi
 
 if ! command -v docker >/dev/null 2>&1; then
   echo "Docker CLI is required to run the local stack command" >&2
@@ -22,10 +15,10 @@ if ! docker info >/dev/null 2>&1; then
   exit 1
 fi
 
-# shellcheck disable=SC1090
-. "$NVM_DIR/nvm.sh"
+# Ensure the Chromium browser Playwright launches is present (no-op once installed).
+npm exec playwright install chromium
 
-nvm exec "$NODE_VERSION" "$ROOT_DIR/node_modules/.bin/tsx" "$ROOT_DIR/scripts/docker/run-local-stack.ts" "$@" || {
+node "$ROOT_DIR/node_modules/.bin/tsx" "$ROOT_DIR/scripts/docker/run-local-stack.ts" "$@" || {
   exit_code=$?
   # Exit code 130 means the process was interrupted by Ctrl+C (SIGINT), which is expected.
   if [ "$exit_code" -eq 130 ]; then
