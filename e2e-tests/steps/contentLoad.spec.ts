@@ -1,7 +1,7 @@
 import path from "path";
 import { test, expect } from "@playwright/test";
-import { createPanDomainCookie } from "./panDomainCookie";
-import { startLocalStack, stopLocalStack, type LocalStack } from "./stackContainers";
+import { createPanDomainCookie } from "../setup/panDomainCookie";
+import { startLocalStack, stopLocalStack, type LocalStack } from "../setup/stackContainers";
 
 test.describe("Local stack via Testcontainers", () => {
     test("starts MinIO first, injects its host/port into Restorer, then loads app", async ({
