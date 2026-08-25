@@ -1,6 +1,6 @@
 const { chromium } = require("@playwright/test") as typeof import("@playwright/test");
-const { createPanDomainCookie } = require("../../e2e-tests/setup/panDomainCookie") as typeof import("../../e2e-tests/setup/panDomainCookie");
-const { startLocalStack, stopLocalStack } = require("../../e2e-tests/setup/stackContainers") as typeof import("../../e2e-tests/setup/stackContainers");
+const { createPanDomainCookie } = require("../setup/panDomainCookie") as typeof import("../setup/panDomainCookie");
+const { startLocalStack, stopLocalStack } = require("../setup/stackContainers") as typeof import("../setup/stackContainers");
 
 function waitForTerminationSignal(): Promise<void> {
     return new Promise((resolve) => {

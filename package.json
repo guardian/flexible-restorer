@@ -3,7 +3,7 @@
     "scripts": {
         "build": "webpack --mode=production",
         "watch": "webpack --mode=development --watch",
-        "local:stack": "./scripts/docker/run-local-stack",
+        "dev:local": "./e2e-tests/images/run-local-stack",
         "test": "npm exec playwright test",
         "test:ui": "npm exec playwright test --ui",
         "test:headed": "npm exec playwright test --headed",
