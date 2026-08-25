@@ -1,5 +1,3 @@
-const { chromium } = require("@playwright/test") as typeof import("@playwright/test");
-const { createPanDomainCookie } = require("../setup/panDomainCookie") as typeof import("../setup/panDomainCookie");
 const { startLocalStack, stopLocalStack } = require("../setup/stackContainers") as typeof import("../setup/stackContainers");
 
 function waitForTerminationSignal(): Promise<void> {
@@ -18,32 +16,18 @@ function waitForTerminationSignal(): Promise<void> {
 async function main() {
     const projectRoot = process.cwd();
     let stack: Awaited<ReturnType<typeof startLocalStack>> | undefined;
-    let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
 
     try {
-        stack = await startLocalStack(projectRoot);
-        const cookieData = createPanDomainCookie(stack.panDomainPrivateKey);
-
-        browser = await chromium.launch({ headless: false });
-        const page = await browser.newPage();
-        await page.context().addCookies([
-            {
-                name: "gutoolsAuth-assym",
-                value: cookieData,
-                url: stack.baseUrl,
-            },
-        ]);
-        await page.goto(stack.baseUrl, { waitUntil: "domcontentloaded" });
+        stack = await startLocalStack(projectRoot, { hostPort: 9000 });
 
         console.log(`\nLocal stack started at ${stack.baseUrl}`);
-        console.log("Opened a browser with a local auth cookie.");
+        console.log(
+            `Open ${stack.cookieUrl} in your host browser to set the auth cookie and load the app.`,
+        );
         console.log("Press Ctrl+C to stop.");
         process.stdin.resume();
         await waitForTerminationSignal();
     } finally {
-        if (browser) {
-            await browser.close();
-        }
         process.stdin.pause();
         await stopLocalStack(stack);
     }

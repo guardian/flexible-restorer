@@ -14,9 +14,11 @@ type BuildDockerImageArgs = {
 
 export type LocalStack = {
     baseUrl: string;
+    cookieUrl: string;
     panDomainPrivateKey: string;
     minioContainer: any;
     restorerContainer: any;
+    nginxContainer: any;
     network: any;
 };
 
@@ -118,15 +120,18 @@ function createLogConsumer(prefix: string) {
 
 export async function startLocalStack(
     projectRoot: string,
+    options: { hostPort?: number } = {},
 ): Promise<LocalStack> {
     const runId = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
     const minioImageTag = `flexible-restorer-minio-e2e:${runId}`;
     const restorerImageTag = `flexible-restorer-app-e2e:${runId}`;
+    const nginxImageTag = `flexible-restorer-nginx-e2e:${runId}`;
 
     const network = await new Network().start();
 
     let minioContainer;
     let restorerContainer;
+    let nginxContainer;
     const panDomainKeys = generatePanDomainKeys();
 
     try {
@@ -177,6 +182,8 @@ export async function startLocalStack(
 
         restorerContainer = await new GenericContainer(restorerImageTag)
             .withNetwork(network)
+            // nginx proxies to the restorer over the Docker network by this alias.
+            .withNetworkAliases("restorer")
             // Mount the source from the host so code changes are watched and
             // picked up without rebuilding the image. Individual paths are
             // mounted (rather than all of /app) so the image's baked
@@ -219,21 +226,55 @@ export async function startLocalStack(
                 LOCAL: "true",
             })
             .withLogConsumer(createLogConsumer("restorer"))
+            // Exposed on a dynamic host port for debugging; browsers reach the
+            // app through the nginx container below, not this port directly.
             .withExposedPorts(9000)
             .withStartupTimeout(10 * 60 * 1000)
             .withWaitStrategy(Wait.forListeningPorts())
             .start();
 
-        const baseUrl = `http://${restorerContainer.getHost()}:${restorerContainer.getMappedPort(9000)}`;
+        await buildDockerImage({
+            tag: nginxImageTag,
+            dockerfilePath: path.join(
+                projectRoot,
+                "e2e-tests/images/nginx.Dockerfile",
+            ),
+            contextPath: projectRoot,
+        });
+
+        nginxContainer = await new GenericContainer(nginxImageTag)
+            .withNetwork(network)
+            .withLogConsumer(createLogConsumer("nginx"))
+            // In the e2e suite the port is mapped dynamically (undefined host)
+            // so parallel runs never collide. For local dev we bind a fixed host
+            // port so the devcontainer's forwarded port (see .devcontainer
+            // forwardPorts) reaches it from the host machine.
+            .withExposedPorts(
+                options.hostPort
+                    ? { container: 80, host: options.hostPort }
+                    : 80,
+            )
+            .withStartupTimeout(2 * 60 * 1000)
+            .withWaitStrategy(Wait.forListeningPorts())
+            .start();
+
+        const baseUrl = `http://${nginxContainer.getHost()}:${nginxContainer.getMappedPort(80)}`;
 
         return {
             baseUrl,
+            // Visiting this endpoint sets the prebaked auth cookie then redirects
+            // to the app, so no cookie needs to be injected into the browser.
+            cookieUrl: `${baseUrl}/cookie`,
             panDomainPrivateKey: panDomainKeys.privateKeyPem,
             minioContainer,
             restorerContainer,
+            nginxContainer,
             network,
         };
     } catch (error) {
+        if (nginxContainer) {
+            await nginxContainer.stop();
+        }
         if (restorerContainer) {
             await restorerContainer.stop();
         }
@@ -246,10 +287,14 @@ export async function startLocalStack(
 }
 
 export async function stopLocalStack({
+    nginxContainer,
     restorerContainer,
     minioContainer,
     network,
 }: Partial<LocalStack> = {}): Promise<void> {
+    if (nginxContainer) {
+        await nginxContainer.stop();
+    }
     if (restorerContainer) {
         await restorerContainer.stop();
     }

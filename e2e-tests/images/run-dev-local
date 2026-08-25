@@ -15,9 +15,6 @@ if ! docker info >/dev/null 2>&1; then
   exit 1
 fi
 
-# Ensure the Chromium browser Playwright launches is present (no-op once installed).
-npm exec playwright install chromium
-
 node "$ROOT_DIR/node_modules/.bin/tsx" "$ROOT_DIR/e2e-tests/images/run-dev-local.ts" "$@" || {
   exit_code=$?
   # Exit code 130 means the process was interrupted by Ctrl+C (SIGINT), which is expected.

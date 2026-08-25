@@ -38,8 +38,22 @@ forwardPorts:
 # mise shims (which provide node/npm/npx) aren't on PATH. Prepend the shims dir
 # explicitly so npm/npx resolve to the mise-managed node. This is because we are not using 
 # the mise module's built-in node support, which would automatically add the shims to PATH.
+#
+# Pre-build the e2e/dev Docker images so their layer cache is already warm when
+# the user later runs `run-dev-local` (npm run dev:local); the run then reuses
+# these layers instead of building from scratch. Also install Playwright's
+# Chromium browser and its system libraries so the e2e suite can launch a
+# (headless) browser inside the devcontainer.
 postCreateCommand:
-  - cmd: 'PATH="$HOME/.local/share/mise/shims:$PATH" npm install'
+  - cmd: 'PATH="$HOME/.local/share/mise/shims:$PATH" npx playwright install chromium'
+    workingDirectory: "."
+  - cmd: 'sudo env "PATH=$HOME/.local/share/mise/shims:$PATH" npx playwright install-deps chromium'
+    workingDirectory: "."
+  - cmd: "docker build -f e2e-tests/images/minio.Dockerfile -t flexible-restorer-minio-e2e:cache ."
+    workingDirectory: "."
+  - cmd: "docker build -f e2e-tests/images/restorer.Dockerfile -t flexible-restorer-app-e2e:cache ."
+    workingDirectory: "."
+  - cmd: "docker build -f e2e-tests/images/nginx.Dockerfile -t flexible-restorer-nginx-e2e:cache ."
     workingDirectory: "."
 #   - cmd: "make setup"
 #     workingDirectory: "/workspaces/project"

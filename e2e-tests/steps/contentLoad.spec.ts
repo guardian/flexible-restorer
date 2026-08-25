@@ -1,6 +1,5 @@
 import path from "path";
 import { test, expect } from "@playwright/test";
-import { createPanDomainCookie } from "../setup/panDomainCookie";
 import { startLocalStack, stopLocalStack, type LocalStack } from "../setup/stackContainers";
 
 test.describe("Local stack via Testcontainers", () => {
@@ -14,18 +13,12 @@ test.describe("Local stack via Testcontainers", () => {
 
         try {
             stack = await startLocalStack(projectRoot);
-            const { baseUrl, panDomainPrivateKey } = stack;
-            const cookieData = createPanDomainCookie(panDomainPrivateKey);
+            const { baseUrl, cookieUrl } = stack;
 
-            await page.context().addCookies([
-                {
-                    name: "gutoolsAuth-assym",
-                    value: cookieData,
-                    url: baseUrl,
-                },
-            ]);
-
-            const response = await page.goto(baseUrl, {
+            // Hitting the nginx /cookie endpoint sets the prebaked pan-domain
+            // auth cookie and redirects to the app, replacing the previous
+            // approach of injecting a cookie into the browser context.
+            const response = await page.goto(cookieUrl, {
                 waitUntil: "domcontentloaded",
                 timeout: 60 * 1000,
             });
@@ -34,6 +27,10 @@ test.describe("Local stack via Testcontainers", () => {
                 response,
                 "Expected a response from restorer service",
             ).not.toBeNull();
+            expect(
+                page.url(),
+                "Expected /cookie to redirect to the app root",
+            ).toBe(`${baseUrl}/`);
             expect(
                 response.status(),
                 "Expected restorer to avoid server error on startup route",
