@@ -56,9 +56,9 @@ RUN npm run build
 # runtime it is bind-mounted from the host (see
 # e2e-tests/setup/stackContainers.ts) so code changes are watched and picked up
 # without rebuilding the image.
-COPY scripts ./scripts
-RUN chmod +x /app/scripts/docker/docker-start
+COPY e2e-tests/images/entrypoint.dev.sh ./entrypoint.dev.sh
+RUN chmod +x /app/entrypoint.dev.sh
 
 EXPOSE 9000
 
-CMD ["/app/scripts/docker/docker-start"]
+CMD ["/app/entrypoint.dev.sh"]

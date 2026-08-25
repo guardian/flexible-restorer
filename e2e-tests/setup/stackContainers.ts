@@ -182,7 +182,7 @@ export async function startLocalStack(
             // mounted (rather than all of /app) so the image's baked
             // node_modules, compiled target/, and built public/dist are
             // preserved: `sbt run` recompiles changed Scala on the next request
-            // and webpack (run in watch mode by docker-start) rebuilds the
+            // and webpack (run in watch mode by entrypoint.dev.sh) rebuilds the
             // frontend on change.
             .withBindMounts([
                 {
