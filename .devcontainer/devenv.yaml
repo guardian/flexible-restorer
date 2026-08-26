@@ -49,9 +49,7 @@ forwardPorts:
 postCreateCommand:
   - cmd: 'PATH="$HOME/.local/share/mise/shims:$PATH" npm ci'
     workingDirectory: "."
-  - cmd: 'PATH="$HOME/.local/share/mise/shims:$PATH" npx playwright install chromium'
-    workingDirectory: "."
-  - cmd: 'sudo env "PATH=$HOME/.local/share/mise/shims:$PATH" npx playwright install-deps chromium'
+  - cmd: 'PATH="$HOME/.local/share/mise/shims:$PATH" npx playwright install chromium --with-deps'
     workingDirectory: "."
   - cmd: "docker build -f e2e-tests/images/minio.Dockerfile -t flexible-restorer-minio-e2e:cache ."
     workingDirectory: "."
