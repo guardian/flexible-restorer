@@ -4,8 +4,8 @@
         "build": "webpack --mode=production",
         "dev": "webpack --mode=development --watch",
         "dev:local": "./e2e-tests/images/run-dev-local",
-        "test": "playwright test",
-        "test:ui": "playwright test --ui-host=0.0.0.0 --ui-port=9323"
+        "test": "playwright test --config=e2e-tests/playwright.config.js",
+        "test:ui": "playwright test --config=e2e-tests/playwright.config.js --ui-host=0.0.0.0 --ui-port=9323"
     },
     "dependencies": {
         "angular": "^1.8.3",
