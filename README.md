@@ -38,26 +38,33 @@ $ sbt
 
 The app will then be accessible locally at: <https://restorer.local.dev-gutools.co.uk/>
 
-## Run end-to-end tests
+
+## Run end-to-end tests headlessly
 
 Use:
 
 ```
-npm run test:e2e
+npm run test
+
 ```
+
+Testing interactivly
+
+run `npm run test:ui` in your `devcontainer` terminal
+Open a browser on your host machine and point it at localhost:46043 to open the Playwright UI
 
 This command runs through `e2e-tests/setup/test-e2e`.
 
-## Run local stack only
+## Run local stack only - no AWS credetials and all services mocked locally
 
 If you want the same Testcontainers stack used by the e2e test without running the
 spec itself, use:
 
 ```
-npm run local:stack
+npm run dev:local
 ```
 
 This starts MinIO and Restorer using the same bootstrap code as the e2e suite and
 keeps the stack running until you press Ctrl+C.
 
-This is only to help debug the test runner, rather than a stack for local development.
+
