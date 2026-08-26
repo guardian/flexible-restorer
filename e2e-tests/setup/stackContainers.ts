@@ -264,15 +264,16 @@ export async function stopLocalStack({
     network,
     imageTags,
 }: Partial<LocalStack> = {}): Promise<void> {
-    if (nginxContainer) {
-        await nginxContainer.stop();
-    }
-    if (restorerContainer) {
-        await restorerContainer.stop();
-    }
-    if (minioContainer) {
-        await minioContainer.stop();
-    }
+    // Stop containers concurrently; allSettled keeps teardown best-effort so one
+    // failed stop can't skip the others or the network/image cleanup below.
+    await Promise.allSettled(
+        [nginxContainer, restorerContainer, minioContainer]
+            .filter(Boolean)
+            .map((container) => container.stop()),
+    );
+
+    // Removed only after its containers are gone — Docker refuses to remove a
+    // network while containers are still attached.
     if (network) {
         await network.stop();
     }
