@@ -53,4 +53,4 @@ flowchart TB
 | [`nginx-dev.conf.template`](./nginx-dev.conf.template) | nginx server config; the cookie token is templated in via `envsubst`. |
 | [`generate-pan-domain-cookie.ts`](./generate-pan-domain-cookie.ts) | Build-time cookie generator reusing the project's cookie helper. |
 | [`entrypoint.dev.sh`](./entrypoint.dev.sh) | Restorer container entrypoint (webpack watch + `sbt run`). |
-| [`run-dev-local`](./run-dev-local) / [`run-dev-local.ts`](./run-dev-local.ts) | `npm run dev:local` — starts the stack and keeps it running. |
+| [`run-dev-local.ts`](./run-dev-local.ts) | `npm run dev:local` — starts the stack and keeps it running. |

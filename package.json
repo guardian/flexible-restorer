@@ -3,7 +3,7 @@
     "scripts": {
         "build": "webpack --mode=production",
         "dev": "webpack --mode=development --watch",
-        "dev:local": "./e2e-tests/images/run-dev-local",
+        "dev:local": "tsx ./e2e-tests/images/run-dev-local.ts",
         "test": "playwright test --config=e2e-tests/playwright.config.js",
         "test:ui": "playwright test --config=e2e-tests/playwright.config.js --ui-host=0.0.0.0 --ui-port=9323"
     },
