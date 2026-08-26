@@ -5,13 +5,13 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
   "Metadata": {
     "gu:cdk:constructs": [
       "GuAllowPolicy",
+      "GuGetS3ObjectsPolicy",
+      "GuGetS3ObjectsPolicy",
+      "GuGetS3ObjectsPolicy",
       "GuAllowPolicy",
       "GuAllowPolicy",
       "GuAllowPolicy",
-      "GuAllowPolicy",
-      "GuAllowPolicy",
-      "GuAllowPolicy",
-      "GuAllowPolicy",
+      "GuPutCloudwatchMetricsPolicy",
       "GuVpcParameter",
       "GuSubnetListParameter",
       "GuSubnetListParameter",
@@ -377,6 +377,27 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
       },
       "Type": "AWS::IAM::Policy",
     },
+    "GuPutCloudwatchMetricsPolicyC5BCE402": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "cloudwatch:PutMetricData",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "GuPutCloudwatchMetricsPolicyC5BCE402",
+        "Roles": [
+          {
+            "Ref": "InstanceRoleRestorer2A97F6455",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
     "InstanceRoleRestorer2A97F6455": {
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -723,27 +744,6 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
       },
       "Type": "AWS::IAM::Policy",
     },
-    "RestorerCloudwatchPolicy45C49589": {
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": "cloudwatch:*",
-              "Effect": "Allow",
-              "Resource": "*",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "RestorerCloudwatchPolicy45C49589",
-        "Roles": [
-          {
-            "Ref": "InstanceRoleRestorer2A97F6455",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
     "RestorerGetDistributablesPolicy147D3507": {
       "Properties": {
         "PolicyDocument": {
@@ -751,7 +751,7 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
             {
               "Action": "s3:GetObject",
               "Effect": "Allow",
-              "Resource": "arn:aws:s3:::composer-dist/*",
+              "Resource": "arn:aws:s3:::composer-dist/flexible/CODE/restorer2/*",
             },
           ],
           "Version": "2012-10-17",
@@ -1076,13 +1076,13 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
   "Metadata": {
     "gu:cdk:constructs": [
       "GuAllowPolicy",
+      "GuGetS3ObjectsPolicy",
+      "GuGetS3ObjectsPolicy",
+      "GuGetS3ObjectsPolicy",
       "GuAllowPolicy",
       "GuAllowPolicy",
       "GuAllowPolicy",
-      "GuAllowPolicy",
-      "GuAllowPolicy",
-      "GuAllowPolicy",
-      "GuAllowPolicy",
+      "GuPutCloudwatchMetricsPolicy",
       "GuVpcParameter",
       "GuSubnetListParameter",
       "GuSubnetListParameter",
@@ -1440,6 +1440,27 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
           "Version": "2012-10-17",
         },
         "PolicyName": "GuLogShippingPolicy981BFE5A",
+        "Roles": [
+          {
+            "Ref": "InstanceRoleRestorer2A97F6455",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "GuPutCloudwatchMetricsPolicyC5BCE402": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "cloudwatch:PutMetricData",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "GuPutCloudwatchMetricsPolicyC5BCE402",
         "Roles": [
           {
             "Ref": "InstanceRoleRestorer2A97F6455",
@@ -1826,27 +1847,6 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
       },
       "Type": "AWS::IAM::Policy",
     },
-    "RestorerCloudwatchPolicy45C49589": {
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": "cloudwatch:*",
-              "Effect": "Allow",
-              "Resource": "*",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "RestorerCloudwatchPolicy45C49589",
-        "Roles": [
-          {
-            "Ref": "InstanceRoleRestorer2A97F6455",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
     "RestorerGetDistributablesPolicy147D3507": {
       "Properties": {
         "PolicyDocument": {
@@ -1854,7 +1854,7 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
             {
               "Action": "s3:GetObject",
               "Effect": "Allow",
-              "Resource": "arn:aws:s3:::composer-dist/*",
+              "Resource": "arn:aws:s3:::composer-dist/flexible/PROD/restorer2/*",
             },
           ],
           "Version": "2012-10-17",
