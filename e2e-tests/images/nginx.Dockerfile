@@ -22,4 +22,6 @@ RUN export PAN_DOMAIN_COOKIE="$(cat /cookie.txt)" \
     && envsubst '${PAN_DOMAIN_COOKIE}' < /etc/nginx/dev.conf.template > /etc/nginx/conf.d/default.conf \
     && rm -f /cookie.txt /etc/nginx/dev.conf.template
 
+# TLS is terminated by the host's dev-nginx, which proxies plain HTTP here, so
+# this container serves HTTP only.
 EXPOSE 80
