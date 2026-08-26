@@ -2,12 +2,10 @@
     "name": "composer-restorer",
     "scripts": {
         "build": "webpack --mode=production",
-        "watch": "webpack --mode=development --watch",
+        "dev": "webpack --mode=development --watch",
         "dev:local": "./e2e-tests/images/run-dev-local",
         "test": "npm exec playwright test",
-        "test:ui": "npm exec playwright test --ui",
-        "test:headed": "npm exec playwright test --headed",
-        "test:debug": "npm exec playwright test --debug"
+        "test:ui": "npm exec -- playwright test --ui-host=0.0.0.0"
     },
     "dependencies": {
         "angular": "^1.8.3",
