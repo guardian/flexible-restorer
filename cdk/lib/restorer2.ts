@@ -37,8 +37,6 @@ export class Restorer2 extends GuStack {
   constructor(scope: App, id: string, props: GuStackProps) {
     super(scope, id, props);
 
-    // GuEc2App creates the VpcId/PublicSubnets/PrivateSubnets parameters itself,
-    // defaulted to the /account/vpc/primary/* SSM parameters.
     const kmsKeyArnParameter = new CfnParameter(this, "KmsKeyARN", {
       type: "String",
       description: "ARN of KMS key that was used to encrypt the backups",
@@ -59,12 +57,10 @@ export class Restorer2 extends GuStack {
       `flexible-secondary-snapshotter-${stageConfig.snapshotBucketSuffix}`,
     ];
 
-    // GuInstanceRole (created by GuEc2App) already grants ec2:DescribeInstances,
-    // ec2:DescribeTags and autoscaling:Describe* (via GuDescribeEC2Policy), SSM
-    // SSH access, parameter-store reads and Kinesis log shipping. Only the
-    // app-specific permissions from the legacy template need porting here.
-    // (The app itself only calls S3; the config/identity library needs
-    // ec2:DescribeTags, which GuInstanceRole covers.)
+    // Only app-specific permissions are needed here: GuInstanceRole (created by
+    // GuEc2App) already grants ec2:DescribeInstances, ec2:DescribeTags and
+    // autoscaling:Describe* (via GuDescribeEC2Policy), SSM SSH access,
+    // parameter-store reads and Kinesis log shipping.
     const additionalPolicies = [
       new GuAllowPolicy(this, "RestorerSSMPolicy", {
         actions: ["ssm:GetParameters", "ssm:GetParametersByPath"],
@@ -133,10 +129,9 @@ export class Restorer2 extends GuStack {
       );
     });
 
-    // Phase 3: manage the DNS record in NS1 via GuCname. It now points at the
-    // new ALB, cutting traffic over from the legacy ELB. TTL is kept low during
-    // the soak so rollback (repointing to the ELB) propagates quickly; raise it
-    // again once confident.
+    // The DNS record is managed in NS1 via GuCname. TTL is kept low while the
+    // cutover from the legacy ELB soaks, so rollback propagates quickly; raise
+    // it again once confident.
     new GuCname(this, "DnsRecord", {
       app,
       domainName: stageConfig.domainName,
