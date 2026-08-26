@@ -24,37 +24,6 @@ export type LocalStack = {
 };
 
 /**
- * Remove orphaned Docker networks left behind by Testcontainers. Each stack run
- * creates a fresh network (with its own subnet); if a run is killed abruptly
- * instead of exiting cleanly, that network leaks. Enough leaked networks
- * exhaust Docker's predefined address pools and every subsequent run fails with
- * "all predefined address pools have been fully subnetted".
- *
- * `docker network prune` only removes networks that are not currently in use,
- * and the label filter scopes it to Testcontainers-created networks, so this
- * never touches the running stack or any unrelated user networks.
- */
-function pruneOrphanedTestcontainerNetworks(): Promise<void> {
-    return new Promise((resolve) => {
-        const child = spawn(
-            "docker",
-            [
-                "network",
-                "prune",
-                "--force",
-                "--filter",
-                "label=org.testcontainers=true",
-            ],
-            { stdio: "ignore" },
-        );
-
-        // Never let cleanup failures (e.g. docker not on PATH) break teardown.
-        child.on("error", () => resolve());
-        child.on("close", () => resolve());
-    });
-}
-
-/**
  * Best-effort removal of the run-specific image tags created for a stack. Each
  * run tags three images with a unique `:${runId}`; without this they accumulate
  * and steadily consume Docker disk. Removing the tag only untags the image —
@@ -308,9 +277,9 @@ export async function stopLocalStack({
         await network.stop();
     }
 
-    // Also sweep up any networks leaked by previous runs that were killed before
-    // they could tear down, so the address pool cannot slowly fill up over time.
-    await pruneOrphanedTestcontainerNetworks();
+    // Networks leaked by abruptly-killed runs are reclaimed by Testcontainers'
+    // Ryuk reaper (started automatically per session), so no manual prune is
+    // needed here — and a global prune could race a concurrently-starting run.
 
     // Remove this run's image tags so repeated runs don't accumulate on disk.
     if (imageTags && imageTags.length > 0) {
