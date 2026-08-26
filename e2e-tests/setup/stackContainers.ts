@@ -1,16 +1,9 @@
 import path from "path";
-import { spawn } from "child_process";
 import { GenericContainer, Network, Wait } from "testcontainers";
 import { generatePanDomainKeys } from "./panDomainKeys";
 
 const MINIO_ROOT_USER = "minioadmin";
 const MINIO_ROOT_PASSWORD = "minioadmin";
-
-type BuildDockerImageArgs = {
-    tag: string;
-    dockerfilePath: string;
-    contextPath: string;
-};
 
 export type LocalStack = {
     baseUrl: string;
@@ -20,60 +13,25 @@ export type LocalStack = {
     restorerContainer: any;
     nginxContainer: any;
     network: any;
-    imageTags: string[];
 };
 
 /**
- * Best-effort removal of the run-specific image tags created for a stack. Each
- * run tags three images with a unique `:${runId}`; without this they accumulate
- * and steadily consume Docker disk. Removing the tag only untags the image —
- * shared cached layers are preserved for the next build.
+ * Build an image from a Dockerfile (relative to the repo-root build context).
+ * `withBuildkit()` is required: the Dockerfiles rely on BuildKit features
+ * (auto `TARGETARCH`, `# syntax=`, `RUN --mount=type=cache`) that the legacy
+ * builder can't handle. `deleteOnExit` labels the image with the Testcontainers
+ * session id so the Ryuk reaper removes it when the run ends.
  */
-function removeDockerImages(tags: string[]): Promise<void> {
-    return new Promise((resolve) => {
-        const child = spawn("docker", ["rmi", "-f", ...tags], {
-            stdio: "ignore",
+function buildImage(
+    projectRoot: string,
+    dockerfile: string,
+    tag: string,
+): Promise<GenericContainer> {
+    return GenericContainer.fromDockerfile(projectRoot, dockerfile)
+        .withBuildkit()
+        .build(tag, {
+            deleteOnExit: true,
         });
-        child.on("error", () => resolve());
-        child.on("close", () => resolve());
-    });
-}
-
-function buildDockerImage({
-    tag,
-    dockerfilePath,
-    contextPath,
-}: BuildDockerImageArgs): Promise<void> {
-    return new Promise((resolve, reject) => {
-        console.log(`\n[docker-build] Building ${tag} from ${dockerfilePath}`);
-        const child = spawn(
-            "docker",
-            [
-                "build",
-                "--progress=plain",
-                "-t",
-                tag,
-                "-f",
-                dockerfilePath,
-                contextPath,
-            ],
-            { stdio: "inherit" },
-        );
-
-        child.on("error", reject);
-        child.on("close", (code) => {
-            if (code === 0) {
-                console.log(`[docker-build] Finished ${tag}`);
-                resolve();
-            } else {
-                reject(
-                    new Error(
-                        `docker build failed for ${tag} with exit code ${code}`,
-                    ),
-                );
-            }
-        });
-    });
 }
 
 function createLogConsumer(prefix: string) {
@@ -105,16 +63,13 @@ export async function startLocalStack(
     const panDomainKeys = generatePanDomainKeys();
 
     try {
-        await buildDockerImage({
-            tag: minioImageTag,
-            dockerfilePath: path.join(
+        minioContainer = await (
+            await buildImage(
                 projectRoot,
                 "e2e-tests/images/minio.Dockerfile",
-            ),
-            contextPath: projectRoot,
-        });
-
-        minioContainer = await new GenericContainer(minioImageTag)
+                minioImageTag,
+            )
+        )
             .withNetwork(network)
             .withNetworkAliases(
                 "minio",
@@ -141,16 +96,13 @@ export async function startLocalStack(
             .withStartupTimeout(2 * 60 * 1000)
             .start();
 
-        await buildDockerImage({
-            tag: restorerImageTag,
-            dockerfilePath: path.join(
+        restorerContainer = await (
+            await buildImage(
                 projectRoot,
                 "e2e-tests/images/restorer.Dockerfile",
-            ),
-            contextPath: projectRoot,
-        });
-
-        restorerContainer = await new GenericContainer(restorerImageTag)
+                restorerImageTag,
+            )
+        )
             .withNetwork(network)
             // nginx proxies to the restorer over the Docker network by this alias.
             .withNetworkAliases("restorer")
@@ -203,16 +155,13 @@ export async function startLocalStack(
             .withWaitStrategy(Wait.forListeningPorts())
             .start();
 
-        await buildDockerImage({
-            tag: nginxImageTag,
-            dockerfilePath: path.join(
+        nginxContainer = await (
+            await buildImage(
                 projectRoot,
                 "e2e-tests/images/nginx.Dockerfile",
-            ),
-            contextPath: projectRoot,
-        });
-
-        nginxContainer = await new GenericContainer(nginxImageTag)
+                nginxImageTag,
+            )
+        )
             .withNetwork(network)
             .withLogConsumer(createLogConsumer("nginx"))
             // In the e2e suite the port is mapped dynamically (undefined host)
@@ -240,7 +189,6 @@ export async function startLocalStack(
             restorerContainer,
             nginxContainer,
             network,
-            imageTags: [minioImageTag, restorerImageTag, nginxImageTag],
         };
     } catch (error) {
         if (nginxContainer) {
@@ -262,10 +210,9 @@ export async function stopLocalStack({
     restorerContainer,
     minioContainer,
     network,
-    imageTags,
 }: Partial<LocalStack> = {}): Promise<void> {
     // Stop containers concurrently; allSettled keeps teardown best-effort so one
-    // failed stop can't skip the others or the network/image cleanup below.
+    // failed stop can't skip the others or the network cleanup below.
     await Promise.allSettled(
         [nginxContainer, restorerContainer, minioContainer]
             .filter(Boolean)
@@ -278,12 +225,7 @@ export async function stopLocalStack({
         await network.stop();
     }
 
-    // Networks leaked by abruptly-killed runs are reclaimed by Testcontainers'
-    // Ryuk reaper (started automatically per session), so no manual prune is
-    // needed here — and a global prune could race a concurrently-starting run.
-
-    // Remove this run's image tags so repeated runs don't accumulate on disk.
-    if (imageTags && imageTags.length > 0) {
-        await removeDockerImages(imageTags);
-    }
+    // Run-specific images and any networks leaked by abruptly-killed runs are
+    // reclaimed by Testcontainers' Ryuk reaper (started automatically per
+    // session), so no manual image/network cleanup is needed here.
 }
