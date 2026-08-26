@@ -2,7 +2,11 @@ import { AccessScope } from "@guardian/cdk/lib/constants";
 import type { GuStackProps } from "@guardian/cdk/lib/constructs/core";
 import { GuStack } from "@guardian/cdk/lib/constructs/core";
 import { GuCname } from "@guardian/cdk/lib/constructs/dns";
-import { GuAllowPolicy } from "@guardian/cdk/lib/constructs/iam";
+import {
+  GuAllowPolicy,
+  GuGetS3ObjectsPolicy,
+  GuPutCloudwatchMetricsPolicy,
+} from "@guardian/cdk/lib/constructs/iam";
 import { GuEc2App } from "@guardian/cdk/lib/patterns/ec2-app";
 import type { App } from "aws-cdk-lib";
 import { CfnParameter, Duration } from "aws-cdk-lib";
@@ -66,17 +70,15 @@ export class Restorer2 extends GuStack {
         actions: ["ssm:GetParameters", "ssm:GetParametersByPath"],
         resources: [`arn:aws:ssm:*:*:parameter/flexible/restorer/${this.stage}*`],
       }),
-      new GuAllowPolicy(this, "RestorerGetDistributablesPolicy", {
-        actions: ["s3:GetObject"],
-        resources: ["arn:aws:s3:::composer-dist/*"],
+      new GuGetS3ObjectsPolicy(this, "RestorerGetDistributablesPolicy", {
+        bucketName: "composer-dist",
+        paths: [`flexible/${this.stage}/${app}/*`],
       }),
-      new GuAllowPolicy(this, "PanDomainPolicy", {
-        actions: ["s3:GetObject"],
-        resources: ["arn:aws:s3:::pan-domain-auth-settings/*"],
+      new GuGetS3ObjectsPolicy(this, "PanDomainPolicy", {
+        bucketName: "pan-domain-auth-settings",
       }),
-      new GuAllowPolicy(this, "PermissionsPolicy", {
-        actions: ["s3:GetObject"],
-        resources: ["arn:aws:s3:::permissions-cache/*"],
+      new GuGetS3ObjectsPolicy(this, "PermissionsPolicy", {
+        bucketName: "permissions-cache",
       }),
       new GuAllowPolicy(this, "RestorerSnapshotBucketListPolicy", {
         actions: ["s3:ListBucket"],
@@ -90,10 +92,7 @@ export class Restorer2 extends GuStack {
         actions: ["kms:Decrypt", "kms:DescribeKey"],
         resources: [kmsKeyArn],
       }),
-      new GuAllowPolicy(this, "RestorerCloudwatchPolicy", {
-        actions: ["cloudwatch:*"],
-        resources: ["*"],
-      }),
+      new GuPutCloudwatchMetricsPolicy(this),
     ];
 
     const ec2App = new GuEc2App(this, {
