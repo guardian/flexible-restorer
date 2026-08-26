@@ -20,23 +20,8 @@ export type LocalStack = {
     restorerContainer: any;
     nginxContainer: any;
     network: any;
+    imageTags: string[];
 };
-
-// In local dev the restorer runs as the DEV identity, whose effective stage is
-// CODE, so it resolves each stack's real per-stage flexible-content API host
-// (see app/models/FlexibleStack.scala and app/config/AppConfig.scala). We
-// register those exact hostnames as network aliases on the mock container, so
-// the real hostnames resolve to the mock inside the Docker network — no
-// config/URL override required.
-const MOCK_API_PORT = 8080;
-const MOCK_API_HOSTNAMES = [
-    // primary stack (flexible)
-    "flexible-api.CODE.flexible.gudiscovery",
-    // secondary stack (flexible-secondary)
-    "apiv2.CODE.flexible-secondary.gudiscovery",
-    // local DEV stack ("Local Flexible Content")
-    "flexible-api.DEV.flexible.gudiscovery",
-];
 
 /**
  * Remove orphaned Docker networks left behind by Testcontainers. Each stack run
@@ -64,6 +49,22 @@ function pruneOrphanedTestcontainerNetworks(): Promise<void> {
         );
 
         // Never let cleanup failures (e.g. docker not on PATH) break teardown.
+        child.on("error", () => resolve());
+        child.on("close", () => resolve());
+    });
+}
+
+/**
+ * Best-effort removal of the run-specific image tags created for a stack. Each
+ * run tags three images with a unique `:${runId}`; without this they accumulate
+ * and steadily consume Docker disk. Removing the tag only untags the image —
+ * shared cached layers are preserved for the next build.
+ */
+function removeDockerImages(tags: string[]): Promise<void> {
+    return new Promise((resolve) => {
+        const child = spawn("docker", ["rmi", "-f", ...tags], {
+            stdio: "ignore",
+        });
         child.on("error", () => resolve());
         child.on("close", () => resolve());
     });
@@ -270,6 +271,7 @@ export async function startLocalStack(
             restorerContainer,
             nginxContainer,
             network,
+            imageTags: [minioImageTag, restorerImageTag, nginxImageTag],
         };
     } catch (error) {
         if (nginxContainer) {
@@ -291,6 +293,7 @@ export async function stopLocalStack({
     restorerContainer,
     minioContainer,
     network,
+    imageTags,
 }: Partial<LocalStack> = {}): Promise<void> {
     if (nginxContainer) {
         await nginxContainer.stop();
@@ -308,4 +311,9 @@ export async function stopLocalStack({
     // Also sweep up any networks leaked by previous runs that were killed before
     // they could tear down, so the address pool cannot slowly fill up over time.
     await pruneOrphanedTestcontainerNetworks();
+
+    // Remove this run's image tags so repeated runs don't accumulate on disk.
+    if (imageTags && imageTags.length > 0) {
+        await removeDockerImages(imageTags);
+    }
 }

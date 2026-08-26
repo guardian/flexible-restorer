@@ -11,13 +11,13 @@ flowchart TB
     subgraph host["Host machine"]
         browser["Browser"]
         devnginx["dev-nginx\nTLS termination (mkcert)\nrestorer.local.dev-gutools.co.uk"]
-    end
 
-    subgraph devcontainer["Devcontainer (Docker-in-Docker)"]
-        subgraph stack["Testcontainers network"]
-            nginx["nginx container (this dir)\nlisten :80\n/cookie sets prebaked pan-domain cookie\nproxies everything else"]
-            restorer["restorer container\nPlay app via sbt run :9000"]
-            minio["minio container\nS3 fixtures: pan-domain keys,\npermissions, snapshots"]
+        subgraph devcontainer["Devcontainer (Docker-in-Docker)"]
+            subgraph stack["Testcontainers network"]
+                nginx["nginx container (this dir)\nlisten :80\n/cookie sets prebaked pan-domain cookie\nproxies everything else"]
+                restorer["restorer container\nPlay app via sbt run :9000"]
+                minio["minio container\nS3 fixtures: pan-domain keys,\npermissions, snapshots"]
+            end
         end
     end
 

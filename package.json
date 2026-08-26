@@ -5,7 +5,7 @@
         "dev": "webpack --mode=development --watch",
         "dev:local": "./e2e-tests/images/run-dev-local",
         "test": "npm exec playwright test",
-        "test:ui": "npm exec -- playwright test --ui-host=0.0.0.0"
+        "test:ui": "npm exec -- playwright test --ui-host=0.0.0.0 --ui-port=9323"
     },
     "dependencies": {
         "angular": "^1.8.3",

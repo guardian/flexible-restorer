@@ -16,10 +16,12 @@ modules:
   - docker-in-docker # (disabled by default)
   - scala # (disabled by default)
   - node # (disabled by default)
+  - github-copilot
 
   # Optional: Ports to forward
 forwardPorts:
   - 9000 # same port on host and container
+  - 9323 # Playwright UI server (npm run test:ui)
 #   - "8000:9000"  # hostPort:containerPort
 
 # Optional: Mount directories from host to container
@@ -45,6 +47,8 @@ forwardPorts:
 # Chromium browser and its system libraries so the e2e suite can launch a
 # (headless) browser inside the devcontainer.
 postCreateCommand:
+  - cmd: 'PATH="$HOME/.local/share/mise/shims:$PATH" npm ci'
+    workingDirectory: "."
   - cmd: 'PATH="$HOME/.local/share/mise/shims:$PATH" npx playwright install chromium'
     workingDirectory: "."
   - cmd: 'sudo env "PATH=$HOME/.local/share/mise/shims:$PATH" npx playwright install-deps chromium'

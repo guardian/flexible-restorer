@@ -15,6 +15,6 @@ export SBT_OPTS="${SBT_OPTS:+$SBT_OPTS }-J-XX:+UnlockExperimentalVMOptions -J-XX
 # Rebuild the frontend from the bind-mounted source on change, so host edits are
 # picked up without rebuilding the image. Play's `sbt run` recompiles changed
 # Scala sources on the next request in the same way.
-npm run watch &
+npm run dev &
 
 exec sbt -Dlocal=true run

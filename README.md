@@ -18,7 +18,7 @@ $ npm install
 $ npm run build
 
 # Alternatively to continuously watch for changes and rebuild
-$ npm run watch
+$ npm run dev
 ```
 
 This project does not have hot module reloading so you will have to reload the page on Javascript or SCSS updates
@@ -48,14 +48,14 @@ npm run test
 
 ```
 
-Testing interactivly
+Testing interactively
 
 run `npm run test:ui` in your `devcontainer` terminal
-Open a browser on your host machine and point it at localhost:46043 to open the Playwright UI
+Open a browser on your host machine and point it at localhost:9323 to open the Playwright UI
 
-This command runs through `e2e-tests/setup/test-e2e`.
+Playwright discovers and runs the specs under `e2e-tests/steps`.
 
-## Run local stack only - no AWS credetials and all services mocked locally
+## Run local stack only - no AWS credentials and all services mocked locally
 
 If you want the same Testcontainers stack used by the e2e test without running the
 spec itself, use:
