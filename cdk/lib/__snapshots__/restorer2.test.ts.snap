@@ -12,6 +12,9 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
       "GuAllowPolicy",
       "GuAllowPolicy",
       "GuAllowPolicy",
+      "GuVpcParameter",
+      "GuSubnetListParameter",
+      "GuSubnetListParameter",
       "GuEc2App",
       "GuCertificate",
       "GuInstanceRole",
@@ -68,20 +71,20 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
       "Description": "SSM parameter containing the Name (not ARN) on the kinesis stream",
       "Type": "AWS::SSM::Parameter::Value<String>",
     },
-    "PrivateVpcSubnets": {
-      "Default": "subnet-c2620fa7,subnet-2a37bd5d",
-      "Description": "Subnets to use in VPC for private EC2 instances eg. subnet-abcd1234",
-      "Type": "List<AWS::EC2::Subnet::Id>",
-    },
-    "PublicVpcSubnets": {
-      "Default": "subnet-c3620fa6,subnet-2b37bd5c",
-      "Description": "Subnets to use in VPC for public internet-facing ELB eg. subnet-abcd1234",
-      "Type": "List<AWS::EC2::Subnet::Id>",
-    },
     "VpcId": {
-      "Default": "vpc-381fa95d",
-      "Description": "ID of the VPC onto which to launch the application eg. vpc-1234abcd",
-      "Type": "AWS::EC2::VPC::Id",
+      "Default": "/account/vpc/primary/id",
+      "Description": "Virtual Private Cloud to run EC2 instances within. Should NOT be the account default VPC.",
+      "Type": "AWS::SSM::Parameter::Value<AWS::EC2::VPC::Id>",
+    },
+    "restorer2PrivateSubnets": {
+      "Default": "/account/vpc/primary/subnets/private",
+      "Description": "A list of private subnets",
+      "Type": "AWS::SSM::Parameter::Value<List<AWS::EC2::Subnet::Id>>",
+    },
+    "restorer2PublicSubnets": {
+      "Default": "/account/vpc/primary/subnets/public",
+      "Description": "A list of public subnets",
+      "Type": "AWS::SSM::Parameter::Value<List<AWS::EC2::Subnet::Id>>",
     },
   },
   "Resources": {
@@ -152,7 +155,7 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
           },
         ],
         "VPCZoneIdentifier": {
-          "Ref": "PrivateVpcSubnets",
+          "Ref": "restorer2PrivateSubnets",
         },
       },
       "Type": "AWS::AutoScaling::AutoScalingGroup",
@@ -506,7 +509,7 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
           },
         ],
         "Subnets": {
-          "Ref": "PublicVpcSubnets",
+          "Ref": "restorer2PublicSubnets",
         },
         "Tags": [
           {
@@ -1080,6 +1083,9 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
       "GuAllowPolicy",
       "GuAllowPolicy",
       "GuAllowPolicy",
+      "GuVpcParameter",
+      "GuSubnetListParameter",
+      "GuSubnetListParameter",
       "GuEc2App",
       "GuCertificate",
       "GuInstanceRole",
@@ -1136,20 +1142,20 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
       "Description": "SSM parameter containing the Name (not ARN) on the kinesis stream",
       "Type": "AWS::SSM::Parameter::Value<String>",
     },
-    "PrivateVpcSubnets": {
-      "Default": "subnet-c2620fa7,subnet-2a37bd5d",
-      "Description": "Subnets to use in VPC for private EC2 instances eg. subnet-abcd1234",
-      "Type": "List<AWS::EC2::Subnet::Id>",
-    },
-    "PublicVpcSubnets": {
-      "Default": "subnet-c3620fa6,subnet-2b37bd5c",
-      "Description": "Subnets to use in VPC for public internet-facing ELB eg. subnet-abcd1234",
-      "Type": "List<AWS::EC2::Subnet::Id>",
-    },
     "VpcId": {
-      "Default": "vpc-381fa95d",
-      "Description": "ID of the VPC onto which to launch the application eg. vpc-1234abcd",
-      "Type": "AWS::EC2::VPC::Id",
+      "Default": "/account/vpc/primary/id",
+      "Description": "Virtual Private Cloud to run EC2 instances within. Should NOT be the account default VPC.",
+      "Type": "AWS::SSM::Parameter::Value<AWS::EC2::VPC::Id>",
+    },
+    "restorer2PrivateSubnets": {
+      "Default": "/account/vpc/primary/subnets/private",
+      "Description": "A list of private subnets",
+      "Type": "AWS::SSM::Parameter::Value<List<AWS::EC2::Subnet::Id>>",
+    },
+    "restorer2PublicSubnets": {
+      "Default": "/account/vpc/primary/subnets/public",
+      "Description": "A list of public subnets",
+      "Type": "AWS::SSM::Parameter::Value<List<AWS::EC2::Subnet::Id>>",
     },
   },
   "Resources": {
@@ -1220,7 +1226,7 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
           },
         ],
         "VPCZoneIdentifier": {
-          "Ref": "PrivateVpcSubnets",
+          "Ref": "restorer2PrivateSubnets",
         },
       },
       "Type": "AWS::AutoScaling::AutoScalingGroup",
@@ -1574,7 +1580,7 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
           },
         ],
         "Subnets": {
-          "Ref": "PublicVpcSubnets",
+          "Ref": "restorer2PublicSubnets",
         },
         "Tags": [
           {

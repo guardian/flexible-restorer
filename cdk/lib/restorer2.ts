@@ -2,7 +2,6 @@ import { AccessScope } from "@guardian/cdk/lib/constants";
 import type { GuStackProps } from "@guardian/cdk/lib/constructs/core";
 import { GuStack } from "@guardian/cdk/lib/constructs/core";
 import { GuCname } from "@guardian/cdk/lib/constructs/dns";
-import { GuVpc } from "@guardian/cdk/lib/constructs/ec2";
 import { GuAllowPolicy } from "@guardian/cdk/lib/constructs/iam";
 import { GuEc2App } from "@guardian/cdk/lib/patterns/ec2-app";
 import type { App } from "aws-cdk-lib";
@@ -38,36 +37,14 @@ export class Restorer2 extends GuStack {
   constructor(scope: App, id: string, props: GuStackProps) {
     super(scope, id, props);
 
-    // Shared VPC/subnet and KMS parameters. These previously lived in the
-    // hand-written CloudFormation template (removed in phase 4); keep them as
-    // stack parameters with the same logical names and defaults.
-    const vpcId = new CfnParameter(this, "VpcId", {
-      type: "AWS::EC2::VPC::Id",
-      default: "vpc-381fa95d",
-      description: "ID of the VPC onto which to launch the application eg. vpc-1234abcd",
-    });
-    const publicVpcSubnets = new CfnParameter(this, "PublicVpcSubnets", {
-      type: "List<AWS::EC2::Subnet::Id>",
-      default: "subnet-c3620fa6,subnet-2b37bd5c",
-      description: "Subnets to use in VPC for public internet-facing ELB eg. subnet-abcd1234",
-    });
-    const privateVpcSubnets = new CfnParameter(this, "PrivateVpcSubnets", {
-      type: "List<AWS::EC2::Subnet::Id>",
-      default: "subnet-c2620fa7,subnet-2a37bd5d",
-      description: "Subnets to use in VPC for private EC2 instances eg. subnet-abcd1234",
-    });
+    // GuEc2App creates the VpcId/PublicSubnets/PrivateSubnets parameters itself,
+    // defaulted to the /account/vpc/primary/* SSM parameters.
     const kmsKeyArnParameter = new CfnParameter(this, "KmsKeyARN", {
       type: "String",
       description: "ARN of KMS key that was used to encrypt the backups",
     });
 
     const stageConfig = stageConfigs[this.stage as "CODE" | "PROD"];
-
-    const vpc = GuVpc.fromId(this, "Vpc", {
-      vpcId: vpcId.valueAsString,
-    });
-    const privateSubnets = GuVpc.subnets(this, privateVpcSubnets.valueAsList);
-    const publicSubnets = GuVpc.subnets(this, publicVpcSubnets.valueAsList);
 
     const kmsKeyArn = kmsKeyArnParameter.valueAsString;
 
@@ -137,9 +114,6 @@ export class Restorer2 extends GuStack {
       scaling: { minimumInstances: 2, maximumInstances: 4 },
       healthcheck: { path: "/management/healthcheck" },
       additionalPolicies,
-      vpc,
-      privateSubnets,
-      publicSubnets,
     });
 
     // Allow the restorer instances to reach the flexible-content API ELBs.
