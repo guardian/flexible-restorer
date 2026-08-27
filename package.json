@@ -1,5 +1,8 @@
 {
     "name": "composer-restorer",
+    "workspaces": [
+        "e2e-tests"
+    ],
     "scripts": {
         "build": "webpack --mode=production",
         "dev": "webpack --mode=development --watch",
@@ -18,17 +21,11 @@
         "moment": "^2.29.4"
     },
     "devDependencies": {
-        "@guardian/pan-domain-node": "^1.2.4",
-        "@playwright/test": "^1.62.1",
         "css-loader": "^7.1.2",
         "mini-css-extract-plugin": "^2.9.2",
-        "playwright": "^1.62.1",
-        "playwright-bdd": "^9.2.0",
         "raw-loader": "^4.0.2",
         "sass": "^1.83.0",
         "sass-loader": "^16.0.4",
-        "testcontainers": "^10.17.1",
-        "tsx": "^4.22.4",
         "webpack": "^5.97.1",
         "webpack-cli": "^5.1.4"
     }
