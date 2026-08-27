@@ -3,10 +3,12 @@ import type { GuStackProps } from "@guardian/cdk/lib/constructs/core";
 import { GuStack } from "@guardian/cdk/lib/constructs/core";
 import { GuCname } from "@guardian/cdk/lib/constructs/dns";
 import { GuAllowPolicy, GuGetS3ObjectsPolicy } from "@guardian/cdk/lib/constructs/iam";
+import { GuDeveloperPolicyExperimental } from "@guardian/cdk/lib/experimental/constructs/iam/policies";
 import { GuEc2App } from "@guardian/cdk/lib/patterns/ec2-app";
 import type { App } from "aws-cdk-lib";
 import { CfnParameter, Duration } from "aws-cdk-lib";
 import { InstanceClass, InstanceSize, InstanceType, SecurityGroup, UserData } from "aws-cdk-lib/aws-ec2";
+import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
 
 const app = "restorer2";
 
@@ -137,6 +139,47 @@ export class Restorer2 extends GuStack {
         }),
       );
     });
+
+    if (this.stage === "CODE") {
+      const panDomainPaths = panDomainSettingsPaths(stageConfig.panDomain)
+        .concat(panDomainSettingsPaths("local.dev-gutools.co.uk"))
+        .concat([panDomainKeysPath])
+
+      new GuDeveloperPolicyExperimental(this, "RestorerAppLocalRunPolicy", {
+        grantId: "run-flexible-restorer-app-locally",
+        friendlyName: "Run Restorer Locally",
+        // Checks reject any Allow whose resource contains a wildcard, which every
+        // scoped-prefix resource below does.
+        withoutPolicyChecks: true,
+        statements: [
+          new PolicyStatement({
+            effect: Effect.ALLOW,
+            actions: ["ssm:GetParameters", "ssm:GetParametersByPath"],
+            resources: [`arn:aws:ssm:*:*:parameter/flexible/restorer/${this.stage}*`],
+          }),
+          new PolicyStatement({
+            effect: Effect.ALLOW,
+            actions: ["s3:GetObject"],
+            resources: [
+              ...panDomainPaths.map((path) => `arn:aws:s3:::pan-domain-auth-settings/${path}`),
+              `arn:aws:s3:::permissions-cache/${permissionsCachePath(this.stage)}`,
+              `arn:aws:s3:::permissions-cache/${permissionsCachePath("LOCAL")}`,
+              ...snapshotBuckets.map((bucket) => `arn:aws:s3:::${bucket}/*`),
+            ],
+          }),
+          new PolicyStatement({
+            effect: Effect.ALLOW,
+            actions: ["s3:ListBucket"],
+            resources: snapshotBuckets.map((bucket) => `arn:aws:s3:::${bucket}`),
+          }),
+          new PolicyStatement({
+            effect: Effect.ALLOW,
+            actions: ["kms:Decrypt", "kms:DescribeKey"],
+            resources: [kmsKeyArn],
+          })
+        ],
+      });
+    }
 
     // The DNS record is managed in NS1 via GuCname. TTL is kept low while the
     // cutover from the legacy ELB soaks, so rollback propagates quickly; raise
