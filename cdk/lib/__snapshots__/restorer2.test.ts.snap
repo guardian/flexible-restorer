@@ -730,7 +730,7 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
     "RestorerAppLocalRunPolicy374A087B": {
       "Properties": {
         "Description": "Run Restorer Locally",
-        "Path": "/developer-policy/guardian/flexible-restorer/flexible/CODE/run-flexible-restorer-app-locally/",
+        "Path": "/developer-policy/guardian/flexible-restorer/flexible/CODE/run-flexible-restorer-locally/",
         "PolicyDocument": {
           "Statement": [
             {
