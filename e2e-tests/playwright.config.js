@@ -32,10 +32,8 @@ module.exports = defineConfig({
     expect: {
         timeout: 10 * 1000,
     },
-    // All workers share a single local stack (one restorer instance). Its
-    // destination lookups query each stack with a blocking 3s timeout, so too
-    // many concurrent requests can starve its thread pool and make reachable
-    // stacks look unavailable. Cap concurrency to keep the load it sees modest.
+    // All workers share a single local stack (one restorer instance), so cap
+    // concurrency to keep the load it sees modest and avoid contention flakes.
     workers: process.env.CI ? 2 : 4,
     // Retry once so an occasional load-induced flake (e.g. a destination lookup
     // timing out under contention) doesn't fail the whole run.
@@ -69,8 +67,9 @@ module.exports = defineConfig({
         launchOptions: {
             slowMo: Number(process.env.SLOWMO ?? 0),
         },
-        trace: "on",
-        video: "on",
+        // Only capture traces/video on a retry to keep passing runs cheap.
+        trace: "on-first-retry",
+        video: "on-first-retry",
         screenshot: "only-on-failure",
     },
     projects: [

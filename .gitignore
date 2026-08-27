@@ -29,6 +29,7 @@ test-results/
 .features-gen/
 cucumber-report*
 playwright-report*
+.DS_Store
 .vscode/settings.json
 .bsp
 # Ignored files for metals

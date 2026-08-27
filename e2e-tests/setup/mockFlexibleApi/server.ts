@@ -40,8 +40,8 @@ type ChangeDetailsState = {
      * connection. The restorer's HTTP call then fails fast and the destination
      * is marked unavailable (rendered as a disabled "cannot be used" option in
      * the modal). This avoids the multi-second timeout a hung response would
-     * cause, which would block the app's request threads (`restoreDestinations`
-     * awaits each stack sequentially) and destabilise concurrent test runs.
+     * cause, which would otherwise slow the destination lookup and destabilise
+     * concurrent test runs.
      */
     unreachable?: boolean;
     /**

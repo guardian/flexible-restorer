@@ -10,8 +10,9 @@ class AppConfig(configuration: Configuration, identity: AppIdentity) {
   private val underlyingConfig = configuration.underlying
 
   val (app, stack, stage, region) = identity match {
-    case aws:AwsIdentity => (aws.app, aws.stack, aws.stage, aws.region)
-    case _:DevIdentity => (defaultAppName, defaultStack, "DEV", defaultRegion.id())
+    case aws: AwsIdentity => (aws.app, aws.stack, aws.stage, aws.region)
+    case _: DevIdentity   =>
+      (defaultAppName, defaultStack, "DEV", defaultRegion.id())
   }
 
   lazy val effectiveStage: String = stage match {
@@ -21,21 +22,28 @@ class AppConfig(configuration: Configuration, identity: AppIdentity) {
 
   val domain: String = AppConfig.domainFromStage(stage)
 
-  private val localStack: Option[FlexibleStack] = if (stage == "DEV")
-    Some(FlexibleStack(
-      id = "DEV:flexible",
-      displayName = "Local Flexible Content",
-      stack = "flexible",
-      stage = "DEV",
-      isSecondary = false,
-      // Use the same per-stage gudiscovery host convention as the other stacks
-      // (see models/FlexibleStack) so that, in local development, the host can be
-      // routed to the in-network mock flexible-content API instead of a real
-      // service. This lets the local stack report as an available destination.
-      apiPrefix = "http://flexible-api.DEV.flexible.gudiscovery.:8080",
-      composerPrefix = "https://composer.local.dev-gutools.co.uk",
-      snapshotBucket = "not-applicable"))
-  else None
+  private val localStack: Option[FlexibleStack] =
+    if (stage == "DEV")
+      Some(
+        FlexibleStack(
+          id = "DEV:flexible",
+          displayName = "Local Flexible Content",
+          stack = "flexible",
+          stage = "DEV",
+          isSecondary = false,
+          // Defaults to a locally-run flexible-content API. The e2e suite overrides
+          // this (via LOCAL_FLEXIBLE_API_PREFIX) to the in-network gudiscovery host
+          // that resolves to its mock, so the local stack reports as an available
+          // destination there without breaking plain local dev.
+          apiPrefix = sys.env.getOrElse(
+            "LOCAL_FLEXIBLE_API_PREFIX",
+            "http://localhost:9085/api"
+          ),
+          composerPrefix = "https://composer.local.dev-gutools.co.uk",
+          snapshotBucket = "not-applicable"
+        )
+      )
+    else None
 
   private val destinationStages: List[String] = effectiveStage match {
     case "PROD" => List("PROD", "CODE")
@@ -49,9 +57,11 @@ class AppConfig(configuration: Configuration, identity: AppIdentity) {
     )
   } ++ localStack
 
-  val sourceStacks: List[FlexibleStack] = allStacks.filter(_.stage == effectiveStage)
+  val sourceStacks: List[FlexibleStack] =
+    allStacks.filter(_.stage == effectiveStage)
 
-  private val stacksById: Map[String, FlexibleStack] = allStacks.map(s => s.id -> s).toMap
+  private val stacksById: Map[String, FlexibleStack] =
+    allStacks.map(s => s.id -> s).toMap
   val stackFromId: (String) => FlexibleStack = stacksById.apply
 
   val hostName: String = "https://restorer." + domain
@@ -59,11 +69,13 @@ class AppConfig(configuration: Configuration, identity: AppIdentity) {
   val corsableDomains: List[String] = allStacks.map(_.composerPrefix)
 
   // Logging
-  val kinesisLoggingStream: String = underlyingConfig.getString("logging.stream")
+  val kinesisLoggingStream: String =
+    underlyingConfig.getString("logging.stream")
   val kinesisLoggingBufferSize: Int = 1000
 
   // GA
-  lazy val googleTrackingId: String = underlyingConfig.getString("google.tracking.id")
+  lazy val googleTrackingId: String =
+    underlyingConfig.getString("google.tracking.id")
 
 }
 
@@ -71,8 +83,8 @@ object AppConfig {
   def domainFromStage(stage: String): String = {
     stage match {
       case "PROD" => "gutools.co.uk"
-      case "DEV" => "local.dev-gutools.co.uk"
-      case x => x.toLowerCase() + ".dev-gutools.co.uk"
+      case "DEV"  => "local.dev-gutools.co.uk"
+      case x      => x.toLowerCase() + ".dev-gutools.co.uk"
     }
   }
 }

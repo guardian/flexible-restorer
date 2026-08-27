@@ -189,6 +189,9 @@ export async function startLocalStack(
                 AWS_SECRET_ACCESS_KEY: MINIO_ROOT_PASSWORD,
                 // Keep local mode enabled in case scripts are bypassed in future changes.
                 LOCAL: "true",
+                // Point the local DEV stack at the mock flexible-content API,
+                // reachable inside the Docker network via its registered alias.
+                LOCAL_FLEXIBLE_API_PREFIX: `http://flexible-api.DEV.flexible.gudiscovery:${MOCK_API_PORT}`,
             })
             .withLogConsumer(createLogConsumer("restorer", streamLogs))
             .withExposedPorts(
