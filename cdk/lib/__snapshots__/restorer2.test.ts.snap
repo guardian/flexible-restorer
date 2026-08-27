@@ -11,7 +11,6 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
       "GuAllowPolicy",
       "GuAllowPolicy",
       "GuAllowPolicy",
-      "GuPutCloudwatchMetricsPolicy",
       "GuVpcParameter",
       "GuSubnetListParameter",
       "GuSubnetListParameter",
@@ -377,27 +376,6 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
       },
       "Type": "AWS::IAM::Policy",
     },
-    "GuPutCloudwatchMetricsPolicyC5BCE402": {
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": "cloudwatch:PutMetricData",
-              "Effect": "Allow",
-              "Resource": "*",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "GuPutCloudwatchMetricsPolicyC5BCE402",
-        "Roles": [
-          {
-            "Ref": "InstanceRoleRestorer2A97F6455",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
     "InstanceRoleRestorer2A97F6455": {
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -658,7 +636,11 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
             {
               "Action": "s3:GetObject",
               "Effect": "Allow",
-              "Resource": "arn:aws:s3:::pan-domain-auth-settings/*",
+              "Resource": [
+                "arn:aws:s3:::pan-domain-auth-settings/code.dev-gutools.co.uk.settings",
+                "arn:aws:s3:::pan-domain-auth-settings/code.dev-gutools.co.uk.settings.public",
+                "arn:aws:s3:::pan-domain-auth-settings/*.p12",
+              ],
             },
           ],
           "Version": "2012-10-17",
@@ -730,7 +712,7 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
             {
               "Action": "s3:GetObject",
               "Effect": "Allow",
-              "Resource": "arn:aws:s3:::permissions-cache/*",
+              "Resource": "arn:aws:s3:::permissions-cache/CODE/permissions.json",
             },
           ],
           "Version": "2012-10-17",
@@ -1082,7 +1064,6 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
       "GuAllowPolicy",
       "GuAllowPolicy",
       "GuAllowPolicy",
-      "GuPutCloudwatchMetricsPolicy",
       "GuVpcParameter",
       "GuSubnetListParameter",
       "GuSubnetListParameter",
@@ -1448,27 +1429,6 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
       },
       "Type": "AWS::IAM::Policy",
     },
-    "GuPutCloudwatchMetricsPolicyC5BCE402": {
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": "cloudwatch:PutMetricData",
-              "Effect": "Allow",
-              "Resource": "*",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "GuPutCloudwatchMetricsPolicyC5BCE402",
-        "Roles": [
-          {
-            "Ref": "InstanceRoleRestorer2A97F6455",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
     "InstanceRoleRestorer2A97F6455": {
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -1761,7 +1721,11 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
             {
               "Action": "s3:GetObject",
               "Effect": "Allow",
-              "Resource": "arn:aws:s3:::pan-domain-auth-settings/*",
+              "Resource": [
+                "arn:aws:s3:::pan-domain-auth-settings/gutools.co.uk.settings",
+                "arn:aws:s3:::pan-domain-auth-settings/gutools.co.uk.settings.public",
+                "arn:aws:s3:::pan-domain-auth-settings/*.p12",
+              ],
             },
           ],
           "Version": "2012-10-17",
@@ -1833,7 +1797,7 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
             {
               "Action": "s3:GetObject",
               "Effect": "Allow",
-              "Resource": "arn:aws:s3:::permissions-cache/*",
+              "Resource": "arn:aws:s3:::permissions-cache/PROD/permissions.json",
             },
           ],
           "Version": "2012-10-17",
