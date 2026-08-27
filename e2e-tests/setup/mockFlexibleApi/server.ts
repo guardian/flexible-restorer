@@ -297,7 +297,8 @@ function route(
             state = mergeState(state, requestBody ? JSON.parse(requestBody) : {});
             sendJson(res, 200, state);
         } catch (error) {
-            sendJson(res, 400, { error: String(error) });
+            console.error("[mock-flexible-api] Invalid state payload:", error);
+            sendJson(res, 400, { error: "Invalid request body" });
         }
         return;
     }
@@ -365,7 +366,11 @@ const server = createServer((req, res) => {
                     responseBody,
                 });
                 console.log(
-                    `[mock-flexible-api] ${method} ${pathname}${url.search} -> ${responseStatus}`,
+                    "[mock-flexible-api] %s %s%s -> %s",
+                    method,
+                    pathname,
+                    url.search,
+                    responseStatus,
                     {
                         requestBody: requestBody || undefined,
                         responseBody: responseBody || undefined,
@@ -375,7 +380,8 @@ const server = createServer((req, res) => {
             route(req, res, method, url, pathname, requestBody);
         })
         .catch((error: unknown) => {
-            sendJson(res, 500, { error: String(error) });
+            console.error("[mock-flexible-api] Request handling failed:", error);
+            sendJson(res, 500, { error: "Internal server error" });
         });
 });
 
