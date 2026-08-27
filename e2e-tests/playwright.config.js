@@ -43,7 +43,7 @@ module.exports = defineConfig({
     reporter: [
         ["list"],
         // Enable the Cucumber HTML report only when REPORT is set, e.g.
-        // `REPORT=1 npm run test:e2e`.
+        // `REPORT=1 npm run test`.
         ...(process.env.REPORT
             ? [
                   cucumberReporter("html", {

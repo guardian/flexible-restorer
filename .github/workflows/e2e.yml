@@ -18,14 +18,20 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
-            # The app build targets an older Node (see .nvmrc), but the Playwright
-            # e2e suite is its own sub-package (tests/) that needs Node 18+.
-            # Install a modern Node explicitly and cache from the e2e lockfile.
+            # The Playwright e2e suite (e2e-tests/) needs Node 18+. Install a
+            # modern Node explicitly and cache from the root lockfile, which now
+            # includes the e2e dependencies.
             - uses: actions/setup-node@v4
               with:
                   node-version: 20
                   cache: npm
-                  cache-dependency-path: 'tests/package-lock.json'
+                  cache-dependency-path: 'package-lock.json'
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Install Playwright browser
+              run: npx playwright install --with-deps chromium
 
             # Pre-build the Testcontainers images up front (the restorer image
             # compiles the Scala app, which is slow on a cold cache). The e2e
@@ -34,15 +40,18 @@ jobs:
             # fast cache hits — keeping them within the suite's global timeout.
             - name: Pre-build e2e Docker images
               run: |
-                  docker build -f images/minio.Dockerfile -t flexible-restorer-minio-e2e:prebuild .
-                  docker build -f images/mock-flexible-api.Dockerfile -t flexible-restorer-mock-api-e2e:prebuild .
-                  docker build -f images/restorer.Dockerfile -t flexible-restorer-app-e2e:prebuild .
+                  docker build -f e2e-tests/images/minio.Dockerfile -t flexible-restorer-minio-e2e:prebuild .
+                  docker build -f e2e-tests/images/mock-flexible-api.Dockerfile -t flexible-restorer-mock-api-e2e:prebuild .
+                  docker build -f e2e-tests/images/restorer.Dockerfile -t flexible-restorer-app-e2e:prebuild .
 
             - name: Run e2e tests
-              # Generate the Cucumber HTML report as well as the default output.
+              # Generate the BDD tests from the feature files, then run them.
+              # REPORT=1 also produces the Cucumber HTML report.
               env:
                   REPORT: '1'
-              run: npm run test:e2e
+              run: |
+                  npx bddgen --config=e2e-tests/playwright.config.js
+                  npm run test
 
             # Publish the test results (Playwright traces/videos/screenshots and
             # the Cucumber HTML report) even when the run fails.
@@ -52,8 +61,9 @@ jobs:
               with:
                   name: e2e-test-results
                   path: |
-                      tests/test-results/
-                      tests/playwright-report/
-                      tests/cucumber-report/
+                      test-results/
+                      e2e-tests/test-results/
+                      playwright-report/
+                      cucumber-report/
                   if-no-files-found: ignore
                   retention-days: 14
