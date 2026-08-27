@@ -146,7 +146,7 @@ export class Restorer2 extends GuStack {
         .concat([panDomainKeysPath])
 
       new GuDeveloperPolicyExperimental(this, "RestorerAppLocalRunPolicy", {
-        grantId: "run-flexible-restorer-app-locally",
+        grantId: "run-flexible-restorer-locally",
         friendlyName: "Run Restorer Locally",
         // Checks reject any Allow whose resource contains a wildcard, which every
         // scoped-prefix resource below does.
