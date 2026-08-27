@@ -1,0 +1,11 @@
+.git
+.gitignore
+target
+project/target
+node_modules
+logs
+task-temp-directory
+web/public
+web/classes
+*.log
+.DS_Store
