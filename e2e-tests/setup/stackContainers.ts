@@ -84,7 +84,7 @@ function createLogConsumer(prefix: string, streamLogs: boolean) {
     return (stream: any) => {
         if (!streamLogs) {
             // Discard container logs (default): they are only echoed to stdout
-            // when the stack is run directly via `npm run local:stack`.
+            // when the stack is run directly via `npm run dev:local`.
             return;
         }
         stream

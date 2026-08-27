@@ -3,9 +3,9 @@ import path from "path";
 
 /**
  * Helpers for sharing a long-running local stack (started via `npm run
- * local:stack`) with the e2e tests.
+ * dev:local`) with the e2e tests.
  *
- * When `local:stack` boots, it writes the running stack's connection details to
+ * When `dev:local` boots, it writes the running stack's connection details to
  * a gitignored metadata file. The e2e fixture can then reuse that stack instead
  * of building images and booting fresh containers on every run, which makes the
  * inner dev loop much faster while iterating on tests.

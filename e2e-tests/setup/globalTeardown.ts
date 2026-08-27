@@ -6,7 +6,7 @@ import { getOwnedStack } from "./ownedStack";
 /**
  * Playwright global teardown: stop the local stack that global setup started for
  * this run (and clear its published details). If the run reused a stack started
- * elsewhere (via `npm run local:stack`), there is nothing owned here, so that
+ * elsewhere (via `npm run dev:local`), there is nothing owned here, so that
  * stack is left running.
  */
 export default async function globalTeardown(): Promise<void> {
