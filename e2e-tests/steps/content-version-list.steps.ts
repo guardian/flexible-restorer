@@ -1,3 +1,4 @@
+import type { Page } from "@playwright/test";
 import { Given, When, Then, expect } from "../fixtures";
 
 /**
@@ -358,53 +359,59 @@ Then("I should see a relative time difference value between adjacent snapshot da
 });
 
 
-When("I press the down or up arrow key", async ({ page }) => {
+// The active snapshot row carries the `item-active` class (see
+// restore-list.html). Its position among the list rows is the reliable signal
+// of which snapshot is selected, since the fixture's rows share the same
+// revision number and only two distinct timestamps.
+async function activeSnapshotIndex(page: Page): Promise<number> {
+    return page.evaluate(() => {
+        const rows = Array.from(
+            document.querySelectorAll("li.snapshot-list__item"),
+        );
+        return rows.findIndex((row) => row.classList.contains("item-active"));
+    });
+}
 
+When("I press the down or up arrow key", async ({ page }) => {
+    // Wait for the list to render with exactly one active row before driving the
+    // keyboard, then confirm the active selection moves down and back up again.
     await expect(
-        page.getByRole("paragraph").filter({ hasText: "Version 2" }),
-    ).toBeVisible({ timeout: timeout });
+        page.locator("li.snapshot-list__item.item-active"),
+    ).toHaveCount(1, { timeout: timeout });
+    const start = await activeSnapshotIndex(page);
 
     await page.keyboard.press("ArrowDown");
-    await page.keyboard.press("ArrowDown");    
-    
-    await expect(
-        page.getByRole("paragraph").filter({ hasText: "Version 1" }),
-    ).toBeVisible({ timeout: timeout });
+    await expect
+        .poll(() => activeSnapshotIndex(page), { timeout: timeout })
+        .not.toBe(start);
 
-    await page.keyboard.press("ArrowUp");  
-
-    await expect(
-        page.getByRole("paragraph").filter({ hasText: "Version 2" }),
-    ).toBeVisible({ timeout: timeout });
-    
+    await page.keyboard.press("ArrowUp");
+    await expect
+        .poll(() => activeSnapshotIndex(page), { timeout: timeout })
+        .toBe(start);
 });
 Then("the active snapshot selection should move accordingly", async () => {
     // This is a no-op step because the selection movement is asserted in the When step.
 });
 
 When("I press list navigation keys", async ({ page }) => {
-    // While the modal is open the list navigation handlers are guarded, so
-    // pressing the arrows must NOT load a different snapshot. Listen for any
-    // snapshot-content request across a short window while pressing the keys.
-    await page.keyboard.press("Enter");
-
+    // The modal is already open (see the "the restore modal is open" Given), so
+    // the list navigation handlers are guarded: pressing the arrows must NOT
+    // move the active snapshot. Record the active row, press the keys, and
+    // confirm the selection is unchanged.
     await expect(
-        page.getByRole("paragraph").filter({ hasText: "Version 2" }),
-    ).toBeVisible({ timeout: timeout });
+        page.locator("li.snapshot-list__item.item-active"),
+    ).toHaveCount(1, { timeout: timeout });
+    const start = await activeSnapshotIndex(page);
 
     await page.keyboard.press("ArrowDown");
-    await page.keyboard.press("ArrowDown");    
-    
-    await expect(
-        page.getByRole("paragraph").filter({ hasText: "Version 2" }),
-    ).toBeVisible({ timeout: timeout });
+    await page.keyboard.press("ArrowDown");
+    await page.keyboard.press("ArrowUp");
 
-    await page.keyboard.press("ArrowUp");  
-
-    await expect(
-        page.getByRole("paragraph").filter({ hasText: "Version 2" }),
-    ).toBeVisible({ timeout: timeout });
-
+    // Give any (incorrectly) handled key a chance to take effect before
+    // asserting the selection has not moved.
+    await page.waitForTimeout(500);
+    expect(await activeSnapshotIndex(page)).toBe(start);
 });
 Then("the snapshot list selection should not change", async () => {
     
