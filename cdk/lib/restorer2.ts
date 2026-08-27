@@ -2,11 +2,7 @@ import { AccessScope } from "@guardian/cdk/lib/constants";
 import type { GuStackProps } from "@guardian/cdk/lib/constructs/core";
 import { GuStack } from "@guardian/cdk/lib/constructs/core";
 import { GuCname } from "@guardian/cdk/lib/constructs/dns";
-import {
-  GuAllowPolicy,
-  GuGetS3ObjectsPolicy,
-  GuPutCloudwatchMetricsPolicy,
-} from "@guardian/cdk/lib/constructs/iam";
+import { GuAllowPolicy, GuGetS3ObjectsPolicy } from "@guardian/cdk/lib/constructs/iam";
 import { GuEc2App } from "@guardian/cdk/lib/patterns/ec2-app";
 import type { App } from "aws-cdk-lib";
 import { CfnParameter, Duration } from "aws-cdk-lib";
@@ -92,7 +88,6 @@ export class Restorer2 extends GuStack {
         actions: ["kms:Decrypt", "kms:DescribeKey"],
         resources: [kmsKeyArn],
       }),
-      new GuPutCloudwatchMetricsPolicy(this),
     ];
 
     const ec2App = new GuEc2App(this, {
