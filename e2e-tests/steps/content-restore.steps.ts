@@ -1,9 +1,9 @@
 import { Given, When, Then, After, expect } from "../fixtures";
-import { createPanDomainCookie } from "../panDomainCookie";
+import { createPanDomainCookie } from "../setup/panDomainCookie";
 import { setLastApiResponse } from "./support/lastApiResponse";
 import { resetMockState } from "./support/mockState";
 import type { APIRequestContext, APIResponse, Page } from "@playwright/test";
-import type { LocalStack } from "../stackContainers";
+import type { LocalStack } from "../setup/stackContainers";
 
 /**
  * Playwright-style step definitions for `tests/features/content-restore.feature`.

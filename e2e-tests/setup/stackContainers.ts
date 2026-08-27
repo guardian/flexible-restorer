@@ -99,7 +99,9 @@ function createLogConsumer(prefix: string, streamLogs: boolean) {
 
 export async function startLocalStack(
     projectRoot: string,
+    options: { hostPort?: number; streamLogs?: boolean } = {},
 ): Promise<LocalStack> {
+    const { hostPort, streamLogs = false } = options;
     const runId = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
     const minioImageTag = `flexible-restorer-minio-e2e:${runId}`;
     const restorerImageTag = `flexible-restorer-app-e2e:${runId}`;
@@ -115,7 +117,7 @@ export async function startLocalStack(
     try {
         await buildDockerImage({
             tag: minioImageTag,
-            dockerfilePath: path.join(projectRoot, "images/minio.Dockerfile"),
+            dockerfilePath: path.join(projectRoot, "e2e-tests/images/minio.Dockerfile"),
             contextPath: projectRoot,
         });
 
@@ -150,7 +152,7 @@ export async function startLocalStack(
             tag: mockImageTag,
             dockerfilePath: path.join(
                 projectRoot,
-                "images/mock-flexible-api.Dockerfile",
+                "e2e-tests/images/mock-flexible-api.Dockerfile",
             ),
             contextPath: projectRoot,
         });
@@ -174,7 +176,7 @@ export async function startLocalStack(
             tag: restorerImageTag,
             dockerfilePath: path.join(
                 projectRoot,
-                "images/restorer.Dockerfile",
+                "e2e-tests/images/restorer.Dockerfile",
             ),
             contextPath: projectRoot,
         });
@@ -189,7 +191,9 @@ export async function startLocalStack(
                 LOCAL: "true",
             })
             .withLogConsumer(createLogConsumer("restorer", streamLogs))
-            .withExposedPorts(9000)
+            .withExposedPorts(
+                hostPort ? { container: 9000, host: hostPort } : 9000,
+            )
             .withStartupTimeout(10 * 60 * 1000)
             .withWaitStrategy(Wait.forListeningPorts())
             .start();

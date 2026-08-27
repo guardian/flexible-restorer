@@ -7,7 +7,7 @@ RUN npm install -g tsx@4.22.4
 
 WORKDIR /app
 
-COPY tests/e2e/mockFlexibleApi/server.ts ./server.ts
+COPY e2e-tests/setup/mockFlexibleApi/server.ts ./server.ts
 
 ENV PORT=8080
 EXPOSE 8080

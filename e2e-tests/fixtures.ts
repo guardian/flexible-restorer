@@ -1,8 +1,8 @@
 import path from "path";
 import { test as base, createBdd } from "playwright-bdd";
 import { expect } from "@playwright/test";
-import { type LocalStack } from "./stackContainers";
-import { readSharedStackInfo } from "./sharedStack";
+import { type LocalStack } from "./setup/stackContainers";
+import { readSharedStackInfo } from "./setup/sharedStack";
 
 type WorkerFixtures = {
     localStack: LocalStack;
@@ -13,16 +13,16 @@ type WorkerFixtures = {
  *
  * It exposes a worker-scoped `localStack` fixture that reuses the single local
  * stack started once for the whole run by global setup (see
- * `tests/e2e/globalSetup.ts`) — or by `npm run local:stack` during development.
- * Every worker connects to that same stack via the shared metadata file, so we
- * never boot multiple stacks in parallel. Steps are responsible for navigating
- * to `localStack.baseUrl` and signing in. Import `Given / When / Then` from this
- * module so the generated tests pick up this fixture.
+ * `e2e-tests/setup/globalSetup.ts`) — or by `npm run local:stack` during
+ * development. Every worker connects to that same stack via the shared metadata
+ * file, so we never boot multiple stacks in parallel. Steps are responsible for
+ * navigating to `localStack.baseUrl` and signing in. Import `Given / When / Then`
+ * from this module so the generated tests pick up this fixture.
  */
 export const test = base.extend<object, WorkerFixtures>({
     localStack: [
         async ({}, use) => {
-            const projectRoot = path.resolve(__dirname, "../..");
+            const projectRoot = path.resolve(__dirname, "..");
 
             // Global setup guarantees a single stack is running and has published
             // its connection details. Every worker reuses it — none boots its own.

@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { Given, When, Then, expect } from "../fixtures";
-import { createPanDomainCookie } from "../panDomainCookie";
+import { createPanDomainCookie } from "../setup/panDomainCookie";
 
 /**
  * Playwright-style step definitions for

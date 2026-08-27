@@ -1,6 +1,6 @@
 import type { APIRequestContext } from "@playwright/test";
 import { When, Then, expect } from "../fixtures";
-import { createPanDomainCookie, type Role } from "../panDomainCookie";
+import { createPanDomainCookie, type Role } from "../setup/panDomainCookie";
 
 /**
  * Playwright-style step definitions for `tests/features/authentication.feature`.
