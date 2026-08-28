@@ -162,7 +162,7 @@ export class Restorer2 extends GuStack {
             actions: ["s3:GetObject"],
             resources: [
               ...panDomainPaths.map((path) => `arn:aws:s3:::pan-domain-auth-settings/${path}`),
-              `arn:aws:s3:::permissions-cache/${permissionsCachePath("LOCAL")}`,
+              `arn:aws:s3:::permissions-cache/${permissionsCachePath(this.stage)}`,
               ...snapshotBuckets.map((bucket) => `arn:aws:s3:::${bucket}/*`),
             ],
           }),
