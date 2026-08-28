@@ -155,14 +155,13 @@ export class Restorer2 extends GuStack {
           new PolicyStatement({
             effect: Effect.ALLOW,
             actions: ["ssm:GetParameters", "ssm:GetParametersByPath"],
-            resources: [`arn:aws:ssm:*:*:parameter/flexible/restorer/${this.stage}*`],
+            resources: [`arn:aws:ssm:*:*:parameter/flexible/restorer/DEV*`],
           }),
           new PolicyStatement({
             effect: Effect.ALLOW,
             actions: ["s3:GetObject"],
             resources: [
               ...panDomainPaths.map((path) => `arn:aws:s3:::pan-domain-auth-settings/${path}`),
-              `arn:aws:s3:::permissions-cache/${permissionsCachePath(this.stage)}`,
               `arn:aws:s3:::permissions-cache/${permissionsCachePath("LOCAL")}`,
               ...snapshotBuckets.map((bucket) => `arn:aws:s3:::${bucket}/*`),
             ],
