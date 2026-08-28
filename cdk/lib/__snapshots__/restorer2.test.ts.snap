@@ -745,8 +745,6 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
               "Action": "s3:GetObject",
               "Effect": "Allow",
               "Resource": [
-                "arn:aws:s3:::pan-domain-auth-settings/code.dev-gutools.co.uk.settings",
-                "arn:aws:s3:::pan-domain-auth-settings/code.dev-gutools.co.uk.settings.public",
                 "arn:aws:s3:::pan-domain-auth-settings/local.dev-gutools.co.uk.settings",
                 "arn:aws:s3:::pan-domain-auth-settings/local.dev-gutools.co.uk.settings.public",
                 "arn:aws:s3:::pan-domain-auth-settings/*.p12",
