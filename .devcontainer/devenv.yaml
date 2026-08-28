@@ -25,8 +25,12 @@ forwardPorts:
 #   - "8000:9000"  # hostPort:containerPort
 
 # Optional: Mount directories from host to container
-# mounts:
-#   - "source=${localEnv:HOME}/.gu/example,target=/home/vscode/.gu/example,readonly,type=bind,consistency=cached"
+# The host's mkcert root CA, so the container can verify *.local.dev-gutools.co.uk
+# certificates issued by dev-nginx. Only the certificate is mounted, never the
+# sibling rootCA-key.pem. The source is the macOS mkcert CAROOT; on a Linux host
+# change it to ${localEnv:HOME}/.local/share/mkcert.
+mounts:
+  - "source=${localEnv:HOME}/Library/Application Support/mkcert/rootCA.pem,target=/mnt/mkcert/rootCA.pem,readonly,type=bind,consistency=cached"
 
 # Optional: IDE plugins - shared project plugins like language support
 # plugins:
@@ -59,6 +63,10 @@ postCreateCommand:
     workingDirectory: "."
 #   - cmd: "make setup"
 #     workingDirectory: "/workspaces/project"
-# postStartCommand:
-#   - cmd: "echo 'Container started successfully'"
-#     workingDirectory: "."
+
+# Docker recreates /etc/resolv.conf on every start, so the DNS setup must run each time.
+postStartCommand:
+  - cmd: "bash .devcontainer/setup-dns.sh"
+    workingDirectory: "."
+  - cmd: "bash .devcontainer/setup-ca.sh"
+    workingDirectory: "."
