@@ -141,8 +141,7 @@ export class Restorer2 extends GuStack {
     });
 
     if (this.stage === "CODE") {
-      const panDomainPaths = panDomainSettingsPaths(stageConfig.panDomain)
-        .concat(panDomainSettingsPaths("local.dev-gutools.co.uk"))
+      const panDomainPaths = panDomainSettingsPaths("local.dev-gutools.co.uk")
         .concat([panDomainKeysPath])
 
       new GuDeveloperPolicyExperimental(this, "RestorerAppLocalRunPolicy", {
