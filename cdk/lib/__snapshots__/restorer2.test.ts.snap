@@ -5,10 +5,9 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
   "Metadata": {
     "gu:cdk:constructs": [
       "GuAllowPolicy",
-      "GuAllowPolicy",
-      "GuAllowPolicy",
-      "GuAllowPolicy",
-      "GuAllowPolicy",
+      "GuGetS3ObjectsPolicy",
+      "GuGetS3ObjectsPolicy",
+      "GuGetS3ObjectsPolicy",
       "GuAllowPolicy",
       "GuAllowPolicy",
       "GuAllowPolicy",
@@ -32,6 +31,7 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
       "GuAccessLoggingBucketParameter",
       "GuApplicationTargetGroup",
       "GuHttpsApplicationListener",
+      "GuDeveloperPolicyExperimental",
       "GuCname",
     ],
     "gu:cdk:version": "TEST",
@@ -637,7 +637,11 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
             {
               "Action": "s3:GetObject",
               "Effect": "Allow",
-              "Resource": "arn:aws:s3:::pan-domain-auth-settings/*",
+              "Resource": [
+                "arn:aws:s3:::pan-domain-auth-settings/code.dev-gutools.co.uk.settings",
+                "arn:aws:s3:::pan-domain-auth-settings/code.dev-gutools.co.uk.settings.public",
+                "arn:aws:s3:::pan-domain-auth-settings/*.p12",
+              ],
             },
           ],
           "Version": "2012-10-17",
@@ -709,7 +713,7 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
             {
               "Action": "s3:GetObject",
               "Effect": "Allow",
-              "Resource": "arn:aws:s3:::permissions-cache/*",
+              "Resource": "arn:aws:s3:::permissions-cache/CODE/permissions.json",
             },
           ],
           "Version": "2012-10-17",
@@ -723,26 +727,55 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
       },
       "Type": "AWS::IAM::Policy",
     },
-    "RestorerCloudwatchPolicy45C49589": {
+    "RestorerAppLocalRunPolicy374A087B": {
       "Properties": {
+        "Description": "Run Restorer Locally",
+        "Path": "/developer-policy/guardian/flexible-restorer/flexible/CODE/run-flexible-restorer-locally/",
         "PolicyDocument": {
           "Statement": [
             {
-              "Action": "cloudwatch:*",
+              "Action": [
+                "ssm:GetParameters",
+                "ssm:GetParametersByPath",
+              ],
               "Effect": "Allow",
-              "Resource": "*",
+              "Resource": "arn:aws:ssm:*:*:parameter/flexible/restorer/DEV*",
+            },
+            {
+              "Action": "s3:GetObject",
+              "Effect": "Allow",
+              "Resource": [
+                "arn:aws:s3:::pan-domain-auth-settings/local.dev-gutools.co.uk.settings",
+                "arn:aws:s3:::pan-domain-auth-settings/local.dev-gutools.co.uk.settings.public",
+                "arn:aws:s3:::pan-domain-auth-settings/*.p12",
+                "arn:aws:s3:::permissions-cache/CODE/permissions.json",
+                "arn:aws:s3:::flexible-snapshotter-code/*",
+                "arn:aws:s3:::flexible-secondary-snapshotter-code/*",
+              ],
+            },
+            {
+              "Action": "s3:ListBucket",
+              "Effect": "Allow",
+              "Resource": [
+                "arn:aws:s3:::flexible-snapshotter-code",
+                "arn:aws:s3:::flexible-secondary-snapshotter-code",
+              ],
+            },
+            {
+              "Action": [
+                "kms:Decrypt",
+                "kms:DescribeKey",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "KmsKeyARN",
+              },
             },
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "RestorerCloudwatchPolicy45C49589",
-        "Roles": [
-          {
-            "Ref": "InstanceRoleRestorer2A97F6455",
-          },
-        ],
       },
-      "Type": "AWS::IAM::Policy",
+      "Type": "AWS::IAM::ManagedPolicy",
     },
     "RestorerGetDistributablesPolicy147D3507": {
       "Properties": {
@@ -751,7 +784,7 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
             {
               "Action": "s3:GetObject",
               "Effect": "Allow",
-              "Resource": "arn:aws:s3:::composer-dist/*",
+              "Resource": "arn:aws:s3:::composer-dist/flexible/CODE/restorer2/*",
             },
           ],
           "Version": "2012-10-17",
@@ -1076,10 +1109,9 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
   "Metadata": {
     "gu:cdk:constructs": [
       "GuAllowPolicy",
-      "GuAllowPolicy",
-      "GuAllowPolicy",
-      "GuAllowPolicy",
-      "GuAllowPolicy",
+      "GuGetS3ObjectsPolicy",
+      "GuGetS3ObjectsPolicy",
+      "GuGetS3ObjectsPolicy",
       "GuAllowPolicy",
       "GuAllowPolicy",
       "GuAllowPolicy",
@@ -1740,7 +1772,11 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
             {
               "Action": "s3:GetObject",
               "Effect": "Allow",
-              "Resource": "arn:aws:s3:::pan-domain-auth-settings/*",
+              "Resource": [
+                "arn:aws:s3:::pan-domain-auth-settings/gutools.co.uk.settings",
+                "arn:aws:s3:::pan-domain-auth-settings/gutools.co.uk.settings.public",
+                "arn:aws:s3:::pan-domain-auth-settings/*.p12",
+              ],
             },
           ],
           "Version": "2012-10-17",
@@ -1812,33 +1848,12 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
             {
               "Action": "s3:GetObject",
               "Effect": "Allow",
-              "Resource": "arn:aws:s3:::permissions-cache/*",
+              "Resource": "arn:aws:s3:::permissions-cache/PROD/permissions.json",
             },
           ],
           "Version": "2012-10-17",
         },
         "PolicyName": "PermissionsPolicy9C13C9BA",
-        "Roles": [
-          {
-            "Ref": "InstanceRoleRestorer2A97F6455",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-    "RestorerCloudwatchPolicy45C49589": {
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": "cloudwatch:*",
-              "Effect": "Allow",
-              "Resource": "*",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "RestorerCloudwatchPolicy45C49589",
         "Roles": [
           {
             "Ref": "InstanceRoleRestorer2A97F6455",
@@ -1854,7 +1869,7 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
             {
               "Action": "s3:GetObject",
               "Effect": "Allow",
-              "Resource": "arn:aws:s3:::composer-dist/*",
+              "Resource": "arn:aws:s3:::composer-dist/flexible/PROD/restorer2/*",
             },
           ],
           "Version": "2012-10-17",

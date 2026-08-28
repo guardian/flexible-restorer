@@ -2,16 +2,20 @@ import { AccessScope } from "@guardian/cdk/lib/constants";
 import type { GuStackProps } from "@guardian/cdk/lib/constructs/core";
 import { GuStack } from "@guardian/cdk/lib/constructs/core";
 import { GuCname } from "@guardian/cdk/lib/constructs/dns";
-import { GuAllowPolicy } from "@guardian/cdk/lib/constructs/iam";
+import { GuAllowPolicy, GuGetS3ObjectsPolicy } from "@guardian/cdk/lib/constructs/iam";
+import { GuDeveloperPolicyExperimental } from "@guardian/cdk/lib/experimental/constructs/iam/policies";
 import { GuEc2App } from "@guardian/cdk/lib/patterns/ec2-app";
 import type { App } from "aws-cdk-lib";
 import { CfnParameter, Duration } from "aws-cdk-lib";
 import { InstanceClass, InstanceSize, InstanceType, SecurityGroup, UserData } from "aws-cdk-lib/aws-ec2";
+import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
 
 const app = "restorer2";
 
 interface StageConfig {
   domainName: string;
+  /** Pan-domain auth domain, matching `AppConfig.domainFromStage`. */
+  panDomain: string;
   snapshotBucketSuffix: string;
   /**
    * Security groups of the flexible-content API (and secondary API) ELBs, to
@@ -23,11 +27,13 @@ interface StageConfig {
 const stageConfigs: Record<"CODE" | "PROD", StageConfig> = {
   CODE: {
     domainName: "restorer.code.dev-gutools.co.uk",
+    panDomain: "code.dev-gutools.co.uk",
     snapshotBucketSuffix: "code",
     accessToApiSecurityGroupIds: ["sg-4d028336", "sg-3137fa4b"],
   },
   PROD: {
     domainName: "restorer.gutools.co.uk",
+    panDomain: "gutools.co.uk",
     snapshotBucketSuffix: "prod",
     accessToApiSecurityGroupIds: ["sg-4744c43c", "sg-baae78c0"],
   },
@@ -57,6 +63,15 @@ export class Restorer2 extends GuStack {
       `flexible-secondary-snapshotter-${stageConfig.snapshotBucketSuffix}`,
     ];
 
+    const panDomainSettingsPaths = (panDomain: string) => ([
+      `${panDomain}.settings`,
+      `${panDomain}.settings.public`,
+    ]);
+
+    const panDomainKeysPath = "*.p12";
+
+    const permissionsCachePath = (stage: string) => `${stage}/permissions.json`;
+
     // Only app-specific permissions are needed here: GuInstanceRole (created by
     // GuEc2App) already grants ec2:DescribeInstances, ec2:DescribeTags and
     // autoscaling:Describe* (via GuDescribeEC2Policy), SSM SSH access,
@@ -66,17 +81,17 @@ export class Restorer2 extends GuStack {
         actions: ["ssm:GetParameters", "ssm:GetParametersByPath"],
         resources: [`arn:aws:ssm:*:*:parameter/flexible/restorer/${this.stage}*`],
       }),
-      new GuAllowPolicy(this, "RestorerGetDistributablesPolicy", {
-        actions: ["s3:GetObject"],
-        resources: ["arn:aws:s3:::composer-dist/*"],
+      new GuGetS3ObjectsPolicy(this, "RestorerGetDistributablesPolicy", {
+        bucketName: "composer-dist",
+        paths: [`flexible/${this.stage}/${app}/*`],
       }),
-      new GuAllowPolicy(this, "PanDomainPolicy", {
-        actions: ["s3:GetObject"],
-        resources: ["arn:aws:s3:::pan-domain-auth-settings/*"],
+      new GuGetS3ObjectsPolicy(this, "PanDomainPolicy", {
+        bucketName: "pan-domain-auth-settings",
+        paths: panDomainSettingsPaths(stageConfig.panDomain).concat([panDomainKeysPath]),
       }),
-      new GuAllowPolicy(this, "PermissionsPolicy", {
-        actions: ["s3:GetObject"],
-        resources: ["arn:aws:s3:::permissions-cache/*"],
+      new GuGetS3ObjectsPolicy(this, "PermissionsPolicy", {
+        bucketName: "permissions-cache",
+        paths: [permissionsCachePath(this.stage)],
       }),
       new GuAllowPolicy(this, "RestorerSnapshotBucketListPolicy", {
         actions: ["s3:ListBucket"],
@@ -89,10 +104,6 @@ export class Restorer2 extends GuStack {
       new GuAllowPolicy(this, "KMSKeyPolicy", {
         actions: ["kms:Decrypt", "kms:DescribeKey"],
         resources: [kmsKeyArn],
-      }),
-      new GuAllowPolicy(this, "RestorerCloudwatchPolicy", {
-        actions: ["cloudwatch:*"],
-        resources: ["*"],
       }),
     ];
 
@@ -128,6 +139,45 @@ export class Restorer2 extends GuStack {
         }),
       );
     });
+
+    if (this.stage === "CODE") {
+      const panDomainPaths = panDomainSettingsPaths("local.dev-gutools.co.uk")
+        .concat([panDomainKeysPath])
+
+      new GuDeveloperPolicyExperimental(this, "RestorerAppLocalRunPolicy", {
+        grantId: "run-flexible-restorer-locally",
+        friendlyName: "Run Restorer Locally",
+        // Checks reject any Allow whose resource contains a wildcard, which every
+        // scoped-prefix resource below does.
+        withoutPolicyChecks: true,
+        statements: [
+          new PolicyStatement({
+            effect: Effect.ALLOW,
+            actions: ["ssm:GetParameters", "ssm:GetParametersByPath"],
+            resources: [`arn:aws:ssm:*:*:parameter/flexible/restorer/DEV*`],
+          }),
+          new PolicyStatement({
+            effect: Effect.ALLOW,
+            actions: ["s3:GetObject"],
+            resources: [
+              ...panDomainPaths.map((path) => `arn:aws:s3:::pan-domain-auth-settings/${path}`),
+              `arn:aws:s3:::permissions-cache/${permissionsCachePath("CODE")}`, // LOCAL uses CODE permissions cache
+              ...snapshotBuckets.map((bucket) => `arn:aws:s3:::${bucket}/*`),
+            ],
+          }),
+          new PolicyStatement({
+            effect: Effect.ALLOW,
+            actions: ["s3:ListBucket"],
+            resources: snapshotBuckets.map((bucket) => `arn:aws:s3:::${bucket}`),
+          }),
+          new PolicyStatement({
+            effect: Effect.ALLOW,
+            actions: ["kms:Decrypt", "kms:DescribeKey"],
+            resources: [kmsKeyArn],
+          })
+        ],
+      });
+    }
 
     // The DNS record is managed in NS1 via GuCname. TTL is kept low while the
     // cutover from the legacy ELB soaks, so rollback propagates quickly; raise
