@@ -750,7 +750,7 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
                 "arn:aws:s3:::pan-domain-auth-settings/local.dev-gutools.co.uk.settings",
                 "arn:aws:s3:::pan-domain-auth-settings/local.dev-gutools.co.uk.settings.public",
                 "arn:aws:s3:::pan-domain-auth-settings/*.p12",
-                "arn:aws:s3:::permissions-cache/LOCAL/permissions.json",
+                "arn:aws:s3:::permissions-cache/CODE/permissions.json",
                 "arn:aws:s3:::flexible-snapshotter-code/*",
                 "arn:aws:s3:::flexible-secondary-snapshotter-code/*",
               ],
