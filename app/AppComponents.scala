@@ -15,15 +15,9 @@ import router.Routes
 
 import scala.concurrent.ExecutionContext.Implicits.{global as globalExecutionContext}
 
-class AppComponents(context: Context, identity: AppIdentity)
-    extends BuiltInComponentsFromContext(context)
-    with AhcWSComponents
-    with Loggable
-    with AssetsComponents {
+class AppComponents(context: Context, identity: AppIdentity) extends BuiltInComponentsFromContext(context) with AhcWSComponents with Loggable with AssetsComponents {
 
-  override lazy val httpFilters: Seq[EssentialFilter] = Seq(
-    new HSTSFilter()(materializer, globalExecutionContext)
-  )
+  override lazy val httpFilters: Seq[EssentialFilter] = Seq(new HSTSFilter()(materializer, globalExecutionContext))
 
   val config = new AppConfig(configuration, identity)
 
@@ -33,63 +27,22 @@ class AppComponents(context: Context, identity: AppIdentity)
     awsCredentials = credentials
   ))
 
-  val panDomainSettings: PanDomainAuthSettingsRefresher =
-    PanDomainAuthSettingsRefresher(
-      domain = config.domain,
-      system = "restorer",
-      S3BucketLoader.forAwsSdkV2(s3Client, "pan-domain-auth-settings")
-    )
+  val panDomainSettings: PanDomainAuthSettingsRefresher = PanDomainAuthSettingsRefresher(
+    domain = config.domain,
+    system = "restorer",
+    S3BucketLoader.forAwsSdkV2(s3Client, "pan-domain-auth-settings")
+  )
 
   val snapshotApi = new SnapshotApi(s3Client)
 
   val flexibleApi = new FlexibleApi(wsClient)
 
-  val applicationController = new Application(
-    controllerComponents,
-    config,
-    wsClient,
-    permissions,
-    panDomainSettings
-  )
-  val loginController = new Login(
-    controllerComponents,
-    config,
-    wsClient,
-    permissions,
-    panDomainSettings
-  )
-  val managementController = new Management(
-    controllerComponents,
-    config,
-    wsClient,
-    permissions,
-    panDomainSettings
-  )
-  val versionsController = new Versions(
-    controllerComponents,
-    config,
-    snapshotApi,
-    wsClient,
-    permissions,
-    panDomainSettings
-  )
-  val restoreController = new Restore(
-    controllerComponents,
-    snapshotApi,
-    flexibleApi,
-    config,
-    wsClient,
-    permissions,
-    panDomainSettings
-  )
-  val exportController = new Export(
-    controllerComponents,
-    snapshotApi,
-    config,
-    wsClient,
-    permissions,
-    panDomainSettings
-  )
+  val applicationController = new Application(controllerComponents, config, wsClient, permissions, panDomainSettings)
+  val loginController = new Login(controllerComponents, config, wsClient, permissions, panDomainSettings)
+  val managementController = new Management(controllerComponents, config, wsClient, permissions, panDomainSettings)
+  val versionsController = new Versions(controllerComponents, config, snapshotApi, wsClient, permissions, panDomainSettings)
+  val restoreController = new Restore(controllerComponents, snapshotApi, flexibleApi, config, wsClient, permissions, panDomainSettings)
+  val exportController = new Export(controllerComponents, snapshotApi, config, wsClient, permissions, panDomainSettings)
 
   def router: Router = new Routes(
     httpErrorHandler,
