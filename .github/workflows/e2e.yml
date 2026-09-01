@@ -16,14 +16,14 @@ jobs:
             contents: read
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
             # The Playwright e2e suite (e2e-tests/) needs Node 18+. Install a
             # modern Node explicitly and cache from the root lockfile, which now
             # includes the e2e dependencies.
-            - uses: actions/setup-node@v4
+            - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
               with:
-                  node-version: 20
+                  node-version-file: '.tool-versions'
                   cache: npm
                   cache-dependency-path: 'package-lock.json'
 
@@ -57,7 +57,7 @@ jobs:
             # the Cucumber HTML report) even when the run fails.
             - name: Upload test results
               if: always()
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
               with:
                   name: e2e-test-results
                   path: |
