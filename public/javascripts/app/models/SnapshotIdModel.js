@@ -21,7 +21,7 @@ SnapshotIdModelMod.factory('SnapshotIdModel', [
                     system: system,
                     timestamp: timestamp,
                     contentId: contentId,
-                    createdDate: moment(timestamp),
+                    createdDate: moment(timestamp.replace(/_/g, ':')),
                     activeState: false,
                     metadata: metadata,
                     summary: summary
