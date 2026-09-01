@@ -228,7 +228,7 @@ Then(
         // (the "from secondary" text is only present for secondary sources).
         await expect(
             page.getByText(/Snapshot of revision \d+ taken from secondary at/),
-        ).toBeVisible({ timeout: timeout });
+        ).toBeVisible({ timeout: DESTINATIONS_LOAD_TIMEOUT });
     },
 );
 
