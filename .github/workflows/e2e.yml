@@ -60,10 +60,11 @@ jobs:
               uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
               with:
                   name: e2e-test-results
+                  # Playwright resolves outputDir and the Cucumber report's
+                  # outputFile relative to the config dir (e2e-tests/), so both
+                  # artifacts land under e2e-tests/, not the repo root.
                   path: |
-                      test-results/
                       e2e-tests/test-results/
-                      playwright-report/
-                      cucumber-report/
+                      e2e-tests/cucumber-report/
                   if-no-files-found: ignore
                   retention-days: 14
