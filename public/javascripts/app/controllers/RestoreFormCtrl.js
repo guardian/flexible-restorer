@@ -7,11 +7,12 @@ var RestoreFormCtrlMod = angular.module('RestoreFormCtrlMod', []);
 RestoreFormCtrlMod.controller('RestoreFormCtrl', [
     '$scope',
     '$routeParams',
+    '$timeout',
     'RestoreService',
     'SnapshotIdModels',
     'DateFormatService',
     'UserService',
-    function($scope, $routeParams, RestoreService, SnapshotIdModels, DateFormatService, UserService){
+    function($scope, $routeParams, $timeout, RestoreService, SnapshotIdModels, DateFormatService, UserService){
 
         $scope.isLoading = false;
 
@@ -30,6 +31,9 @@ RestoreFormCtrlMod.controller('RestoreFormCtrl', [
         mediator.subscribe('snapshot-list:display-modal', loadSourceAndDestinations);
 
         function loadSourceAndDestinations(){
+            // The mediator is published by the React sidebar, outside Angular's
+            // digest, so scope updates below are wrapped in `$timeout` to run
+            // within a fresh digest and render the modal.
             // Resolve the user's permissions before loading destinations so the
             // cross-stack filter below is applied against a settled value.
             // Reading `$scope.canRestoreToAnyStack` directly used to race the
@@ -50,19 +54,16 @@ RestoreFormCtrlMod.controller('RestoreFormCtrl', [
                         .then((destinations)=> {
                             SnapshotIdModels.getCollection($routeParams.contentId)
                                 .then((collection) => {
-                                    //get model
-                                    var model = collection.find((data) => data.activeState);
-
-                                    // set source info
-                                    $scope.snapshotRevisionId = model.getRevisionId();
-                                    $scope.snapshotSystem = model.getSystem();
-                                    $scope.snapshotCreatedDate = model.getCreatedDateHtml();
+                                    // The React sidebar owns the active selection
+                                    // and only marks a model active once the user
+                                    // changes it, so fall back to the first
+                                    // (newest) snapshot, the sidebar's default.
+                                    var model = collection.find((data) => data.activeState) || collection.getModelAt(0);
 
                                     var systemId = model.getSystemId();
-                                    var destination = destinations.find((d) => d.systemId == systemId);
-                                    $scope.selectedDestination = destination || destinations[0];
+                                    var selectedDestination = destinations.find((d) => d.systemId == systemId) || destinations[0];
 
-                                    $scope.destinations = destinations.filter((dest) => {
+                                    var visibleDestinations = destinations.filter((dest) => {
                                         // only display the destinations that the user can restore to
                                         return canRestoreToAnyStack || dest.systemId === systemId;
                                     }).map((dest) => {
@@ -77,13 +78,25 @@ RestoreFormCtrlMod.controller('RestoreFormCtrl', [
                                         }
                                         return dest;
                                     });
+
+                                    $timeout(() => {
+                                        $scope.snapshotRevisionId = model.getRevisionId();
+                                        $scope.snapshotSystem = model.getSystem();
+                                        $scope.snapshotCreatedDate = model.getCreatedDateHtml();
+                                        $scope.selectedDestination = selectedDestination;
+                                        $scope.destinations = visibleDestinations;
+                                    });
                                 })
                                 .catch(() => {
-                                    $scope.selectedDestination = null;
+                                    $timeout(() => {
+                                        $scope.selectedDestination = null;
+                                    });
                                 });
                         })
                         .catch(()=> {
-                            $scope.destinations = [];
+                            $timeout(() => {
+                                $scope.destinations = [];
+                            });
                         });
                 });
         }
