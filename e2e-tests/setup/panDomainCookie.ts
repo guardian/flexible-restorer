@@ -52,6 +52,7 @@ function formatPrivateKeyForSigning(rawPrivateKey: string): string {
 export function createPanDomainCookie(
     rawPrivateKey: string,
     role: Role = "default",
+    expiresInMs: number = 60 * 60 * 1000,
 ): string {
     if (!rawPrivateKey) {
         throw new Error("privateKey was not supplied to createPanDomainCookie");
@@ -65,7 +66,7 @@ export function createPanDomainCookie(
             email: roles[role],
             authenticatingSystem: "composer-restorer",
             authenticatedIn: ["composer-restorer"],
-            expires: Date.now() + 60 * 60 * 1000,
+            expires: Date.now() + expiresInMs,
             multifactor: true,
         },
         privateKey,
