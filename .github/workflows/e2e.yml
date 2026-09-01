@@ -51,7 +51,7 @@ jobs:
                   REPORT: '1'
               run: |
                   npx bddgen --config=e2e-tests/playwright.config.js
-                  npm run test
+                  npm run test:ci
 
             # Publish the test results (Playwright traces/videos/screenshots and
             # the Cucumber HTML report) even when the run fails.
