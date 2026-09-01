@@ -79,6 +79,14 @@ export async function startLocalStack(
     options: { hostPort?: number; streamLogs?: boolean } = {},
 ): Promise<LocalStack> {
     const { hostPort, streamLogs = false } = options;
+
+    // In the Docker-in-Docker dev container the daemon runs inside this
+    // container, so published ports are reachable on localhost. Testcontainers
+    // otherwise resolves an unreachable bridge-gateway IP and fails to connect
+    // to the Ryuk reaper ("Failed to connect to Reaper"). Pin the host unless a
+    // caller/CI has set it explicitly.
+    process.env.TESTCONTAINERS_HOST_OVERRIDE ??= "localhost";
+
     const runId = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
     const minioImageTag = `flexible-restorer-minio-e2e:${runId}`;
     const restorerImageTag = `flexible-restorer-app-e2e:${runId}`;
