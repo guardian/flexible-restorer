@@ -4,7 +4,7 @@ import { Before, Given, When, Then, expect } from "../fixtures";
 /**
  * Playwright-style step definitions for `tests/features/analytics.feature`.
  *
- * These are stubs only — no implementations yet. Each step receives the
+ * Each step receives the
  * Playwright fixtures as the first argument (e.g. `async ({ page }) => { ... }`)
  * following the playwright-style approach:
  * https://vitalets.github.io/playwright-bdd/#/writing-steps/playwright-style
