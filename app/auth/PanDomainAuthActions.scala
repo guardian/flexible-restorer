@@ -21,17 +21,13 @@ trait PanDomainAuthActions extends AuthActions with Loggable {
       Permissions.RestorerAccess,
       authedUser.user.email
     )
-    val loadedPermissions = permissions
-      .listPermissions(authedUser.user.email)
-      .map { case (permission, active) => s"${permission.name}=$active" }
-      .mkString(", ")
 
     if (!isValid) {
       logger.warn(s"User ${authedUser.user.email} failed validation")
     }
     if (!hasRestorerAccess) {
       logger.warn(
-        s"User ${authedUser.user.email} doesn't have 'restorer_access' permission. Loaded permissions: [$loadedPermissions]"
+        s"User ${authedUser.user.email} doesn't have 'restorer_access' permission."
       )
     }
 
