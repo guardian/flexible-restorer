@@ -17,7 +17,7 @@ export type LocalStack = {
     mockApiUrl: string;
     minioContainer: any;
     restorerContainer: any;
-    mockContainer: any;
+    mockContentAPIContainer: any;
     nginxContainer: any;
     network: any;
 };
@@ -97,7 +97,7 @@ export async function startLocalStack(
 
     let minioContainer;
     let restorerContainer;
-    let mockContainer;
+    let mockContentAPIContainer;
     let nginxContainer;
     const panDomainKeys = generatePanDomainKeys();
 
@@ -135,7 +135,7 @@ export async function startLocalStack(
             .withStartupTimeout(2 * 60 * 1000)
             .start();
 
-        mockContainer = await (
+        mockContentAPIContainer = await (
             await buildImage(
                 projectRoot,
                 "e2e-tests/images/mock-flexible-api.Dockerfile",
@@ -154,7 +154,7 @@ export async function startLocalStack(
             .withStartupTimeout(2 * 60 * 1000)
             .start();
 
-        const mockApiUrl = `http://${mockContainer.getHost()}:${mockContainer.getMappedPort(MOCK_API_PORT)}`;
+        const mockApiUrl = `http://${mockContentAPIContainer.getHost()}:${mockContentAPIContainer.getMappedPort(MOCK_API_PORT)}`;
 
         restorerContainer = await (
             await buildImage(
@@ -249,7 +249,7 @@ export async function startLocalStack(
             mockApiUrl,
             minioContainer,
             restorerContainer,
-            mockContainer,
+            mockContentAPIContainer,
             nginxContainer,
             network,
         };
@@ -260,8 +260,8 @@ export async function startLocalStack(
         if (restorerContainer) {
             await restorerContainer.stop();
         }
-        if (mockContainer) {
-            await mockContainer.stop();
+        if (mockContentAPIContainer) {
+            await mockContentAPIContainer.stop();
         }
         if (minioContainer) {
             await minioContainer.stop();
@@ -274,14 +274,14 @@ export async function startLocalStack(
 export async function stopLocalStack({
     nginxContainer,
     restorerContainer,
-    mockContainer,
+    mockContentAPIContainer,
     minioContainer,
     network,
 }: Partial<LocalStack> = {}): Promise<void> {
     // Stop containers concurrently; allSettled keeps teardown best-effort so one
     // failed stop can't skip the others or the network cleanup below.
     await Promise.allSettled(
-        [nginxContainer, restorerContainer, mockContainer, minioContainer]
+        [nginxContainer, restorerContainer, mockContentAPIContainer, minioContainer]
             .filter(Boolean)
             .map((container) => container.stop()),
     );

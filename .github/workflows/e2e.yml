@@ -15,15 +15,21 @@ jobs:
             # Required for `actions/checkout`
             contents: read
 
+        env:
+            # The workflow's automatic token, exposed so the e2e stack (and any
+            # `gh`/GitHub API calls it makes) is authenticated and avoids the
+            # low unauthenticated rate limit.
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
             # The Playwright e2e suite (e2e-tests/) needs Node 18+. Install a
             # modern Node explicitly and cache from the root lockfile, which now
             # includes the e2e dependencies.
-            - uses: actions/setup-node@v4
+            - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
               with:
-                  node-version: 20
+                  node-version-file: '.tool-versions'
                   cache: npm
                   cache-dependency-path: 'package-lock.json'
 
@@ -57,13 +63,14 @@ jobs:
             # the Cucumber HTML report) even when the run fails.
             - name: Upload test results
               if: always()
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
               with:
                   name: e2e-test-results
+                  # Playwright resolves outputDir and the Cucumber report's
+                  # outputFile relative to the config dir (e2e-tests/), so both
+                  # artifacts land under e2e-tests/, not the repo root.
                   path: |
-                      test-results/
                       e2e-tests/test-results/
-                      playwright-report/
-                      cucumber-report/
+                      e2e-tests/cucumber-report/
                   if-no-files-found: ignore
                   retention-days: 14
