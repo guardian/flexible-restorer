@@ -1,4 +1,8 @@
 const { startLocalStack, stopLocalStack } = require("../setup/stackContainers") as typeof import("../setup/stackContainers");
+const {
+    writeSharedStackInfo,
+    clearSharedStackInfo,
+} = require("../setup/sharedStack") as typeof import("../setup/sharedStack");
 
 function waitForTerminationSignal(): Promise<void> {
     return new Promise((resolve) => {
@@ -20,6 +24,14 @@ async function main() {
     try {
         stack = await startLocalStack(projectRoot, { hostPort: 9000 });
 
+        // Publish the running stack's details so `npm run test` reuses this
+        // stack instead of booting its own (and skips the run when absent).
+        writeSharedStackInfo(projectRoot, {
+            baseUrl: stack.baseUrl,
+            panDomainPrivateKey: stack.panDomainPrivateKey,
+            mockApiUrl: stack.mockApiUrl,
+        });
+
         console.log(`\nLocal stack started at ${stack.baseUrl}`);
         console.log(
             `Open ${stack.cookieUrl} in your host browser to set the auth cookie and load the app.`,
@@ -29,6 +41,7 @@ async function main() {
         await waitForTerminationSignal();
     } finally {
         process.stdin.pause();
+        clearSharedStackInfo(projectRoot);
         await stopLocalStack(stack);
     }
 }

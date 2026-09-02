@@ -1,0 +1,14 @@
+{
+    "name": "composer-restorer-e2e-tests",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Playwright/BDD end-to-end tests for composer-restorer.",
+    "devDependencies": {
+        "@guardian/pan-domain-node": "^1.2.4",
+        "@playwright/test": "^1.62.1",
+        "playwright": "^1.62.1",
+        "playwright-bdd": "^9.2.0",
+        "testcontainers": "^10.17.1",
+        "tsx": "^4.22.4"
+    }
+}

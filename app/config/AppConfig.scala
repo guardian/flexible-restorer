@@ -28,7 +28,11 @@ class AppConfig(configuration: Configuration, identity: AppIdentity) {
       stack = "flexible",
       stage = "DEV",
       isSecondary = false,
-      apiPrefix = "http://localhost:9085/api",
+      // Defaults to a locally-run flexible-content API. The e2e suite overrides
+      // this (via LOCAL_FLEXIBLE_API_PREFIX) to the in-network gudiscovery host
+      // that resolves to its mock, so the local stack reports as an available
+      // destination there without breaking plain local dev.
+      apiPrefix = sys.env.getOrElse("LOCAL_FLEXIBLE_API_PREFIX", "http://localhost:9085/api"),
       composerPrefix = "https://composer.local.dev-gutools.co.uk",
       snapshotBucket = "not-applicable"))
   else None

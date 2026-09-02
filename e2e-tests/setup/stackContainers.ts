@@ -9,11 +9,34 @@ export type LocalStack = {
     baseUrl: string;
     cookieUrl: string;
     panDomainPrivateKey: string;
+    /**
+     * Base URL of the configurable mock flexible-content API, mapped to the
+     * host. POST to `${mockApiUrl}/__admin/state` to change what restore
+     * destination/restore calls return at runtime.
+     */
+    mockApiUrl: string;
     minioContainer: any;
     restorerContainer: any;
+    mockContentAPIContainer: any;
     nginxContainer: any;
     network: any;
 };
+
+// In local dev the restorer runs as the DEV identity, whose effective stage is
+// CODE, so it resolves each stack's real per-stage flexible-content API host
+// (see app/models/FlexibleStack.scala and app/config/AppConfig.scala). We
+// register those exact hostnames as network aliases on the mock container, so
+// the real hostnames resolve to the mock inside the Docker network — no
+// config/URL override required.
+const MOCK_API_PORT = 8080;
+const MOCK_API_HOSTNAMES = [
+    // primary stack (flexible)
+    "flexible-api.CODE.flexible.gudiscovery",
+    // secondary stack (flexible-secondary)
+    "apiv2.CODE.flexible-secondary.gudiscovery",
+    // local DEV stack ("Local Flexible Content")
+    "flexible-api.DEV.flexible.gudiscovery",
+];
 
 /**
  * Build an image from a Dockerfile (relative to the repo-root build context).
@@ -34,8 +57,13 @@ function buildImage(
         });
 }
 
-function createLogConsumer(prefix: string) {
+function createLogConsumer(prefix: string, streamLogs: boolean) {
     return (stream: any) => {
+        if (!streamLogs) {
+            // Discard container logs (default): they are only echoed to stdout
+            // when the stack is run directly via `npm run dev:local`.
+            return;
+        }
         stream
             .on("data", (line: Buffer) => {
                 process.stdout.write(`[${prefix}] ${line.toString()}`);
@@ -48,17 +76,28 @@ function createLogConsumer(prefix: string) {
 
 export async function startLocalStack(
     projectRoot: string,
-    options: { hostPort?: number } = {},
+    options: { hostPort?: number; streamLogs?: boolean } = {},
 ): Promise<LocalStack> {
+    const { hostPort, streamLogs = false } = options;
+
+    // In the Docker-in-Docker dev container the daemon runs inside this
+    // container, so published ports are reachable on localhost. Testcontainers
+    // otherwise resolves an unreachable bridge-gateway IP and fails to connect
+    // to the Ryuk reaper ("Failed to connect to Reaper"). Pin the host unless a
+    // caller/CI has set it explicitly.
+    process.env.TESTCONTAINERS_HOST_OVERRIDE ??= "localhost";
+
     const runId = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
     const minioImageTag = `flexible-restorer-minio-e2e:${runId}`;
     const restorerImageTag = `flexible-restorer-app-e2e:${runId}`;
+    const mockImageTag = `flexible-restorer-mock-api-e2e:${runId}`;
     const nginxImageTag = `flexible-restorer-nginx-e2e:${runId}`;
 
     const network = await new Network().start();
 
     let minioContainer;
     let restorerContainer;
+    let mockContentAPIContainer;
     let nginxContainer;
     const panDomainKeys = generatePanDomainKeys();
 
@@ -90,11 +129,32 @@ export async function startLocalStack(
                     "flexible-secondary-snapshotter-code",
                 PERMISSIONS_BUCKET: "permissions-cache",
             })
-            .withLogConsumer(createLogConsumer("minio"))
+            .withLogConsumer(createLogConsumer("minio", streamLogs))
             .withExposedPorts(9000, 9001)
             .withWaitStrategy(Wait.forLogMessage(/Ensured buckets exist:/, 1))
             .withStartupTimeout(2 * 60 * 1000)
             .start();
+
+        mockContentAPIContainer = await (
+            await buildImage(
+                projectRoot,
+                "e2e-tests/images/mock-flexible-api.Dockerfile",
+                mockImageTag,
+            )
+        )
+            .withNetwork(network)
+            .withNetworkAliases(...MOCK_API_HOSTNAMES)
+            .withLogConsumer(createLogConsumer("mock-api", streamLogs))
+            .withExposedPorts(MOCK_API_PORT)
+            .withWaitStrategy(
+                Wait.forHttp("/__admin/health", MOCK_API_PORT).forStatusCode(
+                    200,
+                ),
+            )
+            .withStartupTimeout(2 * 60 * 1000)
+            .start();
+
+        const mockApiUrl = `http://${mockContentAPIContainer.getHost()}:${mockContentAPIContainer.getMappedPort(MOCK_API_PORT)}`;
 
         restorerContainer = await (
             await buildImage(
@@ -146,8 +206,11 @@ export async function startLocalStack(
                 AWS_SECRET_ACCESS_KEY: MINIO_ROOT_PASSWORD,
                 // Keep local mode enabled in case scripts are bypassed in future changes.
                 LOCAL: "true",
+                // Point the local DEV stack at the mock flexible-content API,
+                // reachable inside the Docker network via its registered alias.
+                LOCAL_FLEXIBLE_API_PREFIX: `http://flexible-api.DEV.flexible.gudiscovery:${MOCK_API_PORT}`,
             })
-            .withLogConsumer(createLogConsumer("restorer"))
+            .withLogConsumer(createLogConsumer("restorer", streamLogs))
             // Exposed on a dynamic host port for debugging; browsers reach the
             // app through the nginx container below, not this port directly.
             .withExposedPorts(9000)
@@ -163,15 +226,13 @@ export async function startLocalStack(
             )
         )
             .withNetwork(network)
-            .withLogConsumer(createLogConsumer("nginx"))
+            .withLogConsumer(createLogConsumer("nginx", streamLogs))
             // In the e2e suite the port is mapped dynamically (undefined host)
             // so parallel runs never collide. For local dev we bind a fixed host
             // port so the devcontainer's forwarded port (see .devcontainer
             // forwardPorts) reaches it from the host machine.
             .withExposedPorts(
-                options.hostPort
-                    ? { container: 80, host: options.hostPort }
-                    : 80,
+                hostPort ? { container: 80, host: hostPort } : 80,
             )
             .withStartupTimeout(2 * 60 * 1000)
             .withWaitStrategy(Wait.forListeningPorts())
@@ -185,8 +246,10 @@ export async function startLocalStack(
             // to the app, so no cookie needs to be injected into the browser.
             cookieUrl: `${baseUrl}/cookie`,
             panDomainPrivateKey: panDomainKeys.privateKeyPem,
+            mockApiUrl,
             minioContainer,
             restorerContainer,
+            mockContentAPIContainer,
             nginxContainer,
             network,
         };
@@ -196,6 +259,9 @@ export async function startLocalStack(
         }
         if (restorerContainer) {
             await restorerContainer.stop();
+        }
+        if (mockContentAPIContainer) {
+            await mockContentAPIContainer.stop();
         }
         if (minioContainer) {
             await minioContainer.stop();
@@ -208,13 +274,14 @@ export async function startLocalStack(
 export async function stopLocalStack({
     nginxContainer,
     restorerContainer,
+    mockContentAPIContainer,
     minioContainer,
     network,
 }: Partial<LocalStack> = {}): Promise<void> {
     // Stop containers concurrently; allSettled keeps teardown best-effort so one
     // failed stop can't skip the others or the network cleanup below.
     await Promise.allSettled(
-        [nginxContainer, restorerContainer, minioContainer]
+        [nginxContainer, restorerContainer, mockContentAPIContainer, minioContainer]
             .filter(Boolean)
             .map((container) => container.stop()),
     );

@@ -1,10 +1,14 @@
 {
     "name": "composer-restorer",
+    "workspaces": [
+        "e2e-tests"
+    ],
     "scripts": {
         "build": "webpack --mode=production",
         "dev": "webpack --mode=development --watch",
         "dev:local": "tsx ./e2e-tests/images/run-dev-local.ts",
         "test": "playwright test --config=e2e-tests/playwright.config.js",
+        "test:ci": "START_LOCAL_INFRA=true playwright test --config=e2e-tests/playwright.config.js",
         "test:ui": "playwright test --config=e2e-tests/playwright.config.js --ui-host=0.0.0.0 --ui-port=9323"
     },
     "dependencies": {
@@ -18,15 +22,11 @@
         "moment": "^2.29.4"
     },
     "devDependencies": {
-        "@guardian/pan-domain-node": "^1.2.4",
-        "@playwright/test": "^1.55.0",
         "css-loader": "^7.1.2",
         "mini-css-extract-plugin": "^2.9.2",
         "raw-loader": "^4.0.2",
         "sass": "^1.83.0",
         "sass-loader": "^16.0.4",
-        "testcontainers": "^10.17.1",
-        "tsx": "^4.22.4",
         "webpack": "^5.97.1",
         "webpack-cli": "^5.1.4"
     }

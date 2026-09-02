@@ -17,9 +17,9 @@ jobs:
             contents: read
 
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
 
-            - uses: actions/setup-node@v3
+            - uses: actions/setup-node@3235b876344d2a9aa001b8d1453c930bba69e610 # v3.9.1
               with:
                   node-version-file: ".tool-versions"
                   cache: npm
@@ -30,7 +30,7 @@ jobs:
                   npm ci
                   npm run build
 
-            - uses: guardian/setup-scala@v1
+            - uses: guardian/setup-scala@ac4ece07deb7cef715b8c975d4b8c77109c89ce8 # v1.1.3
 
             - name: Scala Build
               run: |
@@ -41,7 +41,7 @@ jobs:
                   mv target/restorer2_1.0.0_all.deb restorer2.deb
 
             - name: Setup Node (CDK)
-              uses: actions/setup-node@v4
+              uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
               with:
                   node-version-file: 'cdk/.nvmrc'
                   cache: npm
@@ -56,7 +56,7 @@ jobs:
                   npm run synth
 
             # Upload our build artifacts to Riff-Raff (well, S3)
-            - uses: guardian/actions-riff-raff@v4
+            - uses: guardian/actions-riff-raff@eecac3ac4f7a446dd59aaa636163c9ae88baf4a4 # v4.3.6
               with:
                   projectName: editorial-tools:flexible:restorer2
                   buildNumberOffset: 298

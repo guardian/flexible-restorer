@@ -1,0 +1,32 @@
+{
+  "metadata" : {
+    "reason" : "Scheduled snapshot"
+  },
+  "summary" : {
+    "preview" : {
+      "fields" : {
+        "headline" : "NHS staff told to say 'I am sorry' to patients for medical blunders"
+      },
+      "settings" : {
+        "commentable" : "true",
+        "embargoedUntil" : "2015-06-29T00:01:00+01:00"
+      }
+    },
+    "type" : "article",
+    "published" : true,
+    "contentChangeDetails" : {
+      "published" : {
+        "date" : 1435532525360,
+        "user" : {
+          "email" : "user14@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "14"
+        }
+      },
+      "lastModified" : {
+        "date" : 1782478651723
+      },
+      "revision" : 488
+    }
+  }
+}

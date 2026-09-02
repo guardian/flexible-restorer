@@ -11,10 +11,13 @@ import play.api.libs.ws.JsonBodyWritables._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.concurrent.duration._
 
 class FlexibleApi(wsClient: WSClient) extends Loggable {
   def changeDetails(stack: FlexibleStack, contentId: String): Future[Option[ChangeDetails]] = {
-    wsClient.url(s"${stack.apiPrefix}/content/$contentId/changeDetails").get().map { response =>
+    // A per-request timeout means a stack that hangs fails the future fast
+    // without blocking a caller thread (see `Restore.restoreDestinations`).
+    wsClient.url(s"${stack.apiPrefix}/content/$contentId/changeDetails").withRequestTimeout(5.seconds).get().map { response =>
       response.status match {
         case 200 =>
           val revision = (response.json \ "data" \ "revision").asOpt[Long]
