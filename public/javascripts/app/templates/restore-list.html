@@ -1,6 +1,8 @@
 <!-- ERROR STATUS -->
-<div style="display: none" class="modal center" ng-controller="ErrorCtrl as errorCtrl"
-    ng-class="{ 'visually-hidden': !errorCtrl.hasError }">
+<div style="display: none"
+     class="modal center"
+     ng-controller="ErrorCtrl as errorCtrl"
+     ng-class="{ 'visually-hidden': !errorCtrl.hasError }">
     <gu-box class="modal__content" variant="primary">
         <gu-row class="modal__content__form__fieldset">
             <gu-column span="12">
@@ -27,24 +29,26 @@
     <snapshot-sidebar class="col-4" content-id="contentId"></snapshot-sidebar>
 
     <!-- CONTENT -->
-    <gu-column class="snapshot-content" span="8" ng-controller="SnapshotContentCtrl as ctrl"
-        ng-class="{'active': isSettingContent === false}">
+    <gu-column class="snapshot-content"
+               span="8"
+               ng-controller="SnapshotContentCtrl as ctrl"
+               ng-class="{'active': isSettingContent === false}">
         <div class="snapshot-content__viewport scrollable__container">
 
             <gu-row class="snapshot-content__actions scrollable__header-fixed">
-                <gu-btn class="snapshot-content__actions--button" ng-click="ctrl.restoreContent()" ng-if="canRestore">
+                <gu-btn class="snapshot-content__actions--button"
+                ng-click="ctrl.restoreContent()"
+                ng-if="canRestore">
                     <gu-icon class="snapshot-content__actions__restore__icon" variant="wrench-disabled"></gu-icon>
                     <span>Restore</span>
                 </gu-btn>
                 <gu-btn class="snapshot-content__actions--button" ng-click="ctrl.copyJSON()">
                     {{copyButtonLabel}}
                 </gu-btn>
-                <a class="snapshot-content__actions--button btn btn" target="_blank"
-                    ng-href="/export/{{contentId}}/git">
+                <a class="snapshot-content__actions--button btn btn" target="_blank" ng-href="/export/{{contentId}}/git">
                     Export all as Git Repo
                 </a>
-                <a class="snapshot-content__actions--button btn btn" target="_blank"
-                    ng-href="/export/{{contentId}}/zip">
+                <a class="snapshot-content__actions--button btn btn" target="_blank" ng-href="/export/{{contentId}}/zip">
                     Export all as Zip
                 </a>
                 <gu-btn class="snapshot-content__actions--button" ng-click="ctrl.toggleJSON()">
@@ -103,11 +107,12 @@
 
     <!-- MODAL -->
     <!-- INLINE STYLE TO AVOID INITIAL FLASH OF CONTENT WITH THE MODAL -->
-    <div style="display: none" class="modal center" ng-controller="ModalCtrl as modalCtrl"
-        ng-class="{ 'visually-hidden': !isActive }">
+    <div style="display: none"
+         class="modal center"
+         ng-controller="ModalCtrl as modalCtrl"
+         ng-class="{ 'visually-hidden': !isActive }">
         <gu-box class="modal__content" variant="primary">
-            <form novalidate class="modal-form" ng-controller="RestoreFormCtrl as formCtrl"
-                ng-submit="formCtrl.restore()">
+            <form novalidate class="modal-form" ng-controller="RestoreFormCtrl as formCtrl" ng-submit="formCtrl.restore()">
                 <div class="modal__content__track">
                     <gu-row>
                         <gu-column ng-class="{ 'in-active': isLoading }" class="form-panel" span="6">
@@ -133,24 +138,24 @@
                                         <gu-column span="5" class="center">
                                             <div class="modal__content__source">Snapshot of revision {{snapshotRevisionId}} taken <strong>{{snapshotSystem.isSecondary ? "from secondary" : ""}}</strong> at <span ng-bind-html="snapshotCreatedDate"></span></div>
                                         </gu-column>
-                                        <gu-column span="1"
-                                            class="center modal__content__destination-arrow">&#10132;</gu-column>
+                                        <gu-column span="1" class="center modal__content__destination-arrow">&#10132;</gu-column>
                                         <gu-column span="6" class="center">
                                             <div class="full-width">
-                                                <ol
-                                                    class="modal__content__destination-list modal__content__destination-form">
-                                                    <li ng-repeat="dest in destinations">
-                                                        <label for="{{dest.systemId}}" class="modal__content__text">
-                                                            <input type="radio" class="no-shrink" id="{{dest.systemId}}"
-                                                                name="destination" ng-disabled="!dest.available"
-                                                                ng-model="$parent.selectedDestination"
-                                                                ng-value="dest" />
-                                                            <span class="checked-decal"></span>
-                                                            <span>{{dest.displayName}} <em
-                                                                    ng-bind-html="dest.changeString"></em></span>
-                                                        </label>
-                                                    </li>
-                                                </ol>
+                                            <ol class="modal__content__destination-list modal__content__destination-form">
+                                                <li ng-repeat="dest in destinations">
+                                                    <label for="{{dest.systemId}}" class="modal__content__text">
+                                                        <input type="radio"
+                                                               class="no-shrink"
+                                                               id="{{dest.systemId}}"
+                                                               name="destination"
+                                                               ng-disabled="!dest.available"
+                                                               ng-model="$parent.selectedDestination"
+                                                               ng-value="dest"/>
+                                                        <span class="checked-decal"></span>
+                                                        <span>{{dest.displayName}} <em ng-bind-html="dest.changeString"></em></span>
+                                                    </label>
+                                                </li>
+                                            </ol>
                                             </div>
                                         </gu-column>
                                     </gu-row>
@@ -164,7 +169,7 @@
                                     <gu-row class="modal__content__form__fieldset">
                                         <label for="self-in-content">
                                             <input type="checkbox" ng-model="selfInContent" name="selfInContent"
-                                                id="self-in-content" />
+                                                   id="self-in-content"/>
                                             <span class="checked-decal"></span>
                                             <span class="label">You are not in content</span>
                                         </label>
@@ -172,7 +177,7 @@
                                     <gu-row class="modal__content__form__fieldset">
                                         <label for="else-in-content">
                                             <input type="checkbox" ng-model="elseInContent" name="elseInContent"
-                                                id="else-in-content" />
+                                                   id="else-in-content"/>
                                             <span class="checked-decal"></span>
                                             <span class="label">No one else is in the content</span>
                                         </label>
@@ -183,12 +188,12 @@
                             <!-- ACTIONS -->
                             <gu-row variant="reverse" class="modal__content__container">
                                 <gu-btn variant="active" class="modal__content__btn" type="submit"
-                                    ng-disabled="!selfInContent || !elseInContent">
+                                        ng-disabled="!selfInContent || !elseInContent">
                                     <gu-icon variant="wrench-disabled"></gu-icon>
                                     Restore Version
                                 </gu-btn>
                                 <gu-btn class="modal__content__btn--close" type="reset"
-                                    ng-click="modalCtrl.closeModal()">Cancel
+                                        ng-click="modalCtrl.closeModal()">Cancel
                                 </gu-btn>
                             </gu-row>
 
