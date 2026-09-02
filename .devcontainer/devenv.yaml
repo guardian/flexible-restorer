@@ -47,6 +47,15 @@ forwardPorts:
 # Chromium browser and its system libraries so the e2e suite can launch a
 # (headless) browser inside the devcontainer.
 postCreateCommand:
+  # Testcontainers builds images via the Docker API with BuildKit enabled, but
+  # never opens the BuildKit gRPC session that carries registry credentials. On
+  # the Bearer auth path BuildKit asks the (empty) session group for credentials
+  # before falling back to anonymous tokens, so resolving any base image fails
+  # with "no active session" - even for public images. See moby/moby#48112.
+  # A registry mirror bypasses that code path. Remove once the daemon ships the
+  # fix from moby/buildkit#6744.
+  - cmd: "echo '{\"registry-mirrors\": [\"https://mirror.gcr.io\"]}' | sudo tee /etc/docker/daemon.json > /dev/null && sudo pkill -HUP dockerd"
+    workingDirectory: "."
   - cmd: 'PATH="$HOME/.local/share/mise/shims:$PATH" npm ci'
     workingDirectory: "."
   - cmd: 'PATH="$HOME/.local/share/mise/shims:$PATH" npx playwright install chromium --with-deps'
