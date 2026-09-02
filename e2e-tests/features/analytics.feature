@@ -12,5 +12,5 @@ Feature: Track page visits and snapshot interactions
     Then a tracking pixel should be requested
     And the request should include app=restorer
     And the request should include the current route path
-  # Evidence: public/javascripts/app/services/AnalyticsService.js
-  # Evidence: public/javascripts/app/main.js
+  # Evidence: public/javascripts/app/services/AnalyticsService.js#L27-L29 (route change fires pixel), #L3-L6 (app=restorer & path in URL)
+  # Evidence: public/javascripts/app/main.js#L51 (AnalyticsService bootstrapped globally)
