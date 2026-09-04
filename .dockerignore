@@ -2,10 +2,16 @@
 .gitignore
 target
 project/target
-node_modules
+# Ignore patterns are root-anchored, so `**/` is needed to match nested copies
+**/node_modules
 logs
 task-temp-directory
 web/public
 web/classes
 *.log
 .DS_Store
+# Editor and language-server caches
+.metals
+.bloop
+.bsp
+.idea
