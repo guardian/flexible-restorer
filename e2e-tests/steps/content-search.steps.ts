@@ -156,7 +156,10 @@ Then("the form should require a query value", async ({ page }) => {
     await expect(composerUrlInput).toBeVisible({
         timeout: timeout,
     });
-    await expect(composerUrlInput).toHaveAttribute("required", "required");
+    // The React SearchForm uses @guardian/stand's TextInput (react-aria), which
+    // renders the native boolean `required` attribute (present with an empty
+    // value) rather than `required="required"`.
+    await expect(composerUrlInput).toHaveAttribute("required", "");
 });
 
 // --- Trailing slash produces an empty hash segment ----------------------------
