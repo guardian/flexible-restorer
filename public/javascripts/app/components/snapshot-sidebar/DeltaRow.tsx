@@ -2,6 +2,13 @@
 import type { FunctionComponent } from 'react';
 import { styles } from './styles';
 
+import { baseTypography } from '@guardian/stand'; 
+
+const textStyle = {
+	fontFamily: baseTypography.family.openSans,
+	fontSize: '12px',
+};
+
 type DeltaRowProps = {
 	/** Humanised time between a snapshot and the next (older) one. */
 	label: string;
@@ -13,7 +20,7 @@ type DeltaRowProps = {
  */
 const DeltaRow: FunctionComponent<DeltaRowProps> = ({ label }) => (
 	<li css={styles.deltaRow}>
-		<span css={styles.deltaContent}>{label}</span>
+		<span css={[styles.deltaContent, textStyle]}>{label}</span>
 		<span css={styles.deltaIcon} aria-hidden="true" />
 	</li>
 );

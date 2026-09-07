@@ -1,4 +1,5 @@
 @import "palette.scss";
+@import url('https://assets.guim.co.uk/fonts/open-sans/OpenSans.css');
 
 // SETUP
 @font-face {
@@ -56,22 +57,24 @@
 }
 
 .highlight-row-for-launches {
-    border: 2px solid $color-500-grey;
-    .snapshot-list__item__status::after {
-        border: none;
-        display: block;
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        content: '🚀';
-        font-size: 150%;
-        opacity: 0.6;
-        filter: grayscale(100%);
-    }
+  border: 2px solid $color-500-grey;
+
+  .snapshot-list__item__status::after {
+    border: none;
+    display: block;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    content: '🚀';
+    font-size: 150%;
+    opacity: 0.6;
+    filter: grayscale(100%);
+  }
 }
+
 .highlight-reason-for-launches {
-    font-weight: bold;
-    font-size: 15px;
+  font-weight: bold;
+  font-size: 15px;
 }
 
 .snapshot-list__item__content__actual-date {
@@ -80,11 +83,13 @@
   font-size: 16px;
 }
 
-a.snapshot-list__item__json, a.snapshot-list__item__restore {
+a.snapshot-list__item__json,
+a.snapshot-list__item__restore {
   font-family: "Guardian Agate Sans";
   font-weight: normal;
   font-size: 13px;
   color: $color-650-grey;
+
   &.active {
     color: white;
   }
@@ -113,8 +118,8 @@ a.snapshot-list__item__json, a.snapshot-list__item__restore {
   line-height: 18px;
 
   a {
-      text-decoration: none;
-      color: #2ea3eb;
+    text-decoration: none;
+    color: #2ea3eb;
   }
 }
 
@@ -142,8 +147,8 @@ a.snapshot-list__item__json, a.snapshot-list__item__restore {
 
 .modal__content__source,
 .modal__content__destination-list {
-    font-family: "Guardian Agate Sans";
-    font-size: 16px;
+  font-family: "Guardian Agate Sans";
+  font-size: 16px;
 }
 
 .modal__content__form__header {
