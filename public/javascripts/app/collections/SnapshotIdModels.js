@@ -1,5 +1,6 @@
 import angular from 'angular';
 import BaseCollection from './BaseCollection';
+import { fetchSnapshotList } from '../components/api/fetchSnapshotList';
 
 let listCache = {};
 // Tracks the collection request that is currently in flight for a given content
@@ -13,13 +14,12 @@ let listCache = {};
 // singleton collection.
 let inFlight = {};
 
-var SnapshotIdModelsMod = angular.module('SnapshotIdModelsMod', ['SnapshotServiceMod']);
+var SnapshotIdModelsMod = angular.module('SnapshotIdModelsMod', []);
 
 SnapshotIdModelsMod.factory('SnapshotIdModels', [
     '$q',
-    'SnapshotService',
     'SnapshotIdModel',
-    function($q, SnapshotService, SnapshotIdModel){
+    function($q, SnapshotIdModel){
 
         class SnapshotIds extends BaseCollection {
             constructor(models){
@@ -46,13 +46,14 @@ SnapshotIdModelsMod.factory('SnapshotIdModels', [
                     return inFlight[id];
                 }
 
-                const request = SnapshotService
-                    .getList(id)
-                    .then(function({data}){
+                // `fetchSnapshotList` is shared with the React sidebar; it applies
+                // the "no snapshots" contract and returns the raw version list.
+                // `$q.when` adopts the native promise so resolution triggers a
+                // digest.
+                const request = $q
+                    .when(fetchSnapshotList(id))
+                    .then(function(data){
                         delete inFlight[id];
-                        if (!Array.isArray(data) || data.length === 0) {
-                            return $q.reject(new Error('There are no snapshots available for this piece of content'));
-                        }
                         listCache[id] = new SnapshotIds(data);
                         return listCache[id];
                     }, function(err){

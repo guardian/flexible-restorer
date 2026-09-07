@@ -5,10 +5,13 @@ module.exports = {
     testEnvironment: "node",
     testMatch: ["<rootDir>/public/javascripts/**/*.test.js"],
     transform: {
-        "^.+\\.jsx?$": [
+        "^.+\\.[jt]sx?$": [
             "babel-jest",
             {
-                presets: [["@babel/preset-env", { targets: { node: "current" } }]],
+                presets: [
+                    ["@babel/preset-env", { targets: { node: "current" } }],
+                    "@babel/preset-typescript",
+                ],
             },
         ],
     },

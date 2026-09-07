@@ -1,31 +1,14 @@
 import useSWR from 'swr';
-import type { SnapshotIdViewModel, RawSnapshotId } from '../models/snapshotId';
+import type { SnapshotIdViewModel } from '../models/snapshotId';
 import { parseSnapshotList } from '../models/snapshotId';
+import { fetchSnapshotList, versionListUrl } from '../api/fetchSnapshotList';
 
 /**
- * Fetch and parse the version list for a piece of content. Mirrors the error
- * behaviour of the legacy `SnapshotIdModels.getCollection`: an empty/non-array
- * payload is treated as "no snapshots available".
+ * Fetch (via the shared `fetchSnapshotList`) and parse the version list for a
+ * piece of content into the sidebar view models.
  */
-const fetcher = async (url: string): Promise<SnapshotIdViewModel[]> => {
-	const response = await fetch(url, {
-		headers: { Accept: 'application/json' },
-		credentials: 'same-origin',
-	});
-
-	if (!response.ok) {
-		throw new Error(`Failed to load snapshots (${response.status})`);
-	}
-
-	const data: unknown = await response.json();
-	if (!Array.isArray(data) || data.length === 0) {
-		throw new Error(
-			'There are no snapshots available for this piece of content',
-		);
-	}
-
-	return parseSnapshotList(data as RawSnapshotId[]);
-};
+const fetcher = (contentId: string): Promise<SnapshotIdViewModel[]> =>
+	fetchSnapshotList(contentId).then(parseSnapshotList);
 
 type UseSnapshotList = {
 	snapshots: SnapshotIdViewModel[] | undefined;
@@ -40,8 +23,8 @@ type UseSnapshotList = {
  */
 const useSnapshotList = (contentId: string): UseSnapshotList => {
 	const { data, error, isLoading } = useSWR<SnapshotIdViewModel[], Error>(
-		`/api/1/versionList/${contentId}`,
-		fetcher,
+		versionListUrl(contentId),
+		() => fetcher(contentId),
 		{ revalidateOnFocus: false },
 	);
 
