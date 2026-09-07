@@ -7,6 +7,7 @@
         "build": "webpack --mode=production",
         "dev": "webpack --mode=development --watch",
         "dev:local": "tsx ./e2e-tests/images/run-dev-local.ts",
+        "test:unit": "jest",
         "test": "playwright test --config=e2e-tests/playwright.config.js",
         "test:ci": "START_LOCAL_INFRA=true playwright test --config=e2e-tests/playwright.config.js",
         "test:ui": "playwright test --config=e2e-tests/playwright.config.js --ui-host=0.0.0.0 --ui-port=9323"
@@ -36,8 +37,10 @@
         "@babel/preset-typescript": "^8.0.1",
         "@types/react": "^18.3.31",
         "@types/react-dom": "^18.3.7",
+        "babel-jest": "^30.5.1",
         "babel-loader": "^10.1.1",
         "css-loader": "^7.1.2",
+        "jest": "^30.5.1",
         "mini-css-extract-plugin": "^2.9.2",
         "raw-loader": "^4.0.2",
         "sass": "^1.83.0",
