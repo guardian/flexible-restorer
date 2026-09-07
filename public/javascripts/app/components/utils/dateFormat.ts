@@ -1,18 +1,25 @@
 import moment from 'moment';
 
-/**
- * Render the "actual" snapshot date as the small chunk of HTML the sidebar shows
- * (time, day-of-month with a superscript ordinal, then month).
- *
- * Ported verbatim from the AngularJS `DateFormatService.formatHtml` so the
- * migrated React list matches the legacy markup exactly.
- */
-const formatCreatedDateHtml = (createdDate: moment.Moment): string => {
-	const ordinal = createdDate.format('Do').slice(-2);
-	const prefix = createdDate.format('HH:mm:ss [on] D');
-	const month = createdDate.format('MMMM');
-	return `${prefix}<sup>${ordinal}</sup> ${month}`;
+type FormattedCreatedDate = {
+	/** e.g. "14:30:45 on 3" */
+	prefix: string;
+	/** Ordinal suffix rendered as a superscript, e.g. "rd". */
+	ordinal: string;
+	month: string;
 };
+
+/**
+ * Break the "actual" snapshot date into the parts the sidebar shows (time,
+ * day-of-month with a superscript ordinal, then month) so the component can
+ * render them as JSX rather than an HTML string.
+ *
+ * Ported from the AngularJS `DateFormatService.formatHtml`.
+ */
+const formatCreatedDate = (createdDate: moment.Moment): FormattedCreatedDate => ({
+	prefix: createdDate.format('HH:mm:ss [on] D'),
+	ordinal: createdDate.format('Do').slice(-2),
+	month: createdDate.format('MMMM'),
+});
 
 /**
  * Humanised distance between `createdDate` and `from` (defaults to now), without
@@ -23,4 +30,5 @@ const relativeDate = (
 	from: moment.Moment = moment(),
 ): string => createdDate.from(from, true);
 
-export { formatCreatedDateHtml, relativeDate };
+export { formatCreatedDate, relativeDate };
+export type { FormattedCreatedDate };

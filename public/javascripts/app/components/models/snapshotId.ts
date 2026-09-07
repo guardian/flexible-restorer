@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { formatCreatedDateHtml, relativeDate } from '../utils/dateFormat';
+import { relativeDate } from '../utils/dateFormat';
 
 // Raw shape of a single entry returned by `GET /api/1/versionList/:contentId`
 // (see app/controllers/Versions.scala). Only the fields the sidebar reads are
@@ -69,7 +69,6 @@ type SnapshotIdViewModel = {
 	revisionId: number | undefined;
 	headline: string | undefined;
 	composerUrl: string;
-	createdDateHtml: string;
 	snapshotReason: string | undefined;
 	becauseOfLaunch: boolean;
 	legallySensitive: boolean;
@@ -139,7 +138,6 @@ const toViewModel = (raw: RawSnapshotId): SnapshotIdViewModel => {
 		revisionId: summary?.contentChangeDetails?.revision,
 		headline: summary?.preview?.fields?.headline,
 		composerUrl: `${raw.system.composerPrefix}/content/${raw.contentId}`,
-		createdDateHtml: formatCreatedDateHtml(createdDate),
 		snapshotReason,
 		becauseOfLaunch: isBecauseOfLaunch(snapshotReason),
 		legallySensitive: settings?.legallySensitive === 'true',
