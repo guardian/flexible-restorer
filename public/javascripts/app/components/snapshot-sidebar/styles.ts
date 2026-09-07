@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { baseSizing } from '@guardian/stand';
 // Icons are imported so webpack's `asset/inline` loader embeds them as
 // `data:image/svg+xml` URIs (matching the previous inlined-icon behaviour).
 import legallySensitiveIcon from '../../../../images/legalcheck-grey-14.svg';
@@ -24,13 +25,22 @@ const icons = {
 	commentsOff: commentsOffIcon,
 } as const;
 
+// Padding snapped to Stand base sizing tokens. The legacy SCSS used a 5px grid;
+// the nearest Stand steps are 2px, 8px and 16px, so the old 5px/10px paddings
+// unify onto an 8px rhythm and 15px rounds to 16px.
+const spacing = {
+	xxs: baseSizing.size2Px, // 2px
+	sm: baseSizing.size8Px, // 8px (was 5px / 10px)
+	md: baseSizing.size16Px, // 16px (was 15px)
+} as const;
+
 // --- sidebar shell (from sidebar.scss + box.scss "secondary" + scrollable.scss) ---
 const sidebar = (isActive: boolean) =>
 	css({
 		boxSizing: 'border-box',
 		display: 'flex',
 		flexDirection: 'column',
-		padding: '10px',
+		padding: spacing.sm,
 		backgroundColor: palette.boxSecondary,
 		borderRight: `1px solid ${palette.grey300}`,
 		overflow: 'auto',
@@ -89,17 +99,17 @@ const listHeaderDecal = css({
 	boxSizing: 'border-box',
 	flexBasis: '46px',
 	maxWidth: '46px',
-	padding: '5px 10px',
+	padding: spacing.sm,
 	borderRight: `1px solid ${palette.grey400}`,
 });
 
 const listHeaderContent = css({
-	padding: '5px 10px',
+	padding: spacing.sm,
 	flexBasis: '175px',
 	borderRight: `1px solid ${palette.grey400}`,
 });
 
-const listHeaderStatus = css({ padding: '5px 10px' });
+const listHeaderStatus = css({ padding: spacing.sm });
 
 // --- list (from index-list mixins + snapshot-list.scss) ---
 const list = css({
@@ -111,7 +121,7 @@ const list = css({
 const secondaryBanner = css({
 	color: 'white',
 	background: palette.secondaryBanner,
-	padding: '2px',
+	padding: spacing.xxs,
 	fontFamily: '"Guardian Agate Sans"',
 	fontWeight: 'bold',
 	fontSize: '12px',
@@ -157,8 +167,7 @@ const itemIndex = (isActive: boolean) =>
 		boxSizing: 'border-box',
 		flexBasis: '46px',
 		maxWidth: '46px',
-		padding: '5px',
-		paddingTop: '10px',
+		padding: spacing.sm,
 		textAlign: 'center',
 		fontFamily: '"Guardian Agate Sans"',
 		fontWeight: 'normal',
@@ -182,7 +191,7 @@ const itemIndex = (isActive: boolean) =>
 	});
 
 const itemContent = css({
-	padding: '10px 15px',
+	padding: `${spacing.sm} ${spacing.md}`,
 	flexBasis: '165px',
 	fontWeight: 500,
 	zIndex: 2,
@@ -251,14 +260,14 @@ const itemStatus = (isLaunch = false) =>
 const statusLeft = css({
 	float: 'left',
 	height: '3.1em',
-	padding: '10px 5px',
+	padding: spacing.sm,
 });
 
 const statusRight = css({
 	float: 'right',
 	width: '45%',
 	height: '3.1em',
-	padding: '10px 5px',
+	padding: spacing.sm,
 	borderLeft: `1px solid ${palette.grey400}`,
 });
 
@@ -295,7 +304,7 @@ const deltaRow = css({
 	display: 'flex',
 	flexDirection: 'row-reverse',
 	alignItems: 'center',
-	padding: '5px 0 2px 0',
+	padding: `${spacing.sm} 0 ${spacing.xxs} 0`,
 	opacity: 0.3,
 });
 
