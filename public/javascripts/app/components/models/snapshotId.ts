@@ -126,7 +126,7 @@ const deriveUserEmail = (summary: RawSummary | undefined): string => {
 const toViewModel = (raw: RawSnapshotId): SnapshotIdViewModel => {
 	const summary = raw.info?.summary;
 	const settings = summary?.preview?.settings;
-	const createdDate = moment(raw.timestamp);
+	const createdDate = moment(raw.timestamp.replace(/_/g, ':'));
 	const commentable = settings?.commentable;
 	const snapshotReason = raw.info?.metadata?.reason;
 
