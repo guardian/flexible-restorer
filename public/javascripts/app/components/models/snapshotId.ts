@@ -126,8 +126,7 @@ const deriveUserEmail = (summary: RawSummary | undefined): string => {
 const toViewModel = (raw: RawSnapshotId): SnapshotIdViewModel => {
 	const summary = raw.info?.summary;
 	const settings = summary?.preview?.settings;
-	// Timestamps come back with `_` separating the time components; moment needs `:`.
-	const createdDate = moment(raw.timestamp.replace(/_/g, ':'));
+	const createdDate = moment(raw.timestamp);
 	const commentable = settings?.commentable;
 	const snapshotReason = raw.info?.metadata?.reason;
 
