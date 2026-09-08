@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { baseSpacing } from '@guardian/stand';
 // Icons are imported so webpack's `asset/inline` loader embeds them as
 // `data:image/svg+xml` URIs (matching the previous inlined-icon behaviour).
 import legallySensitiveIcon from '../../../../images/legalcheck-grey-14.svg';
@@ -30,7 +31,7 @@ const sidebar = (isActive: boolean) =>
 		boxSizing: 'border-box',
 		display: 'flex',
 		flexDirection: 'column',
-		padding: '10px',
+		padding: baseSpacing['10Rem'],
 		backgroundColor: palette.boxSecondary,
 		borderRight: `1px solid ${palette.grey300}`,
 		overflow: 'auto',
@@ -63,7 +64,7 @@ const articleHeadline = css({
 });
 
 const articleHash = css({
-	marginBottom: '20px',
+	marginBottom: baseSpacing['20Rem'],
 	fontFamily: '"Guardian Agate Sans"',
 	fontWeight: 'normal',
 	fontSize: '13px',
@@ -89,21 +90,23 @@ const listHeaderDecal = css({
 	boxSizing: 'border-box',
 	flexBasis: '46px',
 	maxWidth: '46px',
-	padding: '5px 10px',
+	padding: `${baseSpacing['6Rem']} ${baseSpacing['10Rem']}`,
 	borderRight: `1px solid ${palette.grey400}`,
 });
 
 const listHeaderContent = css({
-	padding: '5px 10px',
+	padding: `${baseSpacing['6Rem']} ${baseSpacing['10Rem']}`,
 	flexBasis: '175px',
 	borderRight: `1px solid ${palette.grey400}`,
 });
 
-const listHeaderStatus = css({ padding: '5px 10px' });
+const listHeaderStatus = css({
+	padding: `${baseSpacing['6Rem']} ${baseSpacing['10Rem']}`,
+});
 
 // --- list (from index-list mixins + snapshot-list.scss) ---
 const list = css({
-	marginTop: '5px',
+	marginTop: baseSpacing['6Rem'],
 	paddingLeft: 0,
 	li: { listStyle: 'none' },
 });
@@ -111,7 +114,7 @@ const list = css({
 const secondaryBanner = css({
 	color: 'white',
 	background: palette.secondaryBanner,
-	padding: '2px',
+		padding: baseSpacing['2Rem'],
 	fontFamily: '"Guardian Agate Sans"',
 	fontWeight: 'bold',
 	fontSize: '12px',
@@ -157,8 +160,8 @@ const itemIndex = (isActive: boolean) =>
 		boxSizing: 'border-box',
 		flexBasis: '46px',
 		maxWidth: '46px',
-		padding: '5px',
-		paddingTop: '10px',
+		padding: baseSpacing['6Rem'],
+		paddingTop: baseSpacing['10Rem'],
 		textAlign: 'center',
 		fontFamily: '"Guardian Agate Sans"',
 		fontWeight: 'normal',
@@ -182,7 +185,7 @@ const itemIndex = (isActive: boolean) =>
 	});
 
 const itemContent = css({
-	padding: '10px 15px',
+	padding: `${baseSpacing['10Rem']} ${baseSpacing['16Rem']}`,
 	flexBasis: '165px',
 	fontWeight: 500,
 	zIndex: 2,
@@ -251,14 +254,14 @@ const itemStatus = (isLaunch = false) =>
 const statusLeft = css({
 	float: 'left',
 	height: '3.1em',
-	padding: '10px 5px',
+	padding: `${baseSpacing['10Rem']} ${baseSpacing['6Rem']}`,
 });
 
 const statusRight = css({
 	float: 'right',
 	width: '45%',
 	height: '3.1em',
-	padding: '10px 5px',
+	padding: `${baseSpacing['10Rem']} ${baseSpacing['6Rem']}`,
 	borderLeft: `1px solid ${palette.grey400}`,
 });
 
@@ -266,7 +269,7 @@ const legallySensitive = css({
 	padding: 0,
 	textAlign: 'center',
 	height: '15px',
-	marginBottom: '5px',
+	marginBottom: baseSpacing['6Rem'],
 	width: '17px',
 	background: `url(${icons.legallySensitive}) center center no-repeat`,
 });
@@ -295,12 +298,12 @@ const deltaRow = css({
 	display: 'flex',
 	flexDirection: 'row-reverse',
 	alignItems: 'center',
-	padding: '5px 0 2px 0',
+	padding: `${baseSpacing['6Rem']} 0 ${baseSpacing['2Rem']} 0`,
 	opacity: 0.3,
 });
 
 const deltaIcon = css({
-	marginLeft: '5px',
+	marginLeft: baseSpacing['6Rem'],
 	width: 0,
 	height: 0,
 	borderLeft: '4px solid transparent',

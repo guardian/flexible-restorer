@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { css } from '@emotion/react';
 import { Button } from '@guardian/stand/Button';
 import { TextInput } from '@guardian/stand/TextInput';
+import { baseSpacing } from '@guardian/stand';
 import { useAngularRouter } from './hooks/useAngularRouter';
 
 type SearchFormProps = {
@@ -23,7 +24,7 @@ const formCss = css({
 	flexDirection: 'column',
 	justifyContent: 'center',
 	alignItems: 'center',
-	gap: '8px',
+	gap: baseSpacing['8Rem'],
 });
 
 /**

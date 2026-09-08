@@ -179,6 +179,24 @@ A Stand theme override
 A Stand CssOverride if theming is not sufficient
 Create a new parent component and migrate styles to use emotion/react with inline styles
 
+Spacing (padding and margin)
+When migrating styles, do not hard-code `padding` or `margin` in pixels. Use the Stand
+base spacing tokens so spacing stays consistent with the design system
+(https://guardian.github.io/stand/?path=/story/stand-tools-design-system-base-spacing--base-spacing).
+
+- Import the tokens from the package: `import { baseSpacing } from '@guardian/stand';`.
+- Prefer the **rem** tokens, not the px ones. Keys are named `<value>Rem` and hold rem
+  strings, e.g. `baseSpacing['10Rem']` → `'0.625rem'`, `baseSpacing['16Rem']` → `'1rem'`.
+- Replace each legacy px value with the token whose value is the **closest match**. Most
+  values map exactly (2, 8, 10, 16, 20, 24, 32…); for an in-between value pick the nearest
+  token (e.g. `15px` → `16Rem`). If a value is exactly halfway between two tokens (e.g.
+  `5px` sits between `4Rem` and `6Rem`), round up unless there is a reason not to.
+- For shorthand values, compose the tokens in a template literal, e.g.
+  `` padding: `${baseSpacing['6Rem']} ${baseSpacing['10Rem']}` ``.
+- Leave `0` as the literal `0` — there is no token for it.
+- This applies to `padding`/`margin` (all longhand variants) and to spacing-like layout
+  props such as `gap`.
+
 Migrating SASS to emotion (and dropping the old class names)
 When a feature is migrated to React we want to fully move its SASS into emotion so the
 legacy BEM/Angular class names are no longer required. The class names are usually
