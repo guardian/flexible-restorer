@@ -8,6 +8,7 @@
   height: 100%;
   z-index: 2;
   transition: opacity .2s ease-in;
+
   &:before {
     content: ' ';
     display: inline-block;
@@ -41,6 +42,7 @@ gu-box.modal__content {
 // have been migrated to the React `restore-modal` component (emotion styles).
 .modal__content__form__fieldset {
   margin-bottom: 10px;
+
   &:last-child {
     margin-bottom: 0px;
   }
