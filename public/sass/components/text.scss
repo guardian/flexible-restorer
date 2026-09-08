@@ -131,48 +131,13 @@ a.snapshot-list__item__restore {
 }
 
 //MODAL
+// Only the error modal (ErrorCtrl) still uses these classes. The restore modal
+// has moved to the React `restore-modal` component with emotion styles.
 .modal__content__title {
   font-family: "Guardian Egyptian Text";
   font-size: 24px;
   font-weight: bold;
   color: $color-650-grey;
-}
-
-.modal__content__desc {
-  font-family: "Guardian Egyptian Text";
-  font-size: 14px;
-  color: $color-650-grey;
-}
-
-.modal__content__source,
-.modal__content__destination-list {
-  font-family: "Guardian Agate Sans";
-  font-size: 16px;
-}
-
-.modal__content__form__header {
-  font-family: "Guardian Egyptian Text";
-  font-size: 14px;
-  font-weight: bold;
-  color: $color-650-grey;
-}
-
-.model__content__refresh {
-  font-family: "Guardian Agate Sans";
-  font-size: 13px;
-}
-
-.modal__content__form label {
-  font-family: "Guardian Egyptian Text";
-  font-size: 14px;
-  line-height: 0.1;
-  color: $color-650-grey;
-}
-
-.modal__content__btn,
-.modal__content__btn--close {
-  font-family: "Guardian Agate Sans";
-  font-size: 13px;
 }
 
 .delta-row__content {
