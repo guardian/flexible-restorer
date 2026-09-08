@@ -418,3 +418,89 @@ When("I press list navigation keys", async ({ page }) => {
 Then("the snapshot list selection should not change", async () => {
     
 });
+
+// ---------------------------------------------------------------------------
+// Scenario: A snapshot list taller than the viewport scrolls and off-screen
+// rows require scrolling
+//
+// Uses the dedicated long-list fixture (25 snapshots — see STATE_FIXTURES.md)
+// whose rows overflow the viewport. Verifies the sidebar's inner list has its
+// own scrollbar and that rows below the fold are only reachable after scrolling,
+// which is the behaviour the reported bug broke.
+// ---------------------------------------------------------------------------
+
+const LONG_LIST_CONTENT_ID = "000000000000000000000002";
+const LONG_LIST_LENGTH = 25;
+
+// The clickable target within a row: the content column carries the onSelect
+// handler (see SnapshotListItem), so it is what a user actually clicks.
+const lastRowTarget = (page: Page) =>
+    page
+        .locator('[data-testid="snapshot-list-item"]')
+        .last()
+        .getByText(/Last modified by:/);
+
+Given(
+    "version history data has more snapshots than fit in the viewport",
+    async ({ page, localStack }) => {
+        await page.goto(
+            `${localStack.baseUrl}/content/${LONG_LIST_CONTENT_ID}/versions`,
+            { waitUntil: "domcontentloaded" },
+        );
+        await expect(
+            page.locator('[data-testid="snapshot-list-item"]'),
+        ).toHaveCount(LONG_LIST_LENGTH * 2, { timeout: loadTimeout });
+    },
+);
+
+Then("the snapshot list should show a vertical scrollbar", async ({ page }) => {
+    // A scrollbar exists when the content is taller than its scroll container.
+    const overflows = await page
+        .getByTestId("snapshot-list-scroll")
+        .evaluate((el) => el.scrollHeight > el.clientHeight);
+    expect(overflows).toBe(true);
+});
+
+Then("the last snapshot row should be outside the viewport", async ({ page }) => {
+    await expect(lastRowTarget(page)).not.toBeInViewport({ timeout });
+});
+
+Then(
+    "clicking the last snapshot row without scrolling should be blocked",
+    async ({ page }) => {
+        // With scroll:"none" Playwright will not auto-scroll into view, so a click
+        // on a row below the fold must fail — proving the user cannot reach it
+        // without scrolling.
+        let error: Error | undefined;
+        try {
+            await lastRowTarget(page).click({ scroll: "none", timeout: 3000 });
+        } catch (e) {
+            error = e as Error;
+        }
+        expect(
+            error,
+            "clicking an off-screen row with scroll:'none' should throw",
+        ).toBeTruthy();
+    },
+);
+
+When("I scroll the snapshot list to the bottom", async ({ page }) => {
+    await page.getByTestId("snapshot-list-scroll").evaluate((el) => {
+        el.scrollTop = el.scrollHeight;
+    });
+});
+
+Then("the last snapshot row should be inside the viewport", async ({ page }) => {
+    await expect(lastRowTarget(page)).toBeInViewport({ timeout });
+});
+
+Then(
+    "I should be able to click the last snapshot row without scrolling",
+    async ({ page }) => {
+        // Now in view, the same scroll:"none" click succeeds and selects the row.
+        await lastRowTarget(page).click({ scroll: "none" });
+        await expect(
+            page.locator('[data-testid="snapshot-list-item"]').last(),
+        ).toHaveAttribute("data-active", "true");
+    },
+);

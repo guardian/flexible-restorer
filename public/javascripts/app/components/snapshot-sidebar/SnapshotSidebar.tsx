@@ -84,7 +84,7 @@ const SnapshotSidebar: FunctionComponent<SnapshotSidebarProps> = ({
 		<div css={styles.sidebar(isSlidIn)}>
 			<div css={styles.scrollableContainer}>
 				<ArticleHeader activeSnapshot={activeSnapshot} />
-				<div css={styles.scrollableBody}>
+				<div css={styles.scrollableBody} data-testid="snapshot-list-scroll">
 					<SnapshotList
 						snapshots={snapshots}
 						activeIndex={activeIndex}

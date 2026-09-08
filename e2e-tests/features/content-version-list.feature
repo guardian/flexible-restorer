@@ -113,6 +113,17 @@ Feature: Review snapshot list and metadata in version history
 	# Evidence: public/javascripts/app/templates/restore-list.html#L118-L125 (delta-row relative date)
 	# Evidence: public/javascripts/app/models/SnapshotIdModel.js#L123-L125 (getRelativeDate)
 
+	Scenario: A snapshot list taller than the viewport scrolls and off-screen rows require scrolling
+		Given version history data has more snapshots than fit in the viewport
+		Then the snapshot list should show a vertical scrollbar
+		And the last snapshot row should be outside the viewport
+		And clicking the last snapshot row without scrolling should be blocked
+		When I scroll the snapshot list to the bottom
+		Then the last snapshot row should be inside the viewport
+		And I should be able to click the last snapshot row without scrolling
+	# Evidence: public/javascripts/app/components/snapshot-sidebar/styles.ts (scrollableBody overflowY:auto + minHeight:0)
+	# Evidence: public/javascripts/app/components/snapshot-sidebar/SnapshotSidebar.tsx (fixed header, scrollable body)
+
 	Scenario: Keyboard navigation changes active snapshot when modal is not open
 		Given version history data has loaded successfully
 		And the restore modal is not open
