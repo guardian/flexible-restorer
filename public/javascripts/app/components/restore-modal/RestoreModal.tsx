@@ -290,6 +290,10 @@ const RestoreModal: FunctionComponent<RestoreModalProps> = ({ contentId }) => {
 	const closeModal = (): void => {
 		document.body.style.height = '100%';
 		document.body.style.overflow = 'visible';
+		// Drop focus from the Cancel button: react-aria Buttons handle Enter/Space
+		// themselves, so a lingering focus would swallow the global Enter shortcut
+		// that reopens the modal (the legacy native button let it propagate).
+		(document.activeElement as HTMLElement | null)?.blur();
 		setIsActive(false);
 		publishHiddenModal();
 		form.reset();
