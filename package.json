@@ -8,9 +8,10 @@
         "dev": "webpack --mode=development --watch",
         "dev:local": "tsx ./e2e-tests/images/run-dev-local.ts",
         "test:unit": "jest",
+        "bddgen": "bddgen --config=e2e-tests/playwright.config.js",
         "test": "playwright test --config=e2e-tests/playwright.config.js",
         "test:ci": "START_LOCAL_INFRA=true playwright test --config=e2e-tests/playwright.config.js",
-        "test:ui": "playwright test --config=e2e-tests/playwright.config.js --ui-host=0.0.0.0 --ui-port=9323"
+        "test:ui": "npm run bddgen && playwright test --config=e2e-tests/playwright.config.js --ui-host=0.0.0.0 --ui-port=9323"
     },
     "dependencies": {
         "@emotion/react": "^11.14.0",
