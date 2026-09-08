@@ -2,6 +2,7 @@ import angular from 'angular';
 import { react2angular } from 'react2angular';
 import { SearchForm } from './SearchForm';
 import { SnapshotSidebar } from './snapshot-sidebar/SnapshotSidebar';
+import { RestoreModal } from './restore-modal/RestoreModal';
 import { provideAngularServices } from './hooks/useAngularRouter';
 
 // AngularJS module hosting the React components bridged in via react2angular.
@@ -27,6 +28,13 @@ reactComponents.component('searchForm', react2angular(SearchForm, ['initialQuery
 reactComponents.component(
   'snapshotSidebar',
   react2angular(SnapshotSidebar, ['contentId'])
+);
+
+// Restore modal ("Before you restore" confirmation form).
+// Usage in templates: <restore-modal content-id="contentId"></restore-modal>.
+reactComponents.component(
+  'restoreModal',
+  react2angular(RestoreModal, ['contentId'])
 );
 
 // Instantiate the bridge at bootstrap so services are provisioned before any
