@@ -3,6 +3,7 @@ import { react2angular } from 'react2angular';
 import { SearchForm } from './SearchForm';
 import { SnapshotSidebar } from './snapshot-sidebar/SnapshotSidebar';
 import { RestoreModal } from './restore-modal/RestoreModal';
+import { ContentViewer } from './content-viewer/ContentViewer';
 import { provideAngularServices } from './hooks/useAngularRouter';
 
 // AngularJS module hosting the React components bridged in via react2angular.
@@ -35,6 +36,13 @@ reactComponents.component(
 reactComponents.component(
   'restoreModal',
   react2angular(RestoreModal, ['contentId'])
+);
+
+// Snapshot content viewer (article furniture + HTML/JSON body + actions).
+// Usage in templates: <snapshot-content-viewer content-id="contentId"></snapshot-content-viewer>.
+reactComponents.component(
+  'snapshotContentViewer',
+  react2angular(ContentViewer, ['contentId'])
 );
 
 // Instantiate the bridge at bootstrap so services are provisioned before any

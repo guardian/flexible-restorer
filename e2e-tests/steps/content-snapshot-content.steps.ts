@@ -177,32 +177,20 @@ Given("JSON content is available in the panel", async ({ page }) => {
 });
 
 When("I use the Copy JSON action", async ({ page }) => {
-    // The app copies via document.execCommand("copy") on a hidden textarea. The
-    // local stack is served over http (an insecure context), where
-    // navigator.clipboard is undefined, so capture what gets copied by wrapping
-    // execCommand and recording the focused textarea's value at copy time.
-    await page.evaluate(() => {
-        const w = window as unknown as { __copiedText?: string };
-        const original = document.execCommand.bind(document);
-        document.execCommand = ((commandId: string, ...args: unknown[]) => {
-            if (commandId === "copy") {
-                const el = document.activeElement as HTMLTextAreaElement | null;
-                w.__copiedText = el && "value" in el ? el.value : "";
-            }
-            return (original as (...a: unknown[]) => boolean)(
-                commandId,
-                ...args,
-            );
-        }) as typeof document.execCommand;
-    });
+    // The app copies via the async Clipboard API (navigator.clipboard.writeText)
+    // in secure contexts, which localhost is. Grant clipboard permissions so the
+    // write succeeds and can be read back in the assertion below.
+    await page
+        .context()
+        .grantPermissions(["clipboard-read", "clipboard-write"]);
     await page.getByText("Copy JSON", { exact: true }).click();
 });
 
 Then("the snapshot JSON should be copied to the clipboard", async ({ page }) => {
     // The copied text is the pretty-printed snapshot JSON, so it contains the
-    // content id and JSON-only keys.
-    const clipboard = await page.evaluate(
-        () => (window as unknown as { __copiedText?: string }).__copiedText ?? "",
+    // content id and JSON-only keys. Read the real clipboard to confirm.
+    const clipboard = await page.evaluate(() =>
+        navigator.clipboard.readText(),
     );
     expect(clipboard).toContain("contentChangeDetails");
     expect(clipboard).toContain("568c4110e4b0c73bdb0e52df");
