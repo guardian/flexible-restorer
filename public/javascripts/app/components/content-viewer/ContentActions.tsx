@@ -21,6 +21,13 @@ const restoreIcon = css({
 	marginRight: '5px',
 });
 
+// LinkButton renders an <a> (content-box) while Button renders a <button>
+// (border-box), so the shared explicit height makes links taller. Force
+// border-box to match the buttons.
+const linkButtonBoxSizing = css({
+	boxSizing: 'border-box',
+});
+
 type ContentActionsProps = {
 	contentId: string;
 	canRestore: boolean;
@@ -61,6 +68,7 @@ const ContentActions: FunctionComponent<ContentActionsProps> = ({
 			size="sm"
 			href={`/export/${contentId}/git`}
 			target="_blank"
+			cssOverrides={linkButtonBoxSizing}
 		>
 			Export all as Git Repo
 		</LinkButton>
@@ -69,6 +77,7 @@ const ContentActions: FunctionComponent<ContentActionsProps> = ({
 			size="sm"
 			href={`/export/${contentId}/zip`}
 			target="_blank"
+			cssOverrides={linkButtonBoxSizing}
 		>
 			Export all as Zip
 		</LinkButton>
