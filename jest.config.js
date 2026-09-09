@@ -3,7 +3,7 @@
 // isolated from the webpack build (which passes its own inline Babel options).
 module.exports = {
     testEnvironment: "node",
-    testMatch: ["<rootDir>/public/javascripts/**/*.test.js"],
+    testMatch: ["<rootDir>/public/javascripts/**/*.test.{js,ts,tsx}"],
     transform: {
         "^.+\\.[jt]sx?$": [
             "babel-jest",

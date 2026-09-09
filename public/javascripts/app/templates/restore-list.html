@@ -26,80 +26,8 @@
     <!-- SNAPSHOT SIDEBAR (migrated to React; see components/snapshot-sidebar) -->
     <snapshot-sidebar class="col-4" content-id="contentId"></snapshot-sidebar>
 
-    <!-- CONTENT -->
-    <gu-column class="snapshot-content" span="8" ng-controller="SnapshotContentCtrl as ctrl"
-        ng-class="{'active': isSettingContent === false}">
-        <div class="snapshot-content__viewport scrollable__container">
-
-            <gu-row class="snapshot-content__actions scrollable__header-fixed">
-                <gu-btn class="snapshot-content__actions--button" ng-click="ctrl.restoreContent()" ng-if="canRestore">
-                    <gu-icon class="snapshot-content__actions__restore__icon" variant="wrench-disabled"></gu-icon>
-                    <span>Restore</span>
-                </gu-btn>
-                <gu-btn class="snapshot-content__actions--button" ng-click="ctrl.copyJSON()">
-                    {{copyButtonLabel}}
-                </gu-btn>
-                <a class="snapshot-content__actions--button btn btn" target="_blank"
-                    ng-href="/export/{{contentId}}/git">
-                    Export all as Git Repo
-                </a>
-                <a class="snapshot-content__actions--button btn btn" target="_blank"
-                    ng-href="/export/{{contentId}}/zip">
-                    Export all as Zip
-                </a>
-                <gu-btn class="snapshot-content__actions--button" ng-click="ctrl.toggleJSON()">
-                    {{displayButtonLabel}}
-                </gu-btn>
-            </gu-row>
-            <div class="scrollable__body">
-                <div class="snapshot-content__furniture">
-                    <gu-row class="snapshot-content__furniture__item">
-                        <h4 class="snapshot-content__furniture__item--header">
-                            Headline
-                        </h4>
-                        <p class="snapshot-content__furniture__item--content">
-                            {{ headline }}
-                        </p>
-                    </gu-row>
-
-                    <gu-row class="snapshot-content__furniture__item">
-                        <h4 class="snapshot-content__furniture__item--header">
-                            Standfirst
-                        </h4>
-                        <p class="snapshot-content__furniture__item--content">
-                            {{ standfirst }}
-                        </p>
-                    </gu-row>
-
-                    <gu-row class="snapshot-content__furniture__item">
-                        <h4 class="snapshot-content__furniture__item--header">
-                            TrailText
-                        </h4>
-                        <p class="snapshot-content__furniture__item--content">
-                            {{ trailText }}
-                        </p>
-                    </gu-row>
-                </div>
-
-                <!-- TODO JP 15/4/15 Replace with accordion from components repo -->
-                <gu-row class="snapshot-content__container" ng-class="{ 'show-json': isShowingJSON }">
-
-                    <!-- HTML CONTENT -->
-                    <gu-column class="snapshot-content__container__item" span="6">
-                        <div ng-bind-html="htmlContent"></div>
-                    </gu-column>
-
-                    <!-- JSON CONTENT -->
-                    <gu-column span="6" class="snapshot-content__container__item--json">
-                        <div>
-                            <pre><code>{{ jsonContent }}</code></pre>
-                        </div>
-                    </gu-column>
-
-                </gu-row>
-            </div>
-        </div>
-    </gu-column>
+    <!-- CONTENT (migrated to React; see components/content-viewer) -->
+    <snapshot-content-viewer class="col-8" content-id="contentId"></snapshot-content-viewer>
 
     <!-- MODAL (migrated to React; see components/restore-modal) -->
     <restore-modal content-id="contentId"></restore-modal>
