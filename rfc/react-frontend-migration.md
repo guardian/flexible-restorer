@@ -189,7 +189,9 @@ load-bearing in two ways, so they cannot simply be deleted:
 
 Follow this process, using a co-located `styles.ts` that exports a `styles` object of
 `css(...)` blocks (one per element/variant), consumed via the `css` prop. This keeps the
-markup class-free while matching the existing look.
+markup class-free while matching the existing look. The co-located `styles.ts` is a
+migration-time convenience; once the feature is stable, inline the blocks into their
+components (see Step 6).
 
 Step 1 — Port the styles into emotion, watching for these easily-missed cases:
 
@@ -241,6 +243,29 @@ Step 5 — Verify:
   unrelated specs, with an early "N did not run" abort); a failure only implicates your
   change if it references your new `data-testid`/`data-*` locators, so confirm by
   re-running or running the affected specs in isolation.
+
+Step 6 — Inline the styles once the feature is stable. The co-located `styles.ts` keeps
+the migration diff focused, but the end state is styles living next to the markup they
+apply to:
+
+- First confirm no style object is shared across components (grep the `styles.` usages).
+  Every one of our migrated blocks so far has been used by exactly one component, which
+  makes inlining a mechanical move.
+- Move each `css(...)` block into its single-consumer component as a module-scoped `const`
+  (functions stay functions, e.g. `item(isActive)`), keep the porting comments, repoint
+  the `css` prop from `styles.x` to `x`, and delete `styles.ts`.
+- Keep only genuinely shared values in a shared module under `components/styles/`
+  (e.g. `palette.ts`, `icons.ts`), imported via `../styles/palette` / `../styles/icons`.
+
+Aligning with Stand — inlining `css(...)` blocks next to the markup is the idiomatic
+approach: Stand is built on Emotion and expects the `css` prop for one-off styling, and
+co-locating matches Stand's own components. For shared values, prefer Stand's design
+tokens (`baseColors`, `semanticColors`, `baseTypography`, `baseSpacing`, etc.) over a
+hand-rolled palette. A local `palette`/`icons` module is only justified when the legacy
+values have no exact Stand token — as with the snapshot sidebar, whose ported colours
+(`#00ADEE`, `#ed5935`, greys) and fonts (`Guardian Agate Sans`/`Egyptian`) do not map to
+Stand tokens and are kept local to preserve the exact legacy look. Note the divergence
+when you do this.
 
 React Component guidelines
 If we need to define any components that are not covered by the Stand component library we should:
