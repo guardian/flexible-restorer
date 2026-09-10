@@ -15,7 +15,9 @@ SnapshotListCtrlMod.controller('SnapshotListCtrl', [
     var snapshotCollection;
 
     $scope.isLoading  = true;
-    $scope.isSidebarActive = false;
+    // Exposed for the migrated React sidebar, bound via
+    // <snapshot-sidebar content-id="contentId"> (see components/index.js).
+    $scope.contentId = $routeParams.contentId;
 
     SnapshotIdModels
       .getCollection($routeParams.contentId)
@@ -24,14 +26,6 @@ SnapshotListCtrlMod.controller('SnapshotListCtrl', [
         snapshotCollection.getModelAt(0).set('activeState', true);
         $scope.isLoading  = false;
         $scope.models = collection.getModels();
-
-        var activeModel = collection.find((data)=> data.activeState);
-        $scope.articleTitle = activeModel.getHeadline();
-        $scope.articleHash = activeModel.getContentId();
-        // TODO - this should ideally gather URLs of all source systems rather than just the most recent
-        $scope.articleURL = activeModel.getComposerUrl();
-        //animate sidebar in
-        $timeout(()=> $scope.isSidebarActive = true, 500);
       })
       .catch((err) => {
         $scope.isLoading = false;
@@ -45,28 +39,6 @@ SnapshotListCtrlMod.controller('SnapshotListCtrl', [
       if (activeModel === model) {
         return;
       }
-      setActive(activeModel, model);
-    });
-
-    //increment the active model
-    mediator.subscribe('snapshot-list:increment-active', function(){
-      var activeModel = snapshotCollection.find((data)=> data.activeState);
-      var index = snapshotCollection.indexOf(activeModel) + 1;
-      if (index === snapshotCollection.length()) {
-        index = 0;
-      }
-      var model = snapshotCollection.getModelAt(index);
-      setActive(activeModel, model);
-    });
-
-    //decrement the active model
-    mediator.subscribe('snapshot-list:decrement-active', function(){
-      var activeModel = snapshotCollection.find((data)=> data.activeState);
-      var index = snapshotCollection.indexOf(activeModel) -1;
-      if (index === -1) {
-        index = snapshotCollection.length() - 1;
-      }
-      var model = snapshotCollection.getModelAt(index);
       setActive(activeModel, model);
     });
 

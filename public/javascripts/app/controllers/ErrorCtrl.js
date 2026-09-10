@@ -6,14 +6,19 @@ var ErrorCtrlMod = angular.module('ErrorCtrlMod', []);
 ErrorCtrlMod.controller('ErrorCtrl', [
     '$element',
     '$log',
-    function ($element, $log) {
+    '$timeout',
+    function ($element, $log, $timeout) {
         $element.attr('style', '');
         this.hasError = false;
         this.errorContent = '';
 
+        // `error` is published through the mediator, often from outside Angular's
+        // digest, so update the flags inside `$timeout` to render the modal.
         mediator.subscribe('error', (err) => {
-            this.hasError = true;
-            this.errorContent = err.message;
+            $timeout(() => {
+                this.hasError = true;
+                this.errorContent = err.message;
+            });
             $log.error(err.message);
         });
     }

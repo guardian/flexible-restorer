@@ -34,7 +34,11 @@ module.exports = defineConfig({
     },
     // All workers share a single local stack (one restorer instance), so cap
     // concurrency to keep the load it sees modest and avoid contention flakes.
-    workers: process.env.CI ? 2 : 4,
+    // The dev container is memory-constrained: four parallel Chromium instances
+    // plus the Docker stack exhaust RAM and crash browser sessions ("Internal
+    // server error, session closed"). Two workers keeps memory and shared-stack
+    // load safe.
+    workers: 2,
     // Retry once so an occasional load-induced flake (e.g. a destination lookup
     // timing out under contention) doesn't fail the whole run.
     retries: 1,

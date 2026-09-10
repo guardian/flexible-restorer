@@ -215,7 +215,14 @@ export async function startLocalStack(
             // app through the nginx container below, not this port directly.
             .withExposedPorts(9000)
             .withStartupTimeout(10 * 60 * 1000)
-            .withWaitStrategy(Wait.forListeningPorts())
+            // `sbt run` (Play dev mode) binds the port before compiling — it only
+            // compiles the app on the first request. Waiting for a 200 from the
+            // (unauthenticated) healthcheck forces that first compile now, so the
+            // stack is genuinely ready before we publish/use it, rather than the
+            // first real request paying the compile cost and timing out.
+            .withWaitStrategy(
+                Wait.forHttp("/management/healthcheck", 9000).forStatusCode(200),
+            )
             .start();
 
         nginxContainer = await (

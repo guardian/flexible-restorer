@@ -471,7 +471,7 @@ When("destination data is available", async ({ page }) => {
     // reliable signal that that load has completed.
     await expect(
         page.getByText(/Snapshot of revision \d+/),
-    ).toBeVisible({ timeout: timeout });
+    ).toBeVisible({ timeout: destinationsLoadTimeout });
 });
 
 Then(
@@ -481,7 +481,7 @@ Then(
         // <date>" timestamp detail, e.g.
         // "Snapshot of revision 10 taken from secondary at <date>".
         const source = page.getByText(/Snapshot of revision \d+ taken/);
-        await expect(source).toBeVisible({ timeout: timeout });
+        await expect(source).toBeVisible({ timeout: destinationsLoadTimeout });
         // Assert on the timestamp framing ("... at <date>") rather than a
         // specific parsed date value, keeping the check robust to the exact
         // formatted date rendered.
@@ -692,6 +692,12 @@ When("the error is published", async ({ page }) => {
     // Pressing the down arrow makes the next snapshot active, which loads its
     // content from the (now failing) endpoint. The rejected request causes
     // SnapshotContentCtrl to publish the 'error' event the modals react to.
+    // Wait for the React sidebar list to be interactive first: the keydown
+    // handler is a no-op until the snapshot list has loaded, so pressing too
+    // early would not navigate (and never trigger the failing content fetch).
+    await expect(
+        page.locator('[data-testid="snapshot-list-item"][data-active="true"]'),
+    ).toHaveCount(1, { timeout: timeout });
     await page.keyboard.press("ArrowDown");
 });
 

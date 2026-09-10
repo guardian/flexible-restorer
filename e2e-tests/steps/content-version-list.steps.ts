@@ -175,11 +175,11 @@ When("I view the index value for that row", async () => {
     // No action required — the fallback index is asserted in the Then step.
 });
 Then("I should see the fallback revision number based on list position", async ({ page }) => {
-    const items = page.locator("li.snapshot-list__item");
+    const items = page.locator('[data-testid="snapshot-list-item"]');
     const total = await items.count();
     expect(total).toBeGreaterThan(0);
 
-    // The "1" fallback index must live inside a snapshot-list__item, and only
+    // The "1" fallback index must live inside a snapshot list item, and only
     // one row should carry it.
     const itemWithFallbackIndex = items.filter({
         has: page.getByText("1", { exact: true }),
@@ -198,7 +198,7 @@ When("I click a snapshot row in the list", async ( { page }) => {
     await page.getByRole('heading', { name: 'Scheduled snapshot' }).nth(1).click();
 });
 Then("that row should become the active row", async ({ page }) => {
-    const activeRow = page.locator("li.item-active");
+    const activeRow = page.locator('[data-testid="snapshot-list-item"][data-active="true"]');
     await expect(activeRow).toHaveCount(1);
     await expect(activeRow).toContainText("Scheduled snapshot");
 });
@@ -290,9 +290,9 @@ When("I inspect the status indicators for that row", async ({ page }) => {
     await expect(page.getByText(/Last modified by:/).first()).toBeVisible({ timeout });
 });
 Then("I should see the legally sensitive marker", async ({ page }) => {
-    // The marker is an icon-only div (no text/role/label), so it can only be
-    // located by class. Verify it is shown and renders the legal-check icon.
-    const marker = page.locator(".snapshot-list__item__settings__legally-sensitive").first();
+    // The marker is an icon-only div (no text/role/label), so it is located by
+    // its test id. Verify it is shown and renders the legal-check icon.
+    const marker = page.locator('[data-testid="legally-sensitive"]').first();
     await expect(marker).toBeVisible({ timeout });
     // The icon is a webpack-inlined SVG data URI; confirm an icon is rendered.
     const backgroundImage = await marker.evaluate((el) => getComputedStyle(el).backgroundImage);
@@ -359,16 +359,18 @@ Then("I should see a relative time difference value between adjacent snapshot da
 });
 
 
-// The active snapshot row carries the `item-active` class (see
-// restore-list.html). Its position among the list rows is the reliable signal
-// of which snapshot is selected, since the fixture's rows share the same
+// The active snapshot row carries `data-active="true"` (see the React
+// SnapshotListItem component). Its position among the list rows is the reliable
+// signal of which snapshot is selected, since the fixture's rows share the same
 // revision number and only two distinct timestamps.
 async function activeSnapshotIndex(page: Page): Promise<number> {
     return page.evaluate(() => {
         const rows = Array.from(
-            document.querySelectorAll("li.snapshot-list__item"),
+            document.querySelectorAll('[data-testid="snapshot-list-item"]'),
         );
-        return rows.findIndex((row) => row.classList.contains("item-active"));
+        return rows.findIndex(
+            (row) => row.getAttribute("data-active") === "true",
+        );
     });
 }
 
@@ -376,7 +378,7 @@ When("I press the down or up arrow key", async ({ page }) => {
     // Wait for the list to render with exactly one active row before driving the
     // keyboard, then confirm the active selection moves down and back up again.
     await expect(
-        page.locator("li.snapshot-list__item.item-active"),
+        page.locator('[data-testid="snapshot-list-item"][data-active="true"]'),
     ).toHaveCount(1, { timeout: timeout });
     const start = await activeSnapshotIndex(page);
 
@@ -400,7 +402,7 @@ When("I press list navigation keys", async ({ page }) => {
     // move the active snapshot. Record the active row, press the keys, and
     // confirm the selection is unchanged.
     await expect(
-        page.locator("li.snapshot-list__item.item-active"),
+        page.locator('[data-testid="snapshot-list-item"][data-active="true"]'),
     ).toHaveCount(1, { timeout: timeout });
     const start = await activeSnapshotIndex(page);
 
@@ -416,3 +418,89 @@ When("I press list navigation keys", async ({ page }) => {
 Then("the snapshot list selection should not change", async () => {
     
 });
+
+// ---------------------------------------------------------------------------
+// Scenario: A snapshot list taller than the viewport scrolls and off-screen
+// rows require scrolling
+//
+// Uses the dedicated long-list fixture (25 snapshots — see STATE_FIXTURES.md)
+// whose rows overflow the viewport. Verifies the sidebar's inner list has its
+// own scrollbar and that rows below the fold are only reachable after scrolling,
+// which is the behaviour the reported bug broke.
+// ---------------------------------------------------------------------------
+
+const LONG_LIST_CONTENT_ID = "000000000000000000000002";
+const LONG_LIST_LENGTH = 25;
+
+// The clickable target within a row: the content column carries the onSelect
+// handler (see SnapshotListItem), so it is what a user actually clicks.
+const lastRowTarget = (page: Page) =>
+    page
+        .locator('[data-testid="snapshot-list-item"]')
+        .last()
+        .getByText(/Last modified by:/);
+
+Given(
+    "version history data has more snapshots than fit in the viewport",
+    async ({ page, localStack }) => {
+        await page.goto(
+            `${localStack.baseUrl}/content/${LONG_LIST_CONTENT_ID}/versions`,
+            { waitUntil: "domcontentloaded" },
+        );
+        await expect(
+            page.locator('[data-testid="snapshot-list-item"]'),
+        ).toHaveCount(LONG_LIST_LENGTH * 2, { timeout: loadTimeout });
+    },
+);
+
+Then("the snapshot list should show a vertical scrollbar", async ({ page }) => {
+    // A scrollbar exists when the content is taller than its scroll container.
+    const overflows = await page
+        .getByTestId("snapshot-list-scroll")
+        .evaluate((el) => el.scrollHeight > el.clientHeight);
+    expect(overflows).toBe(true);
+});
+
+Then("the last snapshot row should be outside the viewport", async ({ page }) => {
+    await expect(lastRowTarget(page)).not.toBeInViewport({ timeout });
+});
+
+Then(
+    "clicking the last snapshot row without scrolling should be blocked",
+    async ({ page }) => {
+        // With scroll:"none" Playwright will not auto-scroll into view, so a click
+        // on a row below the fold must fail — proving the user cannot reach it
+        // without scrolling.
+        let error: Error | undefined;
+        try {
+            await lastRowTarget(page).click({ scroll: "none", timeout: 3000 });
+        } catch (e) {
+            error = e as Error;
+        }
+        expect(
+            error,
+            "clicking an off-screen row with scroll:'none' should throw",
+        ).toBeTruthy();
+    },
+);
+
+When("I scroll the snapshot list to the bottom", async ({ page }) => {
+    await page.getByTestId("snapshot-list-scroll").evaluate((el) => {
+        el.scrollTop = el.scrollHeight;
+    });
+});
+
+Then("the last snapshot row should be inside the viewport", async ({ page }) => {
+    await expect(lastRowTarget(page)).toBeInViewport({ timeout });
+});
+
+Then(
+    "I should be able to click the last snapshot row without scrolling",
+    async ({ page }) => {
+        // Now in view, the same scroll:"none" click succeeds and selects the row.
+        await lastRowTarget(page).click({ scroll: "none" });
+        await expect(
+            page.locator('[data-testid="snapshot-list-item"]').last(),
+        ).toHaveAttribute("data-active", "true");
+    },
+);

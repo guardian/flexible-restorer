@@ -66,23 +66,34 @@ export function readSharedStackInfo(
  * Returns true if the given base URL responds to an HTTP request. Any HTTP
  * status (including 401/403 from auth) counts as reachable — we only care that
  * the stack is up and accepting connections.
+ *
+ * Retries a few times because a stack started with `npm run dev:local` runs Play
+ * in dev mode (`sbt run`), which recompiles on the next request after a source
+ * change. That first post-change request can take longer than a single attempt's
+ * timeout, so a bare check would spuriously report the stack as down.
  */
 export async function isStackReachable(
     baseUrl: string,
-    timeoutMs = 3000,
+    { attemptTimeoutMs = 3000, attempts = 5 }: {
+        attemptTimeoutMs?: number;
+        attempts?: number;
+    } = {},
 ): Promise<boolean> {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), timeoutMs);
-    try {
-        await fetch(baseUrl, {
-            method: "GET",
-            redirect: "manual",
-            signal: controller.signal,
-        });
-        return true;
-    } catch {
-        return false;
-    } finally {
-        clearTimeout(timer);
+    for (let attempt = 0; attempt < attempts; attempt++) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), attemptTimeoutMs);
+        try {
+            await fetch(baseUrl, {
+                method: "GET",
+                redirect: "manual",
+                signal: controller.signal,
+            });
+            return true;
+        } catch {
+            // Retry: a timeout here is most likely an in-progress recompile.
+        } finally {
+            clearTimeout(timer);
+        }
     }
+    return false;
 }

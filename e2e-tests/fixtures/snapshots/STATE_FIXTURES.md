@@ -48,6 +48,7 @@ A single snapshot exhibits several states at once. The complete set per fixture:
 | `58e4eab7e4b01ca21818a13e/2026-06-26T16:31:05.633Z` | has_revision, no_editor, non_launch_reason, not_legally_sensitive, comments_on, scheduled |
 | `55901e70e4b0c9bda8d8ab20/2026-06-26T13:01:07.919Z` | has_revision, no_editor, non_launch_reason, comments_on, embargoed, published |
 | `000000000000000000000001/2026-06-26T11:26:27.839Z` | **missing_revision** (synthetic), no_editor, non_launch_reason, comments_on, published |
+| `000000000000000000000002/2026-06-26T11:00:00.000Z` … `…T11:24:00.000Z` | **long_list** (synthetic, 25 snapshots), has_revision, no_editor, non_launch_reason, comments_off, published |
 
 ## Notes
 
@@ -55,6 +56,11 @@ A single snapshot exhibits several states at once. The complete set per fixture:
   snapshots lacked a revision), so `000000000000000000000001` is a hand-crafted
   fixture: a copy of the published example with
   `summary.contentChangeDetails.revision` deleted from its `.info.json`.
+- **Long list** `000000000000000000000002` is a synthetic fixture of 25
+  snapshots (revisions 25→1, one per minute) whose version list overflows the
+  viewport. It exists so the snapshot sidebar's scroll behaviour can be
+  exercised end-to-end (see `content-version-list.feature`); no real fixture had
+  enough snapshots to scroll (the largest is 2).
 - **Primary vs Secondary system** is **not** a property of the snapshot. It is
   derived from stack config (`stack.id` / `stack.isSecondary`) when the version
   list is built (`app/controllers/Versions.scala`). Because the fixture tree is
