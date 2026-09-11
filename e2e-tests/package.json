@@ -4,7 +4,7 @@
     "private": true,
     "description": "Playwright/BDD end-to-end tests for composer-restorer.",
     "devDependencies": {
-        "@guardian/pan-domain-node": "^1.2.4",
+        "@guardian/pan-domain-node": "1.2.5",
         "@playwright/test": "^1.62.1",
         "playwright": "^1.62.1",
         "playwright-bdd": "^9.2.0",
