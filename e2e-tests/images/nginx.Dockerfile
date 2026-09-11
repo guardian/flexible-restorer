@@ -7,7 +7,7 @@ WORKDIR /build
 
 # Only the packages needed to run the cookie generator, kept minimal so this
 # stage stays fast and doesn't pull in webpack/playwright/etc.
-RUN npm install --no-save @guardian/pan-domain-node@^1.2.4 tsx@^4.22.4
+RUN npm install --no-save @guardian/pan-domain-node@1.2.5 tsx@^4.22.4
 
 COPY e2e-tests/setup/panDomainCookie.ts e2e-tests/setup/panDomainKeys.ts ./e2e-tests/setup/
 COPY e2e-tests/images/generate-pan-domain-cookie.ts ./e2e-tests/images/
