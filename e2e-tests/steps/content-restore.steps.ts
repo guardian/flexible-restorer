@@ -46,7 +46,7 @@ let restoreResponse: APIResponse | undefined;
 // assert on their availability (populated when the restore modal loads).
 let loadedDestinations: Array<{ systemId: string; available: boolean }> = [];
 
-// Three fixtures (each has snapshots in the MinIO buckets so the version history
+// Three fixtures (each has snapshots in the LocalStack S3 buckets so the version history
 // page renders and the restore modal can open) used to exercise the three
 // destination-row states. The mock flexible-content API is configured per
 // content id (via `changeDetailsByContentId`) so each id's destinations report a
