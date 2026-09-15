@@ -64,7 +64,7 @@ spec itself, use:
 npm run dev:local
 ```
 
-This starts MinIO and Restorer using the same bootstrap code as the e2e suite and
+This starts LocalStack and Restorer using the same bootstrap code as the e2e suite and
 keeps the stack running until you press Ctrl+C.
 
 

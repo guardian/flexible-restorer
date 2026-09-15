@@ -46,7 +46,7 @@ jobs:
             # fast cache hits — keeping them within the suite's global timeout.
             - name: Pre-build e2e Docker images
               run: |
-                  docker build -f e2e-tests/images/minio.Dockerfile -t flexible-restorer-minio-e2e:prebuild .
+                  docker pull localstack/localstack:4
                   docker build -f e2e-tests/images/mock-flexible-api.Dockerfile -t flexible-restorer-mock-api-e2e:prebuild .
                   docker build -f e2e-tests/images/restorer.Dockerfile -t flexible-restorer-app-e2e:prebuild .
 
