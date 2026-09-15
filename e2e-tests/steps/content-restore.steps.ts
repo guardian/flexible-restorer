@@ -128,7 +128,7 @@ async function openModalAndAwaitDestinations(page: Page): Promise<void> {
     // request resolves; wait for the first before any per-row assertions run.
     await expect(
         page
-            .locator("ol.modal__content__destination-list input[type=radio]")
+            .locator('[data-testid="restore-destination-list"] input[type=radio]')
             .first(),
     ).toBeVisible({ timeout: DESTINATIONS_LOAD_TIMEOUT });
 }
@@ -147,7 +147,7 @@ async function openModalAndAwaitDestinations(page: Page): Promise<void> {
  */
 function destinationRadioByName(page: Page, name: RegExp) {
     return page
-        .locator("ol.modal__content__destination-list li")
+        .locator('[data-testid="restore-destination-item"]')
         .filter({ has: page.getByText(name) })
         .locator('input[type="radio"]');
 }
@@ -630,9 +630,9 @@ When("I close the modal with Cancel", async ({ page }) => {
 Then("the modal should close", async ({ page }) => {
     // The modal is only ever hidden by toggling its opacity to 0 (it keeps its
     // DOM node and layout), so a closed modal is detected by its computed
-    // opacity rather than by visibility. Locate it by its unique title text.
+    // opacity rather than by visibility. Locate it by its test id.
     await expect(
-        page.locator(".modal").filter({ hasText: "Before you restore" }),
+        page.locator('[data-testid="restore-modal"]'),
     ).toHaveCSS("opacity", "0", { timeout: timeout });
 });
 
