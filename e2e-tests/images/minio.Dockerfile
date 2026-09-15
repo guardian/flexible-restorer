@@ -1,9 +1,15 @@
 FROM alpine:3.19
 
 ARG TARGETARCH
+# minio's upstream binary is no longer downloadable, so we use the pgsty/silo fork.
+ARG SILO_RELEASE=RELEASE.2026-09-03T13-18-01Z
+ARG SILO_VERSION=20260903131801.0.0
 
 RUN apk add --no-cache aws-cli curl && \
-    curl -fsSL "https://dl.min.io/server/minio/release/linux-${TARGETARCH}/minio" -o /usr/local/bin/minio && \
+    curl -fsSL "https://github.com/pgsty/silo/releases/download/${SILO_RELEASE}/silo_${SILO_VERSION}_linux_${TARGETARCH}.tar.gz" -o /tmp/silo.tar.gz && \
+    tar -xzf /tmp/silo.tar.gz -C /tmp silo && \
+    mv /tmp/silo /usr/local/bin/minio && \
+    rm /tmp/silo.tar.gz && \
     chmod +x /usr/local/bin/minio
 
 COPY e2e-tests/images/start-minio-with-buckets /usr/local/bin/start-minio-with-buckets

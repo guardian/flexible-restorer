@@ -5,7 +5,9 @@ const { createPanDomainCookie } = require("../setup/panDomainCookie") as typeof 
 // Docker's build cache across many rebuilds, so it is given a far-future expiry
 // to avoid silently going stale between rebuilds.
 
+const TEN_YEARS_MS = 10 * 365 * 24 * 60 * 60 * 1000;
+
 const { privateKeyPem } = generatePanDomainKeys();
 process.stdout.write(
-    createPanDomainCookie(privateKeyPem, "default"),
+    createPanDomainCookie(privateKeyPem, "default", TEN_YEARS_MS),
 );
