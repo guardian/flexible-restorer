@@ -184,6 +184,7 @@ const controlInput = css({
 	MozAppearance: 'none',
 	width: '20px',
 	height: '20px',
+	flexShrink: 0,
 	marginRight: '10px',
 	border: `1px solid ${INPUT_BORDER}`,
 	'&:focus': { outline: 0 },
