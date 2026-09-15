@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import type { FunctionComponent } from 'react';
 import { useEffect, useState } from 'react';
+import { css } from '@emotion/react';
 import { useSnapshotList } from '../hooks/useSnapshotList';
 import {
 	useSnapshotKeyboardNav,
@@ -11,9 +12,36 @@ import {
 	publishSetActive,
 	subscribeHiddenModal,
 } from '../utils/mediator';
+import { palette } from '../styles/palette';
 import { ArticleHeader } from './ArticleHeader';
 import { SnapshotList } from './SnapshotList';
-import { styles } from './styles';
+
+// --- sidebar shell (from sidebar.scss + box.scss "secondary" + scrollable.scss) ---
+const sidebar = (isActive: boolean) =>
+	css({
+		boxSizing: 'border-box',
+		display: 'flex',
+		flexDirection: 'column',
+		padding: '10px',
+		backgroundColor: palette.boxSecondary,
+		borderRight: `1px solid ${palette.grey300}`,
+		overflow: 'auto',
+		maxHeight: '100%',
+		height: '100%',
+		transform: isActive
+			? 'translateX(0)'
+			: 'translateZ(0) translateX(-110%)',
+		transition: 'transform 1s',
+		transitionDelay: '.3s',
+	});
+
+const scrollableContainer = css({
+	display: 'flex',
+	flexDirection: 'column',
+	maxHeight: '100%',
+});
+
+const scrollableBody = css({ flexGrow: 1, overflowY: 'auto' });
 
 type SnapshotSidebarProps = {
 	/** Content id from the Angular route, bound via react2angular (see ../index.js). */
@@ -81,10 +109,10 @@ const SnapshotSidebar: FunctionComponent<SnapshotSidebarProps> = ({
 	}
 
 	return (
-		<div css={styles.sidebar(isSlidIn)}>
-			<div css={styles.scrollableContainer}>
+		<div css={sidebar(isSlidIn)}>
+			<div css={scrollableContainer}>
 				<ArticleHeader activeSnapshot={activeSnapshot} />
-				<div css={styles.scrollableBody} data-testid="snapshot-list-scroll">
+				<div css={scrollableBody} data-testid="snapshot-list-scroll">
 					<SnapshotList
 						snapshots={snapshots}
 						activeIndex={activeIndex}

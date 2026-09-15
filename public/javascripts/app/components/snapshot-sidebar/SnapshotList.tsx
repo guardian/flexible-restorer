@@ -1,11 +1,29 @@
 /** @jsxImportSource @emotion/react */
 import type { FunctionComponent } from 'react';
 import { Fragment } from 'react';
+import { css } from '@emotion/react';
 import type { SnapshotIdViewModel } from '../models/snapshotId';
 import { deltaFrom } from '../models/snapshotId';
+import { palette } from '../styles/palette';
 import { SnapshotListItem } from './SnapshotListItem';
 import { DeltaRow } from './DeltaRow';
-import { styles } from './styles';
+
+// --- list (from index-list mixins + snapshot-list.scss) ---
+const list = css({
+	marginTop: '5px',
+	paddingLeft: 0,
+	li: { listStyle: 'none' },
+});
+
+const secondaryBanner = css({
+	color: 'white',
+	background: palette.secondaryBanner,
+	padding: '2px',
+	fontFamily: '"Guardian Agate Sans"',
+	fontWeight: 'bold',
+	fontSize: '12px',
+	textTransform: 'uppercase',
+});
 
 type SnapshotListProps = {
 	snapshots: SnapshotIdViewModel[];
@@ -23,11 +41,11 @@ const SnapshotList: FunctionComponent<SnapshotListProps> = ({
 	activeIndex,
 	onSelect,
 }) => (
-	<ol css={styles.list}>
+	<ol css={list}>
 		{snapshots.map((snapshot, index) => (
 			<Fragment key={`${snapshot.systemId}-${snapshot.timestamp}`}>
 				{snapshot.isSecondary && (
-					<li css={styles.secondaryBanner}>
+					<li css={secondaryBanner}>
 						This snapshot came from composer-secondary
 					</li>
 				)}
