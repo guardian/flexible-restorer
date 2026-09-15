@@ -19,10 +19,11 @@ function waitForTerminationSignal(): Promise<void> {
 
 async function main() {
     const projectRoot = process.cwd();
+    const mode = process.env.APP_MODE === "prod" ? "prod" : "dev";
     let stack: Awaited<ReturnType<typeof startLocalStack>> | undefined;
 
     try {
-        stack = await startLocalStack(projectRoot, { hostPort: 9000 });
+        stack = await startLocalStack(projectRoot, { hostPort: 9000, mode });
 
         // Publish the running stack's details so `npm run test` reuses this
         // stack instead of booting its own (and skips the run when absent).
@@ -32,7 +33,7 @@ async function main() {
             mockApiUrl: stack.mockApiUrl,
         });
 
-        console.log(`\nLocal stack started at ${stack.baseUrl}`);
+        console.log(`\nLocal stack (${mode} mode) started at ${stack.baseUrl}`);
         console.log(
             `Open ${stack.cookieUrl} in your host browser to set the auth cookie and load the app.`,
         );

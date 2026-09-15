@@ -336,13 +336,13 @@ Then(
 
 // --- Enter key opens the restore modal ----------------------------------------
 
-// The restore modal is hidden purely by toggling the `visually-hidden` class,
-// which only sets `opacity: 0` (it does not use display/visibility). Playwright
-// treats an `opacity: 0` element as visible, so open/closed cannot be detected
-// via visibility matchers. Instead, locate the modal by its unique title text
-// and assert on its computed opacity: `1` when open, `0` when closed.
+// The restore modal is hidden purely by toggling opacity (it does not use
+// display/visibility). Playwright treats an `opacity: 0` element as visible, so
+// open/closed cannot be detected via visibility matchers. Instead, locate the
+// React modal by its test id and assert on its computed opacity: `1` when open,
+// `0` when closed.
 const restoreModalLocator = (page: Page) =>
-    page.locator(".modal").filter({ hasText: "Before you restore" });
+    page.locator('[data-testid="restore-modal"]');
 
 // The error modal is a separate `.modal` element (driven by ErrorCtrl) that is
 // shown/hidden via the same `visually-hidden` opacity toggle, so detect it the

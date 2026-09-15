@@ -90,9 +90,9 @@ function createLogConsumer(prefix: string, streamLogs: boolean) {
 
 export async function startLocalStack(
     projectRoot: string,
-    options: { hostPort?: number; streamLogs?: boolean } = {},
+    options: { hostPort?: number; streamLogs?: boolean; mode?: "dev" | "prod" } = {},
 ): Promise<LocalStack> {
-    const { hostPort, streamLogs = false } = options;
+    const { hostPort, streamLogs = false, mode = "dev" } = options;
 
     // In the Docker-in-Docker dev container the daemon runs inside this
     // container, so published ports are reachable on localhost. Testcontainers
@@ -180,6 +180,15 @@ export async function startLocalStack(
             .withNetwork(network)
             // nginx proxies to the restorer over the Docker network by this alias.
             .withNetworkAliases("restorer")
+            // In prod mode the app is staged and run in Play Prod mode (assets
+            // served from the packaged classpath with the immutable cache
+            // header); dev mode uses `sbt run` with webpack watch. The source is
+            // still bind-mounted below in both modes so the run reflects host code.
+            .withCommand([
+                mode === "prod"
+                    ? "/app/entrypoint.prod.sh"
+                    : "/app/entrypoint.dev.sh",
+            ])
             // Mount the source from the host so code changes are watched and
             // picked up without rebuilding the image. Individual paths are
             // mounted (rather than all of /app) so the image's baked
