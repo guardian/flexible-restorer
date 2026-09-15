@@ -90,9 +90,9 @@ function createLogConsumer(prefix: string, streamLogs: boolean) {
 
 export async function startLocalStack(
     projectRoot: string,
-    options: { hostPort?: number; streamLogs?: boolean; mode?: "dev" | "prod" } = {},
+    options: { hostPort?: number; streamLogs?: boolean; mountLogs?: boolean; mode?: "dev" | "prod" } = {},
 ): Promise<LocalStack> {
-    const { hostPort, streamLogs = false, mode = "dev" } = options;
+    const { hostPort, streamLogs = false, mountLogs = false, mode = "dev" } = options;
 
     // In the Docker-in-Docker dev container the daemon runs inside this
     // container, so published ports are reachable on localhost. Testcontainers
@@ -222,6 +222,18 @@ export async function startLocalStack(
                     target: "/app/webpack.config.js",
                     mode: "ro",
                 },
+                // Only mounted for local dev (not the parallel e2e suite, whose
+                // runs would otherwise all write to the same host log file).
+                // Surfaces logback's logs/application.log on the host.
+                ...(mountLogs
+                    ? [
+                          {
+                              source: path.join(projectRoot, "logs"),
+                              target: "/app/logs",
+                              mode: "rw" as const,
+                          },
+                      ]
+                    : []),
             ])
             .withEnvironment({
                 AWS_ENDPOINT_URL_S3: `http://${S3_ENDPOINT_HOST}:${LOCALSTACK_PORT}`,

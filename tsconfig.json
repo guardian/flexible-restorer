@@ -6,7 +6,7 @@
     "moduleResolution": "Bundler",
     "jsx": "react-jsx",
     "jsxImportSource": "@emotion/react",
-    "types": ["react", "react-dom"],
+    "types": ["react", "react-dom", "jest"],
 
     /* Strictest mode */
     "strict": true,

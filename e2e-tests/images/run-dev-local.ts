@@ -1,3 +1,6 @@
+import fs from "fs";
+import path from "path";
+
 const { startLocalStack, stopLocalStack } = require("../setup/stackContainers") as typeof import("../setup/stackContainers");
 const {
     writeSharedStackInfo,
@@ -22,8 +25,19 @@ async function main() {
     const mode = process.env.APP_MODE === "prod" ? "prod" : "dev";
     let stack: Awaited<ReturnType<typeof startLocalStack>> | undefined;
 
+    // Create the mount target up front so Docker doesn't create it as root.
+    fs.mkdirSync(path.join(projectRoot, "logs"), { recursive: true });
+
     try {
-        stack = await startLocalStack(projectRoot, { hostPort: 9000, mode });
+        stack = await startLocalStack(projectRoot, {
+            hostPort: 9000,
+            // Echo each container's logs to this terminal so `sbt run` output
+            // (and the other services) is visible while developing locally.
+            streamLogs: true,
+            // Surface the restorer's logs/application.log on the host.
+            mountLogs: true,
+            mode,
+        });
 
         // Publish the running stack's details so `npm run test` reuses this
         // stack instead of booting its own (and skips the run when absent).
