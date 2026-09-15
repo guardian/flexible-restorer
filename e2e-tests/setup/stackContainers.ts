@@ -1,9 +1,23 @@
 import path from "path";
 import { GenericContainer, Network, Wait } from "testcontainers";
 import { generatePanDomainKeys } from "./panDomainKeys";
+import { seedS3 } from "./seedS3";
 
-const MINIO_ROOT_USER = "minioadmin";
-const MINIO_ROOT_PASSWORD = "minioadmin";
+// LocalStack accepts any credentials by default (signature validation is off);
+// the conventional dummy pair keeps the SDKs and awslocal happy.
+const S3_ACCESS_KEY_ID = "test";
+const S3_SECRET_ACCESS_KEY = "test";
+
+// Stock LocalStack image; buckets/objects the app reads are seeded from the host
+// after start, so no custom image build is needed.
+const LOCALSTACK_IMAGE = "localstack/localstack:4";
+// LocalStack serves every enabled service on this one port.
+const LOCALSTACK_PORT = 4566;
+// LocalStack only parses the bucket from the Host header when it contains `.s3.`,
+// so the S3 endpoint host (and the per-bucket network aliases) must sit under an
+// `s3.` domain for the app's virtual-hosted-style S3 requests (AWS SDK v2 default,
+// see app/config/AWS.scala) to resolve to the right bucket.
+const S3_ENDPOINT_HOST = "s3.localstack";
 
 export type LocalStack = {
     baseUrl: string;
@@ -15,7 +29,7 @@ export type LocalStack = {
      * destination/restore calls return at runtime.
      */
     mockApiUrl: string;
-    minioContainer: any;
+    s3Container: any;
     restorerContainer: any;
     mockContentAPIContainer: any;
     nginxContainer: any;
@@ -88,52 +102,52 @@ export async function startLocalStack(
     process.env.TESTCONTAINERS_HOST_OVERRIDE ??= "localhost";
 
     const runId = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
-    const minioImageTag = `flexible-restorer-minio-e2e:${runId}`;
     const restorerImageTag = `flexible-restorer-app-e2e:${runId}`;
     const mockImageTag = `flexible-restorer-mock-api-e2e:${runId}`;
     const nginxImageTag = `flexible-restorer-nginx-e2e:${runId}`;
 
     const network = await new Network().start();
 
-    let minioContainer;
+    let s3Container;
     let restorerContainer;
     let mockContentAPIContainer;
     let nginxContainer;
     const panDomainKeys = generatePanDomainKeys();
 
     try {
-        minioContainer = await (
-            await buildImage(
-                projectRoot,
-                "e2e-tests/images/minio.Dockerfile",
-                minioImageTag,
-            )
-        )
+        s3Container = await new GenericContainer(LOCALSTACK_IMAGE)
             .withNetwork(network)
+            // `s3.localstack` is the S3 endpoint host; the per-bucket subdomains
+            // are what the app's virtual-hosted-style S3 requests resolve to, and
+            // each embeds `.s3.` so LocalStack extracts the bucket name.
             .withNetworkAliases(
-                "minio",
-                "permissions-cache.minio",
-                "pan-domain-auth-settings.minio",
-                "flexible-snapshotter-code.minio",
-                "flexible-secondary-snapshotter-code.minio",
+                S3_ENDPOINT_HOST,
+                `permissions-cache.${S3_ENDPOINT_HOST}`,
+                `pan-domain-auth-settings.${S3_ENDPOINT_HOST}`,
+                `flexible-snapshotter-code.${S3_ENDPOINT_HOST}`,
+                `flexible-secondary-snapshotter-code.${S3_ENDPOINT_HOST}`,
             )
             .withEnvironment({
-                MINIO_ROOT_USER,
-                MINIO_ROOT_PASSWORD,
-                MINIO_DOMAIN: "minio",
-                PAN_DOMAIN_PRIVATE_KEY: panDomainKeys.privateKeyBase64,
-                PAN_DOMAIN_PUBLIC_KEY: panDomainKeys.publicKeyBase64,
-                PAN_DOMAIN_BUCKET: "pan-domain-auth-settings",
-                SNAPSHOT_BUCKET: "flexible-snapshotter-code",
-                SECONDARY_SNAPSHOT_BUCKET:
-                    "flexible-secondary-snapshotter-code",
-                PERMISSIONS_BUCKET: "permissions-cache",
+                SERVICES: "s3",
+                AWS_DEFAULT_REGION: "eu-west-1",
             })
-            .withLogConsumer(createLogConsumer("minio", streamLogs))
-            .withExposedPorts(9000, 9001)
-            .withWaitStrategy(Wait.forLogMessage(/Ensured buckets exist:/, 1))
-            .withStartupTimeout(2 * 60 * 1000)
+            // Bind-mount the fixtures tree so awslocal can seed the snapshot
+            // buckets recursively without baking fixtures into a custom image.
+            .withBindMounts([
+                {
+                    source: path.join(projectRoot, "e2e-tests/fixtures"),
+                    target: "/fixtures",
+                    mode: "ro",
+                },
+            ])
+            .withLogConsumer(createLogConsumer("localstack", streamLogs))
+            .withExposedPorts(LOCALSTACK_PORT)
+            .withWaitStrategy(Wait.forLogMessage(/Ready\./, 1))
+            .withStartupTimeout(5 * 60 * 1000)
             .start();
+
+        // Seed the S3 objects the app reads before starting the restorer.
+        await seedS3(s3Container, projectRoot, panDomainKeys);
 
         mockContentAPIContainer = await (
             await buildImage(
@@ -210,9 +224,9 @@ export async function startLocalStack(
                 },
             ])
             .withEnvironment({
-                AWS_ENDPOINT_URL_S3: "http://minio:9000",
-                AWS_ACCESS_KEY_ID: MINIO_ROOT_USER,
-                AWS_SECRET_ACCESS_KEY: MINIO_ROOT_PASSWORD,
+                AWS_ENDPOINT_URL_S3: `http://${S3_ENDPOINT_HOST}:${LOCALSTACK_PORT}`,
+                AWS_ACCESS_KEY_ID: S3_ACCESS_KEY_ID,
+                AWS_SECRET_ACCESS_KEY: S3_SECRET_ACCESS_KEY,
                 // Keep local mode enabled in case scripts are bypassed in future changes.
                 LOCAL: "true",
                 // Point the local DEV stack at the mock flexible-content API,
@@ -263,7 +277,7 @@ export async function startLocalStack(
             cookieUrl: `${baseUrl}/cookie`,
             panDomainPrivateKey: panDomainKeys.privateKeyPem,
             mockApiUrl,
-            minioContainer,
+            s3Container,
             restorerContainer,
             mockContentAPIContainer,
             nginxContainer,
@@ -279,8 +293,8 @@ export async function startLocalStack(
         if (mockContentAPIContainer) {
             await mockContentAPIContainer.stop();
         }
-        if (minioContainer) {
-            await minioContainer.stop();
+        if (s3Container) {
+            await s3Container.stop();
         }
         await network.stop();
         throw error;
@@ -291,13 +305,13 @@ export async function stopLocalStack({
     nginxContainer,
     restorerContainer,
     mockContentAPIContainer,
-    minioContainer,
+    s3Container,
     network,
 }: Partial<LocalStack> = {}): Promise<void> {
     // Stop containers concurrently; allSettled keeps teardown best-effort so one
     // failed stop can't skip the others or the network cleanup below.
     await Promise.allSettled(
-        [nginxContainer, restorerContainer, mockContentAPIContainer, minioContainer]
+        [nginxContainer, restorerContainer, mockContentAPIContainer, s3Container]
             .filter(Boolean)
             .map((container) => container.stop()),
     );

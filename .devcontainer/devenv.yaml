@@ -51,7 +51,7 @@ postCreateCommand:
     workingDirectory: "."
   - cmd: 'PATH="$HOME/.local/share/mise/shims:$PATH" npx playwright install chromium --with-deps'
     workingDirectory: "."
-  - cmd: "docker build -f e2e-tests/images/minio.Dockerfile -t flexible-restorer-minio-e2e:cache ."
+  - cmd: "docker pull localstack/localstack:4"
     workingDirectory: "."
   - cmd: "docker build -f e2e-tests/images/restorer.Dockerfile -t flexible-restorer-app-e2e:cache ."
     workingDirectory: "."

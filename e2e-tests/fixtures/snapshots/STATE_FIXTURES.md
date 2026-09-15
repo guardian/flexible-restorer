@@ -3,8 +3,8 @@
 These fixtures live under `fixtures/snapshots/<contentId>/<timestamp>.json` (+ a
 `.info.json` companion). The whole `fixtures/snapshots` tree is uploaded
 recursively to **both** the primary (`flexible-snapshotter-code`) and secondary
-(`flexible-secondary-snapshotter-code`) MinIO buckets by
-`scripts/docker/start-minio-with-buckets`.
+(`flexible-secondary-snapshotter-code`) LocalStack S3 buckets by
+`e2e-tests/setup/seedS3.ts`.
 
 The `.info.json` file is exactly the `info` object the AngularJS
 `SnapshotIdModel` consumes (`info.metadata` + `info.summary`). Each fixture was

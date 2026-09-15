@@ -40,7 +40,7 @@ export const test = base.extend<object, WorkerFixtures>({
                 cookieUrl: `${sharedStack.baseUrl}/cookie`,
                 panDomainPrivateKey: sharedStack.panDomainPrivateKey,
                 mockApiUrl: sharedStack.mockApiUrl,
-                minioContainer: undefined,
+                s3Container: undefined,
                 restorerContainer: undefined,
                 mockContainer: undefined,
                 nginxContainer: undefined,
