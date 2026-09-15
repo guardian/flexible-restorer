@@ -23,6 +23,9 @@ lazy val mainProject = project.in(file("."))
   .settings(Defaults.coreDefaultSettings: _*)
   .settings(
     routesGenerator := InjectedRoutesGenerator,
+    // Run the digest stage over public assets so `Assets.versioned` serves them
+    // with content-hashed URLs and far-future caching.
+    Assets / pipelineStages := Seq(digest),
     Universal / packageName := s"editorial-tools:flexible:${name.value}",
     Compile / doc / sources := Seq.empty,
     Compile / packageDoc / publishArtifact := false
