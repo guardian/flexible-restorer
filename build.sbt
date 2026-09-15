@@ -23,6 +23,10 @@ lazy val mainProject = project.in(file("."))
   .settings(Defaults.coreDefaultSettings: _*)
   .settings(
     routesGenerator := InjectedRoutesGenerator,
+    // Run digest then gzip over public assets: `Assets.versioned` serves them
+    // with content-hashed URLs and far-future caching, and the pre-built `.gz`
+    // copies are returned to clients that accept gzip.
+    Assets / pipelineStages := Seq(digest, gzip),
     Universal / packageName := s"editorial-tools:flexible:${name.value}",
     Compile / doc / sources := Seq.empty,
     Compile / packageDoc / publishArtifact := false

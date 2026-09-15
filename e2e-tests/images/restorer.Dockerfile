@@ -51,13 +51,15 @@ COPY public ./public
 COPY webpack.config.js ./
 RUN npm run build
 
-# Copy the startup script only. The application code (app/, conf/, public/,
+# Copy the startup scripts only. The application code (app/, conf/, public/,
 # webpack.config.js) is baked above so the image is self-contained, but at
 # runtime it is bind-mounted from the host (see
 # e2e-tests/setup/stackContainers.ts) so code changes are watched and picked up
-# without rebuilding the image.
+# without rebuilding the image. The prod entrypoint is selected at runtime by the
+# local stack when running in prod mode.
 COPY e2e-tests/images/entrypoint.dev.sh ./entrypoint.dev.sh
-RUN chmod +x /app/entrypoint.dev.sh
+COPY e2e-tests/images/entrypoint.prod.sh ./entrypoint.prod.sh
+RUN chmod +x /app/entrypoint.dev.sh /app/entrypoint.prod.sh
 
 EXPOSE 9000
 
