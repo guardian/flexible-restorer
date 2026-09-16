@@ -36,21 +36,12 @@ type UseSnapshotContent = {
 	copyJson: () => void;
 };
 
-// Prefer the async Clipboard API (the modern, standard approach), falling back
-// to a hidden textarea + `execCommand` for non-secure contexts where
-// `navigator.clipboard` is unavailable.
+// Prefer the async Clipboard API (the modern, standard approach), we have no fallback for non-secure contexts.
 const copyToClipboard = async (text: string): Promise<void> => {
 	if (window.isSecureContext && navigator.clipboard?.writeText) {
 		await navigator.clipboard.writeText(text);
 		return;
 	}
-	const textarea = document.createElement('textarea');
-	textarea.value = text;
-	document.body.appendChild(textarea);
-	textarea.focus();
-	textarea.select();
-	document.execCommand('copy');
-	document.body.removeChild(textarea);
 };
 
 /**
