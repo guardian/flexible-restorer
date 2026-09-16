@@ -32,6 +32,7 @@ opaque string, so the rename is safe.
 | Scheduled | `58e4eab7e4b01ca21818a13e` | `58e4eab7e4b01ca21818a13e/2026-06-26T16:31:05.633Z` | `summary.scheduledLaunchDate` set |
 | Embargoed | `55901e70e4b0c9bda8d8ab20` | `55901e70e4b0c9bda8d8ab20/2026-06-26T13:01:07.919Z` | `settings.embargoedUntil` set |
 | Secondary system | `54931ae2e4b019234074e3c8` | `54931ae2e4b019234074e3c8/2026-06-26T11:26:27.839Z` | mirrored into the secondary bucket → `system.isSecondary = true` row (see Notes) |
+| Rich formatting | `6aa258d98f080f2ddaddc8dd` | `6aa258d98f080f2ddaddc8dd/2026-09-10T22:52:38.702Z` | body elements contain rich text formatting (bold/italic/links/lists) |
 
 ## Full state profile per fixture
 
