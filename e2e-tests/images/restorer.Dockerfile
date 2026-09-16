@@ -18,13 +18,18 @@ RUN apt-get update \
 # Install mise and expose its binary and tool shims on PATH.
 RUN curl https://mise.run | sh
 ENV PATH="/root/.local/bin:/root/.local/share/mise/shims:${PATH}"
+# Keep mise's download cache in a fixed path so it can be shared across image
+# builds via the BuildKit cache mount on the install step below.
+ENV MISE_CACHE_DIR=/mise/cache
 
 WORKDIR /app
 
 # Install the toolchain (Java, Node, sbt, aws-cli, ...) pinned in .tool-versions.
-# Layer-cached until .tool-versions changes.
+# Layer-cached until .tool-versions changes; the BuildKit cache mount also keeps
+# the downloaded toolchain across rebuilds so it isn't re-fetched every time.
 COPY .tool-versions ./
-RUN mise trust ./.tool-versions \
+RUN --mount=type=cache,target=/mise/cache,sharing=locked \
+    mise trust ./.tool-versions \
     && mise install \
     && mise reshim
 

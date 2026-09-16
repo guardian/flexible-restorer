@@ -37,7 +37,9 @@ jobs:
               run: npm ci
 
             - name: Install Playwright browser
-              run: npx playwright install --with-deps chromium
+              # Install only the headless shell, not full Chromium — the suite
+              # runs headless in CI, so this is a smaller, faster download.
+              run: npx playwright install --with-deps chromium --only-shell
 
             # Pre-build the Testcontainers images up front (the restorer image
             # compiles the Scala app, which is slow on a cold cache). The e2e

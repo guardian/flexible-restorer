@@ -88,6 +88,27 @@ function createLogConsumer(prefix: string, streamLogs: boolean) {
     };
 }
 
+/**
+ * Bind-mount the devcontainer's persistent coursier/ivy caches into the sbt
+ * container so `sbt update`/`run` reuse Maven artifacts already on the host
+ * instead of re-downloading them from Maven Central on every rebuild (which is
+ * slow and can hit "too many requests" rate limits). The host paths come from
+ * the Scala devcontainer module's cache volumes; when the env vars are unset
+ * (e.g. outside the devcontainer or in CI) this adds no mounts, so it's a no-op.
+ */
+function sbtCacheBindMounts(): { source: string; target: string; mode: "rw" }[] {
+    const mounts: { source: string; target: string; mode: "rw" }[] = [];
+    const coursier = process.env.DEVENV_COURSIER_CACHE_MOUNT_DIR;
+    const ivy = process.env.DEVENV_IVY_CACHE_MOUNT_DIR;
+    if (coursier) {
+        mounts.push({ source: coursier, target: "/root/.cache/coursier", mode: "rw" });
+    }
+    if (ivy) {
+        mounts.push({ source: ivy, target: "/root/.ivy2", mode: "rw" });
+    }
+    return mounts;
+}
+
 export async function startLocalStack(
     projectRoot: string,
     options: { hostPort?: number; streamLogs?: boolean; mode?: "dev" | "prod" } = {},
@@ -222,6 +243,9 @@ export async function startLocalStack(
                     target: "/app/webpack.config.js",
                     mode: "ro",
                 },
+                // Reuse the host's coursier/ivy caches (no-op outside the
+                // devcontainer) so sbt doesn't re-download Maven artifacts.
+                ...sbtCacheBindMounts(),
             ])
             .withEnvironment({
                 AWS_ENDPOINT_URL_S3: `http://${S3_ENDPOINT_HOST}:${LOCALSTACK_PORT}`,
