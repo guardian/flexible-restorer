@@ -28,7 +28,7 @@ const linkButtonBoxSizing = css({
 	boxSizing: 'border-box',
 });
 
-type ContentActionsProps = {
+export type ContentActionsProps = {
 	contentId: string;
 	canRestore: boolean;
 	copyLabel: string;
@@ -39,7 +39,7 @@ type ContentActionsProps = {
 };
 
 /** The Restore / Copy / Export / HTML-JSON-toggle actions bar. */
-const ContentActions: FunctionComponent<ContentActionsProps> = ({
+export const ContentActions: FunctionComponent<ContentActionsProps> = ({
 	contentId,
 	canRestore,
 	copyLabel,
@@ -92,5 +92,3 @@ const ContentActions: FunctionComponent<ContentActionsProps> = ({
 	</div>
 );
 
-export { ContentActions };
-export type { ContentActionsProps };

@@ -37,14 +37,14 @@ const jsonItem = css({
 	},
 });
 
-type ContentPanelsProps = {
+export type ContentPanelsProps = {
 	elements: ArticleElement[];
 	json: string;
 	isShowingJSON: boolean;
 };
 
 /** The sliding HTML / JSON columns for the current snapshot. */
-const ContentPanels: FunctionComponent<ContentPanelsProps> = ({
+export const ContentPanels: FunctionComponent<ContentPanelsProps> = ({
 	elements,
 	json,
 	isShowingJSON,
@@ -65,5 +65,3 @@ const ContentPanels: FunctionComponent<ContentPanelsProps> = ({
 	</div>
 );
 
-export { ContentPanels };
-export type { ContentPanelsProps };

@@ -2,7 +2,7 @@ import type { FunctionComponent } from 'react';
 import type { TimelineElement } from '../../models/snapshotContent';
 import { ArticleElementView } from './ArticleElementView';
 
-type TimelineElementViewProps = {
+export type TimelineElementViewProps = {
 	element: TimelineElement;
 };
 
@@ -13,7 +13,7 @@ type TimelineElementViewProps = {
  * shows its (plain-text) title followed by its events, where an event renders
  * its title as an `<h2>`, its date as a `<p>`, then the nested body elements.
  */
-const TimelineElementView: FunctionComponent<TimelineElementViewProps> = ({
+export const TimelineElementView: FunctionComponent<TimelineElementViewProps> = ({
 	element,
 }) => {
 	return (
@@ -39,5 +39,3 @@ const TimelineElementView: FunctionComponent<TimelineElementViewProps> = ({
 	);
 };
 
-export { TimelineElementView };
-export type { TimelineElementViewProps };

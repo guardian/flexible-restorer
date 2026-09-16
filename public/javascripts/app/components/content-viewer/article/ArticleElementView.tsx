@@ -4,12 +4,12 @@ import { RawHtml } from './RawHtml';
 import { ListElementView } from './ListElementView';
 import { TimelineElementView } from './TimelineElementView';
 
-type ArticleElementViewProps = {
+export type ArticleElementViewProps = {
 	element: ArticleElement;
 };
 
 /** Render a single article element by dispatching on its kind. */
-const ArticleElementView: FunctionComponent<ArticleElementViewProps> = ({
+export const ArticleElementView: FunctionComponent<ArticleElementViewProps> = ({
 	element,
 }) => {
 	switch (element.kind) {
@@ -22,5 +22,3 @@ const ArticleElementView: FunctionComponent<ArticleElementViewProps> = ({
 	}
 };
 
-export { ArticleElementView };
-export type { ArticleElementViewProps };

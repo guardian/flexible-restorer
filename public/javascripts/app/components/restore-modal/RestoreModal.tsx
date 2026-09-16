@@ -271,7 +271,7 @@ const DestinationChangeText: FunctionComponent<{
 	}
 };
 
-type RestoreModalProps = {
+export type RestoreModalProps = {
 	/** Content id from the Angular route, bound via react2angular (see ../index.js). */
 	contentId: string;
 };
@@ -284,7 +284,7 @@ type RestoreModalProps = {
  * legacy controllers used, so the (still-Angular) content panel, keyboard
  * handler and error modal keep working unchanged.
  */
-const RestoreModal: FunctionComponent<RestoreModalProps> = ({ contentId }) => {
+export const RestoreModal: FunctionComponent<RestoreModalProps> = ({ contentId }) => {
 	const [isActive, setIsActive] = useState(false);
 	const form = useRestoreForm(contentId, isActive);
 
@@ -573,5 +573,3 @@ const RestoreModal: FunctionComponent<RestoreModalProps> = ({ contentId }) => {
 	);
 };
 
-export { RestoreModal };
-export type { RestoreModalProps };

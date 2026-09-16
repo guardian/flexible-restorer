@@ -54,7 +54,7 @@ const listHeaderContent = css({
 
 const listHeaderStatus = css({ padding: '5px 10px' });
 
-type ArticleHeaderProps = {
+export type ArticleHeaderProps = {
 	/** The currently-active snapshot, whose metadata heads the sidebar. */
 	activeSnapshot: SnapshotIdViewModel;
 };
@@ -65,7 +65,7 @@ type ArticleHeaderProps = {
  * article fields previously came from `SnapshotListCtrl` scope but are now
  * derived from the active snapshot.
  */
-const ArticleHeader: FunctionComponent<ArticleHeaderProps> = ({
+export const ArticleHeader: FunctionComponent<ArticleHeaderProps> = ({
 	activeSnapshot,
 }) => (
 	<div css={headerFixed}>
@@ -87,5 +87,3 @@ const ArticleHeader: FunctionComponent<ArticleHeaderProps> = ({
 	</div>
 );
 
-export { ArticleHeader };
-export type { ArticleHeaderProps };

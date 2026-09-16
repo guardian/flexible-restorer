@@ -3,7 +3,7 @@ import type { ListElement } from '../../models/snapshotContent';
 import { RawHtml } from './RawHtml';
 import { ArticleElementView } from './ArticleElementView';
 
-type ListElementViewProps = {
+export type ListElementViewProps = {
 	element: ListElement;
 };
 
@@ -14,7 +14,7 @@ type ListElementViewProps = {
  * `<h2>`, byline as a `<p>`, the raw `bio` HTML, the nested content elements,
  * then the `endNote` as emphasised text.
  */
-const ListElementView: FunctionComponent<ListElementViewProps> = ({
+export const ListElementView: FunctionComponent<ListElementViewProps> = ({
 	element,
 }) => {
 	return (
@@ -38,5 +38,3 @@ const ListElementView: FunctionComponent<ListElementViewProps> = ({
 	);
 };
 
-export { ListElementView };
-export type { ListElementViewProps };

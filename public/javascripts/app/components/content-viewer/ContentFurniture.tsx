@@ -28,7 +28,7 @@ const content = css({
 	color: palette.grey650,
 });
 
-type ContentFurnitureProps = {
+export type ContentFurnitureProps = {
 	headline: string | undefined;
 	standfirst: string | undefined;
 	trailText: string | undefined;
@@ -45,7 +45,7 @@ const Field: FunctionComponent<{ label: string; value: string | undefined }> = (
 );
 
 /** The headline/standfirst/trailText summary shown above the article body. */
-const ContentFurniture: FunctionComponent<ContentFurnitureProps> = ({
+export const ContentFurniture: FunctionComponent<ContentFurnitureProps> = ({
 	headline,
 	standfirst,
 	trailText,
@@ -57,5 +57,3 @@ const ContentFurniture: FunctionComponent<ContentFurnitureProps> = ({
 	</div>
 );
 
-export { ContentFurniture };
-export type { ContentFurnitureProps };

@@ -41,7 +41,7 @@ const body = css({
 	overflowY: 'auto',
 });
 
-type ContentViewerProps = {
+export type ContentViewerProps = {
 	/** Content id from the Angular route, bound via react2angular (see ../index.js). */
 	contentId: string;
 };
@@ -55,7 +55,7 @@ type ContentViewerProps = {
  * authoritative for the active selection; this component follows the
  * `snapshot-list:*` mediator events (see useSnapshotContent).
  */
-const ContentViewer: FunctionComponent<ContentViewerProps> = ({
+export const ContentViewer: FunctionComponent<ContentViewerProps> = ({
 	contentId,
 }) => {
 	const {
@@ -104,5 +104,3 @@ const ContentViewer: FunctionComponent<ContentViewerProps> = ({
 	);
 };
 
-export { ContentViewer };
-export type { ContentViewerProps };

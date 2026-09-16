@@ -1,7 +1,7 @@
 import type { FunctionComponent, ReactNode } from 'react';
 import parse from 'html-react-parser';
 
-type RawHtmlProps = {
+export type RawHtmlProps = {
 	html: string;
 };
 
@@ -13,9 +13,7 @@ type RawHtmlProps = {
  * inline `on*` handlers or `<script>` tags, so it is a safer rendering of the
  * server-owned snapshot HTML.
  */
-const RawHtml: FunctionComponent<RawHtmlProps> = ({ html }) => {
+export const RawHtml: FunctionComponent<RawHtmlProps> = ({ html }) => {
 	return <>{parse(html) as ReactNode}</>;
 };
 
-export { RawHtml };
-export type { RawHtmlProps };
