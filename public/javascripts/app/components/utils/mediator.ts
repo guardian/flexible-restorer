@@ -72,23 +72,20 @@ const publishSnapshotViewed = (
  * for a React effect cleanup.
  */
 const subscribeDisplayModal = (callback: () => void): (() => void) => {
-	const handler = (): void => callback();
-	mediator.subscribe(CHANNELS.displayModal, handler);
-	return () => mediator.remove(CHANNELS.displayModal, handler);
+	mediator.subscribe(CHANNELS.displayModal, callback);
+	return () => mediator.remove(CHANNELS.displayModal, callback);
 };
 
 /** Subscribe to the explicit modal-close request. */
 const subscribeCloseModal = (callback: () => void): (() => void) => {
-	const handler = (): void => callback();
-	mediator.subscribe(CHANNELS.closeModal, handler);
-	return () => mediator.remove(CHANNELS.closeModal, handler);
+	mediator.subscribe(CHANNELS.closeModal, callback);
+	return () => mediator.remove(CHANNELS.closeModal, callback);
 };
 
 /** Subscribe to application errors (used to close the modal, as the legacy controller did). */
 const subscribeError = (callback: () => void): (() => void) => {
-	const handler = (): void => callback();
-	mediator.subscribe(CHANNELS.error, handler);
-	return () => mediator.remove(CHANNELS.error, handler);
+	mediator.subscribe(CHANNELS.error, callback);
+	return () => mediator.remove(CHANNELS.error, callback);
 };
 
 /** Subscribe to active-snapshot changes broadcast by the sidebar. */
@@ -115,16 +112,14 @@ const subscribeLoadContent = (
 
 /** Subscribe to the request to show the rendered HTML view. */
 const subscribeDisplayHtml = (callback: () => void): (() => void) => {
-	const handler = (): void => callback();
-	mediator.subscribe(CHANNELS.displayHtml, handler);
-	return () => mediator.remove(CHANNELS.displayHtml, handler);
+	mediator.subscribe(CHANNELS.displayHtml, callback);
+	return () => mediator.remove(CHANNELS.displayHtml, callback);
 };
 
 /** Subscribe to the request to show the raw JSON view. */
 const subscribeDisplayJson = (callback: () => void): (() => void) => {
-	const handler = (): void => callback();
-	mediator.subscribe(CHANNELS.displayJson, handler);
-	return () => mediator.remove(CHANNELS.displayJson, handler);
+	mediator.subscribe(CHANNELS.displayJson, callback);
+	return () => mediator.remove(CHANNELS.displayJson, callback);
 };
 
 /**
@@ -132,9 +127,8 @@ const subscribeDisplayJson = (callback: () => void): (() => void) => {
  * for a React effect cleanup.
  */
 const subscribeHiddenModal = (callback: () => void): (() => void) => {
-	const handler = (): void => callback();
-	mediator.subscribe(CHANNELS.hiddenModal, handler);
-	return () => mediator.remove(CHANNELS.hiddenModal, handler);
+	mediator.subscribe(CHANNELS.hiddenModal, callback);
+	return () => mediator.remove(CHANNELS.hiddenModal, callback);
 };
 
 export {
