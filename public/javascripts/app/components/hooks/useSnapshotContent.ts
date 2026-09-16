@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import useSWR from 'swr';
 import { useSnapshotList } from './useSnapshotList';
 import { fetchSnapshot, snapshotUrl } from '../api/fetchSnapshot';
@@ -131,6 +131,16 @@ const useSnapshotContent = (contentId: string): UseSnapshotContent => {
 			publishError(error);
 		}
 	}, [error]);
+
+	// Blank the panel the moment a new snapshot is selected (before paint, so the
+	// empty furniture/labels never flash while the new content loads). It stays
+	// hidden until the fetch resolves and the fade-in effect below runs.
+	useLayoutEffect(() => {
+		if (!selected) {
+			return;
+		}
+		setIsSettingContent(true);
+	}, [selected]);
 
 	// Fade in newly loaded content and reset the copy label, mirroring
 	// `displayContent`. Fire the "Viewed" analytics event once, on first load.

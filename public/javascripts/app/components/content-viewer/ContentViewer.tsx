@@ -72,6 +72,10 @@ const ContentViewer: FunctionComponent<ContentViewerProps> = ({
 	return (
 		<div css={root(isSettingContent)}>
 			<div css={viewport} data-testid="snapshot-content-viewport">
+			{/* Hold the panel blank until content arrives, so the empty
+			   furniture/labels never render mid-fetch. */}
+			{content && (
+				<>
 				<ContentActions
 					contentId={contentId}
 					canRestore={canRestore}
@@ -83,16 +87,18 @@ const ContentViewer: FunctionComponent<ContentViewerProps> = ({
 				/>
 				<div css={body}>
 					<ContentFurniture
-						headline={content?.headline}
-						standfirst={content?.standfirst}
-						trailText={content?.trailText}
+						headline={content.headline}
+						standfirst={content.standfirst}
+						trailText={content.trailText}
 					/>
 					<ContentPanels
-						elements={content?.elements ?? []}
-						json={content?.json ?? ''}
+						elements={content.elements}
+						json={content.json}
 						isShowingJSON={isShowingJSON}
 					/>
 				</div>
+				</>
+			)}
 			</div>
 		</div>
 	);
