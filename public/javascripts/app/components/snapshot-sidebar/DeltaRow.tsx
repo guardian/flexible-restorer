@@ -34,7 +34,7 @@ const deltaContent = css({
 	fontSize: '12px',
 });
 
-type DeltaRowProps = {
+export type DeltaRowProps = {
 	/** Humanised time between a snapshot and the next (older) one. */
 	label: string;
 };
@@ -43,12 +43,10 @@ type DeltaRowProps = {
  * The faint "time between snapshots" row shown after each item. Migrated from
  * the `delta-row` markup of restore-list.html.
  */
-const DeltaRow: FunctionComponent<DeltaRowProps> = ({ label }) => (
+export const DeltaRow: FunctionComponent<DeltaRowProps> = ({ label }) => (
 	<li css={deltaRow}>
 		<span css={[deltaContent, textStyle]}>{label}</span>
 		<span css={deltaIcon} aria-hidden="true" />
 	</li>
 );
 
-export { DeltaRow };
-export type { DeltaRowProps };

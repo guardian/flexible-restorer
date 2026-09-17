@@ -25,7 +25,7 @@ const secondaryBanner = css({
 	textTransform: 'uppercase',
 });
 
-type SnapshotListProps = {
+export type SnapshotListProps = {
 	snapshots: SnapshotIdViewModel[];
 	activeIndex: number;
 	onSelect: (index: number) => void;
@@ -36,7 +36,7 @@ type SnapshotListProps = {
  * item row and the delta row, per snapshot. Migrated from the `snapshot-list`
  * `ng-repeat` in restore-list.html.
  */
-const SnapshotList: FunctionComponent<SnapshotListProps> = ({
+export const SnapshotList: FunctionComponent<SnapshotListProps> = ({
 	snapshots,
 	activeIndex,
 	onSelect,
@@ -61,5 +61,3 @@ const SnapshotList: FunctionComponent<SnapshotListProps> = ({
 	</ol>
 );
 
-export { SnapshotList };
-export type { SnapshotListProps };

@@ -43,7 +43,7 @@ const scrollableContainer = css({
 
 const scrollableBody = css({ flexGrow: 1, overflowY: 'auto' });
 
-type SnapshotSidebarProps = {
+export type SnapshotSidebarProps = {
 	/** Content id from the Angular route, bound via react2angular (see ../index.js). */
 	contentId: string;
 };
@@ -61,7 +61,7 @@ const SLIDE_IN_DELAY_MS = 500;
  * remaining Angular controllers (content panel, restore modal, analytics) keep
  * working unchanged.
  */
-const SnapshotSidebar: FunctionComponent<SnapshotSidebarProps> = ({
+export const SnapshotSidebar: FunctionComponent<SnapshotSidebarProps> = ({
 	contentId,
 }) => {
 	const { snapshots, error } = useSnapshotList(contentId);
@@ -124,5 +124,3 @@ const SnapshotSidebar: FunctionComponent<SnapshotSidebarProps> = ({
 	);
 };
 
-export { SnapshotSidebar };
-export type { SnapshotSidebarProps };

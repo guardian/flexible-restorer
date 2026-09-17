@@ -3,9 +3,11 @@
 import legallySensitiveIcon from '../../../../images/legalcheck-grey-14.svg';
 import commentsOnIcon from '../../../../images/comment-green-14.svg';
 import commentsOffIcon from '../../../../images/comment-grey-14.svg';
+import wrenchDisabledIcon from '../../lib/icons/svg/wrench-disabled.svg';
 
 export const icons = {
 	legallySensitive: legallySensitiveIcon,
 	commentsOn: commentsOnIcon,
 	commentsOff: commentsOffIcon,
+	wrenchDisabled: wrenchDisabledIcon,
 } as const;

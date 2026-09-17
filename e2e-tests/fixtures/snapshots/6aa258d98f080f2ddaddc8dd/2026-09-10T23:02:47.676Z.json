@@ -1,0 +1,1831 @@
+{
+  "id" : "6aa258d98f080f2ddaddc8dd",
+  "type" : "article",
+  "originatingSystem" : "composer",
+  "published" : true,
+  "isGone" : false,
+  "isHosted" : false,
+  "expiry" : {
+    "rights" : {
+      "expired" : false
+    },
+    "commercial" : {
+      "expired" : false
+    }
+  },
+  "rights" : {
+    "syndicationAggregate" : true,
+    "subscriptionDatabases" : true,
+    "developerCommunity" : true
+  },
+  "contentChangeDetails" : {
+    "lastModified" : {
+      "date" : 1789081130674,
+      "user" : {
+        "email" : "user36@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "36"
+      }
+    },
+    "created" : {
+      "date" : 1789024473327,
+      "user" : {
+        "email" : "user31@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "31"
+      }
+    },
+    "published" : {
+      "date" : 1789028407534,
+      "user" : {
+        "email" : "user33@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "33"
+      }
+    },
+    "lastMajorRevisionPublished" : {
+      "date" : 1789064093026,
+      "user" : {
+        "email" : "user42@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "42"
+      }
+    },
+    "revision" : 2951,
+    "minutesActive" : 149,
+    "contentSource" : "flexible"
+  },
+  "identifiers" : {
+    "path" : "business/2026/sep/10/england-nightly-levy-hotel-airbnb-stays-tourist-tax-plans",
+    "pageId" : "17553533",
+    "shortPath" : "p/x6vyzn",
+    "storyBundleId" : "18014679"
+  },
+  "collaborators" : [ {
+    "email" : "user31@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "31"
+  }, {
+    "email" : "user32@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "32"
+  }, {
+    "email" : "user33@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "33"
+  }, {
+    "email" : "user39@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "39"
+  }, {
+    "email" : "user37@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "37"
+  }, {
+    "email" : "user43@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "43"
+  }, {
+    "email" : "user44@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "44"
+  }, {
+    "email" : "user38@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "38"
+  }, {
+    "email" : "user41@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "41"
+  }, {
+    "email" : "user40@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "40"
+  }, {
+    "email" : "user34@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "34"
+  }, {
+    "email" : "user42@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "42"
+  }, {
+    "email" : "user36@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "36"
+  }, {
+    "email" : "user35@guardian.co.uk",
+    "firstName" : "User",
+    "lastName" : "35"
+  } ],
+  "toolSettings" : {
+    "disableOctopusUpdates" : "false",
+    "suggestedEmbeds" : "false",
+    "slugLinked" : "false",
+    "affiliateLinksStatus" : "auto-disabled",
+    "seoChanged" : "true",
+    "enableTechnicalElements" : "false",
+    "seoOptimised" : "false",
+    "atomPoweredVideo" : "false",
+    "republished" : "false",
+    "trailTextLinked" : "true",
+    "includedSuggestedEmbeds" : "",
+    "pathLocked" : "false",
+    "linkTextLinked" : "true"
+  },
+  "aliasPaths" : [ ],
+  "preview" : {
+    "contentChangeDetails" : {
+      "lastModified" : {
+        "date" : 1789081130674,
+        "user" : {
+          "email" : "user36@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "36"
+        }
+      },
+      "created" : {
+        "date" : 1789024473327,
+        "user" : {
+          "email" : "user31@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "31"
+        }
+      },
+      "published" : {
+        "date" : 1789028407534,
+        "user" : {
+          "email" : "user33@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "33"
+        }
+      },
+      "lastMajorRevisionPublished" : {
+        "date" : 1789064093026,
+        "user" : {
+          "email" : "user42@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "42"
+        }
+      },
+      "revision" : 2951,
+      "minutesActive" : 149,
+      "contentSource" : "flexible"
+    },
+    "fields" : {
+      "linkText" : "Ministers face backlash from hospitality industry over ‘tourist tax’ plans",
+      "standfirst" : "<p>Many mayors welcome power to impose tourist tax but industry warns of ‘irreparable harm’ and job losses</p><p></p>",
+      "slug" : "england-nightly-levy-hotel-airbnb-stays-tourist-tax-plans",
+      "newspaperPublicationDate" : "2026-09-11T00:00:00+00:00",
+      "byline" : "<span data-tag-id=\"93503\" class=\"contributor\">Kiran Stacey</span>, <span data-tag-id=\"38624\" class=\"contributor\">Josh Halliday</span>, <span data-tag-id=\"19530\" class=\"contributor\">Alexandra Topping</span> and <span data-tag-id=\"72472\" class=\"contributor\">Rob Davies</span>",
+      "commissionedLength" : "900",
+      "newspaperPageNumber" : "1",
+      "trailText" : "Many mayors welcome power to impose tourist tax but industry warns of ‘irreparable harm’ and job losses ",
+      "headline" : "Ministers face backlash from hospitality industry over ‘tourist tax’ plans"
+    },
+    "thumbnail" : {
+      "fields" : {
+        "displayCredit" : "true",
+        "imageType" : "Photograph",
+        "suppliersReference" : "1899713339",
+        "alt" : "A young man and woman walk past beach huts on the seafront",
+        "source" : "Getty Images",
+        "photographer" : "Imgorthand",
+        "mediaId" : "6671b801cff2b94540b41de8e1a648bee8d77536",
+        "mediaApiUri" : "https://api.media.gutools.co.uk/images/6671b801cff2b94540b41de8e1a648bee8d77536"
+      },
+      "assets" : [ {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://media.guim.co.uk/6671b801cff2b94540b41de8e1a648bee8d77536/1243_0_6827_5464/master/6827.jpg",
+        "fields" : {
+          "width" : "6827",
+          "height" : "5464",
+          "isMaster" : "true",
+          "aspectRatio" : "5:4"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://media.guim.co.uk/6671b801cff2b94540b41de8e1a648bee8d77536/1243_0_6827_5464/6827.jpg",
+        "fields" : {
+          "width" : "6827",
+          "height" : "5464",
+          "aspectRatio" : "5:4"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://media.guim.co.uk/6671b801cff2b94540b41de8e1a648bee8d77536/1243_0_6827_5464/500.jpg",
+        "fields" : {
+          "width" : "500",
+          "height" : "400",
+          "aspectRatio" : "5:4"
+        }
+      } ]
+    },
+    "mainBlock" : {
+      "id" : "6aa267be8f08f45a44581fc7",
+      "lastModified" : 1789065746496,
+      "dateCreated" : 1789028286136,
+      "createdBy" : {
+        "email" : "user33@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "33"
+      },
+      "lastModifiedBy" : {
+        "email" : "user44@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "44"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "image",
+        "fields" : {
+          "displayCredit" : "true",
+          "imageType" : "Photograph",
+          "suppliersReference" : "1899713339",
+          "alt" : "A young man and woman walk past beach huts on the seafront",
+          "caption" : "Lyme Regis beach in Dorset. The overnight visitor levy will potentially generate tens of millions of pounds to be spent in local areas.",
+          "source" : "Getty Images",
+          "photographer" : "Imgorthand",
+          "mediaId" : "6671b801cff2b94540b41de8e1a648bee8d77536",
+          "mediaApiUri" : "https://api.media.gutools.co.uk/images/6671b801cff2b94540b41de8e1a648bee8d77536"
+        },
+        "assets" : [ {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/6671b801cff2b94540b41de8e1a648bee8d77536/1243_0_6827_5464/140.jpg",
+          "fields" : {
+            "width" : "140",
+            "height" : "112",
+            "aspectRatio" : "5:4"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/6671b801cff2b94540b41de8e1a648bee8d77536/1243_0_6827_5464/500.jpg",
+          "fields" : {
+            "width" : "500",
+            "height" : "400",
+            "aspectRatio" : "5:4"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/6671b801cff2b94540b41de8e1a648bee8d77536/1243_0_6827_5464/1000.jpg",
+          "fields" : {
+            "width" : "1000",
+            "height" : "800",
+            "aspectRatio" : "5:4"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/6671b801cff2b94540b41de8e1a648bee8d77536/1243_0_6827_5464/2000.jpg",
+          "fields" : {
+            "width" : "2000",
+            "height" : "1601",
+            "aspectRatio" : "5:4"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/6671b801cff2b94540b41de8e1a648bee8d77536/1243_0_6827_5464/6827.jpg",
+          "fields" : {
+            "width" : "6827",
+            "height" : "5464",
+            "aspectRatio" : "5:4"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/6671b801cff2b94540b41de8e1a648bee8d77536/1243_0_6827_5464/master/6827.jpg",
+          "fields" : {
+            "width" : "6827",
+            "height" : "5464",
+            "isMaster" : "true",
+            "aspectRatio" : "5:4"
+          }
+        } ]
+      } ],
+      "published" : false,
+      "attributes" : { }
+    },
+    "blocks" : [ {
+      "id" : "6aa258d98f08f45a44581f7b",
+      "lastModified" : 1789080486380,
+      "dateCreated" : 1789024473926,
+      "createdBy" : {
+        "email" : "user31@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "31"
+      },
+      "lastModifiedBy" : {
+        "email" : "user35@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "35"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "text",
+        "fields" : {
+          "text" : "<p>Ministers are facing a backlash <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:27\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:27:46.942Z\" data-type=\"note\" data-note-id=\"8eb642d1-ad34-11f1-9e96-51c43dc87b1a\">from picked a battle with </gu-note>from the hospitality industry <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:27\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:27:59.514Z\" data-type=\"note\" data-note-id=\"96349891-ad34-11f1-9e96-51c43dc87b1a\">on Thursday </gu-note>after they announced mayors in England would be given sweeping powers to levy taxes on holiday accommodation such as hotels and Airbnbs<gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:28\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:28:39.630Z\" data-type=\"note\" data-note-id=\"ae1df6e1-ad34-11f1-9e96-51c43dc87b1a\">AirBnBs</gu-note>.</p><p>The plan, <gu-note class=\"note\" title=\"Note: Steve Draper 10/9/2026 at 19:21\" data-gu-mark=\"true\" data-note-edited-by=\"Steve Draper\" data-note-edited-date=\"2026-09-10T18:21:03.225Z\" data-type=\"note\" data-note-id=\"619ce691-ad44-11f1-8afc-f1bc645ff64e\">unveiled</gu-note>presented on Thursday by Angela Rayner, the local government secretary, will <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:32\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:32:21.745Z\" data-type=\"note\" data-note-id=\"32820611-ad35-11f1-9e96-51c43dc87b1a\">unveiled the plan to </gu-note>allow mayors to impose a “tourist tax” without a cap on how much they can charge and with few controls on how they can spend it.</p><p>The move, which gives mayors some of their most significant tax-raising powers, was welcomed by regional leaders, who said it would give them a vital revenue stream at a time when local government is facing a funding crisis. Mayors will be expected to lay out their detailed plans for how they plan to use the new powers in early 2028.</p>"
+        },
+        "assets" : [ ]
+      }, {
+        "elementType" : "rich-link",
+        "fields" : {
+          "linkText" : "The hospitality industry fears a tourist tax will deter visitors – the evidence says otherwise",
+          "originalUrl" : "https://www.theguardian.com/business/2026/sep/10/the-hospitality-industry-fears-a-tourist-tax-will-drive-visitors-away-the-evidence-disagrees",
+          "linkPrefix" : "Related: ",
+          "isMandatory" : "true",
+          "role" : "thumbnail",
+          "url" : "https://www.theguardian.com/business/2026/sep/10/the-hospitality-industry-fears-a-tourist-tax-will-drive-visitors-away-the-evidence-disagrees"
+        },
+        "assets" : [ ]
+      }, {
+        "elementType" : "text",
+        "fields" : {
+          "text" : "<p>But it was met with outrage from hospitality businesses, who had expected the government to put stricter conditions on how much mayors could charge and how the money would be used.</p><p>UK<gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:35\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:35:40.436Z\" data-type=\"note\" data-note-id=\"a8efdd41-ad35-11f1-9e96-51c43dc87b1a\"> </gu-note>Hospitality, the industry’s trade body, <gu-note class=\"note\" title=\"Note: Kirsten Broomhall 10/9/2026 at 14:13\" data-gu-mark=\"true\" data-note-edited-by=\"Kirsten Broomhall\" data-note-edited-date=\"2026-09-10T13:13:31.675Z\" data-type=\"note\" data-note-id=\"6ba1ceb0-ad19-11f1-b2b8-cb0da5ead305\">warned</gu-note>said a 5% overnight levy across England <gu-note class=\"note\" title=\"Note: Kirsten Broomhall 10/9/2026 at 14:13\" data-gu-mark=\"true\" data-note-edited-by=\"Kirsten Broomhall\" data-note-edited-date=\"2026-09-10T13:13:37.436Z\" data-type=\"note\" data-note-id=\"6f10ddc1-ad19-11f1-b2b8-cb0da5ead305\">w</gu-note>could result in 33,000 job losses and a £2bn hit to the economy, with regions more reliant on tourism, <gu-note class=\"note\" title=\"Note: Kirsten Broomhall 10/9/2026 at 14:13\" data-gu-mark=\"true\" data-note-edited-by=\"Kirsten Broomhall\" data-note-edited-date=\"2026-09-10T13:13:51.613Z\" data-type=\"note\" data-note-id=\"77841ad1-ad19-11f1-b2b8-cb0da5ead305\">like</gu-note>such as the Lake District, being worst affected.</p><p>The owner of Premier Inn, Britain’s biggest hotel chain, said it would be “hugely damaging” and urged ministers to “avoid inflicting what could be irreparable harm on this large and vital sector of the economy”.</p><p><gu-correct class=\"note\" title=\"Correct: Lorraine Mallinder (Casual) 10/9/2026 at 17:36\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:36:30.331Z\" data-type=\"correct\" data-note-id=\"c6ad3cb1-ad35-11f1-9e96-51c43dc87b1a\">Eddie Nelder</gu-correct>, <gu-note class=\"note\" title=\"Note: Steve Draper 10/9/2026 at 19:31\" data-gu-mark=\"true\" data-note-edited-by=\"Steve Draper\" data-note-edited-date=\"2026-09-10T18:31:16.830Z\" data-type=\"note\" data-note-id=\"cf5997e1-ad45-11f1-8afc-f1bc645ff64e\">the</gu-note>a co-owner of the <gu-note class=\"note\" title=\"Note: Steve Draper 10/9/2026 at 19:43\" data-gu-mark=\"true\" data-note-edited-by=\"Steve Draper\" data-note-edited-date=\"2026-09-10T18:43:46.016Z\" data-type=\"note\" data-note-id=\"a3da1de2-ad47-11f1-8afc-f1bc645ff64e\">five-strong </gu-note><gu-correct class=\"note\" title=\"Correct: Lorraine Mallinder (Casual) 10/9/2026 at 17:36\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:36:45.160Z\" data-type=\"correct\" data-note-id=\"cf83f681-ad35-11f1-9e96-51c43dc87b1a\">Choice Hotels </gu-correct>chain<gu-note class=\"note\" title=\"Note: Steve Draper 10/9/2026 at 19:43\" data-gu-mark=\"true\" data-note-edited-by=\"Steve Draper\" data-note-edited-date=\"2026-09-10T18:43:56.630Z\" data-type=\"note\" data-note-id=\"9439df61-ad47-11f1-8afc-f1bc645ff64e\"> in</gu-note>, which has hotels in Blackpool<gu-note class=\"note\" title=\"Note: Steve Draper 10/9/2026 at 19:44\" data-gu-mark=\"true\" data-note-edited-by=\"Steve Draper\" data-note-edited-date=\"2026-09-10T18:44:02.791Z\" data-type=\"note\" data-note-id=\"97e5f771-ad47-11f1-8afc-f1bc645ff64e\">,</gu-note> and the Lake District, said: “We’re here trying to stay alive, waiting for a lifeline from the government and we get another hammer blow. It feels like we’re being strangled.”</p>"
+        },
+        "assets" : [ ]
+      }, {
+        "elementType" : "image",
+        "fields" : {
+          "displayCredit" : "true",
+          "isMandatory" : "true",
+          "imageType" : "Photograph",
+          "suppliersReference" : "469319107",
+          "alt" : "View of Blackpool coastline, including the tower",
+          "caption" : "A Blackpool hotel owner said the taxes were ‘another hammer blow’ for the hospitality industry. ",
+          "source" : "LightRocket/Getty Images",
+          "photographer" : "Pawel Libera",
+          "mediaId" : "db398727ef8f91f72f7bf2afea7da7a18ebf9925",
+          "mediaApiUri" : "https://api.media.gutools.co.uk/images/db398727ef8f91f72f7bf2afea7da7a18ebf9925"
+        },
+        "assets" : [ {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/db398727ef8f91f72f7bf2afea7da7a18ebf9925/437_396_3661_2196/3661.jpg",
+          "fields" : {
+            "width" : "3661",
+            "height" : "2196",
+            "aspectRatio" : "5:3"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/db398727ef8f91f72f7bf2afea7da7a18ebf9925/437_396_3661_2196/master/3661.jpg",
+          "fields" : {
+            "width" : "3661",
+            "height" : "2196",
+            "isMaster" : "true",
+            "aspectRatio" : "5:3"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/db398727ef8f91f72f7bf2afea7da7a18ebf9925/437_396_3661_2196/2000.jpg",
+          "fields" : {
+            "width" : "2000",
+            "height" : "1200",
+            "aspectRatio" : "5:3"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/db398727ef8f91f72f7bf2afea7da7a18ebf9925/437_396_3661_2196/1000.jpg",
+          "fields" : {
+            "width" : "1000",
+            "height" : "600",
+            "aspectRatio" : "5:3"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/db398727ef8f91f72f7bf2afea7da7a18ebf9925/437_396_3661_2196/500.jpg",
+          "fields" : {
+            "width" : "500",
+            "height" : "300",
+            "aspectRatio" : "5:3"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/db398727ef8f91f72f7bf2afea7da7a18ebf9925/437_396_3661_2196/140.jpg",
+          "fields" : {
+            "width" : "140",
+            "height" : "84",
+            "aspectRatio" : "5:3"
+          }
+        } ]
+      }, {
+        "elementType" : "text",
+        "fields" : {
+          "text" : "<p>However, Rayner <gu-note class=\"note\" title=\"Note: Steve Draper 10/9/2026 at 19:23\" data-gu-mark=\"true\" data-note-edited-by=\"Steve Draper\" data-note-edited-date=\"2026-09-10T18:23:00.077Z\" data-type=\"note\" data-note-id=\"a74319d1-ad44-11f1-8afc-f1bc645ff64e\">insisted</gu-note>said <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:37\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:37:10.889Z\" data-type=\"note\" data-note-id=\"ded9e591-ad35-11f1-9e96-51c43dc87b1a\">however </gu-note>the tax-raising powers would help fund local communities. “This measure will give mayors the choice to raise and reinvest funding where it’s needed most,” she said in a statement before <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:50\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:50:41.057Z\" data-type=\"note\" data-note-id=\"c1bfb911-ad37-11f1-9e96-51c43dc87b1a\">ahead of </gu-note>a meeting with the country’s mayors at No 10 North in Manchester.</p><p>“It’ll help support the local services, public spaces and attractions that both residents and visitors rely on, with decisions taken by people who know their area best.”</p><p>In the immediate term, the rate will be set at no more than 5% in almost every major English city after every Labour metro mayor agreed to cap their charges at that level.</p><p>In a joint letter to Rayner, they wrote: “Foreign cities visited by British tourists from New York to Paris, as well as hundreds of smaller cities across the world, have long benefited from such levies while continuing to grow their tourism sectors. Granting the power to regions to introduce levies will help level the playing field by ensuring further investment in our cities, contributing to further growth.”</p><p>But <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:39\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:39:41.554Z\" data-type=\"note\" data-note-id=\"38a78d21-ad36-11f1-9e96-51c43dc87b1a\">L</gu-note>large parts of the east coast will not have to pay the tax <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:39\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:39:54.129Z\" data-type=\"note\" data-note-id=\"40263101-ad36-11f1-9e96-51c43dc87b1a\">however </gu-note>after their mayors – two Reform UK and one Conservative – said they would refuse to impose them.</p><p>The move follows a consultation launched by Keir Starmer’s government, and will bring England into line with many European <gu-note class=\"note note--collapsed\" title=\"Note: Luke Heeley 10/9/2026 at 18:48\" contenteditable=\"false\" data-gu-mark=\"true\" data-note-edited-by=\"Luke Heeley\" data-note-edited-date=\"2026-09-10T17:48:39.314Z\" data-type=\"note\" data-hidden=\"true\" data-note-id=\"daf39f21-ad3f-11f1-b401-2f8a449ed3f0\">nations</gu-note>countries and the US, where <gu-note class=\"note\" title=\"Note: Kirsten Broomhall 10/9/2026 at 14:12\" data-gu-mark=\"true\" data-note-edited-by=\"Kirsten Broomhall\" data-note-edited-date=\"2026-09-10T13:12:59.938Z\" data-type=\"note\" data-note-id=\"58b72021-ad19-11f1-b2b8-cb0da5ead305\">British </gu-note>holidaymakers have for years been paying overnight visitor levies.</p><p>Similar levies also apply in Wales and Scotland, though they will be capped in Wales.</p><p>Edinburgh became the first city in Scotland to introduce a tourist tax, setting it at 5% in July. In Wales, councils will have the power to charge £1.30 per <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:41\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:41:43.889Z\" data-type=\"note\" data-note-id=\"81926411-ad36-11f1-9e96-51c43dc87b1a\">a </gu-note>person a night <gu-note class=\"note note--collapsed\" title=\"Note: Andrew Halley 10/9/2026 at 9:25\" contenteditable=\"false\" data-gu-mark=\"true\" data-note-edited-by=\"Andrew Halley\" data-note-edited-date=\"2026-09-10T08:25:36.368Z\" data-type=\"note\" data-hidden=\"true\" data-note-id=\"d9471051-ad2e-11f1-b2ca-1149e0da2ce5\">tax</gu-note>in tax for most accommodation from April 2027.</p><p>Under the proposal, which<gu-note class=\"note\" title=\"Note: Rebecca Allison 10/9/2026 at 14:11\" data-gu-mark=\"true\" data-note-edited-by=\"Rebecca Allison\" data-note-edited-date=\"2026-09-10T13:11:09.773Z\" data-type=\"note\" data-note-id=\"170d47d1-ad19-11f1-9aaa-75ab952e81cd\"> will</gu-note> is expected to be introduced as a bill in parliament within months, mayors will be allowed to charge a levy as a percentage of the price of an overnight stay, rather than as a flat fee.</p>"
+        },
+        "assets" : [ ]
+      }, {
+        "elementType" : "image",
+        "fields" : {
+          "displayCredit" : "true",
+          "imageType" : "Photograph",
+          "suppliersReference" : "2Y1FJ8H",
+          "alt" : "McGuinness posing with the Tyne Bridge behind",
+          "caption" : "The mayor of north-east England, Kim McGuinness, said the tax could bring money into the region during events such as the Great North Run.",
+          "source" : "Alamy ",
+          "photographer" : "DEW",
+          "isMandatory" : "true",
+          "role" : "supporting",
+          "mediaId" : "b19bfd9b9c6abcf861efee72caa7eb4e6335143c",
+          "mediaApiUri" : "https://api.media.gutools.co.uk/images/b19bfd9b9c6abcf861efee72caa7eb4e6335143c"
+        },
+        "assets" : [ {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/b19bfd9b9c6abcf861efee72caa7eb4e6335143c/316_0_4560_3648/4560.jpg",
+          "fields" : {
+            "width" : "4560",
+            "height" : "3648",
+            "aspectRatio" : "5:4"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/b19bfd9b9c6abcf861efee72caa7eb4e6335143c/316_0_4560_3648/master/4560.jpg",
+          "fields" : {
+            "width" : "4560",
+            "height" : "3648",
+            "isMaster" : "true",
+            "aspectRatio" : "5:4"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/b19bfd9b9c6abcf861efee72caa7eb4e6335143c/316_0_4560_3648/2000.jpg",
+          "fields" : {
+            "width" : "2000",
+            "height" : "1600",
+            "aspectRatio" : "5:4"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/b19bfd9b9c6abcf861efee72caa7eb4e6335143c/316_0_4560_3648/1000.jpg",
+          "fields" : {
+            "width" : "1000",
+            "height" : "800",
+            "aspectRatio" : "5:4"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/b19bfd9b9c6abcf861efee72caa7eb4e6335143c/316_0_4560_3648/500.jpg",
+          "fields" : {
+            "width" : "500",
+            "height" : "400",
+            "aspectRatio" : "5:4"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/b19bfd9b9c6abcf861efee72caa7eb4e6335143c/316_0_4560_3648/140.jpg",
+          "fields" : {
+            "width" : "140",
+            "height" : "112",
+            "aspectRatio" : "5:4"
+          }
+        } ]
+      }, {
+        "elementType" : "text",
+        "fields" : {
+          "text" : "<p>Ministers at <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:42\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:42:40.794Z\" data-type=\"note\" data-note-id=\"a37d67a0-ad36-11f1-9e96-51c43dc87b1a\">in </gu-note>Westminster will cap the number of nights to which it can be applied in order to avoid hitting long-term rental properties. <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:43\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:43:43.402Z\" data-type=\"note\" data-note-id=\"c8cea0a1-ad36-11f1-9e96-51c43dc87b1a\">The cap </gu-note>It is understood the cap is <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:43\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:43:57.814Z\" data-type=\"note\" data-note-id=\"d165b961-ad36-11f1-9e96-51c43dc87b1a\">to be </gu-note>likely to be higher than the 5% that <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:44\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:44:45.450Z\" data-type=\"note\" data-note-id=\"edca66a1-ad36-11f1-9e96-51c43dc87b1a\">five which </gu-note>is applied by Holyrood.</p><p>Any commercially rented property will face the tax, though there will be an exemption for those <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:45\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:45:45.432Z\" data-type=\"note\" data-note-id=\"118aed81-ad37-11f1-9e96-51c43dc87b1a\">on ones </gu-note>that are only rented occasionally on a casual basis.</p><p>Mayors will be allowed to decide whether or not to exempt other sites such as festival campsites. They will also be allowed to share revenues with local councils.</p><p><gu-correct class=\"note\" title=\"Correct: Luke Heeley 10/9/2026 at 18:53\" data-gu-mark=\"true\" data-note-edited-by=\"Luke Heeley\" data-note-edited-date=\"2026-09-10T17:53:49.052Z\" data-type=\"correct\" data-note-id=\"9391e3c1-ad40-11f1-b401-2f8a449ed3f0\">Kim </gu-correct><gu-note class=\"note\" title=\"Note: Luke Heeley 10/9/2026 at 18:53\" data-gu-mark=\"true\" data-note-edited-by=\"Luke Heeley\" data-note-edited-date=\"2026-09-10T17:53:36.954Z\" data-type=\"note\" data-note-id=\"8c5be1a1-ad40-11f1-b401-2f8a449ed3f0\"><gu-correct class=\"note\" title=\"Correct: Luke Heeley 10/9/2026 at 18:53\" data-gu-mark=\"true\" data-note-edited-by=\"Luke Heeley\" data-note-edited-date=\"2026-09-10T17:53:49.052Z\" data-type=\"correct\" data-note-id=\"9391e3c1-ad40-11f1-b401-2f8a449ed3f0\">McGuiness</gu-correct></gu-note><gu-correct class=\"note\" title=\"Correct: Luke Heeley 10/9/2026 at 18:53\" data-gu-mark=\"true\" data-note-edited-by=\"Luke Heeley\" data-note-edited-date=\"2026-09-10T17:53:49.052Z\" data-type=\"correct\" data-note-id=\"9391e3c1-ad40-11f1-b401-2f8a449ed3f0\">McGuinness</gu-correct>, the mayor of <gu-note class=\"note\" title=\"Note: Luke Heeley 10/9/2026 at 18:57\" data-gu-mark=\"true\" data-note-edited-by=\"Luke Heeley\" data-note-edited-date=\"2026-09-10T17:57:50.346Z\" data-type=\"note\" data-note-id=\"23646ea1-ad41-11f1-b401-2f8a449ed3f0\">the N</gu-note>north<gu-note class=\"note\" title=\"Note: Luke Heeley 10/9/2026 at 18:57\" data-gu-mark=\"true\" data-note-edited-by=\"Luke Heeley\" data-note-edited-date=\"2026-09-10T17:57:18.946Z\" data-type=\"note\" data-note-id=\"10ad2c21-ad41-11f1-b401-2f8a449ed3f0\"> </gu-note>-<gu-note class=\"note\" title=\"Note: Luke Heeley 10/9/2026 at 18:57\" data-gu-mark=\"true\" data-note-edited-by=\"Luke Heeley\" data-note-edited-date=\"2026-09-10T17:57:20.642Z\" data-type=\"note\" data-note-id=\"11aff621-ad41-11f1-b401-2f8a449ed3f0\">E</gu-note>east England, backed the move for a visitor levy, saying it could bring money to the local economy during events such as the Great North Run, which <gu-note class=\"note\" title=\"Note: Luke Heeley 10/9/2026 at 18:58\" data-gu-mark=\"true\" data-note-edited-by=\"Luke Heeley\" data-note-edited-date=\"2026-09-10T17:58:51.228Z\" data-type=\"note\" data-note-id=\"47ae49c1-ad41-11f1-b401-2f8a449ed3f0\">happened last weekend</gu-note>is due to take place this Sunday. <gu-note class=\"note\" title=\"Note: Luke Heeley 10/9/2026 at 18:53\" data-gu-mark=\"true\" data-note-edited-by=\"Luke Heeley\" data-note-edited-date=\"2026-09-10T17:53:59.234Z\" data-type=\"note\" data-note-id=\"99a38a21-ad40-11f1-b401-2f8a449ed3f0\">“</gu-note></p><p>“A visitor levy could help us bring major international events to our region, back local businesses, improve visitor attractions, build on the 90,000 jobs already in this sector and unlock opportunities that come from a thriving visitor economy,” she said.</p><p>“Most importantly, the money raised here would stay here, helping us invest in the future of our region rather than waiting for Whitehall to do it for us.”</p><p>The move is one of the biggest handovers of power from the Treasury to local leaders in years, and comes before<gu-note class=\"note\" title=\"Note: Lewis Williamson 10/9/2026 at 18:15\" data-gu-mark=\"true\" data-note-edited-by=\"Lewis Williamson\" data-note-edited-date=\"2026-09-10T17:15:43.155Z\" data-type=\"note\" data-note-id=\"41118921-ad3b-11f1-b645-e919d0808b3c\">ahead of</gu-note> the first budget of Andy Burnham’s government, at which ministers have promised to hand over more tax powers to local leaders.</p><p>It comes at a time when many local authorities are struggling for funds. Last year the government gave <a href=\"https://www.instituteforgovernment.org.uk/explainer/local-government-funding-england\">emergency funding</a> worth £1.3bn to a record 28 councils, without which several said they would have gone bankrupt.</p><p>But it also comes after a concerted effort by the government to ease the pressure on the hospitality industry, with many businesses struggling with high inflation and increased national insurance and minimum wage bills.</p><p>Earlier this summer, the former chancellor <a href=\"https://www.theguardian.com/business/2026/may/20/rachel-reeves-summer-bus-rides-food-tariffs-inflation-fuel-duty\">slashed VAT</a> on British summer holiday destinations, in a programme she called the “Great British <gu-note class=\"note\" title=\"Note: Steve Draper 10/9/2026 at 19:25\" data-gu-mark=\"true\" data-note-edited-by=\"Steve Draper\" data-note-edited-date=\"2026-09-10T18:25:57.948Z\" data-type=\"note\" data-note-id=\"11480fc1-ad45-11f1-8afc-f1bc645ff64e\">S</gu-note>summer <gu-note class=\"note\" title=\"Note: Steve Draper 10/9/2026 at 19:26\" data-gu-mark=\"true\" data-note-edited-by=\"Steve Draper\" data-note-edited-date=\"2026-09-10T18:26:02.396Z\" data-type=\"note\" data-note-id=\"13eec5c1-ad45-11f1-8afc-f1bc645ff64e\">S</gu-note>savings <gu-note class=\"note\" title=\"Note: Steve Draper 10/9/2026 at 19:26\" data-gu-mark=\"true\" data-note-edited-by=\"Steve Draper\" data-note-edited-date=\"2026-09-10T18:26:05.404Z\" data-type=\"note\" data-note-id=\"15b9c1c1-ad45-11f1-8afc-f1bc645ff64e\">S</gu-note>scheme”. </p><p>Meanwhile, in one of his first acts as prime minister, Burnham announced he would <a href=\"https://www.theguardian.com/business/2026/jul/23/business-rates-to-be-cut-by-20-for-england-pubs-clubs-and-music-venues\">cut business rates</a> for pubs, clubs and live music venues.</p><p>Many hospitality businesses are struggling with high inflation, as well as additional national insurance and minimum wage costs imposed by Reeves in her first budget.</p><p><gu-note class=\"note note--collapsed\" title=\"Note: Andrew Halley 10/9/2026 at 9:22\" contenteditable=\"false\" data-gu-mark=\"true\" data-note-edited-by=\"Andrew Halley\" data-note-edited-date=\"2026-09-10T08:22:48.568Z\" data-type=\"note\" data-hidden=\"true\" data-note-id=\"cebae781-acf0-11f1-a218-95e3879346a2\">The boss of the hospitality trade body</gu-note><gu-correct class=\"note\" title=\"Correct: Andrew Halley 10/9/2026 at 9:23\" data-gu-mark=\"true\" data-note-edited-by=\"Andrew Halley\" data-note-edited-date=\"2026-09-10T08:23:05.484Z\" data-type=\"correct\" data-note-id=\"d8d014c1-acf0-11f1-a218-95e3879346a2\">Allen Simpson</gu-correct>, the chief executive of UK<gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:47\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:47:34.065Z\" data-type=\"note\" data-note-id=\"524b0211-ad37-11f1-9e96-51c43dc87b1a\"> </gu-note>Hospitality, told BBC Radio 4’s Today programme: “What we’re talking about here is an open-ended power for mayors to set tourism taxes at any level they want … If you go to Paris, if you go to Rome, if you go to Berlin, you’re paying a small tourism tax, but it’s capped.”</p><p><em>Additional reporting by Raphael Boyd</em></p>"
+        },
+        "assets" : [ ]
+      } ],
+      "published" : false,
+      "attributes" : { }
+    } ],
+    "settings" : {
+      "relatedContentOff" : "false",
+      "blockAds" : "false",
+      "isInappropriateForSponsorship" : "false",
+      "tableOfContents" : "false",
+      "legallySensitive" : "false",
+      "hideReaderRevenue" : "false",
+      "timeZone" : "Europe/London",
+      "managedByComposer" : "true",
+      "usesPathManager" : "true",
+      "productionOffice" : "UK"
+    },
+    "taxonomy" : {
+      "tags" : [ {
+        "tag" : {
+          "id" : 19539,
+          "type" : "Keyword",
+          "internalName" : "Travel and leisure industry (Business sector)",
+          "externalName" : "Travel & leisure",
+          "slug" : "travelleisure",
+          "section" : {
+            "id" : 197,
+            "name" : "Business",
+            "pathPrefix" : "business",
+            "slug" : "business"
+          },
+          "path" : "business/travelleisure"
+        },
+        "isLead" : true
+      }, {
+        "tag" : {
+          "id" : 89156,
+          "type" : "Keyword",
+          "internalName" : "Hospitality industry",
+          "externalName" : "Hospitality industry",
+          "slug" : "hospitality-industry",
+          "section" : {
+            "id" : 197,
+            "name" : "Business",
+            "pathPrefix" : "business",
+            "slug" : "business"
+          },
+          "path" : "business/hospitality-industry",
+          "adBlockingLevel" : "NONE",
+          "contributionBlockingLevel" : "NONE"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 8867,
+          "type" : "Keyword",
+          "internalName" : "Business",
+          "externalName" : "Business",
+          "slug" : "business",
+          "section" : {
+            "id" : 197,
+            "name" : "Business",
+            "pathPrefix" : "business",
+            "slug" : "business"
+          },
+          "path" : "business/business"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 9496,
+          "type" : "Keyword",
+          "internalName" : "Hotels",
+          "externalName" : "Hotels",
+          "slug" : "hotels",
+          "section" : {
+            "id" : 183,
+            "name" : "Travel",
+            "pathPrefix" : "travel",
+            "slug" : "travel"
+          },
+          "path" : "travel/hotels"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 64214,
+          "type" : "Keyword",
+          "internalName" : "Airbnb",
+          "externalName" : "Airbnb",
+          "slug" : "airbnb",
+          "section" : {
+            "id" : 185,
+            "name" : "Technology",
+            "pathPrefix" : "technology",
+            "slug" : "technology"
+          },
+          "path" : "technology/airbnb"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 11082,
+          "type" : "Keyword",
+          "internalName" : "Tax and spending",
+          "externalName" : "Tax and spending",
+          "slug" : "taxandspending",
+          "section" : {
+            "id" : 184,
+            "name" : "Politics",
+            "pathPrefix" : "politics",
+            "slug" : "politics"
+          },
+          "path" : "politics/taxandspending"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 8791,
+          "type" : "Keyword",
+          "internalName" : "Politics (UK)",
+          "externalName" : "Politics",
+          "slug" : "politics",
+          "section" : {
+            "id" : 184,
+            "name" : "Politics",
+            "pathPrefix" : "politics",
+            "slug" : "politics"
+          },
+          "path" : "politics/politics"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 92871,
+          "type" : "Campaign",
+          "internalName" : "First Edition (newsletter signup)",
+          "externalName" : "First Edition (newsletter signup)",
+          "slug" : "morning-briefing",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "campaign/email/morning-briefing",
+          "adBlockingLevel" : "NONE",
+          "contributionBlockingLevel" : "NONE"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 79106,
+          "type" : "Keyword",
+          "internalName" : "Angela Rayner (keyword)",
+          "externalName" : "Angela Rayner",
+          "slug" : "angela-rayner",
+          "section" : {
+            "id" : 184,
+            "name" : "Politics",
+            "pathPrefix" : "politics",
+            "slug" : "politics"
+          },
+          "path" : "politics/angela-rayner"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 60426,
+          "type" : "Keyword",
+          "internalName" : "Devolution (Politics)",
+          "externalName" : "Devolution",
+          "slug" : "devolution",
+          "section" : {
+            "id" : 184,
+            "name" : "Politics",
+            "pathPrefix" : "politics",
+            "slug" : "politics"
+          },
+          "path" : "politics/devolution"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 89513,
+          "type" : "Keyword",
+          "internalName" : "England (News)",
+          "externalName" : "England",
+          "slug" : "england",
+          "section" : {
+            "id" : 341,
+            "name" : "UK news",
+            "pathPrefix" : "uk-news",
+            "slug" : "uk-news"
+          },
+          "path" : "uk-news/england",
+          "adBlockingLevel" : "NONE",
+          "contributionBlockingLevel" : "NONE"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 50006,
+          "type" : "Keyword",
+          "internalName" : "Mayoral elections elected mayors",
+          "externalName" : "Mayoral elections",
+          "slug" : "mayoral-elections",
+          "section" : {
+            "id" : 184,
+            "name" : "Politics",
+            "pathPrefix" : "politics",
+            "slug" : "politics"
+          },
+          "path" : "politics/mayoral-elections"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 9243,
+          "type" : "Keyword",
+          "internalName" : "Labour",
+          "externalName" : "Labour",
+          "slug" : "labour",
+          "section" : {
+            "id" : 184,
+            "name" : "Politics",
+            "pathPrefix" : "politics",
+            "slug" : "politics"
+          },
+          "path" : "politics/labour"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 9260,
+          "type" : "Keyword",
+          "internalName" : "Local government UK (Society)",
+          "externalName" : "Local government",
+          "slug" : "localgovernment",
+          "section" : {
+            "id" : 186,
+            "name" : "Society",
+            "pathPrefix" : "society",
+            "slug" : "society"
+          },
+          "path" : "society/localgovernment"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 8785,
+          "type" : "Keyword",
+          "internalName" : "Travel",
+          "externalName" : "Travel",
+          "slug" : "travel",
+          "section" : {
+            "id" : 183,
+            "name" : "Travel",
+            "pathPrefix" : "travel",
+            "slug" : "travel"
+          },
+          "path" : "travel/travel"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 9486,
+          "type" : "Keyword",
+          "internalName" : "UK news",
+          "externalName" : "UK news",
+          "slug" : "uk",
+          "section" : {
+            "id" : 341,
+            "name" : "UK news",
+            "pathPrefix" : "uk-news",
+            "slug" : "uk-news"
+          },
+          "path" : "uk/uk"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 26903,
+          "type" : "Content Type",
+          "internalName" : "Article (Content type)",
+          "externalName" : "Article",
+          "slug" : "article",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "articles"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 22641,
+          "type" : "Tone",
+          "internalName" : "News (Tone)",
+          "externalName" : "News",
+          "slug" : "news",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "tone/news"
+        },
+        "isLead" : false
+      } ],
+      "contributors" : [ {
+        "id" : 93503,
+        "type" : "Contributor",
+        "internalName" : "Kiran Stacey",
+        "externalName" : "Kiran Stacey",
+        "slug" : "kiran-stacey",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "profile/kiran-stacey",
+        "adBlockingLevel" : "NONE",
+        "contributionBlockingLevel" : "NONE"
+      }, {
+        "id" : 38624,
+        "type" : "Contributor",
+        "internalName" : "Josh Halliday",
+        "externalName" : "Josh Halliday",
+        "slug" : "josh-halliday",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "profile/josh-halliday"
+      }, {
+        "id" : 72472,
+        "type" : "Contributor",
+        "internalName" : "Rob Davies (Business)",
+        "externalName" : "Rob Davies",
+        "slug" : "rob-davies",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "profile/rob-davies"
+      }, {
+        "id" : 19530,
+        "type" : "Contributor",
+        "internalName" : "Alexandra Topping",
+        "externalName" : "Alexandra Topping",
+        "slug" : "alexandratopping",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "profile/alexandratopping"
+      } ],
+      "publication" : {
+        "id" : 4,
+        "type" : "Publication",
+        "internalName" : "guardian.co.uk publication",
+        "externalName" : "theguardian.com",
+        "slug" : "guardian",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "guardian/all"
+      },
+      "newspaper" : {
+        "book" : {
+          "id" : 16600,
+          "type" : "Newspaper Book",
+          "internalName" : "Gdn: Main section G1 (nb)",
+          "externalName" : "Main section",
+          "slug" : "mainsection",
+          "section" : {
+            "id" : 182,
+            "name" : "News",
+            "pathPrefix" : "news",
+            "slug" : "news"
+          },
+          "path" : "theguardian/mainsection"
+        },
+        "bookSection" : {
+          "id" : 16779,
+          "type" : "Newspaper Book Section",
+          "internalName" : "Gdn: UK news (nbs)",
+          "externalName" : "UK news",
+          "slug" : "uknews",
+          "section" : {
+            "id" : 341,
+            "name" : "UK news",
+            "pathPrefix" : "uk-news",
+            "slug" : "uk-news"
+          },
+          "path" : "theguardian/mainsection/uknews"
+        },
+        "publication" : {
+          "id" : 2,
+          "type" : "Publication",
+          "internalName" : "The Guardian publication",
+          "externalName" : "The Guardian",
+          "slug" : "theguardian",
+          "section" : {
+            "id" : 205,
+            "name" : "From the Guardian",
+            "pathPrefix" : "theguardian",
+            "slug" : "theguardian"
+          },
+          "path" : "theguardian/all"
+        }
+      },
+      "references" : [ ],
+      "tracking" : [ {
+        "id" : 74422,
+        "type" : "Tracking",
+        "subType" : "commissioningdesk",
+        "internalName" : "UK Home News (commissioning)",
+        "externalName" : "UK Home News",
+        "slug" : "uk-home-news",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "tracking/commissioningdesk/uk-home-news"
+      } ]
+    },
+    "aliasPaths" : [ ]
+  },
+  "live" : {
+    "contentChangeDetails" : {
+      "lastModified" : {
+        "date" : 1789081130674,
+        "user" : {
+          "email" : "user36@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "36"
+        }
+      },
+      "created" : {
+        "date" : 1789024473327,
+        "user" : {
+          "email" : "user31@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "31"
+        }
+      },
+      "published" : {
+        "date" : 1789028407534,
+        "user" : {
+          "email" : "user33@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "33"
+        }
+      },
+      "lastMajorRevisionPublished" : {
+        "date" : 1789064093026,
+        "user" : {
+          "email" : "user42@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "42"
+        }
+      },
+      "revision" : 1751,
+      "minutesActive" : 149,
+      "contentSource" : "flexible"
+    },
+    "fields" : {
+      "linkText" : "Ministers face backlash from hospitality industry over ‘tourist tax’ plans",
+      "standfirst" : "<p>Many mayors welcome power to impose tourist tax but industry warns of ‘irreparable harm’ and job losses</p><p></p>",
+      "slug" : "england-nightly-levy-hotel-airbnb-stays-tourist-tax-plans",
+      "newspaperPublicationDate" : "2026-09-11T00:00:00+00:00",
+      "byline" : "<span data-tag-id=\"93503\" class=\"contributor\">Kiran Stacey</span>, <span data-tag-id=\"38624\" class=\"contributor\">Josh Halliday</span>, <span data-tag-id=\"19530\" class=\"contributor\">Alexandra Topping</span> and <span data-tag-id=\"72472\" class=\"contributor\">Rob Davies</span>",
+      "commissionedLength" : "900",
+      "newspaperPageNumber" : "1",
+      "trailText" : "Many mayors welcome power to impose tourist tax but industry warns of ‘irreparable harm’ and job losses ",
+      "headline" : "Ministers face backlash from hospitality industry over ‘tourist tax’ plans"
+    },
+    "thumbnail" : {
+      "fields" : {
+        "displayCredit" : "true",
+        "imageType" : "Photograph",
+        "suppliersReference" : "1899713339",
+        "alt" : "A young man and woman walk past beach huts on the seafront",
+        "source" : "Getty Images",
+        "photographer" : "Imgorthand",
+        "mediaId" : "6671b801cff2b94540b41de8e1a648bee8d77536",
+        "mediaApiUri" : "https://api.media.gutools.co.uk/images/6671b801cff2b94540b41de8e1a648bee8d77536"
+      },
+      "assets" : [ {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://media.guim.co.uk/6671b801cff2b94540b41de8e1a648bee8d77536/1243_0_6827_5464/master/6827.jpg",
+        "fields" : {
+          "width" : "6827",
+          "height" : "5464",
+          "isMaster" : "true",
+          "aspectRatio" : "5:4"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://media.guim.co.uk/6671b801cff2b94540b41de8e1a648bee8d77536/1243_0_6827_5464/6827.jpg",
+        "fields" : {
+          "width" : "6827",
+          "height" : "5464",
+          "aspectRatio" : "5:4"
+        }
+      }, {
+        "assetType" : "image",
+        "mimeType" : "image/jpeg",
+        "url" : "https://media.guim.co.uk/6671b801cff2b94540b41de8e1a648bee8d77536/1243_0_6827_5464/500.jpg",
+        "fields" : {
+          "width" : "500",
+          "height" : "400",
+          "aspectRatio" : "5:4"
+        }
+      } ]
+    },
+    "mainBlock" : {
+      "id" : "6aa267be8f08f45a44581fc7",
+      "lastModified" : 1789065746496,
+      "dateCreated" : 1789028286136,
+      "publishedDate" : 1789065746525,
+      "firstPublishedDate" : 1789046500287,
+      "createdBy" : {
+        "email" : "user33@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "33"
+      },
+      "lastModifiedBy" : {
+        "email" : "user44@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "44"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "image",
+        "fields" : {
+          "displayCredit" : "true",
+          "imageType" : "Photograph",
+          "suppliersReference" : "1899713339",
+          "alt" : "A young man and woman walk past beach huts on the seafront",
+          "caption" : "Lyme Regis beach in Dorset. The overnight visitor levy will potentially generate tens of millions of pounds to be spent in local areas.",
+          "source" : "Getty Images",
+          "photographer" : "Imgorthand",
+          "mediaId" : "6671b801cff2b94540b41de8e1a648bee8d77536",
+          "mediaApiUri" : "https://api.media.gutools.co.uk/images/6671b801cff2b94540b41de8e1a648bee8d77536"
+        },
+        "assets" : [ {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/6671b801cff2b94540b41de8e1a648bee8d77536/1243_0_6827_5464/140.jpg",
+          "fields" : {
+            "width" : "140",
+            "height" : "112",
+            "aspectRatio" : "5:4"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/6671b801cff2b94540b41de8e1a648bee8d77536/1243_0_6827_5464/500.jpg",
+          "fields" : {
+            "width" : "500",
+            "height" : "400",
+            "aspectRatio" : "5:4"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/6671b801cff2b94540b41de8e1a648bee8d77536/1243_0_6827_5464/1000.jpg",
+          "fields" : {
+            "width" : "1000",
+            "height" : "800",
+            "aspectRatio" : "5:4"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/6671b801cff2b94540b41de8e1a648bee8d77536/1243_0_6827_5464/2000.jpg",
+          "fields" : {
+            "width" : "2000",
+            "height" : "1601",
+            "aspectRatio" : "5:4"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/6671b801cff2b94540b41de8e1a648bee8d77536/1243_0_6827_5464/6827.jpg",
+          "fields" : {
+            "width" : "6827",
+            "height" : "5464",
+            "aspectRatio" : "5:4"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/6671b801cff2b94540b41de8e1a648bee8d77536/1243_0_6827_5464/master/6827.jpg",
+          "fields" : {
+            "width" : "6827",
+            "height" : "5464",
+            "isMaster" : "true",
+            "aspectRatio" : "5:4"
+          }
+        } ]
+      } ],
+      "published" : true,
+      "attributes" : { }
+    },
+    "blocks" : [ {
+      "id" : "6aa258d98f08f45a44581f7b",
+      "lastModified" : 1789080486380,
+      "dateCreated" : 1789024473926,
+      "publishedDate" : 1789080486513,
+      "firstPublishedDate" : 1789028818331,
+      "createdBy" : {
+        "email" : "user31@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "31"
+      },
+      "lastModifiedBy" : {
+        "email" : "user35@guardian.co.uk",
+        "firstName" : "User",
+        "lastName" : "35"
+      },
+      "contributors" : [ ],
+      "tags" : [ ],
+      "elements" : [ {
+        "elementType" : "text",
+        "fields" : {
+          "text" : "<p>Ministers are facing a backlash <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:27\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:27:46.942Z\" data-type=\"note\" data-note-id=\"8eb642d1-ad34-11f1-9e96-51c43dc87b1a\">from picked a battle with </gu-note>from the hospitality industry <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:27\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:27:59.514Z\" data-type=\"note\" data-note-id=\"96349891-ad34-11f1-9e96-51c43dc87b1a\">on Thursday </gu-note>after they announced mayors in England would be given sweeping powers to levy taxes on holiday accommodation such as hotels and Airbnbs<gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:28\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:28:39.630Z\" data-type=\"note\" data-note-id=\"ae1df6e1-ad34-11f1-9e96-51c43dc87b1a\">AirBnBs</gu-note>.</p><p>The plan, <gu-note class=\"note\" title=\"Note: Steve Draper 10/9/2026 at 19:21\" data-gu-mark=\"true\" data-note-edited-by=\"Steve Draper\" data-note-edited-date=\"2026-09-10T18:21:03.225Z\" data-type=\"note\" data-note-id=\"619ce691-ad44-11f1-8afc-f1bc645ff64e\">unveiled</gu-note>presented on Thursday by Angela Rayner, the local government secretary, will <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:32\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:32:21.745Z\" data-type=\"note\" data-note-id=\"32820611-ad35-11f1-9e96-51c43dc87b1a\">unveiled the plan to </gu-note>allow mayors to impose a “tourist tax” without a cap on how much they can charge and with few controls on how they can spend it.</p><p>The move, which gives mayors some of their most significant tax-raising powers, was welcomed by regional leaders, who said it would give them a vital revenue stream at a time when local government is facing a funding crisis. Mayors will be expected to lay out their detailed plans for how they plan to use the new powers in early 2028.</p>"
+        },
+        "assets" : [ ]
+      }, {
+        "elementType" : "rich-link",
+        "fields" : {
+          "linkText" : "The hospitality industry fears a tourist tax will deter visitors – the evidence says otherwise",
+          "originalUrl" : "https://www.theguardian.com/business/2026/sep/10/the-hospitality-industry-fears-a-tourist-tax-will-drive-visitors-away-the-evidence-disagrees",
+          "linkPrefix" : "Related: ",
+          "isMandatory" : "true",
+          "role" : "thumbnail",
+          "url" : "https://www.theguardian.com/business/2026/sep/10/the-hospitality-industry-fears-a-tourist-tax-will-drive-visitors-away-the-evidence-disagrees"
+        },
+        "assets" : [ ]
+      }, {
+        "elementType" : "text",
+        "fields" : {
+          "text" : "<p>But it was met with outrage from hospitality businesses, who had expected the government to put stricter conditions on how much mayors could charge and how the money would be used.</p><p>UK<gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:35\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:35:40.436Z\" data-type=\"note\" data-note-id=\"a8efdd41-ad35-11f1-9e96-51c43dc87b1a\"> </gu-note>Hospitality, the industry’s trade body, <gu-note class=\"note\" title=\"Note: Kirsten Broomhall 10/9/2026 at 14:13\" data-gu-mark=\"true\" data-note-edited-by=\"Kirsten Broomhall\" data-note-edited-date=\"2026-09-10T13:13:31.675Z\" data-type=\"note\" data-note-id=\"6ba1ceb0-ad19-11f1-b2b8-cb0da5ead305\">warned</gu-note>said a 5% overnight levy across England <gu-note class=\"note\" title=\"Note: Kirsten Broomhall 10/9/2026 at 14:13\" data-gu-mark=\"true\" data-note-edited-by=\"Kirsten Broomhall\" data-note-edited-date=\"2026-09-10T13:13:37.436Z\" data-type=\"note\" data-note-id=\"6f10ddc1-ad19-11f1-b2b8-cb0da5ead305\">w</gu-note>could result in 33,000 job losses and a £2bn hit to the economy, with regions more reliant on tourism, <gu-note class=\"note\" title=\"Note: Kirsten Broomhall 10/9/2026 at 14:13\" data-gu-mark=\"true\" data-note-edited-by=\"Kirsten Broomhall\" data-note-edited-date=\"2026-09-10T13:13:51.613Z\" data-type=\"note\" data-note-id=\"77841ad1-ad19-11f1-b2b8-cb0da5ead305\">like</gu-note>such as the Lake District, being worst affected.</p><p>The owner of Premier Inn, Britain’s biggest hotel chain, said it would be “hugely damaging” and urged ministers to “avoid inflicting what could be irreparable harm on this large and vital sector of the economy”.</p><p><gu-correct class=\"note\" title=\"Correct: Lorraine Mallinder (Casual) 10/9/2026 at 17:36\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:36:30.331Z\" data-type=\"correct\" data-note-id=\"c6ad3cb1-ad35-11f1-9e96-51c43dc87b1a\">Eddie Nelder</gu-correct>, <gu-note class=\"note\" title=\"Note: Steve Draper 10/9/2026 at 19:31\" data-gu-mark=\"true\" data-note-edited-by=\"Steve Draper\" data-note-edited-date=\"2026-09-10T18:31:16.830Z\" data-type=\"note\" data-note-id=\"cf5997e1-ad45-11f1-8afc-f1bc645ff64e\">the</gu-note>a co-owner of the <gu-note class=\"note\" title=\"Note: Steve Draper 10/9/2026 at 19:43\" data-gu-mark=\"true\" data-note-edited-by=\"Steve Draper\" data-note-edited-date=\"2026-09-10T18:43:46.016Z\" data-type=\"note\" data-note-id=\"a3da1de2-ad47-11f1-8afc-f1bc645ff64e\">five-strong </gu-note><gu-correct class=\"note\" title=\"Correct: Lorraine Mallinder (Casual) 10/9/2026 at 17:36\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:36:45.160Z\" data-type=\"correct\" data-note-id=\"cf83f681-ad35-11f1-9e96-51c43dc87b1a\">Choice Hotels </gu-correct>chain<gu-note class=\"note\" title=\"Note: Steve Draper 10/9/2026 at 19:43\" data-gu-mark=\"true\" data-note-edited-by=\"Steve Draper\" data-note-edited-date=\"2026-09-10T18:43:56.630Z\" data-type=\"note\" data-note-id=\"9439df61-ad47-11f1-8afc-f1bc645ff64e\"> in</gu-note>, which has hotels in Blackpool<gu-note class=\"note\" title=\"Note: Steve Draper 10/9/2026 at 19:44\" data-gu-mark=\"true\" data-note-edited-by=\"Steve Draper\" data-note-edited-date=\"2026-09-10T18:44:02.791Z\" data-type=\"note\" data-note-id=\"97e5f771-ad47-11f1-8afc-f1bc645ff64e\">,</gu-note> and the Lake District, said: “We’re here trying to stay alive, waiting for a lifeline from the government and we get another hammer blow. It feels like we’re being strangled.”</p>"
+        },
+        "assets" : [ ]
+      }, {
+        "elementType" : "image",
+        "fields" : {
+          "displayCredit" : "true",
+          "isMandatory" : "true",
+          "imageType" : "Photograph",
+          "suppliersReference" : "469319107",
+          "alt" : "View of Blackpool coastline, including the tower",
+          "caption" : "A Blackpool hotel owner said the taxes were ‘another hammer blow’ for the hospitality industry. ",
+          "source" : "LightRocket/Getty Images",
+          "photographer" : "Pawel Libera",
+          "mediaId" : "db398727ef8f91f72f7bf2afea7da7a18ebf9925",
+          "mediaApiUri" : "https://api.media.gutools.co.uk/images/db398727ef8f91f72f7bf2afea7da7a18ebf9925"
+        },
+        "assets" : [ {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/db398727ef8f91f72f7bf2afea7da7a18ebf9925/437_396_3661_2196/3661.jpg",
+          "fields" : {
+            "width" : "3661",
+            "height" : "2196",
+            "aspectRatio" : "5:3"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/db398727ef8f91f72f7bf2afea7da7a18ebf9925/437_396_3661_2196/master/3661.jpg",
+          "fields" : {
+            "width" : "3661",
+            "height" : "2196",
+            "isMaster" : "true",
+            "aspectRatio" : "5:3"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/db398727ef8f91f72f7bf2afea7da7a18ebf9925/437_396_3661_2196/2000.jpg",
+          "fields" : {
+            "width" : "2000",
+            "height" : "1200",
+            "aspectRatio" : "5:3"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/db398727ef8f91f72f7bf2afea7da7a18ebf9925/437_396_3661_2196/1000.jpg",
+          "fields" : {
+            "width" : "1000",
+            "height" : "600",
+            "aspectRatio" : "5:3"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/db398727ef8f91f72f7bf2afea7da7a18ebf9925/437_396_3661_2196/500.jpg",
+          "fields" : {
+            "width" : "500",
+            "height" : "300",
+            "aspectRatio" : "5:3"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/db398727ef8f91f72f7bf2afea7da7a18ebf9925/437_396_3661_2196/140.jpg",
+          "fields" : {
+            "width" : "140",
+            "height" : "84",
+            "aspectRatio" : "5:3"
+          }
+        } ]
+      }, {
+        "elementType" : "text",
+        "fields" : {
+          "text" : "<p>However, Rayner <gu-note class=\"note\" title=\"Note: Steve Draper 10/9/2026 at 19:23\" data-gu-mark=\"true\" data-note-edited-by=\"Steve Draper\" data-note-edited-date=\"2026-09-10T18:23:00.077Z\" data-type=\"note\" data-note-id=\"a74319d1-ad44-11f1-8afc-f1bc645ff64e\">insisted</gu-note>said <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:37\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:37:10.889Z\" data-type=\"note\" data-note-id=\"ded9e591-ad35-11f1-9e96-51c43dc87b1a\">however </gu-note>the tax-raising powers would help fund local communities. “This measure will give mayors the choice to raise and reinvest funding where it’s needed most,” she said in a statement before <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:50\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:50:41.057Z\" data-type=\"note\" data-note-id=\"c1bfb911-ad37-11f1-9e96-51c43dc87b1a\">ahead of </gu-note>a meeting with the country’s mayors at No 10 North in Manchester.</p><p>“It’ll help support the local services, public spaces and attractions that both residents and visitors rely on, with decisions taken by people who know their area best.”</p><p>In the immediate term, the rate will be set at no more than 5% in almost every major English city after every Labour metro mayor agreed to cap their charges at that level.</p><p>In a joint letter to Rayner, they wrote: “Foreign cities visited by British tourists from New York to Paris, as well as hundreds of smaller cities across the world, have long benefited from such levies while continuing to grow their tourism sectors. Granting the power to regions to introduce levies will help level the playing field by ensuring further investment in our cities, contributing to further growth.”</p><p>But <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:39\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:39:41.554Z\" data-type=\"note\" data-note-id=\"38a78d21-ad36-11f1-9e96-51c43dc87b1a\">L</gu-note>large parts of the east coast will not have to pay the tax <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:39\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:39:54.129Z\" data-type=\"note\" data-note-id=\"40263101-ad36-11f1-9e96-51c43dc87b1a\">however </gu-note>after their mayors – two Reform UK and one Conservative – said they would refuse to impose them.</p><p>The move follows a consultation launched by Keir Starmer’s government, and will bring England into line with many European <gu-note class=\"note note--collapsed\" title=\"Note: Luke Heeley 10/9/2026 at 18:48\" contenteditable=\"false\" data-gu-mark=\"true\" data-note-edited-by=\"Luke Heeley\" data-note-edited-date=\"2026-09-10T17:48:39.314Z\" data-type=\"note\" data-hidden=\"true\" data-note-id=\"daf39f21-ad3f-11f1-b401-2f8a449ed3f0\">nations</gu-note>countries and the US, where <gu-note class=\"note\" title=\"Note: Kirsten Broomhall 10/9/2026 at 14:12\" data-gu-mark=\"true\" data-note-edited-by=\"Kirsten Broomhall\" data-note-edited-date=\"2026-09-10T13:12:59.938Z\" data-type=\"note\" data-note-id=\"58b72021-ad19-11f1-b2b8-cb0da5ead305\">British </gu-note>holidaymakers have for years been paying overnight visitor levies.</p><p>Similar levies also apply in Wales and Scotland, though they will be capped in Wales.</p><p>Edinburgh became the first city in Scotland to introduce a tourist tax, setting it at 5% in July. In Wales, councils will have the power to charge £1.30 per <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:41\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:41:43.889Z\" data-type=\"note\" data-note-id=\"81926411-ad36-11f1-9e96-51c43dc87b1a\">a </gu-note>person a night <gu-note class=\"note note--collapsed\" title=\"Note: Andrew Halley 10/9/2026 at 9:25\" contenteditable=\"false\" data-gu-mark=\"true\" data-note-edited-by=\"Andrew Halley\" data-note-edited-date=\"2026-09-10T08:25:36.368Z\" data-type=\"note\" data-hidden=\"true\" data-note-id=\"d9471051-ad2e-11f1-b2ca-1149e0da2ce5\">tax</gu-note>in tax for most accommodation from April 2027.</p><p>Under the proposal, which<gu-note class=\"note\" title=\"Note: Rebecca Allison 10/9/2026 at 14:11\" data-gu-mark=\"true\" data-note-edited-by=\"Rebecca Allison\" data-note-edited-date=\"2026-09-10T13:11:09.773Z\" data-type=\"note\" data-note-id=\"170d47d1-ad19-11f1-9aaa-75ab952e81cd\"> will</gu-note> is expected to be introduced as a bill in parliament within months, mayors will be allowed to charge a levy as a percentage of the price of an overnight stay, rather than as a flat fee.</p>"
+        },
+        "assets" : [ ]
+      }, {
+        "elementType" : "image",
+        "fields" : {
+          "displayCredit" : "true",
+          "imageType" : "Photograph",
+          "suppliersReference" : "2Y1FJ8H",
+          "alt" : "McGuinness posing with the Tyne Bridge behind",
+          "caption" : "The mayor of north-east England, Kim McGuinness, said the tax could bring money into the region during events such as the Great North Run.",
+          "source" : "Alamy ",
+          "photographer" : "DEW",
+          "isMandatory" : "true",
+          "role" : "supporting",
+          "mediaId" : "b19bfd9b9c6abcf861efee72caa7eb4e6335143c",
+          "mediaApiUri" : "https://api.media.gutools.co.uk/images/b19bfd9b9c6abcf861efee72caa7eb4e6335143c"
+        },
+        "assets" : [ {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/b19bfd9b9c6abcf861efee72caa7eb4e6335143c/316_0_4560_3648/4560.jpg",
+          "fields" : {
+            "width" : "4560",
+            "height" : "3648",
+            "aspectRatio" : "5:4"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/b19bfd9b9c6abcf861efee72caa7eb4e6335143c/316_0_4560_3648/master/4560.jpg",
+          "fields" : {
+            "width" : "4560",
+            "height" : "3648",
+            "isMaster" : "true",
+            "aspectRatio" : "5:4"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/b19bfd9b9c6abcf861efee72caa7eb4e6335143c/316_0_4560_3648/2000.jpg",
+          "fields" : {
+            "width" : "2000",
+            "height" : "1600",
+            "aspectRatio" : "5:4"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/b19bfd9b9c6abcf861efee72caa7eb4e6335143c/316_0_4560_3648/1000.jpg",
+          "fields" : {
+            "width" : "1000",
+            "height" : "800",
+            "aspectRatio" : "5:4"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/b19bfd9b9c6abcf861efee72caa7eb4e6335143c/316_0_4560_3648/500.jpg",
+          "fields" : {
+            "width" : "500",
+            "height" : "400",
+            "aspectRatio" : "5:4"
+          }
+        }, {
+          "assetType" : "image",
+          "mimeType" : "image/jpeg",
+          "url" : "https://media.guim.co.uk/b19bfd9b9c6abcf861efee72caa7eb4e6335143c/316_0_4560_3648/140.jpg",
+          "fields" : {
+            "width" : "140",
+            "height" : "112",
+            "aspectRatio" : "5:4"
+          }
+        } ]
+      }, {
+        "elementType" : "text",
+        "fields" : {
+          "text" : "<p>Ministers at <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:42\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:42:40.794Z\" data-type=\"note\" data-note-id=\"a37d67a0-ad36-11f1-9e96-51c43dc87b1a\">in </gu-note>Westminster will cap the number of nights to which it can be applied in order to avoid hitting long-term rental properties. <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:43\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:43:43.402Z\" data-type=\"note\" data-note-id=\"c8cea0a1-ad36-11f1-9e96-51c43dc87b1a\">The cap </gu-note>It is understood the cap is <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:43\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:43:57.814Z\" data-type=\"note\" data-note-id=\"d165b961-ad36-11f1-9e96-51c43dc87b1a\">to be </gu-note>likely to be higher than the 5% that <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:44\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:44:45.450Z\" data-type=\"note\" data-note-id=\"edca66a1-ad36-11f1-9e96-51c43dc87b1a\">five which </gu-note>is applied by Holyrood.</p><p>Any commercially rented property will face the tax, though there will be an exemption for those <gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:45\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:45:45.432Z\" data-type=\"note\" data-note-id=\"118aed81-ad37-11f1-9e96-51c43dc87b1a\">on ones </gu-note>that are only rented occasionally on a casual basis.</p><p>Mayors will be allowed to decide whether or not to exempt other sites such as festival campsites. They will also be allowed to share revenues with local councils.</p><p><gu-correct class=\"note\" title=\"Correct: Luke Heeley 10/9/2026 at 18:53\" data-gu-mark=\"true\" data-note-edited-by=\"Luke Heeley\" data-note-edited-date=\"2026-09-10T17:53:49.052Z\" data-type=\"correct\" data-note-id=\"9391e3c1-ad40-11f1-b401-2f8a449ed3f0\">Kim </gu-correct><gu-note class=\"note\" title=\"Note: Luke Heeley 10/9/2026 at 18:53\" data-gu-mark=\"true\" data-note-edited-by=\"Luke Heeley\" data-note-edited-date=\"2026-09-10T17:53:36.954Z\" data-type=\"note\" data-note-id=\"8c5be1a1-ad40-11f1-b401-2f8a449ed3f0\"><gu-correct class=\"note\" title=\"Correct: Luke Heeley 10/9/2026 at 18:53\" data-gu-mark=\"true\" data-note-edited-by=\"Luke Heeley\" data-note-edited-date=\"2026-09-10T17:53:49.052Z\" data-type=\"correct\" data-note-id=\"9391e3c1-ad40-11f1-b401-2f8a449ed3f0\">McGuiness</gu-correct></gu-note><gu-correct class=\"note\" title=\"Correct: Luke Heeley 10/9/2026 at 18:53\" data-gu-mark=\"true\" data-note-edited-by=\"Luke Heeley\" data-note-edited-date=\"2026-09-10T17:53:49.052Z\" data-type=\"correct\" data-note-id=\"9391e3c1-ad40-11f1-b401-2f8a449ed3f0\">McGuinness</gu-correct>, the mayor of <gu-note class=\"note\" title=\"Note: Luke Heeley 10/9/2026 at 18:57\" data-gu-mark=\"true\" data-note-edited-by=\"Luke Heeley\" data-note-edited-date=\"2026-09-10T17:57:50.346Z\" data-type=\"note\" data-note-id=\"23646ea1-ad41-11f1-b401-2f8a449ed3f0\">the N</gu-note>north<gu-note class=\"note\" title=\"Note: Luke Heeley 10/9/2026 at 18:57\" data-gu-mark=\"true\" data-note-edited-by=\"Luke Heeley\" data-note-edited-date=\"2026-09-10T17:57:18.946Z\" data-type=\"note\" data-note-id=\"10ad2c21-ad41-11f1-b401-2f8a449ed3f0\"> </gu-note>-<gu-note class=\"note\" title=\"Note: Luke Heeley 10/9/2026 at 18:57\" data-gu-mark=\"true\" data-note-edited-by=\"Luke Heeley\" data-note-edited-date=\"2026-09-10T17:57:20.642Z\" data-type=\"note\" data-note-id=\"11aff621-ad41-11f1-b401-2f8a449ed3f0\">E</gu-note>east England, backed the move for a visitor levy, saying it could bring money to the local economy during events such as the Great North Run, which <gu-note class=\"note\" title=\"Note: Luke Heeley 10/9/2026 at 18:58\" data-gu-mark=\"true\" data-note-edited-by=\"Luke Heeley\" data-note-edited-date=\"2026-09-10T17:58:51.228Z\" data-type=\"note\" data-note-id=\"47ae49c1-ad41-11f1-b401-2f8a449ed3f0\">happened last weekend</gu-note>is due to take place this Sunday. <gu-note class=\"note\" title=\"Note: Luke Heeley 10/9/2026 at 18:53\" data-gu-mark=\"true\" data-note-edited-by=\"Luke Heeley\" data-note-edited-date=\"2026-09-10T17:53:59.234Z\" data-type=\"note\" data-note-id=\"99a38a21-ad40-11f1-b401-2f8a449ed3f0\">“</gu-note></p><p>“A visitor levy could help us bring major international events to our region, back local businesses, improve visitor attractions, build on the 90,000 jobs already in this sector and unlock opportunities that come from a thriving visitor economy,” she said.</p><p>“Most importantly, the money raised here would stay here, helping us invest in the future of our region rather than waiting for Whitehall to do it for us.”</p><p>The move is one of the biggest handovers of power from the Treasury to local leaders in years, and comes before<gu-note class=\"note\" title=\"Note: Lewis Williamson 10/9/2026 at 18:15\" data-gu-mark=\"true\" data-note-edited-by=\"Lewis Williamson\" data-note-edited-date=\"2026-09-10T17:15:43.155Z\" data-type=\"note\" data-note-id=\"41118921-ad3b-11f1-b645-e919d0808b3c\">ahead of</gu-note> the first budget of Andy Burnham’s government, at which ministers have promised to hand over more tax powers to local leaders.</p><p>It comes at a time when many local authorities are struggling for funds. Last year the government gave <a href=\"https://www.instituteforgovernment.org.uk/explainer/local-government-funding-england\">emergency funding</a> worth £1.3bn to a record 28 councils, without which several said they would have gone bankrupt.</p><p>But it also comes after a concerted effort by the government to ease the pressure on the hospitality industry, with many businesses struggling with high inflation and increased national insurance and minimum wage bills.</p><p>Earlier this summer, the former chancellor <a href=\"https://www.theguardian.com/business/2026/may/20/rachel-reeves-summer-bus-rides-food-tariffs-inflation-fuel-duty\">slashed VAT</a> on British summer holiday destinations, in a programme she called the “Great British <gu-note class=\"note\" title=\"Note: Steve Draper 10/9/2026 at 19:25\" data-gu-mark=\"true\" data-note-edited-by=\"Steve Draper\" data-note-edited-date=\"2026-09-10T18:25:57.948Z\" data-type=\"note\" data-note-id=\"11480fc1-ad45-11f1-8afc-f1bc645ff64e\">S</gu-note>summer <gu-note class=\"note\" title=\"Note: Steve Draper 10/9/2026 at 19:26\" data-gu-mark=\"true\" data-note-edited-by=\"Steve Draper\" data-note-edited-date=\"2026-09-10T18:26:02.396Z\" data-type=\"note\" data-note-id=\"13eec5c1-ad45-11f1-8afc-f1bc645ff64e\">S</gu-note>savings <gu-note class=\"note\" title=\"Note: Steve Draper 10/9/2026 at 19:26\" data-gu-mark=\"true\" data-note-edited-by=\"Steve Draper\" data-note-edited-date=\"2026-09-10T18:26:05.404Z\" data-type=\"note\" data-note-id=\"15b9c1c1-ad45-11f1-8afc-f1bc645ff64e\">S</gu-note>scheme”. </p><p>Meanwhile, in one of his first acts as prime minister, Burnham announced he would <a href=\"https://www.theguardian.com/business/2026/jul/23/business-rates-to-be-cut-by-20-for-england-pubs-clubs-and-music-venues\">cut business rates</a> for pubs, clubs and live music venues.</p><p>Many hospitality businesses are struggling with high inflation, as well as additional national insurance and minimum wage costs imposed by Reeves in her first budget.</p><p><gu-note class=\"note note--collapsed\" title=\"Note: Andrew Halley 10/9/2026 at 9:22\" contenteditable=\"false\" data-gu-mark=\"true\" data-note-edited-by=\"Andrew Halley\" data-note-edited-date=\"2026-09-10T08:22:48.568Z\" data-type=\"note\" data-hidden=\"true\" data-note-id=\"cebae781-acf0-11f1-a218-95e3879346a2\">The boss of the hospitality trade body</gu-note><gu-correct class=\"note\" title=\"Correct: Andrew Halley 10/9/2026 at 9:23\" data-gu-mark=\"true\" data-note-edited-by=\"Andrew Halley\" data-note-edited-date=\"2026-09-10T08:23:05.484Z\" data-type=\"correct\" data-note-id=\"d8d014c1-acf0-11f1-a218-95e3879346a2\">Allen Simpson</gu-correct>, the chief executive of UK<gu-note class=\"note\" title=\"Note: Lorraine Mallinder (Casual) 10/9/2026 at 17:47\" data-gu-mark=\"true\" data-note-edited-by=\"Lorraine Mallinder (Casual)\" data-note-edited-date=\"2026-09-10T16:47:34.065Z\" data-type=\"note\" data-note-id=\"524b0211-ad37-11f1-9e96-51c43dc87b1a\"> </gu-note>Hospitality, told BBC Radio 4’s Today programme: “What we’re talking about here is an open-ended power for mayors to set tourism taxes at any level they want … If you go to Paris, if you go to Rome, if you go to Berlin, you’re paying a small tourism tax, but it’s capped.”</p><p><em>Additional reporting by Raphael Boyd</em></p>"
+        },
+        "assets" : [ ]
+      } ],
+      "published" : true,
+      "attributes" : { }
+    } ],
+    "settings" : {
+      "relatedContentOff" : "false",
+      "blockAds" : "false",
+      "isInappropriateForSponsorship" : "false",
+      "tableOfContents" : "false",
+      "legallySensitive" : "false",
+      "hideReaderRevenue" : "false",
+      "timeZone" : "Europe/London",
+      "managedByComposer" : "true",
+      "usesPathManager" : "true",
+      "productionOffice" : "UK"
+    },
+    "taxonomy" : {
+      "tags" : [ {
+        "tag" : {
+          "id" : 19539,
+          "type" : "Keyword",
+          "internalName" : "Travel and leisure industry (Business sector)",
+          "externalName" : "Travel & leisure",
+          "slug" : "travelleisure",
+          "section" : {
+            "id" : 197,
+            "name" : "Business",
+            "pathPrefix" : "business",
+            "slug" : "business"
+          },
+          "path" : "business/travelleisure"
+        },
+        "isLead" : true
+      }, {
+        "tag" : {
+          "id" : 89156,
+          "type" : "Keyword",
+          "internalName" : "Hospitality industry",
+          "externalName" : "Hospitality industry",
+          "slug" : "hospitality-industry",
+          "section" : {
+            "id" : 197,
+            "name" : "Business",
+            "pathPrefix" : "business",
+            "slug" : "business"
+          },
+          "path" : "business/hospitality-industry",
+          "adBlockingLevel" : "NONE",
+          "contributionBlockingLevel" : "NONE"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 8867,
+          "type" : "Keyword",
+          "internalName" : "Business",
+          "externalName" : "Business",
+          "slug" : "business",
+          "section" : {
+            "id" : 197,
+            "name" : "Business",
+            "pathPrefix" : "business",
+            "slug" : "business"
+          },
+          "path" : "business/business"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 9496,
+          "type" : "Keyword",
+          "internalName" : "Hotels",
+          "externalName" : "Hotels",
+          "slug" : "hotels",
+          "section" : {
+            "id" : 183,
+            "name" : "Travel",
+            "pathPrefix" : "travel",
+            "slug" : "travel"
+          },
+          "path" : "travel/hotels"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 64214,
+          "type" : "Keyword",
+          "internalName" : "Airbnb",
+          "externalName" : "Airbnb",
+          "slug" : "airbnb",
+          "section" : {
+            "id" : 185,
+            "name" : "Technology",
+            "pathPrefix" : "technology",
+            "slug" : "technology"
+          },
+          "path" : "technology/airbnb"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 11082,
+          "type" : "Keyword",
+          "internalName" : "Tax and spending",
+          "externalName" : "Tax and spending",
+          "slug" : "taxandspending",
+          "section" : {
+            "id" : 184,
+            "name" : "Politics",
+            "pathPrefix" : "politics",
+            "slug" : "politics"
+          },
+          "path" : "politics/taxandspending"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 8791,
+          "type" : "Keyword",
+          "internalName" : "Politics (UK)",
+          "externalName" : "Politics",
+          "slug" : "politics",
+          "section" : {
+            "id" : 184,
+            "name" : "Politics",
+            "pathPrefix" : "politics",
+            "slug" : "politics"
+          },
+          "path" : "politics/politics"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 92871,
+          "type" : "Campaign",
+          "internalName" : "First Edition (newsletter signup)",
+          "externalName" : "First Edition (newsletter signup)",
+          "slug" : "morning-briefing",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "campaign/email/morning-briefing",
+          "adBlockingLevel" : "NONE",
+          "contributionBlockingLevel" : "NONE"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 79106,
+          "type" : "Keyword",
+          "internalName" : "Angela Rayner (keyword)",
+          "externalName" : "Angela Rayner",
+          "slug" : "angela-rayner",
+          "section" : {
+            "id" : 184,
+            "name" : "Politics",
+            "pathPrefix" : "politics",
+            "slug" : "politics"
+          },
+          "path" : "politics/angela-rayner"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 60426,
+          "type" : "Keyword",
+          "internalName" : "Devolution (Politics)",
+          "externalName" : "Devolution",
+          "slug" : "devolution",
+          "section" : {
+            "id" : 184,
+            "name" : "Politics",
+            "pathPrefix" : "politics",
+            "slug" : "politics"
+          },
+          "path" : "politics/devolution"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 89513,
+          "type" : "Keyword",
+          "internalName" : "England (News)",
+          "externalName" : "England",
+          "slug" : "england",
+          "section" : {
+            "id" : 341,
+            "name" : "UK news",
+            "pathPrefix" : "uk-news",
+            "slug" : "uk-news"
+          },
+          "path" : "uk-news/england",
+          "adBlockingLevel" : "NONE",
+          "contributionBlockingLevel" : "NONE"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 50006,
+          "type" : "Keyword",
+          "internalName" : "Mayoral elections elected mayors",
+          "externalName" : "Mayoral elections",
+          "slug" : "mayoral-elections",
+          "section" : {
+            "id" : 184,
+            "name" : "Politics",
+            "pathPrefix" : "politics",
+            "slug" : "politics"
+          },
+          "path" : "politics/mayoral-elections"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 9243,
+          "type" : "Keyword",
+          "internalName" : "Labour",
+          "externalName" : "Labour",
+          "slug" : "labour",
+          "section" : {
+            "id" : 184,
+            "name" : "Politics",
+            "pathPrefix" : "politics",
+            "slug" : "politics"
+          },
+          "path" : "politics/labour"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 9260,
+          "type" : "Keyword",
+          "internalName" : "Local government UK (Society)",
+          "externalName" : "Local government",
+          "slug" : "localgovernment",
+          "section" : {
+            "id" : 186,
+            "name" : "Society",
+            "pathPrefix" : "society",
+            "slug" : "society"
+          },
+          "path" : "society/localgovernment"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 8785,
+          "type" : "Keyword",
+          "internalName" : "Travel",
+          "externalName" : "Travel",
+          "slug" : "travel",
+          "section" : {
+            "id" : 183,
+            "name" : "Travel",
+            "pathPrefix" : "travel",
+            "slug" : "travel"
+          },
+          "path" : "travel/travel"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 9486,
+          "type" : "Keyword",
+          "internalName" : "UK news",
+          "externalName" : "UK news",
+          "slug" : "uk",
+          "section" : {
+            "id" : 341,
+            "name" : "UK news",
+            "pathPrefix" : "uk-news",
+            "slug" : "uk-news"
+          },
+          "path" : "uk/uk"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 26903,
+          "type" : "Content Type",
+          "internalName" : "Article (Content type)",
+          "externalName" : "Article",
+          "slug" : "article",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "articles"
+        },
+        "isLead" : false
+      }, {
+        "tag" : {
+          "id" : 22641,
+          "type" : "Tone",
+          "internalName" : "News (Tone)",
+          "externalName" : "News",
+          "slug" : "news",
+          "section" : {
+            "id" : 281,
+            "name" : "Global",
+            "pathPrefix" : "global",
+            "slug" : "global"
+          },
+          "path" : "tone/news"
+        },
+        "isLead" : false
+      } ],
+      "contributors" : [ {
+        "id" : 93503,
+        "type" : "Contributor",
+        "internalName" : "Kiran Stacey",
+        "externalName" : "Kiran Stacey",
+        "slug" : "kiran-stacey",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "profile/kiran-stacey",
+        "adBlockingLevel" : "NONE",
+        "contributionBlockingLevel" : "NONE"
+      }, {
+        "id" : 38624,
+        "type" : "Contributor",
+        "internalName" : "Josh Halliday",
+        "externalName" : "Josh Halliday",
+        "slug" : "josh-halliday",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "profile/josh-halliday"
+      }, {
+        "id" : 72472,
+        "type" : "Contributor",
+        "internalName" : "Rob Davies (Business)",
+        "externalName" : "Rob Davies",
+        "slug" : "rob-davies",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "profile/rob-davies"
+      }, {
+        "id" : 19530,
+        "type" : "Contributor",
+        "internalName" : "Alexandra Topping",
+        "externalName" : "Alexandra Topping",
+        "slug" : "alexandratopping",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "profile/alexandratopping"
+      } ],
+      "publication" : {
+        "id" : 4,
+        "type" : "Publication",
+        "internalName" : "guardian.co.uk publication",
+        "externalName" : "theguardian.com",
+        "slug" : "guardian",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "guardian/all"
+      },
+      "newspaper" : {
+        "book" : {
+          "id" : 16600,
+          "type" : "Newspaper Book",
+          "internalName" : "Gdn: Main section G1 (nb)",
+          "externalName" : "Main section",
+          "slug" : "mainsection",
+          "section" : {
+            "id" : 182,
+            "name" : "News",
+            "pathPrefix" : "news",
+            "slug" : "news"
+          },
+          "path" : "theguardian/mainsection"
+        },
+        "bookSection" : {
+          "id" : 16779,
+          "type" : "Newspaper Book Section",
+          "internalName" : "Gdn: UK news (nbs)",
+          "externalName" : "UK news",
+          "slug" : "uknews",
+          "section" : {
+            "id" : 341,
+            "name" : "UK news",
+            "pathPrefix" : "uk-news",
+            "slug" : "uk-news"
+          },
+          "path" : "theguardian/mainsection/uknews"
+        },
+        "publication" : {
+          "id" : 2,
+          "type" : "Publication",
+          "internalName" : "The Guardian publication",
+          "externalName" : "The Guardian",
+          "slug" : "theguardian",
+          "section" : {
+            "id" : 205,
+            "name" : "From the Guardian",
+            "pathPrefix" : "theguardian",
+            "slug" : "theguardian"
+          },
+          "path" : "theguardian/all"
+        }
+      },
+      "references" : [ ],
+      "tracking" : [ {
+        "id" : 74422,
+        "type" : "Tracking",
+        "subType" : "commissioningdesk",
+        "internalName" : "UK Home News (commissioning)",
+        "externalName" : "UK Home News",
+        "slug" : "uk-home-news",
+        "section" : {
+          "id" : 281,
+          "name" : "Global",
+          "pathPrefix" : "global",
+          "slug" : "global"
+        },
+        "path" : "tracking/commissioningdesk/uk-home-news"
+      } ]
+    },
+    "aliasPaths" : [ ]
+  },
+  "auxiliaryAtoms" : [ ],
+  "channels" : {
+    "feast" : {
+      "channelState" : "IsAvailable",
+      "firstMadeAvailable" : {
+        "date" : 1789028407515,
+        "user" : {
+          "email" : "user33@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "33"
+        }
+      },
+      "contentLastUpdated" : {
+        "date" : 1789081130674,
+        "user" : {
+          "email" : "user36@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "36"
+        }
+      }
+    },
+    "editions" : {
+      "channelState" : "IsAvailable",
+      "firstMadeAvailable" : {
+        "date" : 1789028407515,
+        "user" : {
+          "email" : "user33@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "33"
+        }
+      },
+      "contentLastUpdated" : {
+        "date" : 1789081130674,
+        "user" : {
+          "email" : "user36@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "36"
+        }
+      }
+    },
+    "newsletters" : {
+      "channelState" : "IsAvailable",
+      "firstMadeAvailable" : {
+        "date" : 1789028407515,
+        "user" : {
+          "email" : "user33@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "33"
+        }
+      },
+      "contentLastUpdated" : {
+        "date" : 1789081130674,
+        "user" : {
+          "email" : "user36@guardian.co.uk",
+          "firstName" : "User",
+          "lastName" : "36"
+        }
+      }
+    }
+  }
+}

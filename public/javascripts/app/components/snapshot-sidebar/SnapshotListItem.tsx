@@ -178,7 +178,7 @@ const commentsText = css({
 	textTransform: 'uppercase',
 });
 
-type SnapshotListItemProps = {
+export type SnapshotListItemProps = {
 	snapshot: SnapshotIdViewModel;
 	/** Fallback revision number: total list length minus the item's index. */
 	fallbackRevision: number;
@@ -191,7 +191,7 @@ type SnapshotListItemProps = {
  * status column (legally-sensitive / comments / published state). Migrated from
  * the `snapshot-list__item` markup of restore-list.html.
  */
-const SnapshotListItem: FunctionComponent<SnapshotListItemProps> = ({
+export const SnapshotListItem: FunctionComponent<SnapshotListItemProps> = ({
 	snapshot,
 	fallbackRevision,
 	isActive,
@@ -270,5 +270,3 @@ const SnapshotListItem: FunctionComponent<SnapshotListItemProps> = ({
 	);
 };
 
-export { SnapshotListItem };
-export type { SnapshotListItemProps };

@@ -6,7 +6,7 @@ import { Button } from '@guardian/stand/Button';
 import { TextInput } from '@guardian/stand/TextInput';
 import { useAngularRouter } from './hooks/useAngularRouter';
 
-type SearchFormProps = {
+export type SearchFormProps = {
 	/**
 	 * Optional pre-filled query. Supplied as the sole react2angular binding so
 	 * the bridged component mounts (see ./index.js).
@@ -34,7 +34,7 @@ const formCss = css({
  * provisioned `$location`/`$rootScope` services, so no Angular services are
  * passed in as props.
  */
-const SearchForm: FunctionComponent<SearchFormProps> = ({
+export const SearchForm: FunctionComponent<SearchFormProps> = ({
 	initialQuery = '',
 }) => {
 	const [query, setQuery] = useState(initialQuery);
@@ -64,5 +64,3 @@ const SearchForm: FunctionComponent<SearchFormProps> = ({
 	);
 };
 
-export { SearchForm };
-export type { SearchFormProps };

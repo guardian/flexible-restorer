@@ -6,6 +6,7 @@ import mediator from '../../utils/mediator';
 // (html/json toggle) and the restore modal keep working unchanged.
 const CHANNELS = {
 	setActive: 'snapshot-list:set-active',
+	loadContent: 'snapshot-list:load-content',
 	displayHtml: 'snapshot-list:display-html',
 	displayJson: 'snapshot-list:display-json',
 	displayModal: 'snapshot-list:display-modal',
@@ -54,27 +55,37 @@ const publishRestoreTracked = (
 	});
 
 /**
+ * Fire the "Snapshot Viewed" analytics event, matching the legacy
+ * `SnapshotContentCtrl` publish on initial load.
+ */
+const publishSnapshotViewed = (
+	contentId: string,
+	snapshotTime: string,
+): void =>
+	mediator.publish(CHANNELS.trackEvent, 'Snapshot', 'Viewed', null, null, {
+		contentId,
+		snapshotTime,
+	});
+
+/**
  * Subscribe to the modal-open request. Returns an unsubscribe function suitable
  * for a React effect cleanup.
  */
 const subscribeDisplayModal = (callback: () => void): (() => void) => {
-	const handler = (): void => callback();
-	mediator.subscribe(CHANNELS.displayModal, handler);
-	return () => mediator.remove(CHANNELS.displayModal, handler);
+	mediator.subscribe(CHANNELS.displayModal, callback);
+	return () => mediator.remove(CHANNELS.displayModal, callback);
 };
 
 /** Subscribe to the explicit modal-close request. */
 const subscribeCloseModal = (callback: () => void): (() => void) => {
-	const handler = (): void => callback();
-	mediator.subscribe(CHANNELS.closeModal, handler);
-	return () => mediator.remove(CHANNELS.closeModal, handler);
+	mediator.subscribe(CHANNELS.closeModal, callback);
+	return () => mediator.remove(CHANNELS.closeModal, callback);
 };
 
 /** Subscribe to application errors (used to close the modal, as the legacy controller did). */
 const subscribeError = (callback: () => void): (() => void) => {
-	const handler = (): void => callback();
-	mediator.subscribe(CHANNELS.error, handler);
-	return () => mediator.remove(CHANNELS.error, handler);
+	mediator.subscribe(CHANNELS.error, callback);
+	return () => mediator.remove(CHANNELS.error, callback);
 };
 
 /** Subscribe to active-snapshot changes broadcast by the sidebar. */
@@ -87,13 +98,37 @@ const subscribeSetActive = (
 };
 
 /**
+ * Subscribe to the "load this snapshot" event published by `SnapshotListCtrl`
+ * when the selection changes, carrying the system/content/timestamp identifiers.
+ */
+const subscribeLoadContent = (
+	callback: (systemId: string, contentId: string, timestamp: string) => void,
+): (() => void) => {
+	const handler = (...args: unknown[]): void =>
+		callback(args[0] as string, args[1] as string, args[2] as string);
+	mediator.subscribe(CHANNELS.loadContent, handler);
+	return () => mediator.remove(CHANNELS.loadContent, handler);
+};
+
+/** Subscribe to the request to show the rendered HTML view. */
+const subscribeDisplayHtml = (callback: () => void): (() => void) => {
+	mediator.subscribe(CHANNELS.displayHtml, callback);
+	return () => mediator.remove(CHANNELS.displayHtml, callback);
+};
+
+/** Subscribe to the request to show the raw JSON view. */
+const subscribeDisplayJson = (callback: () => void): (() => void) => {
+	mediator.subscribe(CHANNELS.displayJson, callback);
+	return () => mediator.remove(CHANNELS.displayJson, callback);
+};
+
+/**
  * Subscribe to the modal-closed event. Returns an unsubscribe function suitable
  * for a React effect cleanup.
  */
 const subscribeHiddenModal = (callback: () => void): (() => void) => {
-	const handler = (): void => callback();
-	mediator.subscribe(CHANNELS.hiddenModal, handler);
-	return () => mediator.remove(CHANNELS.hiddenModal, handler);
+	mediator.subscribe(CHANNELS.hiddenModal, callback);
+	return () => mediator.remove(CHANNELS.hiddenModal, callback);
 };
 
 export {
@@ -104,9 +139,13 @@ export {
 	publishHiddenModal,
 	publishError,
 	publishRestoreTracked,
+	publishSnapshotViewed,
 	subscribeDisplayModal,
 	subscribeCloseModal,
 	subscribeError,
 	subscribeSetActive,
+	subscribeLoadContent,
+	subscribeDisplayHtml,
+	subscribeDisplayJson,
 	subscribeHiddenModal,
 };

@@ -8,9 +8,8 @@ SnapshotListCtrlMod.controller('SnapshotListCtrl', [
   '$scope',
   '$routeParams',
   '$timeout',
-  'SnapshotService',
   'SnapshotIdModels',
-  function($scope, $routeParams, $timeout, SnapshotService, SnapshotIdModels){
+  function($scope, $routeParams, $timeout, SnapshotIdModels){
 
     var snapshotCollection;
 
