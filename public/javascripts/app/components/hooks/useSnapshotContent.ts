@@ -1,22 +1,17 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import useSWR from 'swr';
-import { useSnapshotList } from './useSnapshotList';
-import { fetchSnapshot, snapshotUrl } from '../api/fetchSnapshot';
-import type { SnapshotRef } from '../api/fetchSnapshot';
-import { fetchUser } from '../api/fetchUser';
+import { useEffect, useLayoutEffect, useState } from 'react';
+import { skipToken } from '@reduxjs/toolkit/query/react';
 import type { SnapshotContent } from '../models/snapshotContent';
-import { parseSnapshotContent } from '../models/snapshotContent';
 import {
-	publishDisplayHtml,
-	publishDisplayJson,
-	publishDisplayModal,
-	publishError,
-	publishSnapshotViewed,
-	subscribeDisplayHtml,
-	subscribeDisplayJson,
-	subscribeHiddenModal,
-	subscribeLoadContent,
-} from '../utils/mediator';
+	useGetSnapshotListQuery,
+	useGetSnapshotQuery,
+	useGetUserQuery,
+} from '../store/restorerApi';
+import {
+	useActiveIndex,
+	useAppDispatch,
+	useContentView,
+} from '../store/hooks';
+import { openModal, setError, showHtml, showJson } from '../store/viewerSlice';
 
 const COPY_LABEL = 'Copy JSON';
 const COPIED_LABEL = 'Copied!';
@@ -47,119 +42,69 @@ const copyToClipboard = async (text: string): Promise<void> => {
 /**
  * Drives the React snapshot content viewer, porting `SnapshotContentCtrl`.
  *
- * The still-Angular `SnapshotListCtrl` remains authoritative for the active
- * selection: this hook loads the initial (index 0) snapshot itself, then follows
- * `snapshot-list:load-content` for subsequent selections. The HTML/JSON toggle
- * round-trips through the mediator (matching the legacy controller) so the
- * sidebar's keyboard navigation stays in sync.
+ * The active selection now lives in the Redux viewer slice (owned by the
+ * sidebar): this hook reads `activeIndex`, resolves the matching snapshot from
+ * the shared version list and loads its content via RTK Query. The HTML/JSON
+ * toggle dispatches to the same slice so the sidebar's keyboard navigation stays
+ * in sync.
  */
 const useSnapshotContent = (contentId: string): UseSnapshotContent => {
-	const { snapshots } = useSnapshotList(contentId);
-	const [selected, setSelected] = useState<SnapshotRef | undefined>();
-	const [isShowingJSON, setIsShowingJSON] = useState(false);
+	const { data: snapshots } = useGetSnapshotListQuery(contentId);
+	const dispatch = useAppDispatch();
+	const activeIndex = useActiveIndex();
+	const contentView = useContentView();
+	const isShowingJSON = contentView === 'json';
 	const [isSettingContent, setIsSettingContent] = useState(false);
 	const [copyLabel, setCopyLabel] = useState(COPY_LABEL);
-	const [canRestore, setCanRestore] = useState(false);
-	const hasTrackedView = useRef(false);
 
-	// Set the initial selection from the first snapshot once the list arrives.
+	const activeSnapshot = snapshots?.[activeIndex] ?? snapshots?.[0];
+
+	const { data: user, error: userError } = useGetUserQuery();
+	const canRestore = user?.permissions?.restore_content === true;
 	useEffect(() => {
-		if (selected || !snapshots || snapshots.length === 0) {
-			return;
+		if (userError) {
+			dispatch(setError(userError));
 		}
-		const first = snapshots[0];
-		if (!first) {
-			return;
-		}
-		setSelected({
-			systemId: first.systemId,
-			contentId: first.contentId,
-			timestamp: first.timestamp,
-		});
-	}, [snapshots, selected]);
+	}, [userError, dispatch]);
 
-	// Follow selection changes broadcast by the Angular sidebar controller.
-	useEffect(
-		() =>
-			subscribeLoadContent((systemId, loadedContentId, timestamp) =>
-				setSelected({
-					systemId,
-					contentId: loadedContentId,
-					timestamp,
-				}),
-			),
-		[],
-	);
-
-	// Keep the HTML/JSON view in sync with the sidebar and the restore modal.
-	useEffect(() => subscribeDisplayHtml(() => setIsShowingJSON(false)), []);
-	useEffect(() => subscribeDisplayJson(() => setIsShowingJSON(true)), []);
-	useEffect(() => subscribeHiddenModal(() => setIsShowingJSON(false)), []);
-
-	// Resolve whether the current user may restore content.
-	useEffect(() => {
-		let cancelled = false;
-		fetchUser()
-			.then((user) => {
-				if (!cancelled) {
-					setCanRestore(user.permissions?.restore_content === true);
-				}
-			})
-			.catch((error: unknown) => publishError(error));
-		return () => {
-			cancelled = true;
-		};
-	}, []);
-
-	const { data: content, error } = useSWR<SnapshotContent, Error>(
-		selected ? snapshotUrl(selected.systemId, selected.contentId, selected.timestamp) : null,
-		() => fetchSnapshot(selected!).then(parseSnapshotContent),
-		{ revalidateOnFocus: false },
-	);
+	const { data: content, error } = useGetSnapshotQuery(activeSnapshot ?? skipToken);
 
 	useEffect(() => {
 		if (error) {
-			publishError(error);
+			dispatch(setError(error));
 		}
-	}, [error]);
+	}, [error, dispatch]);
 
 	// Blank the panel the moment a new snapshot is selected (before paint, so the
 	// empty furniture/labels never flash while the new content loads). It stays
 	// hidden until the fetch resolves and the fade-in effect below runs.
 	useLayoutEffect(() => {
-		if (!selected) {
+		if (!activeSnapshot) {
 			return;
 		}
 		setIsSettingContent(true);
-	}, [selected]);
+	}, [activeSnapshot]);
 
 	// Fade in newly loaded content and reset the copy label, mirroring
-	// `displayContent`. Fire the "Viewed" analytics event once, on first load.
+	// `displayContent`.
 	useEffect(() => {
-		if (!content || !selected) {
+		if (!content || !activeSnapshot) {
 			return;
 		}
 		setCopyLabel(COPY_LABEL);
 		setIsSettingContent(true);
 		const timer = window.setTimeout(() => setIsSettingContent(false), FADE_MS);
 
-		if (!hasTrackedView.current) {
-			hasTrackedView.current = true;
-			publishSnapshotViewed(selected.contentId, selected.timestamp);
-		}
-
 		return () => window.clearTimeout(timer);
-	}, [content, selected]);
+	}, [content, activeSnapshot]);
 
 	const toggleJson = (): void => {
-		if (isShowingJSON) {
-			publishDisplayHtml();
-		} else {
-			publishDisplayJson();
-		}
+		dispatch(isShowingJSON ? showHtml() : showJson());
 	};
 
-	const restore = (): void => publishDisplayModal();
+	const restore = (): void => {
+		dispatch(openModal());
+	};
 
 	const copyJson = (): void => {
 		if (!content) {

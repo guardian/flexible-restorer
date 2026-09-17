@@ -2,16 +2,10 @@
 import type { FunctionComponent } from 'react';
 import { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
-import { useSnapshotList } from '../hooks/useSnapshotList';
-import {
-	useSnapshotKeyboardNav,
-	type DisplayState,
-} from '../hooks/useSnapshotKeyboardNav';
-import {
-	publishDisplayHtml,
-	publishSetActive,
-	subscribeHiddenModal,
-} from '../utils/mediator';
+import { useSnapshotKeyboardNav } from '../hooks/useSnapshotKeyboardNav';
+import { useGetSnapshotListQuery } from '../store/restorerApi';
+import { useActiveIndex, useAppDispatch } from '../store/hooks';
+import { setActiveIndex, setError, showHtml } from '../store/viewerSlice';
 import { palette } from '../styles/palette';
 import { ArticleHeader } from './ArticleHeader';
 import { SnapshotList } from './SnapshotList';
@@ -56,17 +50,16 @@ const SLIDE_IN_DELAY_MS = 500;
  * Snapshot sidebar: article header + version list + click/keyboard interaction.
  *
  * Migrated from the `gu-column.sidebar` block of restore-list.html and the
- * `SnapshotListCtrl` / `SnapshotListInteractionCtrl` controllers. React owns the
- * active selection and broadcasts `snapshot-list:*` mediator events so the
- * remaining Angular controllers (content panel, restore modal, analytics) keep
- * working unchanged.
+ * `SnapshotListCtrl` / `SnapshotListInteractionCtrl` controllers. The active
+ * selection now lives in the Redux viewer slice, shared with the content viewer
+ * and restore modal (no more Angular round-trip).
  */
 export const SnapshotSidebar: FunctionComponent<SnapshotSidebarProps> = ({
 	contentId,
 }) => {
-	const { snapshots, error } = useSnapshotList(contentId);
-	const [activeIndex, setActiveIndex] = useState(0);
-	const [displayState, setDisplayState] = useState<DisplayState>('html');
+	const { data: snapshots, error } = useGetSnapshotListQuery(contentId);
+	const dispatch = useAppDispatch();
+	const activeIndex = useActiveIndex();
 	const [isSlidIn, setIsSlidIn] = useState(false);
 
 	// Slide the sidebar in shortly after mount.
@@ -78,22 +71,18 @@ export const SnapshotSidebar: FunctionComponent<SnapshotSidebarProps> = ({
 		return () => window.clearTimeout(timer);
 	}, []);
 
-	// Reset to the HTML view whenever the restore modal closes.
-	useEffect(() => subscribeHiddenModal(() => setDisplayState('html')), []);
+	// Surface a version-list fetch failure (e.g. no snapshots) in the error modal.
+	useEffect(() => {
+		if (error) {
+			dispatch(setError(error));
+		}
+	}, [error, dispatch]);
 
-	useSnapshotKeyboardNav({
-		snapshots,
-		activeIndex,
-		displayState,
-		setActiveIndex,
-		setDisplayState,
-	});
+	useSnapshotKeyboardNav({ snapshots });
 
 	const handleSelect = (index: number): void => {
-		setDisplayState('html');
-		publishDisplayHtml();
-		setActiveIndex(index);
-		publishSetActive(index);
+		dispatch(showHtml());
+		dispatch(setActiveIndex(index));
 	};
 
 	// The loading state is covered by the surrounding Angular `gu-loading-bars`,
