@@ -1,8 +1,9 @@
 import type { RawSnapshotId } from '../models/snapshotId';
 
-// Shared fetch layer for the version list, used by both the React sidebar
-// (`useSnapshotList`) and the legacy AngularJS `SnapshotIdModels` collection so
-// the endpoint, request options and "no snapshots" contract can't drift apiece.
+// Shared fetch layer for the version list, used by the React sidebar via the RTK
+// Query `getSnapshotList` endpoint (see components/store/api.ts). Kept separate
+// so the endpoint URL, request options and "no snapshots" contract live in one
+// place.
 const NO_SNAPSHOTS_MESSAGE =
 	'There are no snapshots available for this piece of content';
 
@@ -11,9 +12,8 @@ const versionListUrl = (contentId: string): string =>
 
 /**
  * Fetch the raw version list for a piece of content. A failed request throws,
- * and an empty/non-array payload is treated as "no snapshots available"
- * (mirroring the legacy `SnapshotIdModels.getCollection`). Parsing into a
- * concrete model is left to each caller.
+ * and an empty/non-array payload is treated as "no snapshots available".
+ * Parsing into a concrete model is left to each caller.
  */
 const fetchSnapshotList = async (
 	contentId: string,

@@ -1,8 +1,7 @@
 import type { FunctionComponent } from 'react';
-import { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import { Dialog, Modal } from '@guardian/stand/Modal';
-import { subscribeError } from '../utils/mediator';
+import { selectError, useAppSelector } from '../store/hooks';
 
 const modalTheme = {
 	overlay: {
@@ -39,30 +38,9 @@ const contentCss = css({
 	lineHeight: 'normal',
 });
 
-const getErrorMessage = (error: unknown): string => {
-	if (
-		typeof error === 'object' &&
-		error !== null &&
-		'message' in error &&
-		typeof error.message === 'string'
-	) {
-		return error.message;
-	}
-
-	return String(error);
-};
-
-/** Displays application errors published by the Angular and React code. */
+/** Displays application errors held in the Redux viewer slice. */
 const ErrorModal: FunctionComponent = () => {
-	const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-	useEffect(
-		() =>
-			subscribeError((error) => {
-				setErrorMessage(getErrorMessage(error));
-			}),
-		[],
-	);
+	const errorMessage = useAppSelector(selectError);
 
 	return (
 		<Modal
