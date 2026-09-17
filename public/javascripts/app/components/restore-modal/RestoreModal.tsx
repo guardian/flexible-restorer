@@ -276,8 +276,8 @@ export type RestoreModalProps = {
  * Restore modal: the "Before you restore" confirmation form.
  *
  * Migrated from the `ModalCtrl`/`RestoreFormCtrl` block of restore-list.html.
- * Open/close is driven by the Redux viewer slice (`displayState === 'modal'`),
- * shared with the content viewer, sidebar keyboard handler and error modal.
+ * Open/close is driven by the Redux viewer slice (`isModalOpen`), shared with the
+ * content viewer, sidebar keyboard handler and error modal.
  */
 export const RestoreModal: FunctionComponent<RestoreModalProps> = ({ contentId }) => {
 	const dispatch = useAppDispatch();

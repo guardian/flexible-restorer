@@ -9,7 +9,7 @@ import {
 import {
 	useActiveIndex,
 	useAppDispatch,
-	useDisplayState,
+	useContentView,
 } from '../store/hooks';
 import { openModal, setError, showHtml, showJson } from '../store/viewerSlice';
 
@@ -52,8 +52,8 @@ const useSnapshotContent = (contentId: string): UseSnapshotContent => {
 	const { data: snapshots } = useGetSnapshotListQuery(contentId);
 	const dispatch = useAppDispatch();
 	const activeIndex = useActiveIndex();
-	const displayState = useDisplayState();
-	const isShowingJSON = displayState === 'json';
+	const contentView = useContentView();
+	const isShowingJSON = contentView === 'json';
 	const [isSettingContent, setIsSettingContent] = useState(false);
 	const [copyLabel, setCopyLabel] = useState(COPY_LABEL);
 
