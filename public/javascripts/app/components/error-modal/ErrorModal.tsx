@@ -29,6 +29,7 @@ const titleCss = css({
 	fontSize: '24px',
 	fontWeight: 'bold',
 	lineHeight: 'normal',
+	letterSpacing: 0,
 	color: '#333333',
 });
 const contentCss = css({
