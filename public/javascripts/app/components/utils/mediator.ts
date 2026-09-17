@@ -36,7 +36,7 @@ const publishDisplayModal = (): void => mediator.publish(CHANNELS.displayModal);
  */
 const publishHiddenModal = (): void => mediator.publish(CHANNELS.hiddenModal);
 
-/** Broadcast an application error so the Angular error modal is shown. */
+/** Broadcast an application error so the React error modal is shown. */
 const publishError = (error: unknown): void =>
 	mediator.publish(CHANNELS.error, error);
 
@@ -82,10 +82,13 @@ const subscribeCloseModal = (callback: () => void): (() => void) => {
 	return () => mediator.remove(CHANNELS.closeModal, callback);
 };
 
-/** Subscribe to application errors (used to close the modal, as the legacy controller did). */
-const subscribeError = (callback: () => void): (() => void) => {
-	mediator.subscribe(CHANNELS.error, callback);
-	return () => mediator.remove(CHANNELS.error, callback);
+/** Subscribe to application errors published by Angular or React code. */
+const subscribeError = (callback: (error: unknown) => void): (() => void) => {
+	// Adapt the mediator's positional arguments while retaining the same handler
+	// reference so it can be removed during React effect cleanup.
+	const handler = (...args: unknown[]): void => callback(args[0]);
+	mediator.subscribe(CHANNELS.error, handler);
+	return () => mediator.remove(CHANNELS.error, handler);
 };
 
 /** Subscribe to active-snapshot changes broadcast by the sidebar. */

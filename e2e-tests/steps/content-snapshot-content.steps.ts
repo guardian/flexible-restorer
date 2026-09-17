@@ -332,12 +332,9 @@ Then(
 const restoreModalLocator = (page: Page) =>
     page.locator('[data-testid="restore-modal"]');
 
-// The error modal is a separate `.modal` element (driven by ErrorCtrl) that is
-// shown/hidden via the same `visually-hidden` opacity toggle, so detect it the
-// same way: opacity `1` when an error is showing, `0` otherwise. It is uniquely
-// identified by its title text.
+// The React error modal is rendered by Stand only while an error is active.
 const errorModalLocator = (page: Page) =>
-    page.locator(".modal").filter({ hasText: "Ooops, something went wrong" });
+    page.locator('[data-testid="error-modal"]');
 
 When("I press Enter", async ({ page }) => {
     // The snapshot-list keydown handler opens the modal on Enter (keyCode 13)
@@ -692,11 +689,9 @@ When("the error is published", async ({ page }) => {
 Then(
     "I should see the error modal with an explanatory message",
     async ({ page }) => {
-        // ErrorCtrl sets `hasError` true on the 'error' event, which removes the
-        // `visually-hidden` class so the error modal becomes visible (opacity 1)
-        // and shows its explanatory "Ooops, something went wrong" message.
+        // The error event opens the React/Stand modal and supplies its content.
         const errorModal = errorModalLocator(page);
-        await expect(errorModal).toHaveCSS("opacity", "1", { timeout: timeout });
+        await expect(errorModal).toBeVisible({ timeout: timeout });
         await expect(errorModal).toContainText("Ooops, something went wrong");
     },
 );

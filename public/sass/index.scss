@@ -1,11 +1,9 @@
-@import "mixins/center-children";
 @import "mixins/borders";
 
 @import "components/content.scss";
 @import "components/snapshot-list.scss";
 @import "components/sidebar.scss";
 @import "components/text.scss";
-@import "components/modal.scss";
 @import "components/splash-screen.scss";
 @import "components/grid.scss";
 @import "components/box.scss";
@@ -38,15 +36,6 @@ h6, h4 {
 
 .hidden {
   display: none !important;
-}
-
-.visually-hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.center {
- @include center-children;
 }
 
 .full-width {

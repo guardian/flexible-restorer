@@ -1,13 +1,10 @@
 import angular          from 'angular';
 import SnapshotListCtrl  from './SnapshotListCtrl';
-import ErrorCtrlMod from './ErrorCtrl';
 
 // The restore modal (ModalController + RestoreFormCtrl) and the content panel
-// (SnapshotContentCtrl) have been migrated to React (see components/restore-modal
-// and components/content-viewer).
+// (SnapshotContentCtrl), plus the error modal, have been migrated to React.
 var controllers = angular.module('restorerControllers', [
-  'SnapshotListCtrlMod',
-  'ErrorCtrlMod'
+  'SnapshotListCtrlMod'
 ]);
 
 export default controllers;
