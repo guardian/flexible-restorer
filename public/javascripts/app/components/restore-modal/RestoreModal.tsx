@@ -5,7 +5,7 @@ import { css, keyframes } from '@emotion/react';
 import { Button } from '@guardian/stand/Button';
 import { palette } from '../styles/palette';
 import type { FormattedCreatedDate } from '../utils/dateFormat';
-import { selectIsModalOpen, useAppDispatch, useAppSelector } from '../store/hooks';
+import { useAppDispatch, useIsModalOpen } from '../store/hooks';
 import { closeModal as closeModalAction } from '../store/viewerSlice';
 import { useRestoreForm } from '../hooks/useRestoreForm';
 import type { RestoreDestinationView } from '../hooks/useRestoreForm';
@@ -281,7 +281,7 @@ export type RestoreModalProps = {
  */
 export const RestoreModal: FunctionComponent<RestoreModalProps> = ({ contentId }) => {
 	const dispatch = useAppDispatch();
-	const isActive = useAppSelector(selectIsModalOpen);
+	const isActive = useIsModalOpen();
 	const form = useRestoreForm(contentId, isActive);
 	const { reset } = form;
 

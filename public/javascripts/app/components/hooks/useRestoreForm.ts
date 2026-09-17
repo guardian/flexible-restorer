@@ -7,7 +7,7 @@ import {
 	useGetRestoreDestinationsQuery,
 	useRestoreContentMutation,
 } from '../store/flexibleApi';
-import { selectActiveIndex, useAppDispatch, useAppSelector } from '../store/hooks';
+import { useActiveIndex, useAppDispatch } from '../store/hooks';
 import { closeModal, setError } from '../store/viewerSlice';
 import type { RestoreDestinationView } from '../api/fetchRestoreDestinations';
 
@@ -45,7 +45,7 @@ type UseRestoreForm = {
 const useRestoreForm = (contentId: string, isOpen: boolean): UseRestoreForm => {
 	const { data: snapshots } = useGetSnapshotListQuery(contentId);
 	const dispatch = useAppDispatch();
-	const activeIndex = useAppSelector(selectActiveIndex);
+	const activeIndex = useActiveIndex();
 	const activeSnapshot = snapshots?.[activeIndex] ?? snapshots?.[0];
 
 	const [selectedSystemId, setSelectedSystemId] = useState<string | undefined>(
