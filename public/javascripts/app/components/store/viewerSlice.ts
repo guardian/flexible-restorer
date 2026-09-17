@@ -1,21 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-/** Which view the content panel is showing; 'modal' means the restore modal is open. */
-//TODO: separate the modal state from the display state?
-type DisplayState = 'html' | 'json' | 'modal';
+/** Which view the content panel is showing. */
+type ContentView = 'html' | 'json';
 
 type ViewerState = {
 	/** Index of the active snapshot within the (newest-first) version list. */
 	activeIndex: number;
-	displayState: DisplayState;
+	contentView: ContentView;
+	/** Whether the restore modal is open. */
+	isModalOpen: boolean;
 	/** Message of the most recent application error, or null when none. */
 	error: string | null;
 };
 
 const initialState: ViewerState = {
 	activeIndex: 0,
-	displayState: 'html',
+	contentView: 'html',
+	isModalOpen: false,
 	error: null,
 };
 
@@ -40,18 +42,19 @@ const viewerSlice = createSlice({
 			state.activeIndex = action.payload;
 		},
 		showHtml: (state) => {
-			state.displayState = 'html';
+			state.contentView = 'html';
 		},
 		showJson: (state) => {
-			state.displayState = 'json';
+			state.contentView = 'json';
 		},
 		openModal: (state) => {
-			state.displayState = 'modal';
+			state.isModalOpen = true;
 		},
-		// Closing the modal returns the panel to the HTML view, mirroring the
+		// Closing the modal also returns the panel to the HTML view, mirroring the
 		// legacy `hiddenModal` event.
 		closeModal: (state) => {
-			state.displayState = 'html';
+			state.isModalOpen = false;
+			state.contentView = 'html';
 		},
 		setError: {
 			reducer: (state, action: PayloadAction<string>) => {
@@ -86,4 +89,4 @@ export {
 	clearError,
 	getErrorMessage,
 };
-export type { DisplayState, ViewerState };
+export type { ContentView, ViewerState };

@@ -14,7 +14,8 @@ const reducer = viewerSlice.reducer;
 
 const stateWith = (overrides: Partial<ViewerState>): ViewerState => ({
 	activeIndex: 0,
-	displayState: 'html',
+	contentView: 'html',
+	isModalOpen: false,
 	error: null,
 	...overrides,
 });
@@ -23,7 +24,8 @@ describe('viewerSlice', () => {
 	it('has the expected initial state', () => {
 		expect(reducer(undefined, { type: '@@INIT' })).toEqual({
 			activeIndex: 0,
-			displayState: 'html',
+			contentView: 'html',
+			isModalOpen: false,
 			error: null,
 		});
 	});
@@ -33,17 +35,26 @@ describe('viewerSlice', () => {
 		expect(next.activeIndex).toBe(3);
 	});
 
-	it('toggles the display state', () => {
-		expect(reducer(stateWith({}), showJson()).displayState).toBe('json');
+	it('toggles the content view', () => {
+		expect(reducer(stateWith({}), showJson()).contentView).toBe('json');
 		expect(
-			reducer(stateWith({ displayState: 'json' }), showHtml()).displayState,
+			reducer(stateWith({ contentView: 'json' }), showHtml()).contentView,
 		).toBe('html');
-		expect(reducer(stateWith({}), openModal()).displayState).toBe('modal');
 	});
 
-	it('closing the modal returns to the html view', () => {
-		const next = reducer(stateWith({ displayState: 'modal' }), closeModal());
-		expect(next.displayState).toBe('html');
+	it('opens the modal without touching the content view', () => {
+		const next = reducer(stateWith({ contentView: 'json' }), openModal());
+		expect(next.isModalOpen).toBe(true);
+		expect(next.contentView).toBe('json');
+	});
+
+	it('closing the modal clears it and returns to the html view', () => {
+		const next = reducer(
+			stateWith({ isModalOpen: true, contentView: 'json' }),
+			closeModal(),
+		);
+		expect(next.isModalOpen).toBe(false);
+		expect(next.contentView).toBe('html');
 	});
 
 	it('normalises errors to a message string', () => {

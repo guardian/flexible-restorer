@@ -58,6 +58,6 @@ describe('SnapshotSidebar', () => {
 		fireEvent.click(within(items[1]!).getByText(/ago/));
 
 		expect(store.getState().viewer.activeIndex).toBe(1);
-		expect(store.getState().viewer.displayState).toBe('html');
+		expect(store.getState().viewer.contentView).toBe('html');
 	});
 });

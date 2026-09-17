@@ -11,13 +11,13 @@ const useAppSelector = useSelector.withTypes<RootState>();
 const useActiveIndex = (): number =>
 	useAppSelector((state) => state.viewer.activeIndex);
 
-/** Current content view ('html' | 'json' | 'modal'). */
-const useDisplayState = (): RootState['viewer']['displayState'] =>
-	useAppSelector((state) => state.viewer.displayState);
+/** Current content view ('html' | 'json'). */
+const useContentView = (): RootState['viewer']['contentView'] =>
+	useAppSelector((state) => state.viewer.contentView);
 
 /** Whether the restore modal is open. */
 const useIsModalOpen = (): boolean =>
-	useAppSelector((state) => state.viewer.displayState === 'modal');
+	useAppSelector((state) => state.viewer.isModalOpen);
 
 /** The current application error message, or null when none. */
 const useError = (): string | null =>
@@ -27,7 +27,7 @@ export {
 	useAppDispatch,
 	useAppSelector,
 	useActiveIndex,
-	useDisplayState,
+	useContentView,
 	useIsModalOpen,
 	useError,
 };

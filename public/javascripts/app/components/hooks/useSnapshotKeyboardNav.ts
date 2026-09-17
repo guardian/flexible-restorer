@@ -3,7 +3,7 @@ import type { SnapshotIdViewModel } from '../models/snapshotId';
 import {
 	useActiveIndex,
 	useAppDispatch,
-	useDisplayState,
+	useIsModalOpen,
 } from '../store/hooks';
 import { openModal, setActiveIndex, showHtml, showJson } from '../store/viewerSlice';
 
@@ -27,19 +27,18 @@ const useSnapshotKeyboardNav = ({
 }: UseSnapshotKeyboardNavParams): void => {
 	const dispatch = useAppDispatch();
 	const activeIndex = useActiveIndex();
-	const displayState = useDisplayState();
+	const isModalOpen = useIsModalOpen();
 
-	const latest = useRef({ snapshots, activeIndex, displayState });
-	latest.current = { snapshots, activeIndex, displayState };
+	const latest = useRef({ snapshots, activeIndex, isModalOpen });
+	latest.current = { snapshots, activeIndex, isModalOpen };
 
 	useEffect(() => {
 		const onKeyDown = (event: KeyboardEvent): void => {
 			const {
 				snapshots: currentSnapshots,
 				activeIndex: currentIndex,
-				displayState: currentDisplay,
+				isModalOpen: modalOpen,
 			} = latest.current;
-			const modalOpen = currentDisplay === 'modal';
 			switch (event.key) {
 				case 'ArrowDown':
 					// Arrow navigation moves the active selection, so it needs the
