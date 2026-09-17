@@ -3,7 +3,7 @@ import type { FunctionComponent } from 'react';
 import { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import { useSnapshotKeyboardNav } from '../hooks/useSnapshotKeyboardNav';
-import { useGetSnapshotListQuery } from '../store/api';
+import { useGetSnapshotListQuery } from '../store/restorerApi';
 import { selectActiveIndex, useAppDispatch, useAppSelector } from '../store/hooks';
 import { setActiveIndex, setError, showHtml } from '../store/viewerSlice';
 import { palette } from '../styles/palette';

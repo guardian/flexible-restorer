@@ -1,18 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { render, screen } from '@testing-library/react';
-import { api } from '../store/api';
 import { viewerSlice, setError } from '../store/viewerSlice';
 import { ErrorModal } from './ErrorModal';
 
 const makeStore = () =>
 	configureStore({
 		reducer: {
-			[api.reducerPath]: api.reducer,
 			viewer: viewerSlice.reducer,
 		},
-		middleware: (getDefaultMiddleware) =>
-			getDefaultMiddleware().concat(api.middleware),
 	});
 
 describe('ErrorModal', () => {

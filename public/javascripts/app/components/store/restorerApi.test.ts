@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { api } from './api';
+import { restorerApi } from './restorerApi';
 
 const makeStore = () =>
 	configureStore({
-		reducer: { [api.reducerPath]: api.reducer },
+		reducer: { [restorerApi.reducerPath]: restorerApi.reducer },
 		middleware: (getDefaultMiddleware) =>
-			getDefaultMiddleware().concat(api.middleware),
+			getDefaultMiddleware().concat(restorerApi.middleware),
 	});
 
 const rawSnapshot = (timestamp: string, systemId: string) => ({
@@ -15,7 +15,7 @@ const rawSnapshot = (timestamp: string, systemId: string) => ({
 	info: { summary: { contentChangeDetails: { revision: 7 } } },
 });
 
-describe('api getSnapshotList endpoint', () => {
+describe('restorerApi getSnapshotList endpoint', () => {
 	afterEach(() => {
 		jest.restoreAllMocks();
 	});
@@ -33,7 +33,7 @@ describe('api getSnapshotList endpoint', () => {
 
 		const store = makeStore();
 		const result = await store.dispatch(
-			api.endpoints.getSnapshotList.initiate('abc'),
+			restorerApi.endpoints.getSnapshotList.initiate('abc'),
 		);
 
 		expect(fetchMock).toHaveBeenCalledWith(
@@ -55,7 +55,7 @@ describe('api getSnapshotList endpoint', () => {
 
 		const store = makeStore();
 		const result = await store.dispatch(
-			api.endpoints.getSnapshotList.initiate('abc'),
+			restorerApi.endpoints.getSnapshotList.initiate('abc'),
 		);
 
 		expect(result.data).toBeUndefined();
