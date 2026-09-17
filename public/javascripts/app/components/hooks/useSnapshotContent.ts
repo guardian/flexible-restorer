@@ -5,7 +5,7 @@ import {
 	useGetSnapshotListQuery,
 	useGetSnapshotQuery,
 	useGetUserQuery,
-} from '../store/api';
+} from '../store/restorerApi';
 import {
 	selectActiveIndex,
 	selectDisplayState,

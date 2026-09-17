@@ -20,7 +20,9 @@ steps below; the "Rationale" notes explain _why_ so you can adapt them.
 
 1. **One RTK store**, created as a module-level singleton.
 2. **RTK Query** (`createApi`) for all server interactions — one endpoint per
-   request, replacing SWR hooks and ad-hoc fetch helpers.
+   request, replacing SWR hooks and ad-hoc fetch helpers. When the calls span
+   multiple backend services, split them into one `createApi` per service (each
+   with its own `reducerPath`) so it is obvious which service a call hits.
 3. **A UI slice** (`createSlice`) holding the shared UI state that previously
    travelled over the event bus (selections, view toggles, open/close flags,
    errors).
@@ -29,12 +31,14 @@ steps below; the "Rationale" notes explain _why_ so you can adapt them.
 
 ```
 store/
-  store.ts        # configureStore singleton + RootState/AppDispatch types
-  api.ts          # createApi with one endpoint per request
+  store.ts        # configureStore singleton (registers every api) + RootState/AppDispatch
+  <service>Api.ts # one createApi per backend service (e.g. restorerApi, flexibleApi)
+  apiError.ts     # shared error type + normaliser reused by each service api
   <feature>Slice.ts  # shared UI state + actions + selectors
   hooks.ts        # typed useAppDispatch/useAppSelector + selectors
   withStore.tsx   # <Provider> HOC (needed when there are multiple React roots)
 ```
+
 
 ## Key decisions (made once, reused)
 
@@ -165,10 +169,12 @@ that belongs in a selector or the consuming hook instead.
 3. **Store scaffolding.** Create `store.ts` (singleton + types), `hooks.ts`
    (typed hooks + selectors), and — if there are multiple roots — `withStore.tsx`
    (D4). Call `setupListeners(store.dispatch)` for RTK Query focus/reconnect.
-4. **RTK Query api.ts.** One endpoint per request, each wrapping the existing
-   fetch helper in `queryFn` and parsing on ingress (D2, D3). Export the
-   generated hooks. If parsed models hold non-serialisable values, widen the
-   store's `serializableCheck` accordingly (D3).
+4. **RTK Query service api(s).** One endpoint per request, each wrapping the
+   existing fetch helper in `queryFn` and parsing on ingress (D2, D3). Group
+   endpoints into one `createApi` per backend service (`<service>Api.ts`) and
+   register every api's reducer + middleware in the store. Export the generated
+   hooks. If parsed models hold non-serialisable values, widen the store's
+   `serializableCheck` accordingly (D3).
 5. **UI slice.** Model the shared state the bus carried; add actions and
    selectors, including `setError`/`clearError` (D5).
 6. **Wire the provider(s).** Wrap each React root with the shared store (D4).

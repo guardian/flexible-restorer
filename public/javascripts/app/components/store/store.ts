@@ -1,7 +1,8 @@
 import { configureStore, isPlain } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import moment from 'moment';
-import { api } from './api';
+import { restorerApi } from './restorerApi';
+import { flexibleApi } from './flexibleApi';
 import { viewerSlice } from './viewerSlice';
 
 /**
@@ -11,18 +12,19 @@ import { viewerSlice } from './viewerSlice';
  */
 const store = configureStore({
 	reducer: {
-		[api.reducerPath]: api.reducer,
+		[restorerApi.reducerPath]: restorerApi.reducer,
+		[flexibleApi.reducerPath]: flexibleApi.reducer,
 		viewer: viewerSlice.reducer,
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({
-			// The parsed version list cached by `getSnapshotList` holds `moment`
-			// values (parsed on ingress); treat them as serialisable.
+			// The parsed snapshot/destination view models cached by the service APIs
+			// hold `moment` values (parsed on ingress); treat them as serialisable.
 			serializableCheck: {
 				isSerializable: (value: unknown) =>
 					moment.isMoment(value) || isPlain(value),
 			},
-		}).concat(api.middleware),
+		}).concat(restorerApi.middleware, flexibleApi.middleware),
 });
 
 // Enables RTK Query refetchOnFocus/refetchOnReconnect behaviours.

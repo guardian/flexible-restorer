@@ -1,18 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { render, screen, fireEvent, within } from '@testing-library/react';
-import { api } from '../store/api';
+import { restorerApi } from '../store/restorerApi';
 import { viewerSlice } from '../store/viewerSlice';
 import { SnapshotSidebar } from './SnapshotSidebar';
 
 const makeStore = () =>
 	configureStore({
 		reducer: {
-			[api.reducerPath]: api.reducer,
+			[restorerApi.reducerPath]: restorerApi.reducer,
 			viewer: viewerSlice.reducer,
 		},
 		middleware: (getDefaultMiddleware) =>
-			getDefaultMiddleware().concat(api.middleware),
+			getDefaultMiddleware().concat(restorerApi.middleware),
 	});
 
 const rawSnapshot = (timestamp: string, systemId: string) => ({

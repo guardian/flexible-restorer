@@ -1,9 +1,9 @@
 import type { RawSnapshotId } from '../models/snapshotId';
 
 // Shared fetch layer for the version list, used by the React sidebar via the RTK
-// Query `getSnapshotList` endpoint (see components/store/api.ts). Kept separate
-// so the endpoint URL, request options and "no snapshots" contract live in one
-// place.
+// Query `getSnapshotList` endpoint (see components/store/restorerApi.ts). Kept
+// separate so the endpoint URL, request options and "no snapshots" contract live
+// in one place.
 const NO_SNAPSHOTS_MESSAGE =
 	'There are no snapshots available for this piece of content';
 

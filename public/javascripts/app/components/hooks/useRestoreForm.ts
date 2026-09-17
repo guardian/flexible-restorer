@@ -2,12 +2,11 @@ import { useEffect, useMemo, useState } from 'react';
 import { skipToken } from '@reduxjs/toolkit/query/react';
 import type { FormattedCreatedDate } from '../utils/dateFormat';
 import { formatCreatedDate } from '../utils/dateFormat';
+import { useGetSnapshotListQuery, useGetUserQuery } from '../store/restorerApi';
 import {
 	useGetRestoreDestinationsQuery,
-	useGetSnapshotListQuery,
-	useGetUserQuery,
 	useRestoreContentMutation,
-} from '../store/api';
+} from '../store/flexibleApi';
 import { selectActiveIndex, useAppDispatch, useAppSelector } from '../store/hooks';
 import { closeModal, setError } from '../store/viewerSlice';
 import type { RestoreDestinationView } from '../api/fetchRestoreDestinations';
