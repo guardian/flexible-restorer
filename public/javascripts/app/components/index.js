@@ -1,5 +1,6 @@
 import angular from 'angular';
 import { react2angular } from 'react2angular';
+import { AppHeader } from './AppHeader';
 import { SearchForm } from './SearchForm';
 import { SnapshotSidebar } from './snapshot-sidebar/SnapshotSidebar';
 import { RestoreModal } from './restore-modal/RestoreModal';
@@ -22,6 +23,8 @@ reactComponents.service('AngularBridgeService', [
 
 // Register migrated React components as AngularJS directives.
 // Usage in templates: <search-form></search-form>.
+reactComponents.component('appHeader', react2angular(AppHeader));
+
 reactComponents.component('searchForm', react2angular(SearchForm, ['initialQuery']));
 
 // Snapshot sidebar (article header + version list + interaction).
