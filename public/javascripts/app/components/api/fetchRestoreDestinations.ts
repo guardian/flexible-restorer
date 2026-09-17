@@ -1,6 +1,9 @@
 // Restore-destination fetch layer for the React restore modal. Mirrors the
 // legacy AngularJS `RestoreService.getDestinations`: a failed request throws and
 // an empty payload is treated as "no destinations available".
+import moment from 'moment';
+import { formatCreatedDate } from '../utils/dateFormat';
+import type { FormattedCreatedDate } from '../utils/dateFormat';
 
 /** Change summary for a destination that already holds content. */
 type DestinationChangeDetails = {
@@ -19,6 +22,49 @@ type RestoreDestination = {
 	composerPrefix: string;
 	changeDetails?: DestinationChangeDetails | null;
 };
+
+/** Per-destination change summary, ported from `RestoreFormCtrl`'s `changeString`. */
+type DestinationChange =
+	| { kind: 'revision'; revisionId: number; date: FormattedCreatedDate }
+	| { kind: 'not-on-instance' }
+	| { kind: 'none' };
+
+/** A restore destination prepared for rendering as a radio option. */
+type RestoreDestinationView = {
+	systemId: string;
+	displayName: string;
+	available: boolean;
+	composerPrefix: string;
+	change: DestinationChange;
+};
+
+/** Prepare a raw destination for rendering (ported from `RestoreFormCtrl`). */
+const toDestinationView = (
+	destination: RestoreDestination,
+): RestoreDestinationView => {
+	const { systemId, displayName, available, composerPrefix, changeDetails } =
+		destination;
+
+	let change: DestinationChange;
+	if (changeDetails) {
+		change = {
+			kind: 'revision',
+			revisionId: changeDetails.revisionId,
+			date: formatCreatedDate(moment(changeDetails.lastModified)),
+		};
+	} else if (available) {
+		change = { kind: 'not-on-instance' };
+	} else {
+		change = { kind: 'none' };
+	}
+
+	return { systemId, displayName, available, composerPrefix, change };
+};
+
+/** Parse the raw destinations into render-ready view models. */
+const parseRestoreDestinations = (
+	destinations: RestoreDestination[],
+): RestoreDestinationView[] => destinations.map(toDestinationView);
 
 const NO_DESTINATIONS_MESSAGE = 'There are no destinations available';
 
@@ -49,5 +95,15 @@ const fetchRestoreDestinations = async (
 	return data as RestoreDestination[];
 };
 
-export { fetchRestoreDestinations, destinationsUrl, NO_DESTINATIONS_MESSAGE };
-export type { RestoreDestination, DestinationChangeDetails };
+export {
+	fetchRestoreDestinations,
+	destinationsUrl,
+	parseRestoreDestinations,
+	NO_DESTINATIONS_MESSAGE,
+};
+export type {
+	RestoreDestination,
+	DestinationChangeDetails,
+	DestinationChange,
+	RestoreDestinationView,
+};

@@ -4,11 +4,15 @@ import { parseSnapshotList } from '../models/snapshotId';
 import type { SnapshotIdViewModel } from '../models/snapshotId';
 import { fetchSnapshot } from '../api/fetchSnapshot';
 import type { SnapshotRef } from '../api/fetchSnapshot';
-import type { RawSnapshot } from '../models/snapshotContent';
+import { parseSnapshotContent } from '../models/snapshotContent';
+import type { SnapshotContent } from '../models/snapshotContent';
 import { fetchUser } from '../api/fetchUser';
 import type { User } from '../api/fetchUser';
-import { fetchRestoreDestinations } from '../api/fetchRestoreDestinations';
-import type { RestoreDestination } from '../api/fetchRestoreDestinations';
+import {
+	fetchRestoreDestinations,
+	parseRestoreDestinations,
+} from '../api/fetchRestoreDestinations';
+import type { RestoreDestinationView } from '../api/fetchRestoreDestinations';
 import { restoreContent } from '../api/restoreContent';
 
 // A serialisable error shape kept in the RTK Query cache. The underlying fetch
@@ -39,9 +43,10 @@ type RestoreParams = {
  * preserved unchanged — RTK Query adds caching, deduplication and hook state on
  * top. Replaces the previous SWR usage.
  *
- * The version list is parsed into its view model on ingress (in the endpoint);
- * this puts `moment` values in the cache, which the store's serializableCheck is
- * configured to allow (see store.ts). Other endpoints return raw responses.
+ * All responses are parsed into their view models on ingress (in the endpoint),
+ * so every consumer shares a single parsed reference and no component re-parses.
+ * The parsed models hold `moment` values, which the store's serializableCheck is
+ * configured to allow (see store.ts).
  */
 const api = createApi({
 	reducerPath: 'api',
@@ -57,10 +62,11 @@ const api = createApi({
 				}
 			},
 		}),
-		getSnapshot: builder.query<RawSnapshot, SnapshotRef>({
+		getSnapshot: builder.query<SnapshotContent, SnapshotRef>({
 			queryFn: async (ref) => {
 				try {
-					return { data: await fetchSnapshot(ref) };
+					const raw = await fetchSnapshot(ref);
+					return { data: parseSnapshotContent(raw) };
 				} catch (error) {
 					return { error: toApiError(error) };
 				}
@@ -75,13 +81,14 @@ const api = createApi({
 				}
 			},
 		}),
-		getRestoreDestinations: builder.query<RestoreDestination[], string>({
+		getRestoreDestinations: builder.query<RestoreDestinationView[], string>({
 			// Drop the cache as soon as the modal closes (no subscribers) so each
 			// reopen fetches fresh destinations, matching the legacy per-open fetch.
 			keepUnusedDataFor: 0,
 			queryFn: async (contentId) => {
 				try {
-					return { data: await fetchRestoreDestinations(contentId) };
+					const raw = await fetchRestoreDestinations(contentId);
+					return { data: parseRestoreDestinations(raw) };
 				} catch (error) {
 					return { error: toApiError(error) };
 				}
