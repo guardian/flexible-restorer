@@ -16,7 +16,7 @@ type SnapshotRef = {
 
 /**
  * Fetch the raw snapshot for a given system/content/timestamp. A failed request
- * throws so the caller can surface the Angular error modal. Parsing into a view
+ * throws so the caller can surface the React error modal. Parsing into a view
  * model is left to `parseSnapshotContent`.
  */
 const fetchSnapshot = async ({

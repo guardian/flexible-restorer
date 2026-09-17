@@ -97,7 +97,7 @@ export const SnapshotSidebar: FunctionComponent<SnapshotSidebarProps> = ({
 	};
 
 	// The loading state is covered by the surrounding Angular `gu-loading-bars`,
-	// and fetch failures are surfaced by the Angular error modal, so render
+	// and fetch failures are surfaced by the React error modal, so render
 	// nothing until the list is available.
 	if (error || !snapshots) {
 		return null;

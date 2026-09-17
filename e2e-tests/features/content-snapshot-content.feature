@@ -131,9 +131,9 @@ Feature: Review and act on snapshot content in version history
     Then I should see the error modal with an explanatory message
     And the restore modal should close if it was open
   # Evidence: public/javascripts/app/controllers/SnapshotContentCtrl.js#L55-L63 (loadContent publishes error)
-  # Evidence: public/javascripts/app/controllers/ErrorCtrl.js#L14-L18 (subscribes to error)
+  # Evidence: public/javascripts/app/components/error-modal/ErrorModal.tsx (subscribes and renders)
   # Evidence: public/javascripts/app/controllers/ModalController.js#L40-L43 (error subscription closes modal)
-  # Evidence: public/javascripts/app/templates/restore-list.html#L1-L16 (error modal)
+  # Evidence: public/javascripts/app/templates/restore-list.html (React error modal host)
 
   Scenario: No restore destinations shows an error outcome
     Given the restore modal is open

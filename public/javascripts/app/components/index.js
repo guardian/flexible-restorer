@@ -5,6 +5,7 @@ import { SearchForm } from './SearchForm';
 import { SnapshotSidebar } from './snapshot-sidebar/SnapshotSidebar';
 import { RestoreModal } from './restore-modal/RestoreModal';
 import { ContentViewer } from './content-viewer/ContentViewer';
+import { ErrorModal } from './error-modal/ErrorModal';
 import { provideAngularServices } from './hooks/useAngularRouter';
 
 // AngularJS module hosting the React components bridged in via react2angular.
@@ -24,6 +25,8 @@ reactComponents.service('AngularBridgeService', [
 // Register migrated React components as AngularJS directives.
 // Usage in templates: <search-form></search-form>.
 reactComponents.component('appHeader', react2angular(AppHeader));
+
+reactComponents.component('errorModal', react2angular(ErrorModal));
 
 reactComponents.component('searchForm', react2angular(SearchForm, ['initialQuery']));
 

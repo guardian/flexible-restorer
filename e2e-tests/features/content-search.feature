@@ -46,6 +46,6 @@ Feature: Find content version history from the splash screen
   # Evidence: public/javascripts/app/controllers/SearchFormCtrl.js#L9-L13 (navigates to versions route)
   # Evidence: public/javascripts/app/collections/SnapshotIdModels.js#L42-L45 (rejects when no snapshots)
   # Evidence: public/javascripts/app/controllers/SnapshotListCtrl.js#L34-L38 (publishes error on failure)
-  # Evidence: public/javascripts/app/controllers/ErrorCtrl.js#L14-L18 (subscribes to error)
-  # Evidence: public/javascripts/app/templates/restore-list.html#L1-L16 (error modal)
+  # Evidence: public/javascripts/app/components/error-modal/ErrorModal.tsx (subscribes and renders)
+  # Evidence: public/javascripts/app/templates/restore-list.html (React error modal host)
 
