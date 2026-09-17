@@ -1,60 +1,17 @@
 import angular from 'angular';
-import SnapshotIdModelsMod from '../collections/SnapshotIdModels';
-import mediator from '../utils/mediator';
 
 var SnapshotListCtrlMod = angular.module('SnapshotListCtrlMod', []);
 
+// Thin route controller for the versions page. The migrated React components own
+// the snapshot list, active selection, content loading and errors (via the Redux
+// store); this controller only exposes the route's contentId to the template and
+// renders immediately (each React component shows its own loading state).
 SnapshotListCtrlMod.controller('SnapshotListCtrl', [
   '$scope',
   '$routeParams',
-  '$timeout',
-  'SnapshotIdModels',
-  function($scope, $routeParams, $timeout, SnapshotIdModels){
-
-    var snapshotCollection;
-
-    $scope.isLoading  = true;
-    // Exposed for the migrated React sidebar, bound via
-    // <snapshot-sidebar content-id="contentId"> (see components/index.js).
+  function($scope, $routeParams){
     $scope.contentId = $routeParams.contentId;
-
-    SnapshotIdModels
-      .getCollection($routeParams.contentId)
-      .then((collection) => {
-        snapshotCollection = collection;
-        snapshotCollection.getModelAt(0).set('activeState', true);
-        $scope.isLoading  = false;
-        $scope.models = collection.getModels();
-      })
-      .catch((err) => {
-        $scope.isLoading = false;
-        mediator.publish('error', err);
-      });
-
-    //set active model to a specific index
-    mediator.subscribe('snapshot-list:set-active', function(index){
-      var activeModel = snapshotCollection.find((data)=> data.activeState);
-      var model = snapshotCollection.getModelAt(index);
-      if (activeModel === model) {
-        return;
-      }
-      setActive(activeModel, model);
-    });
-
-    function setActive(activeModel, model) {
-      //set active states
-      activeModel.set('activeState', false);
-      model.set('activeState', true);
-      mediator.publish('track:event', 'Snapshot', 'Active', null, null, {
-        contentId: model.id,
-        snapshotTime: model.timestamp
-      });
-      //place the content
-      $timeout(()=>
-          mediator.publish('snapshot-list:load-content', model.getSystemId(), model.getContentId(), model.getTimestamp()), 10
-      );
-    }
-
+    $scope.isLoading = false;
   }
 ]);
 
