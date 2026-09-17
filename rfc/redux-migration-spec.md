@@ -114,6 +114,31 @@ surprising behaviour changes.
 Audit the bus for events that are published but never subscribed (common with
 analytics). Remove them rather than porting them.
 
+### D7. Push derivation out of components: ingress first, then selectors
+
+Move memoisation logic in components to selectors if possible, or even better, on
+ingress as we get data from the API. Prefer this order when a component derives a
+value from fetched/store data:
+
+1. **On ingress** (endpoint `queryFn`/`transformResponse`) — best when the
+   derived shape is a pure function of a single response and every consumer wants
+   it the same way (e.g. sorting/parsing a list). Computed once per cache entry,
+   shared by all consumers, and it deletes per-component `useMemo`s (D3).
+2. **In a selector** — best when the value derives from store state (possibly
+   combining slices/args) or needs per-caller inputs. Use a memoised selector
+   (`createSelector`) so it recomputes only when its inputs change, and it stays
+   unit-testable in isolation.
+3. **In a component `useMemo`** — last resort, only for values that are genuinely
+   local (depend on props/local state that never belong in the store).
+
+_Rationale:_ derivation nearest the data source runs the fewest times, is shared,
+and keeps components thin and presentational. A component `useMemo` recomputes per
+component instance and hides reusable logic inside the view layer.
+
+_Caveat:_ don't force a derivation onto ingress if it needs inputs the endpoint
+doesn't have (e.g. the current user's permissions, or a per-component selection) —
+that belongs in a selector or the consuming hook instead.
+
 ## Mapping cheat-sheet
 
 | Old (mediator / SWR)                         | New (RTK / RTK Query)                                  |

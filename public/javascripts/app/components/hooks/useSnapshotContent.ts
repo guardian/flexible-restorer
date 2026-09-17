@@ -1,7 +1,6 @@
-import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { skipToken } from '@reduxjs/toolkit/query/react';
 import type { SnapshotContent } from '../models/snapshotContent';
-import { parseSnapshotContent } from '../models/snapshotContent';
 import {
 	useGetSnapshotListQuery,
 	useGetSnapshotQuery,
@@ -69,11 +68,7 @@ const useSnapshotContent = (contentId: string): UseSnapshotContent => {
 		}
 	}, [userError, dispatch]);
 
-	const { data: rawContent, error } = useGetSnapshotQuery(activeSnapshot ?? skipToken);
-	const content = useMemo<SnapshotContent | undefined>(
-		() => (rawContent ? parseSnapshotContent(rawContent) : undefined),
-		[rawContent],
-	);
+	const { data: content, error } = useGetSnapshotQuery(activeSnapshot ?? skipToken);
 
 	useEffect(() => {
 		if (error) {
