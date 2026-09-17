@@ -26,8 +26,11 @@ steps below; the "Rationale" notes explain _why_ so you can adapt them.
 3. **A UI slice** (`createSlice`) holding the shared UI state that previously
    travelled over the event bus (selections, view toggles, open/close flags,
    errors).
-4. **Typed hooks and selectors** (`useAppDispatch`, `useAppSelector`, selector
-   functions) so components read/write state type-safely.
+4. **Typed hooks and encapsulated selector hooks.** Expose typed
+   `useAppDispatch`/`useAppSelector`, but wrap each selector in its own hook
+   (`useIsModalOpen()` rather than `useAppSelector(selectIsModalOpen)`) so
+   components read state through intention-revealing hooks and never touch
+   `useAppSelector` or the state shape directly.
 
 ```
 store/
@@ -35,7 +38,7 @@ store/
   <service>Api.ts # one createApi per backend service (e.g. restorerApi, flexibleApi)
   apiError.ts     # shared error type + normaliser reused by each service api
   <feature>Slice.ts  # shared UI state + actions + selectors
-  hooks.ts        # typed useAppDispatch/useAppSelector + selectors
+  hooks.ts        # typed useAppDispatch + one hook per selector (useIsModalOpen, ...)
   withStore.tsx   # <Provider> HOC (needed when there are multiple React roots)
 ```
 

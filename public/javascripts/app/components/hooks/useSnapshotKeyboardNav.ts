@@ -1,10 +1,9 @@
 import { useEffect, useRef } from 'react';
 import type { SnapshotIdViewModel } from '../models/snapshotId';
 import {
-	selectActiveIndex,
-	selectDisplayState,
+	useActiveIndex,
 	useAppDispatch,
-	useAppSelector,
+	useDisplayState,
 } from '../store/hooks';
 import { openModal, setActiveIndex, showHtml, showJson } from '../store/viewerSlice';
 
@@ -27,8 +26,8 @@ const useSnapshotKeyboardNav = ({
 	snapshots,
 }: UseSnapshotKeyboardNavParams): void => {
 	const dispatch = useAppDispatch();
-	const activeIndex = useAppSelector(selectActiveIndex);
-	const displayState = useAppSelector(selectDisplayState);
+	const activeIndex = useActiveIndex();
+	const displayState = useDisplayState();
 
 	const latest = useRef({ snapshots, activeIndex, displayState });
 	latest.current = { snapshots, activeIndex, displayState };

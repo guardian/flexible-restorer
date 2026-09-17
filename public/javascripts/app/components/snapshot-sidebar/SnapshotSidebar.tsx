@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import { useSnapshotKeyboardNav } from '../hooks/useSnapshotKeyboardNav';
 import { useGetSnapshotListQuery } from '../store/restorerApi';
-import { selectActiveIndex, useAppDispatch, useAppSelector } from '../store/hooks';
+import { useActiveIndex, useAppDispatch } from '../store/hooks';
 import { setActiveIndex, setError, showHtml } from '../store/viewerSlice';
 import { palette } from '../styles/palette';
 import { ArticleHeader } from './ArticleHeader';
@@ -59,7 +59,7 @@ export const SnapshotSidebar: FunctionComponent<SnapshotSidebarProps> = ({
 }) => {
 	const { data: snapshots, error } = useGetSnapshotListQuery(contentId);
 	const dispatch = useAppDispatch();
-	const activeIndex = useAppSelector(selectActiveIndex);
+	const activeIndex = useActiveIndex();
 	const [isSlidIn, setIsSlidIn] = useState(false);
 
 	// Slide the sidebar in shortly after mount.

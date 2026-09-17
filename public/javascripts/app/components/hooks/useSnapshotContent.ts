@@ -7,10 +7,9 @@ import {
 	useGetUserQuery,
 } from '../store/restorerApi';
 import {
-	selectActiveIndex,
-	selectDisplayState,
+	useActiveIndex,
 	useAppDispatch,
-	useAppSelector,
+	useDisplayState,
 } from '../store/hooks';
 import { openModal, setError, showHtml, showJson } from '../store/viewerSlice';
 
@@ -52,8 +51,8 @@ const copyToClipboard = async (text: string): Promise<void> => {
 const useSnapshotContent = (contentId: string): UseSnapshotContent => {
 	const { data: snapshots } = useGetSnapshotListQuery(contentId);
 	const dispatch = useAppDispatch();
-	const activeIndex = useAppSelector(selectActiveIndex);
-	const displayState = useAppSelector(selectDisplayState);
+	const activeIndex = useActiveIndex();
+	const displayState = useDisplayState();
 	const isShowingJSON = displayState === 'json';
 	const [isSettingContent, setIsSettingContent] = useState(false);
 	const [copyLabel, setCopyLabel] = useState(COPY_LABEL);

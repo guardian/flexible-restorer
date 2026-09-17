@@ -1,7 +1,7 @@
 import type { FunctionComponent } from 'react';
 import { css } from '@emotion/react';
 import { Dialog, Modal } from '@guardian/stand/Modal';
-import { selectError, useAppSelector } from '../store/hooks';
+import { useError } from '../store/hooks';
 
 const modalTheme = {
 	overlay: {
@@ -40,7 +40,7 @@ const contentCss = css({
 
 /** Displays application errors held in the Redux viewer slice. */
 const ErrorModal: FunctionComponent = () => {
-	const errorMessage = useAppSelector(selectError);
+	const errorMessage = useError();
 
 	return (
 		<Modal
