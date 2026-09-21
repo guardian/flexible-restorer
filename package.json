@@ -18,9 +18,6 @@
         "@emotion/react": "^11.14.0",
         "@guardian/stand": "^0.0.60",
         "@reduxjs/toolkit": "^2.12.0",
-        "angular": "^1.8.3",
-        "angular-route": "^1.8.3",
-        "angular-sanitize": "^1.8.3",
         "bootstrap": "^3.4.1",
         "flatten": "^1.0.3",
         "html-react-parser": "^5.2.17",
@@ -30,8 +27,7 @@
         "react": "^18.3.1",
         "react-aria-components": "^1.19.0",
         "react-dom": "^18.3.1",
-        "react-redux": "^9.3.0",
-        "react2angular": "^4.0.6"
+        "react-redux": "^9.3.0"
     },
     "devDependencies": {
         "@babel/core": "^8.0.1",
@@ -51,8 +47,6 @@
         "jest-environment-jsdom": "^30.5.1",
         "mini-css-extract-plugin": "^2.9.2",
         "raw-loader": "^4.0.2",
-        "sass": "^1.83.0",
-        "sass-loader": "^16.0.4",
         "typescript": "^5.9.3",
         "webpack": "^5.97.1",
         "webpack-cli": "^5.1.4"

@@ -6,9 +6,7 @@ import { flexibleApi } from './flexibleApi';
 import { viewerSlice } from './viewerSlice';
 
 /**
- * The single application store. Because each migrated React component is mounted
- * as a separate `react2angular` root, this module-level singleton is shared by
- * every root (via `withStore`) so they read and write the same state.
+ * The single application store shared by the top-level React Provider.
  */
 const store = configureStore({
 	reducer: {

@@ -6,7 +6,7 @@ import { LinkButton } from '@guardian/stand/LinkButton';
 import { icons } from '../styles/icons';
 import { palette } from '../styles/palette';
 
-// Ported from snapshot-content.scss `.snapshot-content__actions`: a fixed action
+// Fixed action bar aligned to the right with a thin bottom rule.
 // bar aligned to the right with a thin bottom rule.
 const actions = css({
 	display: 'flex',

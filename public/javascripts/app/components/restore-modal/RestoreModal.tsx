@@ -10,8 +10,8 @@ import { closeModal as closeModalAction } from '../store/viewerSlice';
 import { useRestoreForm } from '../hooks/useRestoreForm';
 import type { RestoreDestinationView } from '../hooks/useRestoreForm';
 
-// Colours/fonts ported verbatim from the legacy modal SASS (modal.scss,
-// text.scss, palette.scss). Only `grey400` maps to an existing local palette
+// Colours and fonts preserve the legacy modal presentation. Only `grey400`
+// maps to an existing local palette
 // token; the rest are legacy values with no Stand/local equivalent so they are
 // inlined here with comments.
 const GREY_650 = '#333333'; // $color-650-grey (text)
@@ -153,7 +153,7 @@ const destinationLabel = css({
 
 // --- form fieldsets (.modal__content__form) ---
 const formColumn = css({
-	// text.scss: .modal__content__form label { ... }
+	// Form labels use the Egyptian display face.
 	label: {
 		fontFamily: FONT_EGYPTIAN,
 		fontSize: '14px',
@@ -204,7 +204,7 @@ const decal = (isChecked: boolean, top?: string) =>
 
 const actions = css({ flexDirection: 'row-reverse', gap: '10px' });
 
-// --- loading bars (loading-bars.scss) ---
+// --- loading bars ---
 const stretchdelay = keyframes({
 	'0%, 40%, 100%': { transform: 'scaleY(0.4)' },
 	'20%': { transform: 'scaleY(1.0)' },
@@ -268,7 +268,7 @@ const DestinationChangeText: FunctionComponent<{
 };
 
 export type RestoreModalProps = {
-	/** Content id from the Angular route, bound via react2angular (see ../index.js). */
+	/** Content id parsed from the application route. */
 	contentId: string;
 };
 

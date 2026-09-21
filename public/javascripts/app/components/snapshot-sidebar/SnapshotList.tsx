@@ -8,7 +8,7 @@ import { palette } from '../styles/palette';
 import { SnapshotListItem } from './SnapshotListItem';
 import { DeltaRow } from './DeltaRow';
 
-// --- list (from index-list mixins + snapshot-list.scss) ---
+// --- list ---
 const list = css({
 	marginTop: '5px',
 	paddingLeft: 0,
@@ -34,7 +34,7 @@ export type SnapshotListProps = {
 /**
  * The ordered snapshot list: an optional "from composer-secondary" banner, the
  * item row and the delta row, per snapshot. Migrated from the `snapshot-list`
- * `ng-repeat` in restore-list.html.
+ * the legacy restore-list template.
  */
 export const SnapshotList: FunctionComponent<SnapshotListProps> = ({
 	snapshots,
