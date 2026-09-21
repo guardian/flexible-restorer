@@ -123,16 +123,6 @@ a.snapshot-list__item__restore {
   text-transform: uppercase;
 }
 
-//MODAL
-// Only the error modal (ErrorCtrl) still uses these classes. The restore modal
-// has moved to the React `restore-modal` component with emotion styles.
-.modal__content__title {
-  font-family: "Guardian Egyptian Text";
-  font-size: 24px;
-  font-weight: bold;
-  color: $color-650-grey;
-}
-
 .delta-row__content {
   font-family: "Guardian Agate Sans";
   font-size: 12px;
