@@ -1,5 +1,5 @@
 // Current-user fetch layer for the React restore modal. Mirrors the legacy
-// AngularJS `UserService`: the user and their permissions are fetched together
+// Fetch the user and their permissions together
 // and the request is memoised so concurrent callers share a single chain. On
 // failure the memoised promise is discarded so the next call can retry.
 

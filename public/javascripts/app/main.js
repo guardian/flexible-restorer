@@ -1,55 +1,21 @@
-import angular      from 'angular';
-import ngRoute      from 'angular-route/angular-route';
-import ngSanitize   from 'angular-sanitize/angular-sanitize';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { App } from './components/App';
+import { store } from './components/store/store';
 
-import controllers  from './controllers/index';
-import models       from './models/index';
-import collections  from  './collections/index';
-import services     from './services/index';
-
-import components   from './lib/gu-components';
-import reactComponents from './components/index';
-
-import '../../sass/index.scss';
 import '../../gu-noting.css';
 
-var restorer = angular.module('restorer', [
-  'ngRoute',
-  'ngSanitize',
-  'guComponents',
-  'reactComponents',
-  'restorerControllers',
-  'restorerModels',
-  'restorerCollections',
-  'restorerServices'
-]);
+const rootElement = document.getElementById('app');
 
-restorer.config([
-  '$routeProvider',
-  '$locationProvider',
-  '$qProvider',
-  function($routeProvider, $locationProvider, $qProvider){
+if (!rootElement) {
+  throw new Error('React app root element was not found.');
+}
 
-    $routeProvider.when('/content/:contentId/versions', {
-      templateUrl: '/assets/javascripts/app/templates/restore-list.html',
-      controller: 'SnapshotListCtrl'
-    });
-
-    $routeProvider.when('/', {
-      templateUrl: '/assets/javascripts/app/templates/splash-screen.html'
-    });
-
-    $locationProvider.html5Mode({
-      enabled: true,
-      requireBase: false
-    });
-
-    $qProvider.errorOnUnhandledRejections(false);
-  }
-]);
-
-//We use the run block within the main bootstrap file
-//to require in GLOBAL deps.
-restorer.run(['AnalyticsService', function(){}])
-
-export default restorer;
+createRoot(rootElement).render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>,
+);

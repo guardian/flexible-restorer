@@ -1,5 +1,5 @@
 // Restore-destination fetch layer for the React restore modal. Mirrors the
-// legacy AngularJS `RestoreService.getDestinations`: a failed request throws and
+// The restore destinations request: a failed request throws and
 // an empty payload is treated as "no destinations available".
 import moment from 'moment';
 import { formatCreatedDate } from '../utils/dateFormat';

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import type { FunctionComponent } from 'react';
-import { css, Global } from '@emotion/react';
+import { css } from '@emotion/react';
 import { TopBar, TopBarToolName } from '@guardian/stand/TopBar';
 import type { TopBarToolNameProps } from '@guardian/stand/TopBar';
 
