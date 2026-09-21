@@ -1,16 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import type { FormEvent, FunctionComponent } from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import { css, keyframes } from '@emotion/react';
 import { Button } from '@guardian/stand/Button';
 import { palette } from '../styles/palette';
 import type { FormattedCreatedDate } from '../utils/dateFormat';
-import {
-	publishHiddenModal,
-	subscribeCloseModal,
-	subscribeDisplayModal,
-	subscribeError,
-} from '../utils/mediator';
+import { useAppDispatch, useIsModalOpen } from '../store/hooks';
+import { closeModal as closeModalAction } from '../store/viewerSlice';
 import { useRestoreForm } from '../hooks/useRestoreForm';
 import type { RestoreDestinationView } from '../hooks/useRestoreForm';
 
@@ -280,61 +276,41 @@ export type RestoreModalProps = {
  * Restore modal: the "Before you restore" confirmation form.
  *
  * Migrated from the `ModalCtrl`/`RestoreFormCtrl` block of restore-list.html.
- * Open/close is driven by the same `snapshot-list:*`/`error` mediator events the
- * legacy controllers used, so the (still-Angular) content panel, keyboard
- * handler and error modal keep working unchanged.
+ * Open/close is driven by the Redux viewer slice (`isModalOpen`), shared with the
+ * content viewer, sidebar keyboard handler and error modal.
  */
 export const RestoreModal: FunctionComponent<RestoreModalProps> = ({ contentId }) => {
-	const [isActive, setIsActive] = useState(false);
+	const dispatch = useAppDispatch();
+	const isActive = useIsModalOpen();
 	const form = useRestoreForm(contentId, isActive);
+	const { reset } = form;
 
-	const closeModal = (): void => {
+	// Apply the body scroll lock and cleanup as the modal opens/closes.
+	useEffect(() => {
+		if (isActive) {
+			window.scroll(0, 0);
+			// Lock the body so the page cannot scroll behind the modal.
+			document.body.style.overflow = 'hidden';
+			return;
+		}
 		document.body.style.height = '100%';
 		document.body.style.overflow = 'visible';
 		// Drop focus from the Cancel button: react-aria Buttons handle Enter/Space
 		// themselves, so a lingering focus would swallow the global Enter shortcut
 		// that reopens the modal (the legacy native button let it propagate).
 		(document.activeElement as HTMLElement | null)?.blur();
-		setIsActive(false);
-		publishHiddenModal();
-		form.reset();
-	};
-
-	// Latest values read by the once-registered mediator/keydown handlers.
-	const closeRef = useRef(closeModal);
-	closeRef.current = closeModal;
-	const isActiveRef = useRef(isActive);
-	isActiveRef.current = isActive;
+		reset();
+	}, [isActive, reset]);
 
 	useEffect(() => {
-		const open = (): void => {
-			window.scroll(0, 0);
-			// Lock the body so the page cannot scroll behind the modal.
-			document.body.style.overflow = 'hidden';
-			setIsActive(true);
-		};
-
-		const close = (): void => closeRef.current();
-
 		const onKeyDown = (event: KeyboardEvent): void => {
-			if (event.key === 'Escape' && isActiveRef.current) {
-				close();
+			if (event.key === 'Escape' && isActive) {
+				dispatch(closeModalAction());
 			}
 		};
-
-		const unsubscribeDisplay = subscribeDisplayModal(open);
-		const unsubscribeClose = subscribeCloseModal(close);
-		// Any error closes the modal, matching the legacy ModalController.
-		const unsubscribeError = subscribeError(close);
 		window.addEventListener('keydown', onKeyDown);
-
-		return () => {
-			unsubscribeDisplay();
-			unsubscribeClose();
-			unsubscribeError();
-			window.removeEventListener('keydown', onKeyDown);
-		};
-	}, []);
+		return () => window.removeEventListener('keydown', onKeyDown);
+	}, [isActive, dispatch]);
 
 	const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
@@ -555,7 +531,7 @@ export const RestoreModal: FunctionComponent<RestoreModalProps> = ({ contentId }
 										type="button"
 										variant="secondary"
 										size="sm"
-										onPress={closeModal}
+										onPress={() => dispatch(closeModalAction())}
 									>
 										Cancel
 									</Button>
