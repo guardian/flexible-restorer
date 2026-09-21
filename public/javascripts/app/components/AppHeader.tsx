@@ -1,44 +1,36 @@
 /** @jsxImportSource @emotion/react */
 import type { FunctionComponent } from 'react';
 import { css, Global } from '@emotion/react';
+import { TopBar, TopBarToolName } from '@guardian/stand/TopBar';
+import type { TopBarToolNameProps } from '@guardian/stand/TopBar';
 
-// Stand does not provide a brand-only header strip, and its tokens do not
-// exactly match these legacy colours, so preserve the existing design here.
-const hostCss = css({
-	'app-header': {
-		flexShrink: 0,
-	},
+
+const faviconCss = css({
+    padding: '4px',
 });
 
-const headerCss = css({
-	display: 'flex',
-	height: '46px',
-	backgroundColor: '#dee2e3',
-	border: '1px solid #bdbdbd',
-	borderTop: 0,
-	boxSizing: 'border-box',
-});
 
-const logoCss = css({
-	display: 'block',
-	boxSizing: 'border-box',
-	width: '50px',
-	height: '45px',
-	padding: '3px 6px 4px',
-	backgroundColor: '#005689',
-});
+type FaviconWithImage = Extract<
+    TopBarToolNameProps['favicon'],
+    { src: string }
+>;
+
+const favicon: FaviconWithImage = {
+    src: '/assets/images/restorer-white-38.svg',
+    alt: 'Flexible Restorer',
+    letter: 'R',
+    cssOverrides: faviconCss,
+};
 
 const AppHeader: FunctionComponent = () => (
-	<>
-		<Global styles={hostCss} />
-		<header css={headerCss}>
-			<img
-				css={logoCss}
-				src="/assets/images/restorer-white-38.svg"
-				alt="Flexible Restorer"
-			/>
-		</header>
-	</>
+    
+    <TopBar>
+        <TopBarToolName 
+            name="Restorer" 
+            favicon={favicon}  
+        />
+    </TopBar>
+
 );
 
 export { AppHeader };
