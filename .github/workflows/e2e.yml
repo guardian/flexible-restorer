@@ -9,7 +9,7 @@ on:
 
 jobs:
     e2e:
-        runs-on: 8core-ubuntu-latest-frontend
+        runs-on: ubuntu-latest
 
         permissions:
             # Required for `actions/checkout`
