@@ -8,7 +8,7 @@ libraryDependencies += "org.vafer" % "jdeb" % "1.3" artifacts Artifact("jdeb", "
 
 // Fingerprints public assets (adds an MD5 to their filenames) so `Assets.versioned`
 // can serve them with far-future cache headers and bust the cache on any change.
-addSbtPlugin("com.typesafe.sbt" % "sbt-digest" % "1.1.4")
+addSbtPlugin("com.github.sbt" % "sbt-digest" % "2.1.0")
 
 // Pre-compresses public assets to `.gz` at build time so Play can serve the
 // compressed copy without gzipping on every request.
