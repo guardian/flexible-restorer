@@ -12,6 +12,6 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-digest" % "1.1.4")
 
 // Pre-compresses public assets to `.gz` at build time so Play can serve the
 // compressed copy without gzipping on every request.
-addSbtPlugin("com.typesafe.sbt" % "sbt-gzip" % "1.0.2")
+addSbtPlugin("com.github.sbt" % "sbt-gzip" % "2.0.0")
 
 addDependencyTreePlugin
