@@ -9,16 +9,16 @@ const currentUrl = (): string =>
 	`${window.location.pathname}${window.location.search}${window.location.hash}`;
 
 const useBrowserRouter = (): BrowserRouter => {
-	const [, setVersion] = useState(0);
+	const [url, setUrlState] = useState(currentUrl);
 
 	useEffect(() => {
-		const handlePopState = (): void => setVersion((version) => version + 1);
+		const handlePopState = (): void => setUrlState(currentUrl());
 		window.addEventListener('popstate', handlePopState);
 		return () => window.removeEventListener('popstate', handlePopState);
 	}, []);
 
 	return {
-		getUrl: currentUrl,
+		getUrl: () => url,
 		setUrl: (path: string): void => {
 			window.history.pushState({}, '', path);
 			window.dispatchEvent(new PopStateEvent('popstate'));
