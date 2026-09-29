@@ -16,7 +16,7 @@ module.exports = {
     plugins: [
         new MiniCssExtractPlugin(),
     ],
-    entry: "./public/javascripts/app/main.js",
+    entry: "./public/javascripts/app/main.tsx",
     output: {
         path: path.resolve(__dirname, "public/dist"),
         filename: "main.js",
