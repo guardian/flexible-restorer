@@ -1,8 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import type { FunctionComponent } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { css, Global } from '@emotion/react';
 import { useGetSnapshotListQuery } from './store/restorerApi';
+import { useBrowserRouter } from './hooks/useBrowserRouter';
 import { AppHeader } from './AppHeader';
 import { SearchForm } from './SearchForm';
 import { ContentViewer } from './content-viewer/ContentViewer';
@@ -145,20 +146,13 @@ const VersionsView: FunctionComponent<{ contentId: string }> = ({
 };
 
 const App: FunctionComponent = () => {
-	const [route, setRoute] = useState<Route>(() => getRoute(window.location.pathname));
+	const { getUrl } = useBrowserRouter();
+	const pathname = new URL(getUrl(), window.location.origin).pathname;
+	const route = getRoute(pathname);
 
 	useEffect(() => {
-		const handlePopState = (): void => {
-			setRoute(getRoute(window.location.pathname));
-		};
-
-		window.addEventListener('popstate', handlePopState);
-		return () => window.removeEventListener('popstate', handlePopState);
-	}, []);
-
-	useEffect(() => {
-		trackRoute(window.location.pathname);
-	}, [route]);
+		trackRoute(pathname);
+	}, [pathname]);
 
 	return (
 		<div css={appCss}>
