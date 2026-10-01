@@ -10,7 +10,7 @@ const textStyle = {
 	fontSize: '12px',
 };
 
-// --- delta row (from snapshot-list.scss) ---
+// --- delta row ---
 const deltaRow = css({
 	display: 'flex',
 	flexDirection: 'row-reverse',

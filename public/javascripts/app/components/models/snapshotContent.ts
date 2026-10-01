@@ -1,5 +1,5 @@
 // Typed model for a single snapshot's renderable content, ported from the
-// AngularJS `SnapshotModel` (models/SnapshotModel.js). The legacy model built a
+// The legacy snapshot model built a
 // single HTML string via `getHTMLContent`; here we instead expose the article as
 // a flat list of typed elements so the React `article/*` components can render
 // them without `dangerouslySetInnerHTML`.

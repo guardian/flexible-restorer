@@ -4,19 +4,17 @@ import { useState } from 'react';
 import { css } from '@emotion/react';
 import { Button } from '@guardian/stand/Button';
 import { TextInput } from '@guardian/stand/TextInput';
-import { useAngularRouter } from './hooks/useAngularRouter';
+import { useBrowserRouter } from './hooks/useBrowserRouter';
 
 export type SearchFormProps = {
 	/**
-	 * Optional pre-filled query. Supplied as the sole react2angular binding so
-	 * the bridged component mounts (see ./index.js).
+	 * Optional pre-filled query for embedding the form with an existing value.
 	 */
 	initialQuery?: string;
 };
 
-// Migrated from the `.splash-screen__container__form center` SCSS: fill the
-// column height and centre the label/input/button. No Stand theme covers this
-// layout, so per the migration RFC the styles live inline with emotion.
+// Fill the column height and centre the label/input/button. No Stand theme
+// covers this layout, so the styles live inline with Emotion.
 const formCss = css({
 	height: '100%',
 	display: 'flex',
@@ -29,16 +27,14 @@ const formCss = css({
 /**
  * Splash-screen search form.
  *
- * Migrated from the AngularJS `SearchFormCtrl` + inline template. Navigation is
- * performed through the `useAngularRouter` hook, which reaches the statically
- * provisioned `$location`/`$rootScope` services, so no Angular services are
- * passed in as props.
+ * Search form migrated from the legacy splash screen. Navigation uses browser
+ * history so the form does not depend on a framework-specific router.
  */
 export const SearchForm: FunctionComponent<SearchFormProps> = ({
 	initialQuery = '',
 }) => {
 	const [query, setQuery] = useState(initialQuery);
-	const { setUrl } = useAngularRouter();
+	const { setUrl } = useBrowserRouter();
 
 	const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();

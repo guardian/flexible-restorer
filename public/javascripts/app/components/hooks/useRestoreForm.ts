@@ -33,7 +33,7 @@ type UseRestoreForm = {
 };
 
 /**
- * Restore-form state and behaviour, ported from the AngularJS `RestoreFormCtrl`
+ * Restore-form state and behaviour, ported from the legacy restore form
  * and `RestoreService`.
  *
  * The active (source) snapshot is resolved from the shared version list plus the

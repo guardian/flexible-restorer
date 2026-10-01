@@ -6,7 +6,7 @@ import { palette } from '../styles/palette';
 
 const headerFixed = css({ flexShrink: 0 });
 
-// --- article header (from text.scss) ---
+// --- article header ---
 const articleHeadline = css({
 	fontFamily: '"Guardian Egyptian Text"',
 	fontWeight: 'bold',
@@ -27,7 +27,7 @@ const articleHash = css({
 	},
 });
 
-// --- list header row (from snapshot-list.scss) ---
+// --- list header row ---
 const listHeader = css({
 	display: 'flex',
 	flexDirection: 'row',
@@ -62,7 +62,7 @@ export type ArticleHeaderProps = {
 /**
  * Headline + content-id link + column headings shown above the snapshot list.
  * Migrated from the `scrollable__header-fixed` block of restore-list.html; the
- * article fields previously came from `SnapshotListCtrl` scope but are now
+ * article fields previously came from the legacy list controller scope but are now
  * derived from the active snapshot.
  */
 export const ArticleHeader: FunctionComponent<ArticleHeaderProps> = ({

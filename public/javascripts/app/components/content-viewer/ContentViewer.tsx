@@ -8,8 +8,7 @@ import { ContentPanels } from './ContentPanels';
 
 const FONT_EGYPTIAN = '"Guardian Egyptian Text"';
 
-// Ported from snapshot-content.scss `.snapshot-content` (opacity fade on load)
-// and text.scss `.snapshot-content` (Egyptian body typography).
+// Content root with an opacity fade on load and Egyptian body typography.
 const root = (isSettingContent: boolean) =>
 	css({
 		display: 'flex',
@@ -42,7 +41,7 @@ const body = css({
 });
 
 export type ContentViewerProps = {
-	/** Content id from the Angular route, bound via react2angular (see ../index.js). */
+	/** Content id parsed from the application route. */
 	contentId: string;
 };
 
@@ -51,9 +50,8 @@ export type ContentViewerProps = {
  * restore/copy/export/toggle actions.
  *
  * Migrated from the `snapshot-content` block of restore-list.html and the
- * `SnapshotContentCtrl` controller. The still-Angular `SnapshotListCtrl` remains
- * authoritative for the active selection; this component follows the
- * `snapshot-list:*` mediator events (see useSnapshotContent).
+ * `SnapshotContentCtrl` controller. The active selection is shared through
+ * the Redux viewer slice.
  */
 export const ContentViewer: FunctionComponent<ContentViewerProps> = ({
 	contentId,

@@ -1,4 +1,4 @@
-// Palette ported from public/sass (palette.scss, snapshot-list.scss). These are
+// Palette values preserved from the legacy snapshot list. These are
 // faithful legacy values with no exact @guardian/stand token equivalent, so they
 // are kept local rather than mapped to Stand design tokens.
 export const palette = {

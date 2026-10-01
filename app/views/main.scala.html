@@ -9,10 +9,8 @@
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("dist/main.css")" />
     <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/fav-versions-32.png")" />
 </head>
-<body ng-app="restorer">
-    <main class="main" ng-view>
-    <!-- Add Loading GFX -->
-    </main>
+<body>
+    <main id="app" class="main"></main>
 
     <script type="application/json" id="config">
         @Html(config)

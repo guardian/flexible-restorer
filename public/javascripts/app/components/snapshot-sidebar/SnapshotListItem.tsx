@@ -14,7 +14,7 @@ const item = (isActive: boolean, isLaunch = false) =>
 		display: 'flex',
 		flexDirection: 'row',
 		background: isActive ? palette.boxTertiary : palette.boxPrimary,
-		// Launch snapshots gain a 2px border to stand out (text.scss
+		// Launch snapshots gain a 2px border to stand out.
 		// .highlight-row-for-launches).
 		border: isLaunch ? `2px solid ${palette.grey500}` : undefined,
 		transition: 'background-color .2s ease-in-out',
@@ -79,7 +79,7 @@ const itemContent = css({
 	h6: { margin: 0 },
 });
 
-// Individual h6 rows inside the item content. Fonts ported from text.scss; the
+// Individual date and reason rows inside the item content.
 // zero margin is inherited from itemContent's `h6` rule and kept explicit here.
 const itemActualDate = css({
 	fontFamily: '"Guardian Agate Sans"',
@@ -102,7 +102,7 @@ const itemReason = css({
 	margin: 0,
 });
 
-// Launch reasons are rendered bold + larger (text.scss
+// Launch reasons are rendered bold and larger.
 // .highlight-reason-for-launches).
 const highlightLaunch = css({ fontWeight: 'bold', fontSize: '15px' });
 
@@ -120,7 +120,7 @@ const itemStatus = (isLaunch = false) =>
 		zIndex: 2,
 		cursor: 'pointer',
 		// Launch snapshots show a faded rocket in the top-right of the row,
-		// positioned against the relatively-positioned item (text.scss
+		// positioned against the relatively-positioned item.
 		// .highlight-row-for-launches .snapshot-list__item__status::after).
 		'&::after': isLaunch
 			? {

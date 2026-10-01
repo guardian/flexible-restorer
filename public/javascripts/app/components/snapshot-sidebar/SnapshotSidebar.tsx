@@ -10,7 +10,7 @@ import { palette } from '../styles/palette';
 import { ArticleHeader } from './ArticleHeader';
 import { SnapshotList } from './SnapshotList';
 
-// --- sidebar shell (from sidebar.scss + box.scss "secondary" + scrollable.scss) ---
+// --- sidebar shell ---
 const sidebar = (isActive: boolean) =>
 	css({
 		boxSizing: 'border-box',
@@ -38,21 +38,19 @@ const scrollableContainer = css({
 const scrollableBody = css({ flexGrow: 1, overflowY: 'auto' });
 
 export type SnapshotSidebarProps = {
-	/** Content id from the Angular route, bound via react2angular (see ../index.js). */
+	/** Content id parsed from the application route. */
 	contentId: string;
 };
 
-// Delay before the sidebar slides in, matching the legacy `$timeout(..., 500)`
-// in SnapshotListCtrl.
+// Delay before the sidebar slides in to preserve the legacy interaction.
 const SLIDE_IN_DELAY_MS = 500;
 
 /**
  * Snapshot sidebar: article header + version list + click/keyboard interaction.
  *
- * Migrated from the `gu-column.sidebar` block of restore-list.html and the
- * `SnapshotListCtrl` / `SnapshotListInteractionCtrl` controllers. The active
- * selection now lives in the Redux viewer slice, shared with the content viewer
- * and restore modal (no more Angular round-trip).
+ * Migrated from the legacy sidebar and list controllers. The active selection
+ * lives in the Redux viewer slice, shared with the content viewer and restore
+ * modal.
  */
 export const SnapshotSidebar: FunctionComponent<SnapshotSidebarProps> = ({
 	contentId,
@@ -85,8 +83,8 @@ export const SnapshotSidebar: FunctionComponent<SnapshotSidebarProps> = ({
 		dispatch(setActiveIndex(index));
 	};
 
-	// The loading state is covered by the surrounding Angular `gu-loading-bars`,
-	// and fetch failures are surfaced by the React error modal, so render
+	// The loading state is covered by the surrounding React shell, and fetch
+	// failures are surfaced by the React error modal, so render
 	// nothing until the list is available.
 	if (error || !snapshots) {
 		return null;

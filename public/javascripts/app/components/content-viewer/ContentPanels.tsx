@@ -6,7 +6,7 @@ import { ArticleBody } from './article/ArticleBody';
 
 const FONT_AGATE = '"Guardian Agate Sans"';
 
-// Ported from snapshot-content.scss `.snapshot-content__container`: a 200%-wide
+// Two-panel content container: a 200%-wide
 // track holding the HTML and JSON columns side by side, slid left to reveal the
 // JSON column when active.
 const container = (showJson: boolean) =>

@@ -1,5 +1,5 @@
 // Restore request layer for the React restore modal. Mirrors the legacy
-// AngularJS `RestoreService.restore`, which POSTs to the restore endpoint built
+// POST to the restore endpoint built
 // from the active (source) snapshot and the chosen destination.
 
 const restoreUrl = (

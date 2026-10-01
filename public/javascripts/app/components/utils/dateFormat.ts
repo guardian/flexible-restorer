@@ -13,7 +13,7 @@ type FormattedCreatedDate = {
  * day-of-month with a superscript ordinal, then month) so the component can
  * render them as JSX rather than an HTML string.
  *
- * Ported from the AngularJS `DateFormatService.formatHtml`.
+ * Ported from the legacy date formatting service.
  */
 const formatCreatedDate = (createdDate: moment.Moment): FormattedCreatedDate => ({
 	prefix: createdDate.format('HH:mm:ss [on] D'),
@@ -23,7 +23,7 @@ const formatCreatedDate = (createdDate: moment.Moment): FormattedCreatedDate => 
 
 /**
  * Humanised distance between `createdDate` and `from` (defaults to now), without
- * the "ago"/"in" suffix — mirrors the AngularJS `SnapshotIdModel.getRelativeDate`.
+ * the "ago"/"in" suffix from the legacy snapshot model.
  */
 const relativeDate = (
 	createdDate: moment.Moment,

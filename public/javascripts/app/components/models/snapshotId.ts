@@ -57,7 +57,7 @@ type CommentsState = {
 
 /**
  * View model consumed by the React sidebar. All fields are pre-derived (the
- * legacy Angular model computed these lazily via getters) so components stay
+ * legacy model computed these lazily via getters) so components stay
  * presentational.
  */
 type SnapshotIdViewModel = {
@@ -120,7 +120,7 @@ const deriveUserEmail = (summary: RawSummary | undefined): string => {
 
 /**
  * Map a raw version-list entry onto the sidebar view model, reproducing the
- * derivations from the AngularJS `SnapshotIdModel`.
+ * derivations from the legacy snapshot model.
  */
 const toViewModel = (raw: RawSnapshotId): SnapshotIdViewModel => {
 	const summary = raw.info?.summary;
