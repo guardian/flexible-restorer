@@ -30,6 +30,9 @@ jobs:
                   npm ci
                   npm run build
 
+            - name: JS Lint
+              run: npm run lint
+
             - name: JS Unit Tests
               run: npm run test:unit
 
