@@ -117,7 +117,7 @@ Then(
 // --- The app exposes the current signed-in user ------------------------------
 
 // The frontend's `UserService` fetches `/api/1/user` and `/api/1/user/permissions`
-// (see `public/javascripts/app/services/UserService.js`). Both are served by
+// (see `public/src/app/services/UserService.js`). Both are served by
 // `controllers.Login` behind the auth gate, so the requests reuse the signed-in
 // session set up by `I am signed in through pan-domain auth` (the cookie is added
 // to the browser context, which `page.request` shares).

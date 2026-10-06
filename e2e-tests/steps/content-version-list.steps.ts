@@ -22,10 +22,10 @@ import { Given, When, Then, expect } from "../fixtures";
  * `content-snapshot-content.steps.ts` and must NOT be redefined here.
  *
  * Evidence:
- *   - public/javascripts/app/templates/restore-list.html
- *   - public/javascripts/app/controllers/SnapshotListCtrl.js
- *   - public/javascripts/app/models/SnapshotIdModel.js
- *   - public/javascripts/app/services/SnapshotCollectionService.js (GET /api/1/versionList/:id)
+ *   - public/src/app/templates/restore-list.html
+ *   - public/src/app/controllers/SnapshotListCtrl.js
+ *   - public/src/app/models/SnapshotIdModel.js
+ *   - public/src/app/services/SnapshotCollectionService.js (GET /api/1/versionList/:id)
  */
 
 const timeout = 5 * 1000; // 5 seconds for steady-state assertions
