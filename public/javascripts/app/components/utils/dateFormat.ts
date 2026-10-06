@@ -15,7 +15,9 @@ type FormattedCreatedDate = {
  *
  * Ported from the legacy date formatting service.
  */
-const formatCreatedDate = (createdDate: moment.Moment): FormattedCreatedDate => ({
+const formatCreatedDate = (
+	createdDate: moment.Moment,
+): FormattedCreatedDate => ({
 	prefix: createdDate.format('HH:mm:ss [on] D'),
 	ordinal: createdDate.format('Do').slice(-2),
 	month: createdDate.format('MMMM'),

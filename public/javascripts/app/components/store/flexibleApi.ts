@@ -29,19 +29,21 @@ const flexibleApi = createApi({
 	reducerPath: 'flexibleApi',
 	baseQuery: fakeBaseQuery<ApiError>(),
 	endpoints: (builder) => ({
-		getRestoreDestinations: builder.query<RestoreDestinationView[], string>({
-			// Drop the cache as soon as the modal closes (no subscribers) so each
-			// reopen fetches fresh destinations, matching the legacy per-open fetch.
-			keepUnusedDataFor: 0,
-			queryFn: async (contentId) => {
-				try {
-					const raw = await fetchRestoreDestinations(contentId);
-					return { data: parseRestoreDestinations(raw) };
-				} catch (error) {
-					return { error: toApiError(error) };
-				}
+		getRestoreDestinations: builder.query<RestoreDestinationView[], string>(
+			{
+				// Drop the cache as soon as the modal closes (no subscribers) so each
+				// reopen fetches fresh destinations, matching the legacy per-open fetch.
+				keepUnusedDataFor: 0,
+				queryFn: async (contentId) => {
+					try {
+						const raw = await fetchRestoreDestinations(contentId);
+						return { data: parseRestoreDestinations(raw) };
+					} catch (error) {
+						return { error: toApiError(error) };
+					}
+				},
 			},
-		}),
+		),
 		restoreContent: builder.mutation<void, RestoreParams>({
 			queryFn: async (params) => {
 				try {
@@ -55,7 +57,8 @@ const flexibleApi = createApi({
 	}),
 });
 
-const { useGetRestoreDestinationsQuery, useRestoreContentMutation } = flexibleApi;
+const { useGetRestoreDestinationsQuery, useRestoreContentMutation } =
+	flexibleApi;
 
 export {
 	flexibleApi,

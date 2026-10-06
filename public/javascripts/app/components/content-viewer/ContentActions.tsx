@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import type { FunctionComponent } from 'react';
 import { css } from '@emotion/react';
 import { Button } from '@guardian/stand/Button';
 import { LinkButton } from '@guardian/stand/LinkButton';
+import type { FunctionComponent } from 'react';
 import { icons } from '../styles/icons';
 import { palette } from '../styles/palette';
 
@@ -91,4 +91,3 @@ export const ContentActions: FunctionComponent<ContentActionsProps> = ({
 		</Button>
 	</div>
 );
-

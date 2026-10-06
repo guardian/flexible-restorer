@@ -1,3 +1,3 @@
-import icons from  './lib/icons/index';
+import icons from './lib/icons/index';
 
-export default icons
+export default icons;

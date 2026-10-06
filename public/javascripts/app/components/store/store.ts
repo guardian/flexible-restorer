@@ -1,8 +1,8 @@
 import { configureStore, isPlain } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import moment from 'moment';
-import { restorerApi } from './restorerApi';
 import { flexibleApi } from './flexibleApi';
+import { restorerApi } from './restorerApi';
 import { viewerSlice } from './viewerSlice';
 
 /**

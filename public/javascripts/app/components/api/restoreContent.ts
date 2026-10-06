@@ -24,7 +24,12 @@ const restoreContent = async (params: {
 		params;
 
 	const response = await fetch(
-		restoreUrl(sourceSystemId, contentId, sourceTimestamp, destinationSystemId),
+		restoreUrl(
+			sourceSystemId,
+			contentId,
+			sourceTimestamp,
+			destinationSystemId,
+		),
 		{ method: 'POST', credentials: 'same-origin' },
 	);
 

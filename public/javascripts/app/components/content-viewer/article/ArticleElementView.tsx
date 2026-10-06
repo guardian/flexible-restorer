@@ -1,7 +1,9 @@
 import type { FunctionComponent } from 'react';
 import type { ArticleElement } from '../../models/snapshotContent';
-import { RawHtml } from './RawHtml';
+// eslint-disable-next-line import/no-cycle
 import { ListElementView } from './ListElementView';
+import { RawHtml } from './RawHtml';
+// eslint-disable-next-line import/no-cycle
 import { TimelineElementView } from './TimelineElementView';
 
 export type ArticleElementViewProps = {
@@ -21,4 +23,3 @@ export const ArticleElementView: FunctionComponent<ArticleElementViewProps> = ({
 			return <TimelineElementView element={element} />;
 	}
 };
-

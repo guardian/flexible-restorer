@@ -1,15 +1,15 @@
-import { useEffect, useMemo, useState } from 'react';
 import { skipToken } from '@reduxjs/toolkit/query/react';
-import type { FormattedCreatedDate } from '../utils/dateFormat';
-import { formatCreatedDate } from '../utils/dateFormat';
-import { useGetSnapshotListQuery, useGetUserQuery } from '../store/restorerApi';
+import { useEffect, useMemo, useState } from 'react';
+import type { RestoreDestinationView } from '../api/fetchRestoreDestinations';
 import {
 	useGetRestoreDestinationsQuery,
 	useRestoreContentMutation,
 } from '../store/flexibleApi';
 import { useActiveIndex, useAppDispatch } from '../store/hooks';
+import { useGetSnapshotListQuery, useGetUserQuery } from '../store/restorerApi';
 import { closeModal, setError } from '../store/viewerSlice';
-import type { RestoreDestinationView } from '../api/fetchRestoreDestinations';
+import type { FormattedCreatedDate } from '../utils/dateFormat';
+import { formatCreatedDate } from '../utils/dateFormat';
 
 /** Source snapshot summary shown in the modal's "From:" column. */
 type RestoreSource = {
@@ -48,9 +48,9 @@ const useRestoreForm = (contentId: string, isOpen: boolean): UseRestoreForm => {
 	const activeIndex = useActiveIndex();
 	const activeSnapshot = snapshots?.[activeIndex] ?? snapshots?.[0];
 
-	const [selectedSystemId, setSelectedSystemId] = useState<string | undefined>(
-		undefined,
-	);
+	const [selectedSystemId, setSelectedSystemId] = useState<
+		string | undefined
+	>(undefined);
 	const [selfInContent, setSelfInContent] = useState(false);
 	const [elseInContent, setElseInContent] = useState(false);
 

@@ -27,7 +27,9 @@ const getJson = async <T>(url: string): Promise<T> => {
 
 const fetchUserWithPermissions = async (): Promise<User> => {
 	const user = await getJson<User>('/api/1/user');
-	const permissions = await getJson<UserPermissions>('/api/1/user/permissions');
+	const permissions = await getJson<UserPermissions>(
+		'/api/1/user/permissions',
+	);
 	return { ...user, permissions };
 };
 
@@ -36,12 +38,10 @@ const fetchUserWithPermissions = async (): Promise<User> => {
  * request across callers. The rejection is not cached so a later call retries.
  */
 const fetchUser = (): Promise<User> => {
-	if (!userRequest) {
-		userRequest = fetchUserWithPermissions().catch((error: unknown) => {
-			userRequest = undefined;
-			throw error;
-		});
-	}
+	userRequest ??= fetchUserWithPermissions().catch((error: unknown) => {
+		userRequest = undefined;
+		throw error;
+	});
 	return userRequest;
 };
 

@@ -1,5 +1,6 @@
 import type { FunctionComponent } from 'react';
 import type { TimelineElement } from '../../models/snapshotContent';
+// eslint-disable-next-line import/no-cycle
 import { ArticleElementView } from './ArticleElementView';
 
 export type TimelineElementViewProps = {
@@ -13,9 +14,9 @@ export type TimelineElementViewProps = {
  * shows its (plain-text) title followed by its events, where an event renders
  * its title as an `<h2>`, its date as a `<p>`, then the nested body elements.
  */
-export const TimelineElementView: FunctionComponent<TimelineElementViewProps> = ({
-	element,
-}) => {
+export const TimelineElementView: FunctionComponent<
+	TimelineElementViewProps
+> = ({ element }) => {
 	return (
 		<>
 			{element.sections.map((section, sectionIndex) => (
@@ -38,4 +39,3 @@ export const TimelineElementView: FunctionComponent<TimelineElementViewProps> = 
 		</>
 	);
 };
-
