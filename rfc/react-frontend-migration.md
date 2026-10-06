@@ -100,9 +100,8 @@ type AngularRouter = {
  * React hook exposing a location getter/setter backed by the statically
  * provisioned AngularJS `$location`/`$rootScope`.
  *
- * `setUrl` mirrors the legacy safe-apply pattern (see utils/safe-apply.js):
- * navigation triggered outside a digest is wrapped in `$rootScope.$apply`, but
- * writes already inside a digest run directly to avoid an "$apply already in
+ * `setUrl` wraps navigation triggered outside a digest in `$rootScope.$apply`,
+ * but writes already inside a digest run directly to avoid an "$apply already in
  * progress" error.
  */
 const useAngularRouter = (): AngularRouter => {
