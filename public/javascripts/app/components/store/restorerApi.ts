@@ -1,13 +1,13 @@
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
-import { fetchSnapshotList } from '../api/fetchSnapshotList';
-import { parseSnapshotList } from '../models/snapshotId';
-import type { SnapshotIdViewModel } from '../models/snapshotId';
 import { fetchSnapshot } from '../api/fetchSnapshot';
 import type { SnapshotRef } from '../api/fetchSnapshot';
-import { parseSnapshotContent } from '../models/snapshotContent';
-import type { SnapshotContent } from '../models/snapshotContent';
+import { fetchSnapshotList } from '../api/fetchSnapshotList';
 import { fetchUser } from '../api/fetchUser';
 import type { User } from '../api/fetchUser';
+import { parseSnapshotContent } from '../models/snapshotContent';
+import type { SnapshotContent } from '../models/snapshotContent';
+import type { SnapshotIdViewModel } from '../models/snapshotId';
+import { parseSnapshotList } from '../models/snapshotId';
 import { toApiError } from './apiError';
 import type { ApiError } from './apiError';
 
@@ -58,11 +58,8 @@ const restorerApi = createApi({
 	}),
 });
 
-const {
-	useGetSnapshotListQuery,
-	useGetSnapshotQuery,
-	useGetUserQuery,
-} = restorerApi;
+const { useGetSnapshotListQuery, useGetSnapshotQuery, useGetUserQuery } =
+	restorerApi;
 
 export {
 	restorerApi,

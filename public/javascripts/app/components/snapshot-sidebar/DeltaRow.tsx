@@ -1,9 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import type { FunctionComponent } from 'react';
 import { css } from '@emotion/react';
+import { baseTypography } from '@guardian/stand';
+import type { FunctionComponent } from 'react';
 import { palette } from '../styles/palette';
-
-import { baseTypography } from '@guardian/stand'; 
 
 const textStyle = {
 	fontFamily: baseTypography.family.openSans,
@@ -49,4 +48,3 @@ export const DeltaRow: FunctionComponent<DeltaRowProps> = ({ label }) => (
 		<span css={deltaIcon} aria-hidden="true" />
 	</li>
 );
-

@@ -11,7 +11,11 @@ const makeStore = () =>
 const rawSnapshot = (timestamp: string, systemId: string) => ({
 	contentId: 'abc',
 	timestamp,
-	system: { id: systemId, isSecondary: false, composerPrefix: 'https://composer' },
+	system: {
+		id: systemId,
+		isSecondary: false,
+		composerPrefix: 'https://composer',
+	},
 	info: { summary: { contentChangeDetails: { revision: 7 } } },
 });
 
@@ -27,7 +31,7 @@ describe('restorerApi getSnapshotList endpoint', () => {
 		];
 		const fetchMock = jest.fn().mockResolvedValue({
 			ok: true,
-			json: async () => payload,
+			json: () => Promise.resolve(payload),
 		});
 		globalThis.fetch = fetchMock as unknown as typeof fetch;
 
@@ -50,7 +54,7 @@ describe('restorerApi getSnapshotList endpoint', () => {
 		globalThis.fetch = jest.fn().mockResolvedValue({
 			ok: false,
 			status: 500,
-			json: async () => ({}),
+			json: () => Promise.resolve({}),
 		}) as unknown as typeof fetch;
 
 		const store = makeStore();
@@ -59,6 +63,8 @@ describe('restorerApi getSnapshotList endpoint', () => {
 		);
 
 		expect(result.data).toBeUndefined();
-		expect(result.error).toEqual({ message: 'Failed to load snapshots (500)' });
+		expect(result.error).toEqual({
+			message: 'Failed to load snapshots (500)',
+		});
 	});
 });

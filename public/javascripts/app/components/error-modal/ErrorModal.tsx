@@ -1,6 +1,6 @@
-import type { FunctionComponent } from 'react';
 import { css } from '@emotion/react';
 import { Dialog, Modal } from '@guardian/stand/Modal';
+import type { FunctionComponent } from 'react';
 import { useError } from '../store/hooks';
 
 const modalTheme = {

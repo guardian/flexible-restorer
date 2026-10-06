@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import type { FunctionComponent } from 'react';
 import { css } from '@emotion/react';
+import type { FunctionComponent } from 'react';
 import { useSnapshotContent } from '../hooks/useSnapshotContent';
 import { ContentActions } from './ContentActions';
 import { ContentFurniture } from './ContentFurniture';
@@ -70,35 +70,36 @@ export const ContentViewer: FunctionComponent<ContentViewerProps> = ({
 	return (
 		<div css={root(isSettingContent)}>
 			<div css={viewport} data-testid="snapshot-content-viewport">
-			{/* Hold the panel blank until content arrives, so the empty
+				{/* Hold the panel blank until content arrives, so the empty
 			   furniture/labels never render mid-fetch. */}
-			{content && (
-				<>
-				<ContentActions
-					contentId={contentId}
-					canRestore={canRestore}
-					copyLabel={copyLabel}
-					toggleLabel={isShowingJSON ? 'Show TEXT' : 'Show JSON'}
-					onRestore={restore}
-					onCopy={copyJson}
-					onToggle={toggleJson}
-				/>
-				<div css={body}>
-					<ContentFurniture
-						headline={content.headline}
-						standfirst={content.standfirst}
-						trailText={content.trailText}
-					/>
-					<ContentPanels
-						elements={content.elements}
-						json={content.json}
-						isShowingJSON={isShowingJSON}
-					/>
-				</div>
-				</>
-			)}
+				{content && (
+					<>
+						<ContentActions
+							contentId={contentId}
+							canRestore={canRestore}
+							copyLabel={copyLabel}
+							toggleLabel={
+								isShowingJSON ? 'Show TEXT' : 'Show JSON'
+							}
+							onRestore={restore}
+							onCopy={copyJson}
+							onToggle={toggleJson}
+						/>
+						<div css={body}>
+							<ContentFurniture
+								headline={content.headline}
+								standfirst={content.standfirst}
+								trailText={content.trailText}
+							/>
+							<ContentPanels
+								elements={content.elements}
+								json={content.json}
+								isShowingJSON={isShowingJSON}
+							/>
+						</div>
+					</>
+				)}
 			</div>
 		</div>
 	);
 };
-

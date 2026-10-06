@@ -1,5 +1,5 @@
-import type { FunctionComponent, ReactNode } from 'react';
 import parse from 'html-react-parser';
+import type { FunctionComponent, ReactNode } from 'react';
 
 export type RawHtmlProps = {
 	html: string;
@@ -16,4 +16,3 @@ export type RawHtmlProps = {
 export const RawHtml: FunctionComponent<RawHtmlProps> = ({ html }) => {
 	return <>{parse(html) as ReactNode}</>;
 };
-

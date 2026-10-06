@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import type { FunctionComponent } from 'react';
 import { css } from '@emotion/react';
-import { formatCreatedDate, relativeDate } from '../utils/dateFormat';
+import type { FunctionComponent } from 'react';
 import type { SnapshotIdViewModel } from '../models/snapshotId';
-import { palette } from '../styles/palette';
 import { icons } from '../styles/icons';
+import { palette } from '../styles/palette';
+import { formatCreatedDate, relativeDate } from '../utils/dateFormat';
 
 const item = (isActive: boolean, isLaunch = false) =>
 	css({
@@ -220,9 +220,7 @@ export const SnapshotListItem: FunctionComponent<SnapshotListItemProps> = ({
 				<h6 css={itemRelativeDate}>
 					{relativeDate(snapshot.createdDate)} ago
 				</h6>
-				<h6 css={itemReason}>
-					Last modified by: {snapshot.userEmail}
-				</h6>
+				<h6 css={itemReason}>Last modified by: {snapshot.userEmail}</h6>
 				<h6
 					css={[
 						itemReason,
@@ -269,4 +267,3 @@ export const SnapshotListItem: FunctionComponent<SnapshotListItemProps> = ({
 		</li>
 	);
 };
-

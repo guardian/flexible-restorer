@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import type { FunctionComponent } from 'react';
 import { css } from '@emotion/react';
+import type { FunctionComponent } from 'react';
 import type { ArticleElement } from '../models/snapshotContent';
 import { ArticleBody } from './article/ArticleBody';
 
@@ -64,4 +64,3 @@ export const ContentPanels: FunctionComponent<ContentPanelsProps> = ({
 		</div>
 	</div>
 );
-

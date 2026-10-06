@@ -1,14 +1,14 @@
 /** @jsxImportSource @emotion/react */
-import type { FormEvent, FunctionComponent } from 'react';
-import { useEffect } from 'react';
 import { css, keyframes } from '@emotion/react';
 import { Button } from '@guardian/stand/Button';
-import { palette } from '../styles/palette';
-import type { FormattedCreatedDate } from '../utils/dateFormat';
-import { useAppDispatch, useIsModalOpen } from '../store/hooks';
-import { closeModal as closeModalAction } from '../store/viewerSlice';
+import type { FormEvent, FunctionComponent } from 'react';
+import { useEffect } from 'react';
 import { useRestoreForm } from '../hooks/useRestoreForm';
 import type { RestoreDestinationView } from '../hooks/useRestoreForm';
+import { useAppDispatch, useIsModalOpen } from '../store/hooks';
+import { closeModal as closeModalAction } from '../store/viewerSlice';
+import { palette } from '../styles/palette';
+import type { FormattedCreatedDate } from '../utils/dateFormat';
 
 // Colours and fonts preserve the legacy modal presentation. Only `grey400`
 // maps to an existing local palette
@@ -279,7 +279,9 @@ export type RestoreModalProps = {
  * Open/close is driven by the Redux viewer slice (`isModalOpen`), shared with the
  * content viewer, sidebar keyboard handler and error modal.
  */
-export const RestoreModal: FunctionComponent<RestoreModalProps> = ({ contentId }) => {
+export const RestoreModal: FunctionComponent<RestoreModalProps> = ({
+	contentId,
+}) => {
 	const dispatch = useAppDispatch();
 	const isActive = useIsModalOpen();
 	const form = useRestoreForm(contentId, isActive);
@@ -349,14 +351,19 @@ export const RestoreModal: FunctionComponent<RestoreModalProps> = ({ contentId }
 											</div>
 										</div>
 										<div css={rowCss}>
-											<div css={[col('41.6667%'), centre]}>
+											<div
+												css={[col('41.6667%'), centre]}
+											>
 												{sourceSummary && (
 													<div
 														css={source}
 														data-testid="restore-source"
 													>
 														Snapshot of revision{' '}
-														{sourceSummary.revisionId} taken{' '}
+														{
+															sourceSummary.revisionId
+														}{' '}
+														taken{' '}
 														<strong>
 															{sourceSummary.isSecondary
 																? 'from secondary'
@@ -364,12 +371,20 @@ export const RestoreModal: FunctionComponent<RestoreModalProps> = ({ contentId }
 														</strong>{' '}
 														at{' '}
 														<DateText
-															date={sourceSummary.date}
+															date={
+																sourceSummary.date
+															}
 														/>
 													</div>
 												)}
 											</div>
-											<div css={[col('8.3333%'), centre, arrow]}>
+											<div
+												css={[
+													col('8.3333%'),
+													centre,
+													arrow,
+												]}
+											>
 												{'\u2794'}
 											</div>
 											<div css={[col('50%'), centre]}>
@@ -379,7 +394,10 @@ export const RestoreModal: FunctionComponent<RestoreModalProps> = ({ contentId }
 														data-testid="restore-destination-list"
 													>
 														{destinations.map(
-															(destination, index) => {
+															(
+																destination,
+																index,
+															) => {
 																const isChecked =
 																	selectedSystemId ===
 																	destination.systemId;
@@ -456,7 +474,9 @@ export const RestoreModal: FunctionComponent<RestoreModalProps> = ({ contentId }
 
 								<div css={[rowCss, container(true)]}>
 									<div css={[col('100%'), formColumn]}>
-										<h2 css={formHeader}>Make sure that:</h2>
+										<h2 css={formHeader}>
+											Make sure that:
+										</h2>
 										<div css={[rowCss, fieldset(false)]}>
 											<label
 												css={checkboxLabel}
@@ -470,7 +490,8 @@ export const RestoreModal: FunctionComponent<RestoreModalProps> = ({ contentId }
 													checked={selfInContent}
 													onChange={(event) =>
 														setSelfInContent(
-															event.target.checked,
+															event.target
+																.checked,
 														)
 													}
 												/>
@@ -498,7 +519,8 @@ export const RestoreModal: FunctionComponent<RestoreModalProps> = ({ contentId }
 													checked={elseInContent}
 													onChange={(event) =>
 														setElseInContent(
-															event.target.checked,
+															event.target
+																.checked,
 														)
 													}
 												/>
@@ -509,7 +531,8 @@ export const RestoreModal: FunctionComponent<RestoreModalProps> = ({ contentId }
 													)}
 												/>
 												<span css={labelText}>
-													No one else is in the content
+													No one else is in the
+													content
 												</span>
 											</label>
 										</div>
@@ -531,7 +554,9 @@ export const RestoreModal: FunctionComponent<RestoreModalProps> = ({ contentId }
 										type="button"
 										variant="secondary"
 										size="sm"
-										onPress={() => dispatch(closeModalAction())}
+										onPress={() =>
+											dispatch(closeModalAction())
+										}
 									>
 										Cancel
 									</Button>
@@ -548,4 +573,3 @@ export const RestoreModal: FunctionComponent<RestoreModalProps> = ({ contentId }
 		</div>
 	);
 };
-

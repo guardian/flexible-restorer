@@ -80,7 +80,7 @@ type RawSnapshot = {
 			standfirst?: string;
 			trailText?: string;
 		};
-		blocks?: { elements?: RawElement[] }[];
+		blocks?: Array<{ elements?: RawElement[] }>;
 	};
 };
 

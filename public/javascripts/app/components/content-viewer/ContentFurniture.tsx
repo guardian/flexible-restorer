@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import type { FunctionComponent } from 'react';
 import { css } from '@emotion/react';
+import type { FunctionComponent } from 'react';
 import { palette } from '../styles/palette';
 
 const FONT_AGATE = '"Guardian Agate Sans"';
@@ -34,10 +34,10 @@ export type ContentFurnitureProps = {
 	trailText: string | undefined;
 };
 
-const Field: FunctionComponent<{ label: string; value: string | undefined }> = ({
-	label,
-	value,
-}) => (
+const Field: FunctionComponent<{
+	label: string;
+	value: string | undefined;
+}> = ({ label, value }) => (
 	<div css={item}>
 		<h4 css={header}>{label}</h4>
 		<p css={content}>{value}</p>
@@ -56,4 +56,3 @@ export const ContentFurniture: FunctionComponent<ContentFurnitureProps> = ({
 		<Field label="TrailText" value={trailText} />
 	</div>
 );
-

@@ -1,7 +1,8 @@
 import type { FunctionComponent } from 'react';
 import type { ListElement } from '../../models/snapshotContent';
-import { RawHtml } from './RawHtml';
+// eslint-disable-next-line import/no-cycle -- elements render recursively, so the cycle is intentional
 import { ArticleElementView } from './ArticleElementView';
+import { RawHtml } from './RawHtml';
 
 export type ListElementViewProps = {
 	element: ListElement;
@@ -37,4 +38,3 @@ export const ListElementView: FunctionComponent<ListElementViewProps> = ({
 		</>
 	);
 };
-

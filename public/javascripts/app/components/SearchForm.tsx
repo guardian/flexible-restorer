@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import type { FormEvent, FunctionComponent } from 'react';
-import { useState } from 'react';
 import { css } from '@emotion/react';
 import { Button } from '@guardian/stand/Button';
 import { TextInput } from '@guardian/stand/TextInput';
+import { useState } from 'react';
+import type { FormEvent, FunctionComponent } from 'react';
 import { useBrowserRouter } from './hooks/useBrowserRouter';
 
 export type SearchFormProps = {
@@ -59,4 +59,3 @@ export const SearchForm: FunctionComponent<SearchFormProps> = ({
 		</form>
 	);
 };
-

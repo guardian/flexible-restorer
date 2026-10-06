@@ -102,7 +102,7 @@ const derivePublishedState = (summary: RawSummary | undefined): string => {
 		return 'Published';
 	}
 
-	if (!published && publishedDetails) {
+	if (publishedDetails) {
 		return 'Taken down';
 	}
 

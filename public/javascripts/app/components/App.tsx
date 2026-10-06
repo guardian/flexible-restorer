@@ -1,15 +1,15 @@
 /** @jsxImportSource @emotion/react */
-import type { FunctionComponent } from 'react';
-import { useEffect } from 'react';
 import { css, Global } from '@emotion/react';
-import { useGetSnapshotListQuery } from './store/restorerApi';
-import { useBrowserRouter } from './hooks/useBrowserRouter';
+import { useEffect } from 'react';
+import type { FunctionComponent } from 'react';
 import { AppHeader } from './AppHeader';
-import { SearchForm } from './SearchForm';
 import { ContentViewer } from './content-viewer/ContentViewer';
 import { ErrorModal } from './error-modal/ErrorModal';
+import { useBrowserRouter } from './hooks/useBrowserRouter';
 import { RestoreModal } from './restore-modal/RestoreModal';
+import { SearchForm } from './SearchForm';
 import { SnapshotSidebar } from './snapshot-sidebar/SnapshotSidebar';
+import { useGetSnapshotListQuery } from './store/restorerApi';
 import { trackRoute } from './utils/analytics';
 
 type Route =
@@ -39,8 +39,11 @@ const loadingCss = css({
 const globalStyles = css`
 	@font-face {
 		font-family: 'Guardian Agate Sans';
-		src: url('/assets/fonts/GuardianAgateSans1Web-Regular.woff2') format('woff2'),
-			url('/assets/fonts/GuardianAgateSans1Web-Regular.woff') format('woff');
+		src:
+			url('/assets/fonts/GuardianAgateSans1Web-Regular.woff2')
+				format('woff2'),
+			url('/assets/fonts/GuardianAgateSans1Web-Regular.woff')
+				format('woff');
 		font-weight: normal;
 		font-style: normal;
 		font-display: swap;
@@ -48,7 +51,9 @@ const globalStyles = css`
 
 	@font-face {
 		font-family: 'Guardian Agate Sans';
-		src: url('/assets/fonts/GuardianAgateSans1Web-Bold.woff2') format('woff2'),
+		src:
+			url('/assets/fonts/GuardianAgateSans1Web-Bold.woff2')
+				format('woff2'),
 			url('/assets/fonts/GuardianAgateSans1Web-Bold.woff') format('woff');
 		font-weight: bold;
 		font-style: normal;
@@ -57,8 +62,11 @@ const globalStyles = css`
 
 	@font-face {
 		font-family: 'Guardian Egyptian Text';
-		src: url('/assets/fonts/GuardianTextEgyptianWeb-Medium.woff2') format('woff2'),
-			url('/assets/fonts/GuardianTextEgyptianWeb-Medium.woff') format('woff');
+		src:
+			url('/assets/fonts/GuardianTextEgyptianWeb-Medium.woff2')
+				format('woff2'),
+			url('/assets/fonts/GuardianTextEgyptianWeb-Medium.woff')
+				format('woff');
 		font-weight: 500;
 		font-style: normal;
 		font-display: swap;
@@ -66,8 +74,11 @@ const globalStyles = css`
 
 	@font-face {
 		font-family: 'Guardian Egyptian Text';
-		src: url('/assets/fonts/GuardianTextEgyptianWeb-Regular.woff2') format('woff2'),
-			url('/assets/fonts/GuardianTextEgyptianWeb-Regular.woff') format('woff');
+		src:
+			url('/assets/fonts/GuardianTextEgyptianWeb-Regular.woff2')
+				format('woff2'),
+			url('/assets/fonts/GuardianTextEgyptianWeb-Regular.woff')
+				format('woff');
 		font-weight: normal;
 		font-style: normal;
 		font-display: swap;

@@ -1,12 +1,12 @@
 import {
-	viewerSlice,
+	clearError,
+	closeModal,
+	openModal,
 	setActiveIndex,
+	setError,
 	showHtml,
 	showJson,
-	openModal,
-	closeModal,
-	setError,
-	clearError,
+	viewerSlice,
 } from './viewerSlice';
 import type { ViewerState } from './viewerSlice';
 
@@ -61,9 +61,9 @@ describe('viewerSlice', () => {
 		expect(reducer(stateWith({}), setError(new Error('boom'))).error).toBe(
 			'boom',
 		);
-		expect(reducer(stateWith({}), setError({ message: 'nope' })).error).toBe(
-			'nope',
-		);
+		expect(
+			reducer(stateWith({}), setError({ message: 'nope' })).error,
+		).toBe('nope');
 		expect(reducer(stateWith({}), setError('plain')).error).toBe('plain');
 	});
 

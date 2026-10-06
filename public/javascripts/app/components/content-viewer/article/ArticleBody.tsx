@@ -10,7 +10,9 @@ export type ArticleBodyProps = {
  * Render a snapshot's article body from its flattened list of elements,
  * replacing the single `getHTMLContent` HTML string the legacy model produced.
  */
-export const ArticleBody: FunctionComponent<ArticleBodyProps> = ({ elements }) => {
+export const ArticleBody: FunctionComponent<ArticleBodyProps> = ({
+	elements,
+}) => {
 	return (
 		<>
 			{elements.map((element, index) => (
@@ -19,4 +21,3 @@ export const ArticleBody: FunctionComponent<ArticleBodyProps> = ({ elements }) =
 		</>
 	);
 };
-

@@ -1,11 +1,12 @@
 import { useEffect, useRef } from 'react';
 import type { SnapshotIdViewModel } from '../models/snapshotId';
+import { useActiveIndex, useAppDispatch, useIsModalOpen } from '../store/hooks';
 import {
-	useActiveIndex,
-	useAppDispatch,
-	useIsModalOpen,
-} from '../store/hooks';
-import { openModal, setActiveIndex, showHtml, showJson } from '../store/viewerSlice';
+	openModal,
+	setActiveIndex,
+	showHtml,
+	showJson,
+} from '../store/viewerSlice';
 
 type UseSnapshotKeyboardNavParams = {
 	snapshots: SnapshotIdViewModel[] | undefined;

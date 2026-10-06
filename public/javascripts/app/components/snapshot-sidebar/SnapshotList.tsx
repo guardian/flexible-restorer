@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import type { FunctionComponent } from 'react';
 import { Fragment } from 'react';
-import { css } from '@emotion/react';
 import type { SnapshotIdViewModel } from '../models/snapshotId';
 import { deltaFrom } from '../models/snapshotId';
 import { palette } from '../styles/palette';
-import { SnapshotListItem } from './SnapshotListItem';
 import { DeltaRow } from './DeltaRow';
+import { SnapshotListItem } from './SnapshotListItem';
 
 // --- list ---
 const list = css({
@@ -60,4 +60,3 @@ export const SnapshotList: FunctionComponent<SnapshotListProps> = ({
 		))}
 	</ol>
 );
-

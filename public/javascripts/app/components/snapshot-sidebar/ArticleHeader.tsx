@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import type { FunctionComponent } from 'react';
 import { css } from '@emotion/react';
+import type { FunctionComponent } from 'react';
 import type { SnapshotIdViewModel } from '../models/snapshotId';
 import { palette } from '../styles/palette';
 
@@ -72,7 +72,11 @@ export const ArticleHeader: FunctionComponent<ArticleHeaderProps> = ({
 		<h1 css={articleHeadline}>{activeSnapshot.headline}</h1>
 		<h6 css={articleHash}>
 			(
-			<a href={activeSnapshot.composerUrl} target="_blank" rel="noreferrer">
+			<a
+				href={activeSnapshot.composerUrl}
+				target="_blank"
+				rel="noreferrer"
+			>
 				{activeSnapshot.contentId}
 			</a>
 			)
@@ -86,4 +90,3 @@ export const ArticleHeader: FunctionComponent<ArticleHeaderProps> = ({
 		</div>
 	</div>
 );
-

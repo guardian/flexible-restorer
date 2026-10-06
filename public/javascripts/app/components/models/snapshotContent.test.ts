@@ -54,7 +54,13 @@ describe('parseSnapshotContent', () => {
 											byline: 'By someone',
 											bio: '<p>bio</p>',
 											endNote: 'the end',
-											content: [{ fields: { text: '<p>body</p>' } }],
+											content: [
+												{
+													fields: {
+														text: '<p>body</p>',
+													},
+												},
+											],
 										},
 									],
 								},
@@ -98,7 +104,13 @@ describe('parseSnapshotContent', () => {
 												{
 													title: 'Event',
 													date: '2020',
-													body: [{ fields: { html: '<p>event body</p>' } }],
+													body: [
+														{
+															fields: {
+																html: '<p>event body</p>',
+															},
+														},
+													],
 												},
 											],
 										},
@@ -123,7 +135,9 @@ describe('parseSnapshotContent', () => {
 							{
 								title: 'Event',
 								date: '2020',
-								body: [{ kind: 'html', html: '<p>event body</p>' }],
+								body: [
+									{ kind: 'html', html: '<p>event body</p>' },
+								],
 							},
 						],
 					},
@@ -135,7 +149,9 @@ describe('parseSnapshotContent', () => {
 	it('ignores elements with no recognised fields', () => {
 		const raw: RawSnapshot = {
 			preview: {
-				blocks: [{ elements: [{ fields: {} }, { fields: { text: 'ok' } }] }],
+				blocks: [
+					{ elements: [{ fields: {} }, { fields: { text: 'ok' } }] },
+				],
 			},
 		};
 

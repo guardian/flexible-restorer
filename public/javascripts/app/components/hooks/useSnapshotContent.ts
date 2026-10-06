@@ -1,16 +1,12 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
 import { skipToken } from '@reduxjs/toolkit/query/react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import type { SnapshotContent } from '../models/snapshotContent';
+import { useActiveIndex, useAppDispatch, useContentView } from '../store/hooks';
 import {
 	useGetSnapshotListQuery,
 	useGetSnapshotQuery,
 	useGetUserQuery,
 } from '../store/restorerApi';
-import {
-	useActiveIndex,
-	useAppDispatch,
-	useContentView,
-} from '../store/hooks';
 import { openModal, setError, showHtml, showJson } from '../store/viewerSlice';
 
 const COPY_LABEL = 'Copy JSON';
@@ -33,6 +29,8 @@ type UseSnapshotContent = {
 
 // Prefer the async Clipboard API (the modern, standard approach), we have no fallback for non-secure contexts.
 const copyToClipboard = async (text: string): Promise<void> => {
+	// `navigator.clipboard` is absent at runtime in non-secure contexts, despite the types.
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime guard for non-secure contexts
 	if (window.isSecureContext && navigator.clipboard?.writeText) {
 		await navigator.clipboard.writeText(text);
 		return;
@@ -67,7 +65,9 @@ const useSnapshotContent = (contentId: string): UseSnapshotContent => {
 		}
 	}, [userError, dispatch]);
 
-	const { data: content, error } = useGetSnapshotQuery(activeSnapshot ?? skipToken);
+	const { data: content, error } = useGetSnapshotQuery(
+		activeSnapshot ?? skipToken,
+	);
 
 	useEffect(() => {
 		if (error) {
@@ -93,7 +93,10 @@ const useSnapshotContent = (contentId: string): UseSnapshotContent => {
 		}
 		setCopyLabel(COPY_LABEL);
 		setIsSettingContent(true);
-		const timer = window.setTimeout(() => setIsSettingContent(false), FADE_MS);
+		const timer = window.setTimeout(
+			() => setIsSettingContent(false),
+			FADE_MS,
+		);
 
 		return () => window.clearTimeout(timer);
 	}, [content, activeSnapshot]);
@@ -110,7 +113,9 @@ const useSnapshotContent = (contentId: string): UseSnapshotContent => {
 		if (!content) {
 			return;
 		}
-		void copyToClipboard(content.json).then(() => setCopyLabel(COPIED_LABEL));
+		void copyToClipboard(content.json).then(() =>
+			setCopyLabel(COPIED_LABEL),
+		);
 	};
 
 	return {
