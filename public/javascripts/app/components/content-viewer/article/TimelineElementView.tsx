@@ -1,6 +1,6 @@
 import type { FunctionComponent } from 'react';
 import type { TimelineElement } from '../../models/snapshotContent';
-// eslint-disable-next-line import/no-cycle
+// eslint-disable-next-line import/no-cycle -- elements render recursively, so the cycle is intentional
 import { ArticleElementView } from './ArticleElementView';
 
 export type TimelineElementViewProps = {

@@ -30,7 +30,7 @@ type UseSnapshotContent = {
 // Prefer the async Clipboard API (the modern, standard approach), we have no fallback for non-secure contexts.
 const copyToClipboard = async (text: string): Promise<void> => {
 	// `navigator.clipboard` is absent at runtime in non-secure contexts, despite the types.
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime guard for non-secure contexts
 	if (window.isSecureContext && navigator.clipboard?.writeText) {
 		await navigator.clipboard.writeText(text);
 		return;
