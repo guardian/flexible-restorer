@@ -268,6 +268,7 @@ export const RestoreModal: FunctionComponent<RestoreModalProps> = ({
 
 	const {
 		isLoading,
+		isReady,
 		source: sourceSummary,
 		destinations,
 		selectedSystemId,
@@ -280,7 +281,7 @@ export const RestoreModal: FunctionComponent<RestoreModalProps> = ({
 
 	return (
 		<Modal
-			isOpen={isActive}
+			isOpen={isActive && isReady}
 			onOpenChange={(open) => {
 				if (!open) {
 					dispatch(closeModalAction());
