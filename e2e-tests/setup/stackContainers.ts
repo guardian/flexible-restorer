@@ -208,8 +208,8 @@ export async function startLocalStack(
                     mode: "ro",
                 },
                 {
-                    source: path.join(projectRoot, "public/javascripts"),
-                    target: "/app/public/javascripts",
+                    source: path.join(projectRoot, "public/src"),
+                    target: "/app/public/src",
                     mode: "ro",
                 },
                 {

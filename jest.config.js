@@ -5,7 +5,7 @@
 module.exports = {
     testEnvironment: "jsdom",
     setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
-    testMatch: ["<rootDir>/public/javascripts/**/*.test.{js,ts,tsx}"],
+    testMatch: ["<rootDir>/public/src/**/*.test.{js,ts,tsx}"],
     moduleNameMapper: {
         "\\.(svg|png|jpe?g|gif|css|scss)$": "<rootDir>/jest.assetMock.js",
     },

@@ -621,7 +621,7 @@ Then(
         const contentId = "568c4110e4b0c73bdb0e52df";
         // On success the controller redirects via
         // `window.location.href = ${selectedDestination.composerPrefix}/content/:id`
-        // (see public/javascripts/app/controllers/RestoreFormCtrl.js#restore).
+        // (see public/src/app/controllers/RestoreFormCtrl.js#restore).
         // The selected destination is "Composer (CODE)", whose composerPrefix is
         // built from the CODE stage domain (code.dev-gutools.co.uk). The submit
         // step intercepts that navigation and records the requested URL, so we

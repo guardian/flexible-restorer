@@ -28,7 +28,7 @@ Feature: Authenticate users and gate access
     Then the API should return the current user details as JSON
   # Evidence: app/controllers/Login.scala#L36-L38 (user action)
   # Evidence: conf/routes#L22 (/api/1/user route)
-  # Evidence: public/javascripts/app/services/UserService.js#L15-L23 (fetchUserWithPermissions)
+  # Evidence: public/src/app/services/UserService.js#L15-L23 (fetchUserWithPermissions)
 
   Scenario: The app exposes the current user permissions
     Given I am signed in through pan-domain auth
@@ -39,7 +39,7 @@ Feature: Authenticate users and gate access
     And the permission map should not include the restorer_access gate permission
   # Evidence: app/controllers/Login.scala#L40-L46 (usersPermissions action)
   # Evidence: app/permissions/Permissions.scala#L9-L13 (restore permissions & all, gate excluded)
-  # Evidence: public/javascripts/app/services/UserService.js#L15-L23 (permissions fetch)
+  # Evidence: public/src/app/services/UserService.js#L15-L23 (permissions fetch)
 
   Scenario Outline: Protected routes use the same auth gate as the main app
     When I open the protected route <route>
