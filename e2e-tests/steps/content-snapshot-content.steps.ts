@@ -324,11 +324,9 @@ Then(
 
 // --- Enter key opens the restore modal ----------------------------------------
 
-// The restore modal is hidden purely by toggling opacity (it does not use
-// display/visibility). Playwright treats an `opacity: 0` element as visible, so
-// open/closed cannot be detected via visibility matchers. Instead, locate the
-// React modal by its test id and assert on its computed opacity: `1` when open,
-// `0` when closed.
+// The restore modal is the Stand `Modal`/`Dialog`, which mounts its overlay
+// (and test id) only while open and removes it on close. Open/closed is
+// therefore detected with `toBeVisible()` / `toBeHidden()` on the test id.
 const restoreModalLocator = (page: Page) =>
     page.locator('[data-testid="restore-modal"]');
 
@@ -343,7 +341,7 @@ When("I press Enter", async ({ page }) => {
 });
 
 Then("the restore modal should be displayed", async ({ page }) => {
-    await expect(restoreModalLocator(page)).toHaveCSS("opacity", "1", {
+    await expect(restoreModalLocator(page)).toBeVisible({
         timeout: timeout,
     });
 });
@@ -374,7 +372,7 @@ Given("the restore modal is open", async ({ page }) => {
     // Open the modal via the Enter key, then confirm it is displayed so the
     // close behaviour can be exercised from a known-open state.
     await page.keyboard.press("Enter");
-    await expect(restoreModalLocator(page)).toHaveCSS("opacity", "1", {
+    await expect(restoreModalLocator(page)).toBeVisible({
         timeout: timeout,
     });
 });
@@ -385,7 +383,7 @@ When("I choose Cancel", async ({ page }) => {
 });
 
 Then("the restore modal should close", async ({ page }) => {
-    await expect(restoreModalLocator(page)).toHaveCSS("opacity", "0", {
+    await expect(restoreModalLocator(page)).toBeHidden({
         timeout: timeout,
     });
 });
@@ -400,9 +398,9 @@ Then("HTML display mode should be restored", async ({ page }) => {
 
 When("I reopen the restore modal and press Escape", async ({ page }) => {
     // Reopen with Enter, confirm it is open, then close it with Escape, which
-    // the modal controller handles while it is active (keyCode 27).
+    // react-aria handles while the modal is active.
     await page.keyboard.press("Enter");
-    await expect(restoreModalLocator(page)).toHaveCSS("opacity", "1", {
+    await expect(restoreModalLocator(page)).toBeVisible({
         timeout: timeout,
     });
     await page.keyboard.press("Escape");
@@ -444,7 +442,7 @@ Given(
             timeout: timeout,
         });
         await page.keyboard.press("Enter");
-        await expect(restoreModalLocator(page)).toHaveCSS("opacity", "1", {
+        await expect(restoreModalLocator(page)).toBeVisible({
             timeout: timeout,
         });
     },
@@ -699,8 +697,8 @@ Then(
 Then("the restore modal should close if it was open", async ({ page }) => {
     // ModalController subscribes to the 'error' event and always closes the
     // restore modal. It was not opened in this scenario, so it must be closed
-    // (opacity 0) once the error has been published.
-    await expect(restoreModalLocator(page)).toHaveCSS("opacity", "0", {
+    // (removed from the DOM) once the error has been published.
+    await expect(restoreModalLocator(page)).toBeHidden({
         timeout: timeout,
     });
 });
@@ -729,11 +727,11 @@ When(
         // close and reopen it to reload destinations through the now-empty
         // endpoint.
         await page.keyboard.press("Escape");
-        await expect(restoreModalLocator(page)).toHaveCSS("opacity", "0", {
+        await expect(restoreModalLocator(page)).toBeHidden({
             timeout: timeout,
         });
         await page.keyboard.press("Enter");
-        await expect(restoreModalLocator(page)).toHaveCSS("opacity", "1", {
+        await expect(restoreModalLocator(page)).toBeVisible({
             timeout: timeout,
         });
     },

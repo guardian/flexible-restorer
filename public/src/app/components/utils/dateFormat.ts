@@ -15,22 +15,21 @@ type FormattedCreatedDate = {
  *
  * Ported from the legacy date formatting service.
  */
-const formatCreatedDate = (
-	createdDate: moment.Moment,
-): FormattedCreatedDate => ({
-	prefix: createdDate.format('HH:mm:ss [on] D'),
-	ordinal: createdDate.format('Do').slice(-2),
-	month: createdDate.format('MMMM'),
-});
+const formatCreatedDate = (createdDate: number): FormattedCreatedDate => {
+	const value = moment(createdDate);
+	return {
+		prefix: value.format('HH:mm:ss [on] D'),
+		ordinal: value.format('Do').slice(-2),
+		month: value.format('MMMM'),
+	};
+};
 
 /**
  * Humanised distance between `createdDate` and `from` (defaults to now), without
  * the "ago"/"in" suffix from the legacy snapshot model.
  */
-const relativeDate = (
-	createdDate: moment.Moment,
-	from: moment.Moment = moment(),
-): string => createdDate.from(from, true);
+const relativeDate = (createdDate: number, from: number = Date.now()): string =>
+	moment(createdDate).from(moment(from), true);
 
 export { formatCreatedDate, relativeDate };
 export type { FormattedCreatedDate };

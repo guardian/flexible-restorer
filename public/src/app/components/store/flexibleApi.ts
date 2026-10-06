@@ -57,12 +57,12 @@ const flexibleApi = createApi({
 	}),
 });
 
-const { useGetRestoreDestinationsQuery, useRestoreContentMutation } =
+const { useLazyGetRestoreDestinationsQuery, useRestoreContentMutation } =
 	flexibleApi;
 
 export {
 	flexibleApi,
-	useGetRestoreDestinationsQuery,
+	useLazyGetRestoreDestinationsQuery,
 	useRestoreContentMutation,
 };
 export type { RestoreParams };

@@ -65,7 +65,8 @@ type SnapshotIdViewModel = {
 	timestamp: string;
 	systemId: string;
 	isSecondary: boolean;
-	createdDate: moment.Moment;
+	/** Snapshot time as epoch milliseconds (kept serializable for the store). */
+	createdDate: number;
 	revisionId: number | undefined;
 	headline: string | undefined;
 	composerUrl: string;
@@ -125,7 +126,7 @@ const deriveUserEmail = (summary: RawSummary | undefined): string => {
 const toViewModel = (raw: RawSnapshotId): SnapshotIdViewModel => {
 	const summary = raw.info?.summary;
 	const settings = summary?.preview?.settings;
-	const createdDate = moment(raw.timestamp.replace(/_/g, ':'));
+	const createdDate = moment(raw.timestamp.replace(/_/g, ':')).valueOf();
 	const commentable = settings?.commentable;
 	const snapshotReason = raw.info?.metadata?.reason;
 
@@ -157,7 +158,7 @@ const toViewModel = (raw: RawSnapshotId): SnapshotIdViewModel => {
 const parseSnapshotList = (raw: RawSnapshotId[]): SnapshotIdViewModel[] =>
 	raw
 		.map(toViewModel)
-		.sort((a, b) => (a.createdDate.isBefore(b.createdDate) ? 1 : -1));
+		.sort((a, b) => (a.createdDate < b.createdDate ? 1 : -1));
 
 /** Humanised gap between a snapshot and the next (older) one — powers the delta rows. */
 const deltaFrom = (

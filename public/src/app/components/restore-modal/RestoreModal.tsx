@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { css, keyframes } from '@emotion/react';
 import { Button } from '@guardian/stand/Button';
-import type { FormEvent, FunctionComponent } from 'react';
+import { Dialog, Modal } from '@guardian/stand/Modal';
+import type { FunctionComponent } from 'react';
 import { useEffect } from 'react';
 import { useRestoreForm } from '../hooks/useRestoreForm';
 import type { RestoreDestinationView } from '../hooks/useRestoreForm';
@@ -21,51 +22,32 @@ const LOADING_BAR = '#898984'; // $color-500-grey
 const FONT_EGYPTIAN = '"Guardian Egyptian Text"';
 const FONT_AGATE = '"Guardian Agate Sans"';
 
-// --- overlay (.modal + .center + .visually-hidden opacity toggle) ---
-const overlay = (isActive: boolean) =>
-	css({
-		position: 'absolute',
-		top: 0,
-		left: 0,
-		width: '100%',
-		height: '100%',
-		zIndex: 2,
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-		transition: 'opacity .2s ease-in',
-		// `.visually-hidden` toggled the modal by opacity/pointer-events only, so
-		// the e2e suite detects open/closed via computed opacity (1 vs 0).
-		opacity: isActive ? 1 : 0,
-		pointerEvents: isActive ? 'auto' : 'none',
-		'&::before': {
-			content: '" "',
-			display: 'inline-block',
-			position: 'absolute',
-			top: 0,
-			left: 0,
-			width: '100%',
-			height: '100%',
-			background: 'black',
-			opacity: 0.2,
-			zIndex: 1,
+// Mirror the legacy box presentation on the Stand Modal: an 80%-wide, square,
+// white panel over a 20%-black backdrop.
+const modalTheme = {
+	overlay: {
+		backgroundColor: 'rgba(0, 0, 0, 0.2)',
+	},
+	modal: {
+		width: '80%',
+		maxWidth: 'none',
+		backgroundColor: palette.boxPrimary,
+		boxShadow: '15px 15px 30px rgba(0, 0, 0, 0.1)',
+		borderRadius: '0',
+		padding: {
+			top: '40px',
+			bottom: '20px',
+			left: '30px',
+			right: '30px',
 		},
-	});
+	},
+};
 
-// --- content box (gu-box variant="primary" + gu-box.modal__content override) ---
-const box = css({
-	position: 'relative',
-	zIndex: 2,
-	boxSizing: 'border-box',
-	background: palette.boxPrimary,
-	padding: '40px 30px 20px 30px',
-	boxShadow: '15px 15px 30px rgba(0, 0, 0, 0.1)',
-	width: '80%',
-});
+const modalCss = css({ boxSizing: 'border-box' });
+const dialogCss = css({ outline: 'none' });
+const contentBody = css({ minWidth: '400px' });
+const buttonsCss = css({ paddingTop: '20px' });
 
-// --- sliding track (.modal-form + .modal__content__track + gu-row) ---
-const modalForm = css({ minWidth: '400px', overflow: 'hidden' });
-const track = css({ width: '200%' });
 const rowCss = css({ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' });
 
 // Column widths from the 12-col grid mixin (col-#{span}).
@@ -78,21 +60,11 @@ const centre = css({
 	alignItems: 'center',
 });
 
-// .form-panel / .form-loading slide left when loading (.in-active).
-const panel = (isLoading: boolean) =>
-	css({
-		boxSizing: 'border-box',
-		flex: '11 1 50%',
-		maxWidth: '50%',
-		transform: isLoading ? 'translateX(-100%)' : 'translateX(0)',
-		transition: 'transform .2s ease-in-out',
-	});
-
 // --- typography / blocks ---
-const title = css({
+// Applied to the Stand Dialog header to keep the legacy title face.
+const titleCss = css({
 	margin: 0,
 	padding: 0,
-	paddingBottom: '20px',
 	fontFamily: FONT_EGYPTIAN,
 	fontSize: '24px',
 	fontWeight: 'bold',
@@ -202,8 +174,6 @@ const decal = (isChecked: boolean, top?: string) =>
 		'&::before': { content: '"\\2713"' },
 	});
 
-const actions = css({ flexDirection: 'row-reverse', gap: '10px' });
-
 // --- loading bars ---
 const stretchdelay = keyframes({
 	'0%, 40%, 100%': { transform: 'scaleY(0.4)' },
@@ -277,7 +247,9 @@ export type RestoreModalProps = {
  *
  * Migrated from the `ModalCtrl`/`RestoreFormCtrl` block of restore-list.html.
  * Open/close is driven by the Redux viewer slice (`isModalOpen`), shared with the
- * content viewer, sidebar keyboard handler and error modal.
+ * content viewer, sidebar keyboard handler and error modal. The shell is the
+ * Stand `Modal`/`Dialog`, which owns focus trapping, the body scroll lock and
+ * Escape-to-close.
  */
 export const RestoreModal: FunctionComponent<RestoreModalProps> = ({
 	contentId,
@@ -287,40 +259,16 @@ export const RestoreModal: FunctionComponent<RestoreModalProps> = ({
 	const form = useRestoreForm(contentId, isActive);
 	const { reset } = form;
 
-	// Apply the body scroll lock and cleanup as the modal opens/closes.
+	// Reset the form each time the modal closes.
 	useEffect(() => {
-		if (isActive) {
-			window.scroll(0, 0);
-			// Lock the body so the page cannot scroll behind the modal.
-			document.body.style.overflow = 'hidden';
-			return;
+		if (!isActive) {
+			reset();
 		}
-		document.body.style.height = '100%';
-		document.body.style.overflow = 'visible';
-		// Drop focus from the Cancel button: react-aria Buttons handle Enter/Space
-		// themselves, so a lingering focus would swallow the global Enter shortcut
-		// that reopens the modal (the legacy native button let it propagate).
-		(document.activeElement as HTMLElement | null)?.blur();
-		reset();
 	}, [isActive, reset]);
-
-	useEffect(() => {
-		const onKeyDown = (event: KeyboardEvent): void => {
-			if (event.key === 'Escape' && isActive) {
-				dispatch(closeModalAction());
-			}
-		};
-		window.addEventListener('keydown', onKeyDown);
-		return () => window.removeEventListener('keydown', onKeyDown);
-	}, [isActive, dispatch]);
-
-	const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
-		event.preventDefault();
-		form.submit();
-	};
 
 	const {
 		isLoading,
+		isReady,
 		source: sourceSummary,
 		destinations,
 		selectedSystemId,
@@ -332,14 +280,40 @@ export const RestoreModal: FunctionComponent<RestoreModalProps> = ({
 	} = form;
 
 	return (
-		<div css={overlay(isActive)} data-testid="restore-modal">
-			<div css={box}>
-				<form noValidate css={modalForm} onSubmit={handleSubmit}>
-					<div css={track}>
-						<div css={rowCss}>
-							<div css={panel(isLoading)}>
-								<h1 css={title}>Before you restore</h1>
-
+		<Modal
+			isOpen={isActive && isReady}
+			onOpenChange={(open) => {
+				if (!open) {
+					dispatch(closeModalAction());
+				}
+			}}
+			data-testid="restore-modal"
+			theme={modalTheme}
+			cssOverrides={modalCss}
+		>
+			<Dialog aria-label="Before you restore" cssOverrides={dialogCss}>
+				{isLoading ? (
+					<Dialog.Content theme={{ marginBottom: '0' }}>
+						<LoadingBars />
+					</Dialog.Content>
+				) : (
+					// Passed as an array (not a fragment) because Stand's Dialog
+					// filters its children by component type and does not descend
+					// into fragments.
+					[
+						<Dialog.Header
+							key="header"
+							element="h1"
+							theme={{ marginBottom: '20px' }}
+							cssOverrides={titleCss}
+						>
+							Before you restore
+						</Dialog.Header>,
+						<Dialog.Content
+							key="content"
+							theme={{ marginBottom: '0' }}
+						>
+							<div css={contentBody}>
 								<div css={[rowCss, container(true)]}>
 									<div css={col('100%')}>
 										<div css={rowCss}>
@@ -538,38 +512,30 @@ export const RestoreModal: FunctionComponent<RestoreModalProps> = ({
 										</div>
 									</div>
 								</div>
-
-								<div css={[rowCss, container(false), actions]}>
-									<Button
-										type="submit"
-										variant="primary"
-										size="sm"
-										isDisabled={
-											!selfInContent || !elseInContent
-										}
-									>
-										Restore Version
-									</Button>
-									<Button
-										type="button"
-										variant="secondary"
-										size="sm"
-										onPress={() =>
-											dispatch(closeModalAction())
-										}
-									>
-										Cancel
-									</Button>
-								</div>
 							</div>
-
-							<div css={panel(isLoading)}>
-								<LoadingBars />
-							</div>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
+						</Dialog.Content>,
+						<Dialog.Buttons key="buttons" cssOverrides={buttonsCss}>
+							<Button
+								type="button"
+								variant="secondary"
+								size="sm"
+								onPress={() => dispatch(closeModalAction())}
+							>
+								Cancel
+							</Button>
+							<Button
+								type="button"
+								variant="primary"
+								size="sm"
+								isDisabled={!selfInContent || !elseInContent}
+								onPress={() => form.submit()}
+							>
+								Restore Version
+							</Button>
+						</Dialog.Buttons>,
+					]
+				)}
+			</Dialog>
+		</Modal>
 	);
 };
