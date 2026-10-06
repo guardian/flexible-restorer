@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import { css, Global } from '@emotion/react';
+import { Global } from '@emotion/react';
 import { useEffect } from 'react';
 import type { FunctionComponent } from 'react';
 import { ErrorModal } from './error-modal/ErrorModal';
 import { useBrowserRouter } from './hooks/useBrowserRouter';
-import { globalStyles } from './styles/globalStyles';
+import { appCss, globalStyles } from './styles/globalStyles';
 import { trackRoute } from './utils/analytics';
 import { NotFoundView } from './views/NotFoundView';
 import { SplashView } from './views/SplashView';
@@ -14,8 +14,6 @@ type Route =
 	| { name: 'splash' }
 	| { name: 'versions'; contentId: string }
 	| { name: 'not-found' };
-
-const appCss = css({ height: '100vh' });
 
 const getRoute = (pathname: string): Route => {
 	if (pathname === '/') {

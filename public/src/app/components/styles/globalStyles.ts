@@ -1,5 +1,7 @@
 import { css } from '@emotion/react';
 
+export const appCss = css({ height: '100vh' });
+
 export const globalStyles = css`
 	@font-face {
 		font-family: 'Guardian Agate Sans';
