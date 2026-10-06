@@ -2,15 +2,12 @@
 import { css, Global } from '@emotion/react';
 import { useEffect } from 'react';
 import type { FunctionComponent } from 'react';
-import { AppHeader } from './AppHeader';
-import { ContentViewer } from './content-viewer/ContentViewer';
 import { ErrorModal } from './error-modal/ErrorModal';
 import { useBrowserRouter } from './hooks/useBrowserRouter';
-import { RestoreModal } from './restore-modal/RestoreModal';
-import { SearchForm } from './SearchForm';
-import { SnapshotSidebar } from './snapshot-sidebar/SnapshotSidebar';
-import { useGetSnapshotListQuery } from './store/restorerApi';
 import { trackRoute } from './utils/analytics';
+import { NotFoundView } from './views/NotFoundView';
+import { SplashView } from './views/SplashView';
+import { VersionsView } from './views/VersionsView';
 
 type Route =
 	| { name: 'splash' }
@@ -18,23 +15,6 @@ type Route =
 	| { name: 'not-found' };
 
 const appCss = css({ height: '100vh' });
-const splashCss = css({ height: '100%' });
-const versionsCss = css({
-	display: 'grid',
-	gridTemplateColumns: 'minmax(240px, 33.333%) minmax(0, 1fr)',
-	height: 'calc(100% - 40px)',
-	overflow: 'hidden',
-	'@media (max-width: 700px)': {
-		gridTemplateColumns: 'minmax(180px, 40%) minmax(0, 1fr)',
-	},
-});
-const loadingCss = css({
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'center',
-	height: '100%',
-	fontFamily: '"Guardian Egyptian Text"',
-});
 
 const globalStyles = css`
 	@font-face {
@@ -133,29 +113,6 @@ const getRoute = (pathname: string): Route => {
 	return { name: 'not-found' };
 };
 
-const VersionsView: FunctionComponent<{ contentId: string }> = ({
-	contentId,
-}) => {
-	const { isLoading } = useGetSnapshotListQuery(contentId);
-
-	return (
-		<>
-			<AppHeader />
-			{isLoading ? (
-				<div css={loadingCss} data-testid="snapshot-list-loading">
-					Loading versions...
-				</div>
-			) : (
-				<div css={versionsCss} data-testid="versions-view">
-					<SnapshotSidebar contentId={contentId} />
-					<ContentViewer contentId={contentId} />
-					<RestoreModal contentId={contentId} />
-				</div>
-			)}
-		</>
-	);
-};
-
 const App: FunctionComponent = () => {
 	const { getUrl } = useBrowserRouter();
 	const pathname = new URL(getUrl(), window.location.origin).pathname;
@@ -169,18 +126,11 @@ const App: FunctionComponent = () => {
 		<div css={appCss}>
 			<Global styles={globalStyles} />
 			<ErrorModal />
-			{route.name === 'splash' && (
-				<div css={splashCss} data-testid="splash-view">
-					<AppHeader />
-					<SearchForm />
-				</div>
-			)}
+			{route.name === 'splash' && <SplashView />}
 			{route.name === 'versions' && (
 				<VersionsView contentId={route.contentId} />
 			)}
-			{route.name === 'not-found' && (
-				<div data-testid="not-found-view">Page not found</div>
-			)}
+			{route.name === 'not-found' && <NotFoundView />}
 		</div>
 	);
 };
