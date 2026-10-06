@@ -628,12 +628,11 @@ When("I close the modal with Cancel", async ({ page }) => {
 });
 
 Then("the modal should close", async ({ page }) => {
-    // The modal is only ever hidden by toggling its opacity to 0 (it keeps its
-    // DOM node and layout), so a closed modal is detected by its computed
-    // opacity rather than by visibility. Locate it by its test id.
+    // The Stand modal removes its overlay (and test id) from the DOM on close,
+    // so a closed modal is detected by the element no longer being present.
     await expect(
         page.locator('[data-testid="restore-modal"]'),
-    ).toHaveCSS("opacity", "0", { timeout: timeout });
+    ).toBeHidden({ timeout: timeout });
 });
 
 Then("the destination list should be cleared", async ({ page }) => {
