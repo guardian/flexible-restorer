@@ -66,10 +66,23 @@ export default defineConfig(({ command }) => ({
         favicon: path.resolve(__dirname, 'public/images/fav-versions-32.png'),
       },
       output: {
+        // Split node_modules into stable, long-term-cacheable chunks so app-code
+        // changes only invalidate the small entry chunk. Match on the package
+        // path (with trailing slash) so e.g. `redux` doesn't capture unrelated
+        // packages. react/react-dom/react-aria are tightly coupled to
+        // @guardian/stand, so rolldown keeps them together in the guardian chunk.
         manualChunks(id) {
-          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
-            return 'vendor'
-          }
+          if (!id.includes('node_modules/')) return undefined
+          if (
+            /node_modules\/(@reduxjs|react-redux|redux|redux-thunk|immer|reselect)\//.test(
+              id,
+            )
+          )
+            return 'redux'
+          if (id.includes('node_modules/@emotion/')) return 'emotion'
+          if (id.includes('node_modules/@guardian/')) return 'guardian'
+          if (id.includes('node_modules/moment/')) return 'moment'
+          return 'vendor'
         },
       },
     },
