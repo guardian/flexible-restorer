@@ -66,23 +66,23 @@ export default defineConfig(({ command }) => ({
         favicon: path.resolve(__dirname, 'public/images/fav-versions-32.png'),
       },
       output: {
-        // Split node_modules into stable, long-term-cacheable chunks so app-code
-        // changes only invalidate the small entry chunk. Match on the package
-        // path (with trailing slash) so e.g. `redux` doesn't capture unrelated
-        // packages. react/react-dom/react-aria are tightly coupled to
-        // @guardian/stand, so rolldown keeps them together in the guardian chunk.
-        manualChunks(id) {
-          if (!id.includes('node_modules/')) return undefined
-          if (
-            /node_modules\/(@reduxjs|react-redux|redux|redux-thunk|immer|reselect)\//.test(
-              id,
-            )
-          )
-            return 'redux'
-          if (id.includes('node_modules/@emotion/')) return 'emotion'
-          if (id.includes('node_modules/@guardian/')) return 'guardian'
-          if (id.includes('node_modules/moment/')) return 'moment'
-          return 'vendor'
+        // Split vendor code into stable, long-term-cacheable chunks so app
+        // changes only bust the small entry chunk. advancedChunks (rolldown) is
+        // used over manualChunks because the latter silently merges these groups
+        // back together. react-dom and react-aria are large but rarely change, so
+        // they are kept separate from @guardian/stand (an internal design system
+        // bumped often) to avoid re-downloading ~370kB on every stand upgrade.
+        // Order matters: first matching group wins.
+        advancedChunks: {
+          groups: [
+            { name: 'react-dom', test: /node_modules\/react-dom\// },
+            { name: 'react-aria', test: /node_modules\/.*react-(aria|stately)/ },
+            { name: 'redux', test: /node_modules\/(@reduxjs|react-redux|redux|immer|reselect)\// },
+            { name: 'emotion', test: /node_modules\/@emotion\// },
+            { name: 'guardian', test: /node_modules\/@guardian\// },
+            { name: 'moment', test: /node_modules\/moment\// },
+            { name: 'vendor', test: /node_modules\// },
+          ],
         },
       },
     },
