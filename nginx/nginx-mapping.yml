@@ -3,3 +3,6 @@ mappings:
   - prefix: restorer
     port: 9000
     path: /
+    # Proxy the Vite HMR websocket (served under /vite-dev/) to the app port so
+    # hot module reloading works over wss on the dev domain.
+    websocket: /vite-dev/

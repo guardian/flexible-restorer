@@ -32,10 +32,10 @@ export default defineConfig(({ command }) => ({
     allowedHosts: [".dev-gutools.co.uk"],
     hmr: {
       // The HMR websocket is proxied through nginx on the TLS dev domain, so the
-      // browser connects over wss on 443 to the same /vite-dev/ path.
+      // browser connects over wss on 443. The socket path comes from `base`
+      // (/vite-dev/); don't set `path` too or it gets doubled.
       protocol: "wss",
-      clientPort: 443,
-      path: "/vite-dev/"
+      clientPort: 443
     }
   },
   resolve: {
