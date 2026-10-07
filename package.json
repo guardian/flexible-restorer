@@ -4,8 +4,9 @@
         "e2e-tests"
     ],
     "scripts": {
-        "build": "webpack --mode=production",
-        "dev": "webpack --mode=development --watch",
+        "dev": "vite --host",
+        "build": "tsc && vite build",
+        "build:watch": "vite build --watch",
         "dev:local": "tsx ./e2e-tests/images/run-dev-local.ts",
         "dev:local:prod": "APP_MODE=prod tsx ./e2e-tests/images/run-dev-local.ts",
         "test:unit": "jest",
@@ -42,8 +43,10 @@
         "@testing-library/jest-dom": "^6.9.1",
         "@testing-library/react": "^16.3.3",
         "@types/jest": "^30.0.0",
+        "@types/node": "^26.6.4",
         "@types/react": "^18.3.31",
         "@types/react-dom": "^18.3.7",
+        "@vitejs/plugin-react": "^6.1.2",
         "babel-jest": "^30.5.1",
         "babel-loader": "^10.1.1",
         "css-loader": "^7.1.2",
@@ -55,6 +58,7 @@
         "prettier": "^3.8.3",
         "raw-loader": "^4.0.2",
         "typescript": "^5.9.3",
+        "vite": "^8.3.3",
         "webpack": "^5.97.1",
         "webpack-cli": "^5.1.4"
     },

@@ -1,4 +1,4 @@
-@(pageTitle:String, config:String, gaId:String)
+@(pageTitle:String, config:String, gaId:String, vite: helpers.ViteManifest)
 
 <!DOCTYPE html>
 <html>
@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <title>Composer Restorer - @pageTitle</title>
     <link rel="stylesheet" type="text/css" href="https://assets.guim.co.uk/fonts/open-sans/OpenSans.css" />
-    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("dist/main.css")" />
+    @vite.stylesheets
     <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/fav-versions-32.png")" />
 </head>
 <body>
@@ -25,7 +25,7 @@
         </script>
     }
 
-    <script src="@routes.Assets.versioned("dist/main.js")"></script>
+    @vite.scripts
 
 </body>
 </html>

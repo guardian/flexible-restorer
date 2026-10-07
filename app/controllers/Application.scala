@@ -17,46 +17,66 @@ import com.gu.pandomainauth.action.AuthActions
 import com.gu.pandomainauth.model.AuthenticatedUser
 import config.AppConfig
 import helpers.CORSable
-
-
-
+import helpers.ViteManifest
 
 class Application(
-  val controllerComponents: ControllerComponents,
-  val config:AppConfig,
-  override val wsClient: WSClient,
-  override val permissions: PermissionsProvider,
-  val panDomainSettings: PanDomainAuthSettingsRefresher
-) extends BaseController with PanDomainAuthActions with Loggable {
+    val controllerComponents: ControllerComponents,
+    val config: AppConfig,
+    override val wsClient: WSClient,
+    override val permissions: PermissionsProvider,
+    val panDomainSettings: PanDomainAuthSettingsRefresher,
+    val viteManifest: ViteManifest
+) extends BaseController
+    with PanDomainAuthActions
+    with Loggable {
 
   val urlForm = Form(
     "url" -> nonEmptyText
   )
 
-  val clientConfig: String = Json.obj(
-    "gaId" -> config.googleTrackingId
-  ).toString()
-
+  val clientConfig: String = Json
+    .obj(
+      "gaId" -> config.googleTrackingId
+    )
+    .toString()
 
   def index = AuthAction {
-    Ok(views.html.main("Composer Restorer", clientConfig, config.googleTrackingId))
+    Ok(
+      views.html.main(
+        "Composer Restorer",
+        clientConfig,
+        config.googleTrackingId,
+        viteManifest
+      )
+    )
   }
 
   def versionIndex(contentId: String) = AuthAction {
-    Ok(views.html.main(s"Composer Restorer - Versions of $contentId", clientConfig, config.googleTrackingId))
+    Ok(
+      views.html.main(
+        s"Composer Restorer - Versions of $contentId",
+        clientConfig,
+        config.googleTrackingId,
+        viteManifest
+      )
+    )
   }
 
-  def preflight(routes: String) = CORSable(executionContext, config.corsableDomains*) {
-    Action { implicit req =>
-      val requestedHeaders = req.headers.get("Access-Control-Request-Headers")
+  def preflight(routes: String) =
+    CORSable(executionContext, config.corsableDomains *) {
+      Action { implicit req =>
+        val requestedHeaders = req.headers.get("Access-Control-Request-Headers")
 
-      NoContent.withHeaders(
-        CORSable.CORS_ALLOW_METHODS -> "GET, DELETE, PUT",
-        CORSable.CORS_ALLOW_HEADERS -> requestedHeaders.getOrElse(""))
+        NoContent.withHeaders(
+          CORSable.CORS_ALLOW_METHODS -> "GET, DELETE, PUT",
+          CORSable.CORS_ALLOW_HEADERS -> requestedHeaders.getOrElse("")
+        )
+      }
     }
-  }
 
-  protected val parser: BodyParser[AnyContent] = controllerComponents.parsers.default
-  protected val executionContext: ExecutionContext = controllerComponents.executionContext
+  protected val parser: BodyParser[AnyContent] =
+    controllerComponents.parsers.default
+  protected val executionContext: ExecutionContext =
+    controllerComponents.executionContext
 
 }
