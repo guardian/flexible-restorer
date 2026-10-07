@@ -2,15 +2,11 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { compression } from 'vite-plugin-compression2'
 import path from 'path'
-import packageJson from "./package.json";
 
 export default defineConfig(({ command }) => ({
   plugins: [
     react({
-      jsxImportSource: "@emotion/react",
-      babel: {
-        plugins: ["@emotion/babel-plugin"]
-      }
+      jsxImportSource: "@emotion/react"
     }),
     // Emit pre-compressed copies next to each built asset. Play's Assets
     // controller serves the `.gz` sibling to clients that accept gzip, replacing

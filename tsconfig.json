@@ -25,7 +25,9 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+    "tsBuildInfoFile": "node_modules/.cache/tsconfig.app/.tsbuildinfo"
   },
-  "include": ["public/src/app/main.tsx", "public/src/app/components/**/*.ts", "public/src/app/components/**/*.tsx"]
+  "include": ["public/src/app/main.tsx", "public/src/app/components/**/*.ts", "public/src/app/components/**/*.tsx"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
