@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { App } from './components/App';
 import { store } from './components/store/store';
 
+import './fonts.css';
 import '../../gu-noting.css';
 
 const rootElement = document.getElementById('app');

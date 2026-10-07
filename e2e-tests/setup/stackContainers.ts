@@ -182,7 +182,7 @@ export async function startLocalStack(
             .withNetworkAliases("restorer")
             // In prod mode the app is staged and run in Play Prod mode (assets
             // served from the packaged classpath with the immutable cache
-            // header); dev mode uses `sbt run` with webpack watch. The source is
+            // header); dev mode uses `sbt run` with the Vite dev server. The source is
             // still bind-mounted below in both modes so the run reflects host code.
             .withCommand([
                 mode === "prod"
@@ -194,8 +194,8 @@ export async function startLocalStack(
             // mounted (rather than all of /app) so the image's baked
             // node_modules, compiled target/, and built public/dist are
             // preserved: `sbt run` recompiles changed Scala on the next request
-            // and webpack (run in watch mode by entrypoint.dev.sh) rebuilds the
-            // frontend on change.
+            // and the Vite dev server (started by entrypoint.dev.sh) serves the
+            // frontend with HMR.
             .withBindMounts([
                 {
                     source: path.join(projectRoot, "app"),
@@ -215,11 +215,6 @@ export async function startLocalStack(
                 {
                     source: path.join(projectRoot, "public/sass"),
                     target: "/app/public/sass",
-                    mode: "ro",
-                },
-                {
-                    source: path.join(projectRoot, "webpack.config.js"),
-                    target: "/app/webpack.config.js",
                     mode: "ro",
                 },
                 // Only mounted for local dev (not the parallel e2e suite, whose
@@ -246,9 +241,10 @@ export async function startLocalStack(
                 LOCAL_FLEXIBLE_API_PREFIX: `http://flexible-api.DEV.flexible.gudiscovery:${MOCK_API_PORT}`,
             })
             .withLogConsumer(createLogConsumer("restorer", streamLogs))
-            // Exposed on a dynamic host port for debugging; browsers reach the
-            // app through the nginx container below, not this port directly.
-            .withExposedPorts(9000)
+            // Exposed on dynamic host ports for debugging; browsers reach the app
+            // (and the Vite dev server on 5173) through the nginx container below,
+            // not these ports directly.
+            .withExposedPorts(9000, 5173)
             .withStartupTimeout(10 * 60 * 1000)
             // `sbt run` (Play dev mode) binds the port before compiling — it only
             // compiles the app on the first request. Waiting for a 200 from the
