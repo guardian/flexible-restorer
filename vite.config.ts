@@ -4,6 +4,11 @@ import react from '@vitejs/plugin-react'
 import { compression } from 'vite-plugin-compression2'
 import path from 'path'
 
+// Set by the containerised dev stack (entrypoint.dev.sh): the Vite dev server is
+// reached at the same origin under /vite-dev/ over TLS via nginx. When unset (a
+// standalone `npm run dev`) the browser hits the dev server directly on :5173.
+const proxied = process.env.VITE_PROXIED === 'true'
+
 export default defineConfig(({ command }) => ({
   plugins: [
     react({
@@ -14,10 +19,10 @@ export default defineConfig(({ command }) => ({
     // the old sbt-gzip pipeline; `.br` is emitted too for brotli-aware fronting.
     compression({ include: /\.(js|css|svg|json)$/, algorithms: ['gzip', 'brotliCompress'] })
   ],
-  // Built assets live in public/dist, served by Play under /assets/dist. In dev
-  // the server is reached through nginx under /vite-dev/ (same origin as Play),
-  // so every module/HMR URL is prefixed with that base.
-  base: command === 'build' ? '/assets/dist/' : '/vite-dev/',
+  // Built assets live in public/dist, served by Play under /assets/dist. Behind
+  // the nginx dev proxy every module/HMR URL is prefixed with /vite-dev/;
+  // standalone dev serves modules from the server root.
+  base: command === 'build' ? '/assets/dist/' : proxied ? '/vite-dev/' : '/',
   // Our source lives under public/src; disable Vite's static publicDir so it
   // doesn't try to copy the source tree (and public/dist) into the bundle.
   publicDir: false,
@@ -32,13 +37,11 @@ export default defineConfig(({ command }) => ({
     // nginx forwards the TLS dev domain as the Host header; allow it (and its
     // subdomains) so Vite's host check doesn't reject the proxied requests (403).
     allowedHosts: [".dev-gutools.co.uk"],
-    hmr: {
-      // The HMR websocket is proxied through nginx on the TLS dev domain, so the
-      // browser connects over wss on 443. The socket path comes from `base`
-      // (/vite-dev/); don't set `path` too or it gets doubled.
-      protocol: "wss",
-      clientPort: 443
-    }
+    // Behind the nginx dev proxy the HMR websocket is served over wss on 443 on
+    // the TLS dev domain (the socket path comes from `base`, /vite-dev/, so don't
+    // set `path` too or it gets doubled). Standalone dev uses Vite's defaults
+    // (ws on localhost:5173).
+    ...(proxied ? { hmr: { protocol: "wss", clientPort: 443 } } : {})
   },
   resolve: {
     alias: {
@@ -50,7 +53,7 @@ export default defineConfig(({ command }) => ({
     // Output into Play's asset tree so `Assets.versioned` serves the bundle.
     outDir: 'public/dist',
     assetsDir: '.',
-    sourcemap: true,
+    sourcemap: false,
     // Emit the manifest at the output root (not .vite/) so Play reliably
     // packages it; the Scala backend reads it to resolve hashed asset names.
     manifest: 'manifest.json',
@@ -72,7 +75,7 @@ export default defineConfig(({ command }) => ({
     },
   },
 
-  // Environment variable prefix (CRA uses REACT_APP_)
+  // Only variables prefixed with VITE_ are exposed to client code.
   envPrefix: 'VITE_',
 
   test: {
