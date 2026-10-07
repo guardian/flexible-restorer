@@ -45,15 +45,14 @@ COPY app ./app
 COPY conf ./conf
 RUN sbt -batch compile
 
-# Build frontend assets. Only re-runs when public/ or webpack config changes,
+# Build frontend assets. Only re-runs when public/ or the Vite/TS config changes,
 # not when Scala sources change.
 COPY public ./public
-# COPY webpack.config.js ./
-COPY vite.config.ts tsconfig.json ./
+COPY vite.config.ts tsconfig.json tsconfig.node.json ./
 RUN npm run build
 
-# Copy the startup scripts only. The application code (app/, conf/, public/,
-# webpack.config.js) is baked above so the image is self-contained, but at
+# Copy the startup scripts only. The application code (app/, conf/, public/) is
+# baked above so the image is self-contained, but at
 # runtime it is bind-mounted from the host (see
 # e2e-tests/setup/stackContainers.ts) so code changes are watched and picked up
 # without rebuilding the image. The prod entrypoint is selected at runtime by the

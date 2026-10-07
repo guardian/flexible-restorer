@@ -1,3 +1,4 @@
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { configureStore } from '@reduxjs/toolkit';
 import { restorerApi } from './restorerApi';
 
@@ -21,7 +22,7 @@ const rawSnapshot = (timestamp: string, systemId: string) => ({
 
 describe('restorerApi getSnapshotList endpoint', () => {
 	afterEach(() => {
-		jest.restoreAllMocks();
+		vi.restoreAllMocks();
 	});
 
 	it('fetches and parses the version list on ingress (newest first)', async () => {
@@ -29,7 +30,7 @@ describe('restorerApi getSnapshotList endpoint', () => {
 			rawSnapshot('2024-01-01T10:00:00', 'live'),
 			rawSnapshot('2024-01-02T10:00:00', 'draft'),
 		];
-		const fetchMock = jest.fn().mockResolvedValue({
+		const fetchMock = vi.fn().mockResolvedValue({
 			ok: true,
 			json: () => Promise.resolve(payload),
 		});
@@ -51,7 +52,7 @@ describe('restorerApi getSnapshotList endpoint', () => {
 	});
 
 	it('surfaces a serialisable error on a failed request', async () => {
-		globalThis.fetch = jest.fn().mockResolvedValue({
+		globalThis.fetch = vi.fn().mockResolvedValue({
 			ok: false,
 			status: 500,
 			json: () => Promise.resolve({}),
