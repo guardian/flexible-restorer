@@ -16,12 +16,7 @@ Run `./scripts/setup`.
 ```
 $ npm install
 $ npm run build
-
-# Alternatively to continuously watch for changes and rebuild
-$ npm run dev
 ```
-
-This project does not have hot module reloading so you will have to reload the page on Javascript or SCSS updates
 
 ### Get credentials
 
@@ -31,10 +26,34 @@ This project does not have hot module reloading so you will have to reload the p
 
 ## Start the app
 
+The client is built with [Vite](https://vite.dev). You can run the app two ways:
+
+### With a built bundle (no hot reloading)
+
 ```
+$ npm run build
 $ sbt
 [restorer] $ run
 ```
+
+Play serves the bundle from `public/dist` via the Vite manifest. Re-run
+`npm run build` (or `npm run build:watch`) after client changes.
+
+### With hot module reloading (standalone)
+
+Run the Vite dev server alongside Play and point Play at it with
+`VITE_DEV_SERVER`:
+
+```
+# terminal 1 – Vite dev server (serves modules + HMR on :5173)
+$ npm run dev
+
+# terminal 2 – Play, told to load the client from the dev server
+$ VITE_DEV_SERVER=http://localhost:5173 sbt -Dlocal=true run
+```
+
+Play keeps serving the HTML on :9000 and injects the Vite client, so JS/CSS
+changes hot-reload without a page refresh.
 
 The app will then be accessible locally at: <https://restorer.local.dev-gutools.co.uk/>
 
