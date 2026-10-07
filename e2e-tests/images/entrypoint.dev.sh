@@ -8,9 +8,11 @@ export AWS_REGION="${AWS_REGION:-eu-west-1}"
 export AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID:-test-access-key-id}"
 export AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY:-test-secret-access-key}"
 
-# Rebuild the frontend from the bind-mounted source on change, so host edits are
-# picked up without rebuilding the image. Play's `sbt run` recompiles changed
-# Scala sources on the next request in the same way.
+# Run the Vite dev server (port 5173) for hot module reloading. Play keeps port
+# 9000 and serves the HTML, injecting the Vite client from /vite-dev/ (proxied to
+# this server by nginx) when VITE_DEV_SERVER is set. Play's `sbt run` recompiles
+# changed Scala sources on the next request.
+export VITE_DEV_SERVER="/vite-dev"
 npm run dev &
 
 exec sbt -Dlocal=true run

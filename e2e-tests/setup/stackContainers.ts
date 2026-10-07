@@ -246,9 +246,10 @@ export async function startLocalStack(
                 LOCAL_FLEXIBLE_API_PREFIX: `http://flexible-api.DEV.flexible.gudiscovery:${MOCK_API_PORT}`,
             })
             .withLogConsumer(createLogConsumer("restorer", streamLogs))
-            // Exposed on a dynamic host port for debugging; browsers reach the
-            // app through the nginx container below, not this port directly.
-            .withExposedPorts(9000)
+            // Exposed on dynamic host ports for debugging; browsers reach the app
+            // (and the Vite dev server on 5173) through the nginx container below,
+            // not these ports directly.
+            .withExposedPorts(9000, 5173)
             .withStartupTimeout(10 * 60 * 1000)
             // `sbt run` (Play dev mode) binds the port before compiling — it only
             // compiles the app on the first request. Waiting for a 200 from the

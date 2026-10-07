@@ -48,7 +48,8 @@ RUN sbt -batch compile
 # Build frontend assets. Only re-runs when public/ or webpack config changes,
 # not when Scala sources change.
 COPY public ./public
-COPY webpack.config.js ./
+# COPY webpack.config.js ./
+COPY vite.config.ts tsconfig.json ./
 RUN npm run build
 
 # Copy the startup scripts only. The application code (app/, conf/, public/,
