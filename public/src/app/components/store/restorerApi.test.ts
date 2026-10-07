@@ -1,5 +1,5 @@
-import { describe, it, expect, afterEach, vi } from 'vitest';
 import { configureStore } from '@reduxjs/toolkit';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { restorerApi } from './restorerApi';
 
 const makeStore = () =>
