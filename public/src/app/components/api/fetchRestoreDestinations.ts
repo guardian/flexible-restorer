@@ -1,7 +1,6 @@
 // Restore-destination fetch layer for the React restore modal. Mirrors the
 // The restore destinations request: a failed request throws and
 // an empty payload is treated as "no destinations available".
-import moment from 'moment';
 import { formatCreatedDate } from '../utils/dateFormat';
 import type { FormattedCreatedDate } from '../utils/dateFormat';
 
@@ -50,7 +49,7 @@ const toDestinationView = (
 		change = {
 			kind: 'revision',
 			revisionId: changeDetails.revisionId,
-			date: formatCreatedDate(moment(changeDetails.lastModified)),
+			date: formatCreatedDate(new Date(changeDetails.lastModified)),
 		};
 	} else if (available) {
 		change = { kind: 'not-on-instance' };

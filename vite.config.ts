@@ -80,7 +80,6 @@ export default defineConfig(({ command }) => ({
             { name: 'redux', test: /node_modules\/(@reduxjs|react-redux|redux|immer|reselect)\// },
             { name: 'emotion', test: /node_modules\/@emotion\// },
             { name: 'guardian', test: /node_modules\/@guardian\// },
-            { name: 'moment', test: /node_modules\/moment\// },
             { name: 'vendor', test: /node_modules\// },
           ],
         },

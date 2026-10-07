@@ -1,6 +1,5 @@
 import { configureStore, isPlain } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
-import moment from 'moment';
 import { flexibleApi } from './flexibleApi';
 import { restorerApi } from './restorerApi';
 import { viewerSlice } from './viewerSlice';
@@ -17,10 +16,10 @@ const store = configureStore({
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({
 			// The parsed snapshot/destination view models cached by the service APIs
-			// hold `moment` values (parsed on ingress); treat them as serialisable.
+			// hold `Date` values (parsed on ingress); treat them as serialisable.
 			serializableCheck: {
 				isSerializable: (value: unknown) =>
-					moment.isMoment(value) || isPlain(value),
+					value instanceof Date || isPlain(value),
 			},
 		}).concat(restorerApi.middleware, flexibleApi.middleware),
 });
