@@ -65,6 +65,13 @@ class AppConfig(configuration: Configuration, identity: AppIdentity) {
   // GA
   lazy val googleTrackingId: String = underlyingConfig.getString("google.tracking.id")
 
+  // When set (local dev only), the client bundle is loaded from the Vite dev
+  // server for hot-module reloading instead of the built manifest assets.
+  val viteDevServer: Option[String] =
+    Option(underlyingConfig.getString("vite.dev-server"))
+      .map(_.trim)
+      .filter(_.nonEmpty)
+
 }
 
 object AppConfig {

@@ -46,8 +46,27 @@ class ViteManifest(devServerBase: Option[String], environment: Environment) {
       )
     )
 
+  // Vite already content-hashes every filename, so with the sbt-digest pipeline
+  // removed `Assets.versioned` no longer fingerprints and simply serves the file
+  // (returning the pre-compressed `.gz`/`.br` sibling when the client accepts it).
   private def assetUrl(file: String): String =
     routes.Assets.versioned(s"dist/$file").url
+
+  /** `<link rel="icon">` for the favicon, resolved from the manifest. */
+  def favicon: Html = devServerBase match {
+    case Some(base) =>
+      Html(s"""<link rel="icon" type="image/png" href="$base/$FaviconKey">""")
+    case None =>
+      val file = manifest
+        .get(FaviconKey)
+        .flatMap(entry => (entry \ "file").asOpt[String])
+        .getOrElse(
+          throw new IllegalStateException(
+            s"Favicon '$FaviconKey' is missing from the Vite manifest."
+          )
+        )
+      Html(s"""<link rel="icon" type="image/png" href="${assetUrl(file)}">""")
+  }
 
   /** Stylesheet `<link>` tags for the entry and its imported chunks. */
   def stylesheets: Html = devServerBase match {
@@ -131,4 +150,7 @@ object ViteManifest {
 
   // The rollup input configured in vite.config.ts, keyed relative to project root.
   private val EntryKey = "public/src/app/main.tsx"
+
+  // The favicon rollup input in vite.config.ts, keyed relative to project root.
+  private val FaviconKey = "public/images/fav-versions-32.png"
 }

@@ -59,6 +59,7 @@
         "raw-loader": "^4.0.2",
         "typescript": "^5.9.3",
         "vite": "^8.3.3",
+        "vite-plugin-compression2": "^2.5.3",
         "webpack": "^5.97.1",
         "webpack-cli": "^5.1.4"
     },

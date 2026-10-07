@@ -5,6 +5,7 @@ import com.gu.pandomainauth.PanDomainAuthSettingsRefresher
 import com.gu.permissions.PermissionsProvider
 import config.AppConfig
 import helpers.Loggable
+import helpers.ViteManifest
 import permissions.Permissions
 import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
@@ -18,7 +19,8 @@ class Login(
   val config: AppConfig,
   override val wsClient: WSClient,
   override val permissions: PermissionsProvider,
-  override val panDomainSettings: PanDomainAuthSettingsRefresher
+  override val panDomainSettings: PanDomainAuthSettingsRefresher,
+  val viteManifest: ViteManifest
 )
   extends BaseController with PanDomainAuthActions with Loggable {
 
@@ -31,7 +33,7 @@ class Login(
   }
 
   def authError(message: String): Action[AnyContent] = Action.async { implicit request =>
-    Future(Forbidden(views.html.authError(message)))
+    Future(Forbidden(views.html.authError(message, viteManifest)))
   }
 
   def user: Action[AnyContent] = AuthAction { implicit request =>

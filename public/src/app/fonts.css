@@ -1,0 +1,41 @@
+/* Fonts are referenced with relative URLs so Vite fingerprints the files and
+   rewrites these paths to the hashed assets in the build output. */
+@font-face {
+	font-family: 'Guardian Agate Sans';
+	src:
+		url('../../fonts/GuardianAgateSans1Web-Regular.woff2') format('woff2'),
+		url('../../fonts/GuardianAgateSans1Web-Regular.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Guardian Agate Sans';
+	src:
+		url('../../fonts/GuardianAgateSans1Web-Bold.woff2') format('woff2'),
+		url('../../fonts/GuardianAgateSans1Web-Bold.woff') format('woff');
+	font-weight: bold;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Guardian Egyptian Text';
+	src:
+		url('../../fonts/GuardianTextEgyptianWeb-Medium.woff2') format('woff2'),
+		url('../../fonts/GuardianTextEgyptianWeb-Medium.woff') format('woff');
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Guardian Egyptian Text';
+	src:
+		url('../../fonts/GuardianTextEgyptianWeb-Regular.woff2') format('woff2'),
+		url('../../fonts/GuardianTextEgyptianWeb-Regular.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
