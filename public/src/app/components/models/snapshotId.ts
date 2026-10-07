@@ -1,5 +1,4 @@
-import moment from 'moment';
-import { relativeDate } from '../utils/dateFormat';
+import { formatLongDate, relativeDate } from '../utils/dateFormat';
 
 // Raw shape of a single entry returned by `GET /api/1/versionList/:contentId`
 // (see app/controllers/Versions.scala). Only the fields the sidebar reads are
@@ -65,8 +64,7 @@ type SnapshotIdViewModel = {
 	timestamp: string;
 	systemId: string;
 	isSecondary: boolean;
-	/** Snapshot time as epoch milliseconds (kept serializable for the store). */
-	createdDate: number;
+	createdDate: Date;
 	revisionId: number | undefined;
 	headline: string | undefined;
 	composerUrl: string;
@@ -92,11 +90,11 @@ const derivePublishedState = (summary: RawSummary | undefined): string => {
 	const publishedDetails = summary?.contentChangeDetails?.published;
 
 	if (scheduledLaunchDate) {
-		return `Scheduled  ${moment(scheduledLaunchDate).format('ddd D MMMM YYYY')}`;
+		return `Scheduled  ${formatLongDate(new Date(scheduledLaunchDate))}`;
 	}
 
 	if (settings?.embargoedUntil) {
-		return `Embargoed until ${moment(settings.embargoedUntil).format('ddd D MMMM YYYY')}`;
+		return `Embargoed until ${formatLongDate(new Date(settings.embargoedUntil))}`;
 	}
 
 	if (published) {
@@ -126,7 +124,7 @@ const deriveUserEmail = (summary: RawSummary | undefined): string => {
 const toViewModel = (raw: RawSnapshotId): SnapshotIdViewModel => {
 	const summary = raw.info?.summary;
 	const settings = summary?.preview?.settings;
-	const createdDate = moment(raw.timestamp.replace(/_/g, ':')).valueOf();
+	const createdDate = new Date(raw.timestamp.replace(/_/g, ':'));
 	const commentable = settings?.commentable;
 	const snapshotReason = raw.info?.metadata?.reason;
 
