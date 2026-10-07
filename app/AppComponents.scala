@@ -4,7 +4,7 @@ import com.gu.permissions.{PermissionsConfig, PermissionsProvider}
 import config.AppConfig
 import config.AWS._
 import controllers._
-import helpers.{HSTSFilter, Loggable, ViteManifest}
+import helpers.{HSTSFilter, Loggable}
 import logic.{FlexibleApi, SnapshotApi}
 import play.api.ApplicationLoader.Context
 import play.api.libs.ws.ahc.AhcWSComponents
@@ -37,9 +37,7 @@ class AppComponents(context: Context, identity: AppIdentity) extends BuiltInComp
 
   val flexibleApi = new FlexibleApi(wsClient)
 
-  val viteManifest = new ViteManifest(config.viteDevServer, environment)
-
-  val applicationController = new Application(controllerComponents, config, wsClient, permissions, panDomainSettings, viteManifest)
+  val applicationController = new Application(controllerComponents, config, wsClient, permissions, panDomainSettings)
   val loginController = new Login(controllerComponents, config, wsClient, permissions, panDomainSettings)
   val managementController = new Management(controllerComponents, config, wsClient, permissions, panDomainSettings)
   val versionsController = new Versions(controllerComponents, config, snapshotApi, wsClient, permissions, panDomainSettings)
