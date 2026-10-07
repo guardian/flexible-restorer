@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { compression } from 'vite-plugin-compression2'
@@ -73,4 +74,10 @@ export default defineConfig(({ command }) => ({
 
   // Environment variable prefix (CRA uses REACT_APP_)
   envPrefix: 'VITE_',
+
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./vitest.setup.ts'],
+    include: ['public/src/**/*.test.{js,ts,tsx}'],
+  },
 }))

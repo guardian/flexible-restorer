@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { parseSnapshotContent } from './snapshotContent';
 import type { RawSnapshot } from './snapshotContent';
 
