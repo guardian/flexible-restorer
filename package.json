@@ -26,7 +26,6 @@
         "flatten": "^1.0.3",
         "html-react-parser": "^5.2.17",
         "lodash.get": "^4.4.2",
-        "moment": "^2.29.4",
         "prop-types": "^15.8.1",
         "react": "^18.3.1",
         "react-aria-components": "^1.19.0",
