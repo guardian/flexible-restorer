@@ -4,3 +4,9 @@ declare module '*.svg?inline' {
 	const src: string;
 	export default src;
 }
+
+// A plain `*.svg` import resolves to the (hashed) asset URL emitted by Vite.
+declare module '*.svg' {
+	const src: string;
+	export default src;
+}

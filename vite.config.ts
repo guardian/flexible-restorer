@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { compression } from 'vite-plugin-compression2'
 import path from 'path'
 import packageJson from "./package.json";
 
@@ -10,7 +11,11 @@ export default defineConfig(({ command }) => ({
       babel: {
         plugins: ["@emotion/babel-plugin"]
       }
-    })
+    }),
+    // Emit pre-compressed copies next to each built asset. Play's Assets
+    // controller serves the `.gz` sibling to clients that accept gzip, replacing
+    // the old sbt-gzip pipeline; `.br` is emitted too for brotli-aware fronting.
+    compression({ include: /\.(js|css|svg|json)$/, algorithms: ['gzip', 'brotliCompress'] })
   ],
   // Built assets live in public/dist, served by Play under /assets/dist. In dev
   // the server is reached through nginx under /vite-dev/ (same origin as Play),
@@ -53,8 +58,13 @@ export default defineConfig(({ command }) => ({
     // packages it; the Scala backend reads it to resolve hashed asset names.
     manifest: 'manifest.json',
     rollupOptions: {
-      // The Play view renders the HTML; this is the client-side mount entry
-      input: path.resolve(__dirname, 'public/src/app/main.tsx'),
+      // The Play view renders the HTML; this is the client-side mount entry.
+      // The favicon is an additional input so Vite fingerprints it and records
+      // it in manifest.json for the Play template to resolve.
+      input: {
+        main: path.resolve(__dirname, 'public/src/app/main.tsx'),
+        favicon: path.resolve(__dirname, 'public/images/fav-versions-32.png'),
+      },
       output: {
         manualChunks(id) {
           if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
