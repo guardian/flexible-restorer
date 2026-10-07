@@ -5,7 +5,7 @@
     ],
     "scripts": {
         "dev": "vite --host",
-        "build": "tsc && vite build",
+        "build": "tsc -b && vite build",
         "build:watch": "vite build --watch",
         "dev:local": "tsx ./e2e-tests/images/run-dev-local.ts",
         "dev:local:prod": "APP_MODE=prod tsx ./e2e-tests/images/run-dev-local.ts",
