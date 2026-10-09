@@ -28,7 +28,10 @@ jobs:
             - name: JS Build
               run: |
                   npm ci
+                  npm test
                   npm run build
+                  npx playwright install --with-deps chromium
+                  npm run test:e2e
 
             - uses: guardian/setup-scala@v1
 

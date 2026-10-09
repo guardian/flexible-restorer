@@ -21,6 +21,8 @@ dist
 public/stylesheets/vendor
 public/jspm_packages
 node_modules/
+test-results/
+playwright-report/
 public/css
 public/build.js
 public/build.js.map

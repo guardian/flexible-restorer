@@ -1,0 +1,22 @@
+@font-face {
+    font-family: 'Guardian Text Egyptian';
+    src: url('../fonts/GuardianTextEgyptianWeb-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+}
+
+.find-snapshots {
+    max-width: 760px;
+    margin: 48px auto;
+    padding: 24px;
+    color: #333333;
+    font-family: 'Open Sans', sans-serif;
+    line-height: 1.6;
+}
+
+@font-face {
+    font-family: 'Guardian Agate Sans';
+    src: url('../fonts/GuardianAgateSans1Web-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+}

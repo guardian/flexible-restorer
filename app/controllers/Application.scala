@@ -37,13 +37,23 @@ class Application(
     "gaId" -> config.googleTrackingId
   ).toString()
 
-
-  def index = AuthAction {
-    Ok(views.html.main("Composer Restorer", clientConfig, config.googleTrackingId))
+  private def withFeatureDefaults(result: Result, secure: Boolean): Result = {
+    val defaults = Json.obj("compactSnapshotList" -> false).toString()
+    result.withCookies(Cookie(
+      "restorer-feature-defaults",
+      java.net.URLEncoder.encode(defaults, java.nio.charset.StandardCharsets.UTF_8),
+      secure = secure,
+      httpOnly = false,
+      sameSite = Some(Cookie.SameSite.Lax)
+    ))
   }
 
-  def versionIndex(contentId: String) = AuthAction {
-    Ok(views.html.main(s"Composer Restorer - Versions of $contentId", clientConfig, config.googleTrackingId))
+  def index = AuthAction { (request: com.gu.pandomainauth.action.UserRequest[AnyContent]) =>
+    withFeatureDefaults(Ok(views.html.main("Composer Restorer", clientConfig, config.googleTrackingId)), request.secure)
+  }
+
+  def versionIndex(contentId: String) = AuthAction { (request: com.gu.pandomainauth.action.UserRequest[AnyContent]) =>
+    withFeatureDefaults(Ok(views.html.main(s"Composer Restorer - Versions of $contentId", clientConfig, config.googleTrackingId)), request.secure)
   }
 
   def preflight(routes: String) = CORSable(executionContext, config.corsableDomains*) {
