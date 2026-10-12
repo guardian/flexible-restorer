@@ -6,13 +6,10 @@ on:
         branches:
             - main
 jobs:
-    CI:
+    build:
         runs-on: ubuntu-latest
 
         permissions:
-            # id-token and pull-requests required by actions-riff-raff
-            id-token: write
-            pull-requests: write
             # Required for `actions/checkout`
             contents: read
 
@@ -60,6 +57,46 @@ jobs:
                   npm run lint
                   npm test
                   npm run synth
+
+            # Hand the deployable artifacts to the riff-raff job, which only runs
+            # once the e2e tests have also passed.
+            - name: Upload build artifacts
+              uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+              with:
+                  name: riff-raff-artifacts
+                  path: |
+                      restorer2.deb
+                      cdk/cdk.out/Restorer2-euwest-1-CODE.template.json
+                      cdk/cdk.out/Restorer2-euwest-1-PROD.template.json
+                  if-no-files-found: error
+                  retention-days: 1
+
+    e2e:
+        # Run the e2e suite as part of CI so the deploy can depend on it.
+        uses: ./.github/workflows/e2e.yml
+        secrets: inherit
+
+    riff-raff:
+        # Only upload artifacts to Riff-Raff once both the build and the e2e
+        # tests have passed, so CI is "ready to deploy" only when e2e is green.
+        needs: [build, e2e]
+        runs-on: ubuntu-latest
+
+        permissions:
+            # id-token and pull-requests required by actions-riff-raff
+            id-token: write
+            pull-requests: write
+            # Required for `actions/checkout`
+            contents: read
+
+        steps:
+            # Needed for riff-raff.yaml (configPath) and the git context.
+            - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
+
+            - name: Download build artifacts
+              uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+              with:
+                  name: riff-raff-artifacts
 
             # Upload our build artifacts to Riff-Raff (well, S3)
             - uses: guardian/actions-riff-raff@eecac3ac4f7a446dd59aaa636163c9ae88baf4a4 # v4.3.6
