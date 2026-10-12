@@ -40,7 +40,8 @@ describe('relativeDate', () => {
 	const before = (ms: number): Date => new Date(base.getTime() - ms);
 
 	it('returns the strict distance between the two dates, without a suffix', () => {
-		expect(relativeDate(before(30_000), base)).toBe('a few seconds');
+		expect(relativeDate(before(5_000), base)).toBe('a few seconds');
+		expect(relativeDate(before(30_000), base)).toBe('30 seconds');
 		expect(relativeDate(before(60_000), base)).toBe('a minute');
 		expect(relativeDate(before(5 * 60_000), base)).toBe('5 minutes');
 		expect(relativeDate(before(60 * 60_000), base)).toBe('an hour');
