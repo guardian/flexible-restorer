@@ -73,6 +73,9 @@ jobs:
 
     e2e:
         # Run the e2e suite as part of CI so the deploy can depend on it.
+        permissions:
+            # Default to least privilege for reusable workflow invocation.
+            contents: read
         uses: ./.github/workflows/e2e.yml
         secrets: inherit
 
