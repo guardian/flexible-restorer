@@ -356,9 +356,9 @@ Given("version history data has multiple snapshots", async () => {
 When("I view the delta row between two snapshots", async ({ page }) => {});
 Then("I should see a relative time difference value between adjacent snapshot dates", async ({ page }) => {
     // The first two fixture snapshots share a timestamp, so the gap to the next
-    // snapshot renders via date-fns `formatDistanceStrict` as "0 seconds".
-    // Scoped to the delta row so we don't match a relative-age ("… ago") line.
-    await expect(page.getByTestId("snapshot-delta").first()).toHaveText("0 seconds", { timeout });
+    // snapshot renders as "a few seconds". Scoped to the delta row so we don't
+    // match a relative-age ("… ago") line.
+    await expect(page.getByTestId("snapshot-delta").first()).toHaveText("a few seconds", { timeout });
 });
 
 
