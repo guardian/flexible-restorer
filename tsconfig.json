@@ -18,7 +18,7 @@
     "exactOptionalPropertyTypes": true,
     "forceConsistentCasingInFileNames": true,
 
-    /* Type-check only; webpack/Babel emits the bundle */
+    /* Type-check only; Vite emits the bundle */
     "noEmit": true,
     "allowJs": false,
     "skipLibCheck": true,
@@ -28,6 +28,6 @@
     "verbatimModuleSyntax": true,
     "tsBuildInfoFile": "node_modules/.cache/tsconfig.app/.tsbuildinfo"
   },
-  "include": ["public/src/app/main.tsx", "public/src/app/components/**/*.ts", "public/src/app/components/**/*.tsx"],
+  "include": ["public/src/app/main.tsx", "public/src/app/components/**/*.ts", "public/src/app/components/**/*.tsx", "vitest.setup.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
