@@ -59,6 +59,13 @@ export const globalStyles = css`
 		margin: 0;
 	}
 
+	/* The app is a fixed-height layout; inner panels scroll, so the page
+	   itself never shows a whole-page scrollbar. */
+	html,
+	body {
+		overflow: hidden;
+	}
+
 	.main {
 		display: flex;
 		flex-direction: column;

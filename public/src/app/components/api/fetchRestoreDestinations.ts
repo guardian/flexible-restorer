@@ -50,7 +50,9 @@ const toDestinationView = (
 		change = {
 			kind: 'revision',
 			revisionId: changeDetails.revisionId,
-			date: formatCreatedDate(moment(changeDetails.lastModified)),
+			date: formatCreatedDate(
+				moment(changeDetails.lastModified).valueOf(),
+			),
 		};
 	} else if (available) {
 		change = { kind: 'not-on-instance' };

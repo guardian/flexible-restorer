@@ -2,7 +2,7 @@ import { skipToken } from '@reduxjs/toolkit/query/react';
 import { useEffect, useMemo, useState } from 'react';
 import type { RestoreDestinationView } from '../api/fetchRestoreDestinations';
 import {
-	useGetRestoreDestinationsQuery,
+	useLazyGetRestoreDestinationsQuery,
 	useRestoreContentMutation,
 } from '../store/flexibleApi';
 import { useActiveIndex, useAppDispatch } from '../store/hooks';
@@ -20,6 +20,8 @@ type RestoreSource = {
 
 type UseRestoreForm = {
 	isLoading: boolean;
+	/** True once the source, permissions and destinations have finished loading. */
+	isReady: boolean;
 	source: RestoreSource | undefined;
 	destinations: RestoreDestinationView[];
 	selectedSystemId: string | undefined;
@@ -54,18 +56,54 @@ const useRestoreForm = (contentId: string, isOpen: boolean): UseRestoreForm => {
 	const [selfInContent, setSelfInContent] = useState(false);
 	const [elseInContent, setElseInContent] = useState(false);
 
-	// Load permissions + destinations while the modal is open. Failures are
-	// swallowed (empty destinations), matching the legacy RestoreFormCtrl.
-	// `refetchOnMountOrArgChange` reloads destinations each time the modal
-	// reopens, matching the legacy per-open fetch (RTK Query would otherwise
-	// serve a stale cache). `currentData` (not `data`) is used so a failed
-	// reload clears the previous destinations rather than retaining them.
-	const { data: user } = useGetUserQuery(isOpen ? undefined : skipToken);
-	const { currentData: rawDestinations } = useGetRestoreDestinationsQuery(
-		isOpen && activeSnapshot ? contentId : skipToken,
-		{ refetchOnMountOrArgChange: true },
+	// Permissions gate the cross-stack destination filter; load them while open.
+	const { data: user, isSuccess: isUserLoaded } = useGetUserQuery(
+		isOpen ? undefined : skipToken,
 	);
+
+	// Fetch destinations with a lazy query, forcing a fresh network fetch on each
+	// open (`preferCacheValue: false`) so the modal never shows a stale cached
+	// list on reopen. `isDestinationsReady` flips true only once the fetch for the
+	// current open has settled, which the modal uses to avoid an open-time flicker.
+	const [triggerDestinations] = useLazyGetRestoreDestinationsQuery();
+	const [rawDestinations, setRawDestinations] = useState<
+		RestoreDestinationView[]
+	>([]);
+	const [isDestinationsReady, setIsDestinationsReady] = useState(false);
+	useEffect(() => {
+		if (!isOpen || !activeSnapshot) {
+			setRawDestinations([]);
+			setIsDestinationsReady(false);
+			return;
+		}
+		let cancelled = false;
+		setIsDestinationsReady(false);
+		triggerDestinations(contentId, false)
+			.unwrap()
+			.then((data) => {
+				if (!cancelled) {
+					setRawDestinations(data);
+					setIsDestinationsReady(true);
+				}
+			})
+			.catch(() => {
+				// A failed/empty fetch leaves no destinations (legacy behaviour).
+				if (!cancelled) {
+					setRawDestinations([]);
+					setIsDestinationsReady(true);
+				}
+			});
+		return () => {
+			cancelled = true;
+		};
+	}, [isOpen, activeSnapshot, contentId, triggerDestinations]);
+
 	const [restore, { isLoading }] = useRestoreContentMutation();
+
+	// Only reveal the modal once the source, permissions and destinations are all
+	// settled, so its content does not flicker in after it opens.
+	const isReady =
+		isOpen && !!activeSnapshot && isUserLoaded && isDestinationsReady;
 
 	const canRestoreToAnyStack =
 		user?.permissions?.restore_content_to_any_stack === true;
@@ -73,7 +111,7 @@ const useRestoreForm = (contentId: string, isOpen: boolean): UseRestoreForm => {
 	// applies the cross-stack permission filter, which needs the user's
 	// permissions and the active snapshot's system — inputs the endpoint lacks.
 	const destinations = useMemo<RestoreDestinationView[]>(() => {
-		if (!activeSnapshot || !rawDestinations) {
+		if (!activeSnapshot) {
 			return [];
 		}
 		const activeSystemId = activeSnapshot.systemId;
@@ -140,6 +178,7 @@ const useRestoreForm = (contentId: string, isOpen: boolean): UseRestoreForm => {
 
 	return {
 		isLoading,
+		isReady,
 		source,
 		destinations,
 		selectedSystemId,
