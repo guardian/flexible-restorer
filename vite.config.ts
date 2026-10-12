@@ -26,9 +26,6 @@ export default defineConfig(({ command }) => ({
   // Our source lives under public/src; disable Vite's static publicDir so it
   // doesn't try to copy the source tree (and public/dist) into the bundle.
   publicDir: false,
-  esbuild: {
-    logOverride: { "this-is-undefined-in-esm": "silent" }
-  },
   server: {
     // Bind on all interfaces so the nginx container can proxy to it.
     host: true,
