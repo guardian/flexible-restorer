@@ -32,7 +32,9 @@ const formatLongDate = (date: Date): string => format(date, 'EEE d MMMM yyyy');
  */
 const relativeDate = (createdDate: Date, from: Date = new Date()): string => {
 	const distance = formatDistanceStrict(createdDate, from);
-	if (/^\d+ seconds?$/.test(distance)) {
+	// Single-digit second gaps read as "a few seconds" (as the UI did before);
+	// 10+ seconds keep the numeric form.
+	if (/^\d seconds?$/.test(distance)) {
 		return 'a few seconds';
 	}
 	if (distance === '1 minute') {
