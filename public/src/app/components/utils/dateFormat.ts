@@ -27,10 +27,22 @@ const formatLongDate = (date: Date): string => format(date, 'EEE d MMMM yyyy');
 
 /**
  * Humanised distance between `createdDate` and `from` (defaults to now), without
- * the "ago"/"in" suffix (the caller appends it).
+ * the "ago"/"in" suffix (the caller appends it). A few singular/small cases are
+ * remapped to the article phrasing the UI used before the date-fns switch.
  */
-const relativeDate = (createdDate: Date, from: Date = new Date()): string =>
-	formatDistanceStrict(createdDate, from);
+const relativeDate = (createdDate: Date, from: Date = new Date()): string => {
+	const distance = formatDistanceStrict(createdDate, from);
+	if (/^\d+ seconds?$/.test(distance)) {
+		return 'a few seconds';
+	}
+	if (distance === '1 minute') {
+		return 'a minute';
+	}
+	if (distance === '1 hour') {
+		return 'an hour';
+	}
+	return distance;
+};
 
 export { formatCreatedDate, formatLongDate, relativeDate };
 export type { FormattedCreatedDate };
