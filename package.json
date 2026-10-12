@@ -23,6 +23,7 @@
         "@guardian/stand": "^0.0.60",
         "@reduxjs/toolkit": "^2.12.0",
         "bootstrap": "^3.4.1",
+        "date-fns": "^4.4.0",
         "flatten": "^1.0.3",
         "html-react-parser": "^5.2.17",
         "lodash.get": "^4.4.2",
