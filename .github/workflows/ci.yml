@@ -80,19 +80,19 @@ jobs:
         secrets: inherit
 
     riff-raff:
-        # Only upload artifacts to Riff-Raff once both the build and the e2e
-        # tests have passed, so CI is "ready to deploy" only when e2e is green.
+        # On main, only upload to Riff-Raff once the e2e tests have also passed.
+        if: github.ref == 'refs/heads/main'
         needs: [build, e2e]
         runs-on: ubuntu-latest
 
-        permissions:
+        permissions: &riff-raff-permissions
             # id-token and pull-requests required by actions-riff-raff
             id-token: write
             pull-requests: write
             # Required for `actions/checkout`
             contents: read
 
-        steps:
+        steps: &riff-raff-steps
             # Needed for riff-raff.yaml (configPath) and the git context.
             - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
@@ -115,3 +115,11 @@ jobs:
                       cfn-restorer2:
                         - cdk/cdk.out/Restorer2-euwest-1-CODE.template.json
                         - cdk/cdk.out/Restorer2-euwest-1-PROD.template.json
+
+    riff-raff-branch:
+        # Off main, upload as soon as the build passes without waiting on e2e.
+        if: github.ref != 'refs/heads/main'
+        needs: build
+        runs-on: ubuntu-latest
+        permissions: *riff-raff-permissions
+        steps: *riff-raff-steps
