@@ -156,7 +156,9 @@ const legallySensitive = css({
 	height: '15px',
 	marginBottom: '5px',
 	width: '17px',
-	background: `url(${icons.legallySensitive}) center center no-repeat`,
+	// Quote the url: Vite inlines SVGs as data URIs containing literal single
+	// quotes, which are invalid in an unquoted url().
+	background: `url("${icons.legallySensitive}") center center no-repeat`,
 });
 
 const commentsOn = css({ width: '32px' });
@@ -169,7 +171,7 @@ const commentsImage = (on: boolean) =>
 		textAlign: 'center',
 		height: '15px',
 		width: '16px',
-		background: `url(${on ? icons.commentsOn : icons.commentsOff}) center center no-repeat`,
+		background: `url("${on ? icons.commentsOn : icons.commentsOff}") center center no-repeat`,
 	});
 
 const commentsText = css({

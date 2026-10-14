@@ -3,3 +3,7 @@ mappings:
   - prefix: restorer
     port: 9000
     path: /
+    # Under `npm run dev:local`, :9000 is the stack's nginx container, which routes
+    # /vite-dev/ to Vite (:5173); this enables the websocket upgrade for HMR.
+    # Unused when running `npm run dev` + `sbt run` (browser hits :5173 directly).
+    websocket: /vite-dev/
