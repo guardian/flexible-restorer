@@ -55,6 +55,21 @@ $ VITE_DEV_SERVER=http://localhost:5173 sbt -Dlocal=true run
 Play keeps serving the HTML on :9000 and injects the Vite client, so JS/CSS
 changes hot-reload without a page refresh.
 
+```mermaid
+flowchart LR
+    B[Browser] -->|"https://restorer.local.dev-gutools.co.uk"| DN["host dev-nginx → :9000"]
+    DN --> P["Play :9000 (HTML)"]
+    B -->|"http/ws://localhost:5173"| V["Vite :5173 (modules + HMR)"]
+```
+
+- Host port 9000 is Play itself.
+- `VITE_DEV_SERVER=http://localhost:5173` with `VITE_PROXIED` unset, so the
+  browser loads modules and opens the HMR websocket directly against
+  `localhost:5173`. nginx is not involved, and the `websocket: /vite-dev/` entry
+  in `nginx/nginx-mapping.yml` is unused.
+- Port 5173 must be reachable from the host browser (forward it if running in
+  the devcontainer).
+
 The app will then be accessible locally at: <https://restorer.local.dev-gutools.co.uk/>
 
 
@@ -85,5 +100,24 @@ npm run dev:local
 
 This starts LocalStack and Restorer using the same bootstrap code as the e2e suite and
 keeps the stack running until you press Ctrl+C.
+
+HMR works through the same origin, routed via nginx:
+
+```mermaid
+flowchart LR
+    B[Browser] -->|"https://restorer.local.dev-gutools.co.uk"| DN["host dev-nginx<br/>(nginx-mapping.yml → :9000)"]
+    DN -->|"localhost:9000"| CN["nginx container :80"]
+    CN -->|"/"| P["restorer:9000 (Play)"]
+    CN -->|"/vite-dev/ (HTTP + WS)"| V["restorer:5173 (Vite)"]
+```
+
+- Host port 9000 is the nginx container's port 80, not Play.
+- `entrypoint.dev.sh` sets `VITE_DEV_SERVER=/vite-dev` (same-origin module path)
+  and `VITE_PROXIED=true` (HMR connects over `wss://…:443/vite-dev/`).
+- The nginx container routes `/vite-dev/` to `restorer:5173` with websocket
+  upgrade headers (`e2e-tests/images/nginx-dev.conf.template`).
+- The `websocket: /vite-dev/` entry in `nginx/nginx-mapping.yml` makes the host
+  dev-nginx pass the websocket upgrade through to :9000; without it HMR fails
+  before reaching the container.
 
 
