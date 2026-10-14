@@ -22,7 +22,7 @@ type RestoreParams = {
  *
  * Each endpoint wraps the existing `fetch*` helper via `queryFn`, preserving its
  * request options, URL and error contract; destinations are parsed into view
- * models on ingress. The parsed models hold `moment` values, which the store's
+ * models on ingress. The parsed models hold `Date` values, which the store's
  * serializableCheck allows (see store.ts).
  */
 const flexibleApi = createApi({
