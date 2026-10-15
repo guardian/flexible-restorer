@@ -52,12 +52,10 @@ class Restore(
   }
 
   def restoreDestinations(contentId: String) = AuthAction.async {
-    // Query every stack concurrently and without blocking: each call carries its
-    // own request timeout (see `FlexibleApi.changeDetails`) and fails fast to the
-    // `recover` below, so a slow or unreachable stack never ties up a request
-    // thread. Blocking here (previously `Await.ready` per stack) starved the
-    // execution context under concurrent load and caused reachable stacks to be
-    // spuriously reported as unavailable.
+    // Query stacks concurrently without blocking the execution context.
+    // Blocking can starve the thread pool under load, causing reachable stacks
+    // to be reported as unavailable. Each request has its own timeout;
+    // failures mark only that stack unavailable.
     val destinations = config.allStacks.map { stack =>
       val destination = Destination(stack.id, stack.displayName, stack.stage, stack.stack,
           stack.composerPrefix, stack.isSecondary, None, None, available = false)

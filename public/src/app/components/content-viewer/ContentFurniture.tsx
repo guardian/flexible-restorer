@@ -5,8 +5,8 @@ import { palette } from '../styles/palette';
 
 const FONT_AGATE = '"Guardian Agate Sans"';
 
-// Article furniture with a thin bottom
-// rule) and `.snapshot-content__furniture__item` (padding + Agate typography).
+// Separate article metadata from the body with a thin rule; padded fields use
+// Agate typography to distinguish the furniture from the article text.
 const furniture = css({
 	borderBottom: `1px solid ${palette.thinBorder}`,
 });

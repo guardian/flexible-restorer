@@ -15,7 +15,6 @@ const item = (isActive: boolean, isLaunch = false) =>
 		flexDirection: 'row',
 		background: isActive ? palette.boxTertiary : palette.boxPrimary,
 		// Launch snapshots gain a 2px border to stand out.
-		// .highlight-row-for-launches).
 		border: isLaunch ? `2px solid ${palette.grey500}` : undefined,
 		transition: 'background-color .2s ease-in-out',
 		// Hover overlay (only when not active). Content sits at z-index 2 above it.
@@ -80,7 +79,6 @@ const itemContent = css({
 });
 
 // Individual date and reason rows inside the item content.
-// zero margin is inherited from itemContent's `h6` rule and kept explicit here.
 const itemActualDate = css({
 	fontFamily: '"Guardian Agate Sans"',
 	fontWeight: 'bold',
@@ -103,7 +101,6 @@ const itemReason = css({
 });
 
 // Launch reasons are rendered bold and larger.
-// .highlight-reason-for-launches).
 const highlightLaunch = css({ fontWeight: 'bold', fontSize: '15px' });
 
 const itemInformation = css({
@@ -121,7 +118,6 @@ const itemStatus = (isLaunch = false) =>
 		cursor: 'pointer',
 		// Launch snapshots show a faded rocket in the top-right of the row,
 		// positioned against the relatively-positioned item.
-		// .highlight-row-for-launches .snapshot-list__item__status::after).
 		'&::after': isLaunch
 			? {
 					content: '"\uD83D\uDE80"',
@@ -189,9 +185,8 @@ export type SnapshotListItemProps = {
 };
 
 /**
- * A single snapshot row: revision index, snapped/modified dates + reason, and the
- * status column (legally-sensitive / comments / published state). Migrated from
- * the `snapshot-list__item` markup of restore-list.html.
+ * A single snapshot row: revision index, snapshot date, last modifier, reason,
+ * and status (legally sensitive / comments / published state).
  */
 export const SnapshotListItem: FunctionComponent<SnapshotListItemProps> = ({
 	snapshot,

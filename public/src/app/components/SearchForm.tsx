@@ -27,8 +27,8 @@ const formCss = css({
 /**
  * Splash-screen search form.
  *
- * Search form migrated from the legacy splash screen. Navigation uses browser
- * history so the form does not depend on a framework-specific router.
+ * Navigation uses browser history through `useBrowserRouter`, so the form does
+ * not depend on a framework-specific router.
  */
 export const SearchForm: FunctionComponent<SearchFormProps> = ({
 	initialQuery = '',
@@ -38,8 +38,7 @@ export const SearchForm: FunctionComponent<SearchFormProps> = ({
 
 	const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
-		// Preserve the original behaviour: take the final path segment of the
-		// entered Composer url (or a bare content id) and route to its versions.
+		// Accept a Composer URL or a bare content id by taking its final path segment.
 		const hash = query.split('/').slice(-1)[0] ?? '';
 		setUrl(`/content/${hash}/versions`);
 	};

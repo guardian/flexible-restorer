@@ -2,28 +2,12 @@ import type { Request } from "@playwright/test";
 import { Before, Given, When, Then, expect } from "../fixtures";
 
 /**
- * Playwright-style step definitions for `tests/features/analytics.feature`.
- *
- * Each step receives the
- * Playwright fixtures as the first argument (e.g. `async ({ page }) => { ... }`)
- * following the playwright-style approach:
- * https://vitalets.github.io/playwright-bdd/#/writing-steps/playwright-style
- *
- * The custom fixtures in `../fixtures` boot (or reuse) the local stack and
- * provide a signed-in `page` for the steps to use.
- *
- * NOTE: Steps that already exist in other step files are intentionally NOT
- * redefined here, because playwright-bdd shares step definitions across all
- * step files. The following are reused from elsewhere:
- *   - `the application stack is running` / `I am signed in through pan-domain auth`
- *     (content-search.steps.ts)
- *   - `snapshot content has loaded` / `the restore modal is open`
- *     (content-snapshot-content.steps.ts)
+ * Steps for e2e-tests/features/analytics.feature.
+ * Stack and sign-in steps come from content-search.steps.ts; snapshot-loading
+ * and restore-modal steps come from content-snapshot-content.steps.ts.
+ * playwright-bdd shares these definitions across files; do not redefine them.
  */
-
-// The steps are not implemented yet, so mark every scenario in this feature as
-// pending (skipped). This runs before any step, so the local stack is never
-// booted for these scenarios. Remove this hook once the steps are implemented.
+// Skip scenarios tagged @pending; playwright-bdd hooks apply across features.
 Before({ tags: "@pending" }, async ({ $test }) => {
     $test.skip(true, "analytics steps are not implemented yet");
 });
@@ -49,10 +33,8 @@ let capturedSnapshotRequest: Request;
 // --- A route change sends a tracking pixel for the current page path ----------
 
 Given("the analytics service is active", async ({ page, localStack }) => {
-    // The AnalyticsService is required by the app's run block (main.js), so it is
-    // constructed and starts listening for `$routeChangeSuccess` as soon as the
-    // Angular app bootstraps. Load the root splash page and wait for it to render
-    // to confirm the service is active.
+    // App calls trackRoute when the pathname changes. Load the splash page
+    // before exercising navigation to another route.
     await page.goto(localStack.baseUrl, { waitUntil: "domcontentloaded" });
     // The splash screen's search box is a reliable signal that the SPA has
     // bootstrapped and the initial route has resolved.
@@ -70,9 +52,7 @@ When("I navigate to a new page in the application", async ({ page, localStack })
         timeout: timeout,
     });
 
-    // Navigating to a different in-app route triggers a `$routeChangeSuccess`,
-    // which the active AnalyticsService responds to by requesting a tracking
-    // pixel for the new path.
+    // Loading a different route sends a tracking pixel for its pathname.
     await page.goto(
         localStack.baseUrl + "/content/568c4110e4b0c73bdb0e52df/versions",
         { waitUntil: "domcontentloaded" },
@@ -80,8 +60,7 @@ When("I navigate to a new page in the application", async ({ page, localStack })
 });
 
 Then("a tracking pixel should be requested", async () => {
-    // The AnalyticsService loads the pixel from `<client>/guardian-tool-accessed`
-    // on the route change; awaiting the request confirms it was dispatched.
+    // Awaiting the captured request confirms the tracking pixel was requested.
     const request = await pixelRequestPromise;
     expect(request.url()).toContain("/guardian-tool-accessed");
 });

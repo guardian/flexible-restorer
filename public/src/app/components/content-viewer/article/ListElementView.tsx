@@ -10,10 +10,8 @@ export type ListElementViewProps = {
 
 /**
  * Render a "list" element (Key takeaways, Q&A explainer, mini profiles).
- *
- * Mirrors the legacy `getListItemContent` in SnapshotModel.js: title as an
- * `<h2>`, byline as a `<p>`, the raw `bio` HTML, the nested content elements,
- * then the `endNote` as emphasised text.
+ * Titles and bylines are plain text; biographies are HTML fragments. Nested
+ * content uses the article renderer, followed by an emphasised end note.
  */
 export const ListElementView: FunctionComponent<ListElementViewProps> = ({
 	element,
