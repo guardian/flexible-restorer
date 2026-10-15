@@ -2,32 +2,14 @@ import type { Page } from "@playwright/test";
 import { Given, When, Then, expect } from "../fixtures";
 
 /**
- * Playwright-style step definitions for
- * `tests/features/content-version-list.feature`.
- *
- * Implemented so far:
- *   - The snapshot list header shows the expected columns and content identity
- *   - The snapshot list is hidden until loading finishes
- *   - The sidebar becomes active after initial snapshot data is ready
- *
- * The remaining scenarios are tagged `@pending` in the feature file and are
- * skipped by the global `Before({ tags: "@pending" })` hook registered in
- * `content-search.steps.ts`. Their steps are stubbed below purely so that
- * `bddgen` can resolve every step in the feature.
- *
- * The three Background steps (`the application stack is running`,
- * `I am signed in through pan-domain auth`,
- * `I have opened the version history page for a piece of content`) and the
- * restore-modal steps are defined in `content-search.steps.ts` /
- * `content-snapshot-content.steps.ts` and must NOT be redefined here.
- *
- * Evidence:
- *   - public/src/app/templates/restore-list.html
- *   - public/src/app/controllers/SnapshotListCtrl.js
- *   - public/src/app/models/SnapshotIdModel.js
- *   - public/src/app/services/SnapshotCollectionService.js (GET /api/1/versionList/:id)
+ * Steps for e2e-tests/features/content-version-list.feature.
+ * Stack/sign-in steps are shared from content-search.steps.ts; version-history
+ * navigation and restore-modal steps come from content-snapshot-content.steps.ts.
+ * playwright-bdd shares definitions across files; do not register duplicates.
+ * Rendering lives in public/src/app/components/snapshot-sidebar, with metadata
+ * derived in public/src/app/components/models/snapshotId.ts. State-specific
+ * fixtures are documented in e2e-tests/fixtures/snapshots/STATE_FIXTURES.md.
  */
-
 const timeout = 5 * 1000; // 5 seconds for steady-state assertions
 const loadTimeout = 15 * 1000; // 15 seconds to allow the initial collection load
 
@@ -97,8 +79,8 @@ Then("the list should render with snapshot rows", async ({ page }) => {
 // ---------------------------------------------------------------------------
 
 Given("version history data is still loading", async ({ page }) => {
-    // Hold the collection request open so the page stays in its loading state
-    // long enough to observe the preloader, then reload to trigger it freshly.
+    // Delay the version-list response so assertions can observe the loading state.
+    // Reload after installing the route to trigger a fresh request through it.
     await page.route("**/api/1/versionList/**", async (route) => {
         await new Promise((resolve) => setTimeout(resolve, 3000));
         await route.continue();
@@ -121,12 +103,6 @@ Then("I should not yet see the snapshot list content area", async ({ page }) => 
     // The list column headers only appear once loading completes.
     await expect(page.getByText("Snapped at & last modified", { exact: true })).toHaveCount(0);
 });
-
-// ---------------------------------------------------------------------------
-// Pending stubs — these belong to @pending scenarios and are skipped at runtime
-// by the global `Before({ tags: "@pending" })` hook. They exist only so that
-// `bddgen` can resolve every step in the feature.
-// ---------------------------------------------------------------------------
 
 Given(
     "version history data contains a snapshot from composer-secondary",
@@ -218,14 +194,14 @@ When("I inspect a snapshot row", async ({ page }) => {
     await expect(page.getByText(/Last modified by:/).first()).toBeVisible({ timeout });
 });
 Then("I should see the formatted snapshot date and time", async ({ page }) => {
-    // DateFormatService renders "HH:mm:ss on D<ordinal> Month",
+    // formatCreatedDate renders "HH:mm:ss on D<ordinal> Month",
     // e.g. "03:21:15 on 12th June".
     await expect(
         page.getByText(/\d{2}:\d{2}:\d{2} on \d{1,2}(st|nd|rd|th) \w+/).first(),
     ).toBeVisible({ timeout });
 });
 Then("I should see a relative age value", async ({ page }) => {
-    // The relative-age line reads "{{ getRelativeDate() }} ago", e.g. "8 months ago".
+    // The relative-age line ends in "ago", e.g. "8 months ago".
     await expect(page.getByText(/\bago$/).first()).toBeVisible({ timeout });
 });
 Then("I should see who last modified the content", async ({ page }) => {
@@ -240,8 +216,8 @@ Then("I should see the snapshot reason text", async ({ page }) => {
 
 Given("version history data contains a launch-related snapshot reason", async ({ page, localStack }) => {
     // The launch fixture (fixtures/snapshots/STATE_FIXTURES.md) has
-    // metadata.reason = "Published", which SnapshotIdModel.isBecauseOfLaunch()
-    // treats as launch activity. Its only snapshot was last modified by User 2.
+    // metadata.reason = "Published", which is treated as launch activity.
+    // Its only snapshot was last modified by User 2.
     await page.goto(`${localStack.baseUrl}/content/6a43d6fe8f08e1753109a384/versions`, {
         waitUntil: "domcontentloaded",
     });
@@ -294,7 +270,7 @@ Then("I should see the legally sensitive marker", async ({ page }) => {
     // its test id. Verify it is shown and renders the legal-check icon.
     const marker = page.locator('[data-testid="legally-sensitive"]').first();
     await expect(marker).toBeVisible({ timeout });
-    // The icon is a webpack-inlined SVG data URI; confirm an icon is rendered.
+    // The icon is a Vite-inlined SVG data URI; confirm an icon is rendered.
     const backgroundImage = await marker.evaluate((el) => getComputedStyle(el).backgroundImage);
     expect(backgroundImage).toContain("svg+xml");
 });

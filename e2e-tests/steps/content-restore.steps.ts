@@ -6,27 +6,14 @@ import type { APIRequestContext, APIResponse, Page } from "@playwright/test";
 import type { LocalStack } from "../setup/stackContainers";
 
 /**
- * Playwright-style step definitions for `tests/features/content-restore.feature`.
- *
- * Each step receives the Playwright fixtures as the first argument
- * (e.g. `async ({ page }) => { ... }`) following the playwright-style approach:
- * https://vitalets.github.io/playwright-bdd/#/writing-steps/playwright-style
- *
- * UI assertions are driven by user-facing text (headings, labels, prose) rather
- * than CSS selectors.
- *
- * NOTE: Steps already defined in other step files are intentionally NOT
- * redefined here, because playwright-bdd shares step definitions across all step
- * files. The Background steps (`the application stack is running`,
- * `I am signed in through pan-domain auth`, `I have opened the version history
- * page for a piece of content`) and several restore steps
- * (`the restore modal is open`, `I should see source revision and source
- * timestamp details`, `the Restore Version action should be disabled/enabled`,
- * `I submit Restore Version successfully`, `the response should be not found`)
- * are reused from `content-search.steps.ts`,
- * `content-snapshot-content.steps.ts` and `export.steps.ts`.
+ * Steps for e2e-tests/features/content-restore.feature.
+ * Shared steps come from content-search.steps.ts (stack/sign-in),
+ * content-snapshot-content.steps.ts (version history, modal, source details,
+ * safety checks and successful submission), and export.steps.ts (not found).
+ * playwright-bdd shares definitions across files; do not register duplicates.
+ * Prefer user-facing labels for UI assertions; the destination-radio helper
+ * below documents where custom accessible names require row-based selectors.
  */
-
 let timeout = 7 * 1000;
 
 // After any @state-modifying scenario has run its final step (and made its
@@ -65,7 +52,7 @@ const DESTINATION_CONTENT_IDS = {
 } as const;
 
 // The primary stack ("Composer (CODE)") reaches the mock under this hostname
-// alias (see `tests/e2e/stackContainers.ts` and `app/models/FlexibleStack.scala`).
+// alias (see `e2e-tests/setup/stackContainers.ts` and `app/models/FlexibleStack.scala`).
 // The mock treats requests whose Host header contains this fragment as
 // unreachable, so only the primary destination is marked unavailable.
 const PRIMARY_STACK_HOST_FRAGMENT = "flexible-api.CODE.flexible.gudiscovery";
@@ -79,9 +66,8 @@ const DESTINATIONS_LOAD_TIMEOUT = 25 * 1000;
 // The Background content. Its fixtures are uploaded to both the primary and
 // secondary snapshot buckets and the version list is sorted newest-first, so the
 // active (most recent) snapshot resolves to the secondary stack. That makes the
-// secondary stack the "current system" for this content (see
-// `RestoreFormCtrl.loadSourceAndDestinations`, which preselects the destination
-// whose systemId matches the active snapshot's system).
+// secondary stack the "current system" for this content. useRestoreForm
+// preselects the destination whose systemId matches the active snapshot's system.
 const BACKGROUND_CONTENT_ID = "568c4110e4b0c73bdb0e52df";
 const CURRENT_SYSTEM_ID = "CODE:flexible-secondary";
 
@@ -97,19 +83,17 @@ async function setDestinationChangeDetails(
     });
 }
 
-/** Regex matching the restore destinations XHR the modal issues on open. */
+/** Regex matching the restore destinations request the modal issues on open. */
 const DESTINATIONS_URL = /\/api\/1\/restore\/destinations\//;
 
 /**
  * Press Enter to open the restore modal and wait until its destination list has
  * finished loading.
  *
- * The "To:" heading is part of the modal template and appears immediately, but
- * the destination radios are rendered only after `RestoreFormCtrl` resolves the
- * user's permissions and the `/api/1/restore/destinations/:id` request. Keying
- * the wait to the settled response and the populated `<ol>` (rather than a short
- * fixed timeout) removes the load-sensitive flake where assertions ran before
- * the radios had rendered.
+ * The modal is revealed after useRestoreForm has a source snapshot, permissions
+ * and a settled destinations request. A response alone does not guarantee React
+ * has rendered the radios. Wait for both the response and populated list to
+ * avoid load-sensitive failures from asserting on controls too early.
  */
 async function openModalAndAwaitDestinations(page: Page): Promise<void> {
     await Promise.all([
@@ -416,9 +400,8 @@ Given(
 );
 
 When("I inspect the destination list", async ({ page }) => {
-    // Wait for the destination choices to finish loading and render as radio
-    // options. The "cannot be used" case queries each stack sequentially and
-    // times out, so allow generous headroom.
+    // All stack requests must settle before the radios appear, including failures
+    // for unavailable stacks. Allow headroom for request timeouts and shared-stack load.
     await expect(
         page.getByRole("radio").first(),
     ).toBeVisible({ timeout: DESTINATIONS_LOAD_TIMEOUT });
@@ -609,8 +592,7 @@ When("either safety checkbox is not selected", async ({ page }) => {
 });
 
 When("both safety checkboxes are selected", async ({ page }) => {
-    // Tick both safety checkboxes so the Restore Version button's `ng-disabled`
-    // condition clears.
+    // Both safety checkboxes must be selected to enable Restore Version.
     await page.getByLabel("You are not in content").check();
     await page.getByLabel("No one else is in the content").check();
 });

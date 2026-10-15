@@ -61,9 +61,7 @@ export type ArticleHeaderProps = {
 
 /**
  * Headline + content-id link + column headings shown above the snapshot list.
- * Migrated from the `scrollable__header-fixed` block of restore-list.html; the
- * article fields previously came from the legacy list controller scope but are now
- * derived from the active snapshot.
+ * Article fields are derived from the active snapshot.
  */
 export const ArticleHeader: FunctionComponent<ArticleHeaderProps> = ({
 	activeSnapshot,

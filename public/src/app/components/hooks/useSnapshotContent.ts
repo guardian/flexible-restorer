@@ -12,13 +12,12 @@ import { openModal, setError, showHtml, showJson } from '../store/viewerSlice';
 const COPY_LABEL = 'Copy JSON';
 const COPIED_LABEL = 'Copied!';
 
-// Matches the legacy `$timeout(() => isSettingContent = false, 200)` fade.
 const FADE_MS = 200;
 
 type UseSnapshotContent = {
 	content: SnapshotContent | undefined;
 	isShowingJSON: boolean;
-	/** True briefly while new content settles, driving the fade-in (`.active`). */
+	/** Keeps the panel transparent until the content fade-in timer completes. */
 	isSettingContent: boolean;
 	copyLabel: string;
 	canRestore: boolean;
@@ -27,7 +26,7 @@ type UseSnapshotContent = {
 	copyJson: () => void;
 };
 
-// Prefer the async Clipboard API (the modern, standard approach), we have no fallback for non-secure contexts.
+// Clipboard access requires a secure context; there is no fallback.
 const copyToClipboard = async (text: string): Promise<void> => {
 	// `navigator.clipboard` is absent at runtime in non-secure contexts, despite the types.
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime guard for non-secure contexts
@@ -38,9 +37,9 @@ const copyToClipboard = async (text: string): Promise<void> => {
 };
 
 /**
- * Drives the React snapshot content viewer, porting `SnapshotContentCtrl`.
+ * Loads the selected snapshot and controls its content view.
  *
- * The active selection now lives in the Redux viewer slice (owned by the
+ * The active selection lives in the Redux viewer slice (owned by the
  * sidebar): this hook reads `activeIndex`, resolves the matching snapshot from
  * the shared version list and loads its content via RTK Query. The HTML/JSON
  * toggle dispatches to the same slice so the sidebar's keyboard navigation stays
@@ -75,9 +74,9 @@ const useSnapshotContent = (contentId: string): UseSnapshotContent => {
 		}
 	}, [error, dispatch]);
 
-	// Blank the panel the moment a new snapshot is selected (before paint, so the
-	// empty furniture/labels never flash while the new content loads). It stays
-	// hidden until the fetch resolves and the fade-in effect below runs.
+	// Hide the panel before paint when the selection changes, preventing a flash
+	// of old content or empty furniture. The effect below schedules its reveal
+	// when content is available.
 	useLayoutEffect(() => {
 		if (!activeSnapshot) {
 			return;
@@ -85,8 +84,7 @@ const useSnapshotContent = (contentId: string): UseSnapshotContent => {
 		setIsSettingContent(true);
 	}, [activeSnapshot]);
 
-	// Fade in newly loaded content and reset the copy label, mirroring
-	// `displayContent`.
+	// Fade in content and reset the copy label when the selection or data changes.
 	useEffect(() => {
 		if (!content || !activeSnapshot) {
 			return;

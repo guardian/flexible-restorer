@@ -1,7 +1,5 @@
 import type { RawSnapshot } from '../models/snapshotContent';
 
-// Fetch layer for a single snapshot's content, mirroring the legacy
-// `SnapshotService.getSnapshot` / `SnapshotModels` used by `SnapshotContentCtrl`.
 const snapshotUrl = (
 	systemId: string,
 	contentId: string,

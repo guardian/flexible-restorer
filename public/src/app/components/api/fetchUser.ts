@@ -1,8 +1,3 @@
-// Current-user fetch layer for the React restore modal. Mirrors the legacy
-// Fetch the user and their permissions together
-// and the request is memoised so concurrent callers share a single chain. On
-// failure the memoised promise is discarded so the next call can retry.
-
 type UserPermissions = {
 	restore_content_to_any_stack?: boolean;
 	restore_content?: boolean;

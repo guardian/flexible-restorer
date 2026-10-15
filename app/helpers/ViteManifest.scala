@@ -46,9 +46,9 @@ class ViteManifest(devServerBase: Option[String], environment: Environment) {
       )
     )
 
-  // Vite already content-hashes every filename, so with the sbt-digest pipeline
-  // removed `Assets.versioned` no longer fingerprints and simply serves the file
-  // (returning the pre-compressed `.gz`/`.br` sibling when the client accepts it).
+  // Vite supplies the content hash; Assets.versioned serves that filename rather
+  // than generating another fingerprint. Play can serve its pre-compressed .gz
+  // sibling when the client accepts gzip.
   private def assetUrl(file: String): String =
     routes.Assets.versioned(s"dist/$file").url
 
@@ -71,7 +71,7 @@ class ViteManifest(devServerBase: Option[String], environment: Environment) {
   /** Stylesheet `<link>` tags for the entry and its imported chunks. */
   def stylesheets: Html = devServerBase match {
     case Some(_) =>
-      Html("") // the dev server injects styles over the HMR socket
+      Html("") // Vite's client modules inject styles and apply HMR updates.
     case None =>
       Html(
         cssFiles

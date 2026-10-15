@@ -1,21 +1,14 @@
 import { Before, Given, When, Then, expect } from "../fixtures";
 import { createPanDomainCookie } from "../setup/panDomainCookie";
-/**
- * Playwright-style step definitions for
- * `tests/features/content-search.feature`.
- *
- * These are stubs only — no implementations yet. Each step receives the
- * Playwright fixtures as the first argument (e.g. `async ({ page }) => { ... }`)
- * following the playwright-style approach:
- * https://vitalets.github.io/playwright-bdd/#/writing-steps/playwright-style
- *
- * The custom fixtures in `../fixtures` boot the local stack and provide a
- * signed-in `page` (and `baseURL`) for the steps to use.
- */
 
-// The steps are not implemented yet, so mark every scenario in this feature as
-// pending (skipped). This runs before any step, so the local stack is never
-// booted for these scenarios. Remove this hook once the steps are implemented.
+/**
+ * Search scenarios and shared Background steps for the other features.
+ * Import steps from ../fixtures to receive the shared localStack fixture.
+ * It provides connection details, not an authenticated page: the sign-in step
+ * below installs the pan-domain cookie, and navigation steps use localStack.baseUrl.
+ * playwright-bdd shares step definitions across files; define these steps once.
+ */
+// Skip scenarios tagged @pending; playwright-bdd hooks apply across features.
 Before({ tags: "@pending" }, async ({ $test }) => {
     $test.skip(true, "content-search steps are not implemented yet");
 });
@@ -156,9 +149,8 @@ Then("the form should require a query value", async ({ page }) => {
     await expect(composerUrlInput).toBeVisible({
         timeout: timeout,
     });
-    // The React SearchForm uses @guardian/stand's TextInput (react-aria), which
-    // renders the native boolean `required` attribute (present with an empty
-    // value) rather than `required="required"`.
+    // Stand's TextInput renders the boolean required attribute with an empty
+    // value, so assert required="" rather than required="required".
     await expect(composerUrlInput).toHaveAttribute("required", "");
 });
 
