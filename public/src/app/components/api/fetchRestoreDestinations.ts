@@ -19,7 +19,6 @@ type RestoreDestination = {
 	changeDetails?: DestinationChangeDetails | null;
 };
 
-/** Per-destination change summary. */
 type DestinationChange =
 	| { kind: 'revision'; revisionId: number; date: FormattedCreatedDate }
 	| { kind: 'not-on-instance' }
