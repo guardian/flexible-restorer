@@ -3,6 +3,7 @@ import { css } from '@emotion/react';
 import { TopBar, TopBarToolName } from '@guardian/stand/TopBar';
 import type { TopBarToolNameProps } from '@guardian/stand/TopBar';
 import type { FunctionComponent } from 'react';
+import logoUrl from '../../../images/restorer-white-38.svg';
 
 const faviconCss = css({
 	padding: '4px',
@@ -14,7 +15,7 @@ type FaviconWithImage = Extract<
 >;
 
 const favicon: FaviconWithImage = {
-	src: '/assets/images/restorer-white-38.svg',
+	src: logoUrl,
 	alt: 'Flexible Restorer',
 	letter: 'R',
 	cssOverrides: faviconCss,
