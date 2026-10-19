@@ -3,10 +3,19 @@
     "workspaces": [
         "e2e-tests"
     ],
+    "imports": {
+        "#*": [
+            "./*",
+            "./*.ts",
+            "./*.tsx"
+        ]
+    },
     "scripts": {
         "dev": "vite --host",
         "build": "tsc -b && vite build",
         "build:watch": "vite build --watch",
+        "storybook": "storybook dev -p 6006 --host 0.0.0.0",
+        "build-storybook": "storybook build",
         "dev:local": "tsx ./e2e-tests/images/run-dev-local.ts",
         "dev:local:prod": "APP_MODE=prod tsx ./e2e-tests/images/run-dev-local.ts",
         "test:unit": "vitest run",
@@ -36,6 +45,8 @@
     "devDependencies": {
         "@guardian/eslint-config": "14.0.1",
         "@guardian/prettier": "5.0.0",
+        "@storybook/addon-docs": "^10.6.2",
+        "@storybook/react-vite": "^10.6.2",
         "@testing-library/dom": "^10.4.2",
         "@testing-library/jest-dom": "^6.9.1",
         "@testing-library/react": "^16.3.3",
@@ -46,7 +57,10 @@
         "eslint": "^9.39.2",
         "eslint-plugin-prettier": "^5.5.4",
         "jsdom": "^25.0.1",
+        "msw": "^2.15.0",
+        "msw-storybook-addon": "^3.0.3",
         "prettier": "^3.8.3",
+        "storybook": "^10.6.2",
         "typescript": "^5.9.3",
         "vite": "^8.3.3",
         "vite-plugin-compression2": "^2.5.3",

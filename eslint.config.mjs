@@ -12,4 +12,11 @@ export default [
 			'prettier/prettier': 'error',
 		},
 	},
+	{
+		// CSF Next stories export named stories only; there is no default export.
+		files: ['**/*.stories.tsx'],
+		rules: {
+			'import/prefer-default-export': 'off',
+		},
+	},
 ];
