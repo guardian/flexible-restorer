@@ -33,7 +33,6 @@ type RestoreDestinationView = {
 	change: DestinationChange;
 };
 
-/** Prepare a raw destination for rendering. */
 const toDestinationView = (
 	destination: RestoreDestination,
 ): RestoreDestinationView => {
