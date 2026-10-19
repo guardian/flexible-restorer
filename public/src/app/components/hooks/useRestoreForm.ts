@@ -35,8 +35,7 @@ type UseRestoreForm = {
 };
 
 /**
- * Restore-form state and behaviour, ported from the legacy restore form
- * and `RestoreService`.
+ * Restore-form state and behaviour.
  *
  * The active (source) snapshot is resolved from the shared version list plus the
  * `activeIndex` in the Redux viewer slice (owned by the sidebar). When `isOpen`
@@ -87,7 +86,7 @@ const useRestoreForm = (contentId: string, isOpen: boolean): UseRestoreForm => {
 				}
 			})
 			.catch(() => {
-				// A failed/empty fetch leaves no destinations (legacy behaviour).
+				// A failed/empty fetch leaves no destinations.
 				if (!cancelled) {
 					setRawDestinations([]);
 					setIsDestinationsReady(true);
@@ -107,9 +106,9 @@ const useRestoreForm = (contentId: string, isOpen: boolean): UseRestoreForm => {
 
 	const canRestoreToAnyStack =
 		user?.permissions?.restore_content_to_any_stack === true;
-	// Destinations are parsed to view models on ingress (see api.ts); this only
-	// applies the cross-stack permission filter, which needs the user's
-	// permissions and the active snapshot's system — inputs the endpoint lacks.
+	// Destinations are parsed to destination view models on ingress.
+	// Here it filters the destination view models using the user's permissions and the
+	// active snapshot's system, which are not available to the query endpoint.
 	const destinations = useMemo<RestoreDestinationView[]>(() => {
 		if (!activeSnapshot) {
 			return [];

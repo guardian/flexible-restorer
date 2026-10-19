@@ -23,7 +23,6 @@ const root = (isSettingContent: boolean) =>
 		lineHeight: 1.5,
 	});
 
-// `.snapshot-content__viewport` + `.scrollable__container`.
 const viewport = css({
 	display: 'flex',
 	flexDirection: 'column',
@@ -32,7 +31,6 @@ const viewport = css({
 	overflow: 'auto',
 });
 
-// `.scrollable__body`.
 const body = css({
 	display: 'flex',
 	flexDirection: 'column',
@@ -49,9 +47,6 @@ export type ContentViewerProps = {
  * Snapshot content viewer: the article furniture, body (HTML/JSON) and the
  * restore/copy/export/toggle actions.
  *
- * Migrated from the `snapshot-content` block of restore-list.html and the
- * `SnapshotContentCtrl` controller. The active selection is shared through
- * the Redux viewer slice.
  */
 export const ContentViewer: FunctionComponent<ContentViewerProps> = ({
 	contentId,
@@ -70,8 +65,7 @@ export const ContentViewer: FunctionComponent<ContentViewerProps> = ({
 	return (
 		<div css={root(isSettingContent)}>
 			<div css={viewport} data-testid="snapshot-content-viewport">
-				{/* Hold the panel blank until content arrives, so the empty
-			   furniture/labels never render mid-fetch. */}
+				{/* Avoid rendering empty furniture before the first content loads. */}
 				{content && (
 					<>
 						<ContentActions

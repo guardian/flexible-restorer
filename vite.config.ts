@@ -15,8 +15,8 @@ export default defineConfig(({ command }) => ({
       jsxImportSource: "@emotion/react"
     }),
     // Emit pre-compressed copies next to each built asset. Play's Assets
-    // controller serves the `.gz` sibling to clients that accept gzip, replacing
-    // the old sbt-gzip pipeline; `.br` is emitted too for brotli-aware fronting.
+    // controller serves the `.gz` sibling to clients that accept gzip;
+    // `.br` is emitted too for brotli-aware fronting.
     compression({ include: /\.(js|css|svg|json)$/, algorithms: ['gzip', 'brotliCompress'] })
   ],
   // Built assets live in public/dist, served by Play under /assets/dist. Behind

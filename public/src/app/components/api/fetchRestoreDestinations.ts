@@ -1,6 +1,3 @@
-// Restore-destination fetch layer for the React restore modal. Mirrors the
-// The restore destinations request: a failed request throws and
-// an empty payload is treated as "no destinations available".
 import { formatCreatedDate } from '../utils/dateFormat';
 import type { FormattedCreatedDate } from '../utils/dateFormat';
 
@@ -22,7 +19,6 @@ type RestoreDestination = {
 	changeDetails?: DestinationChangeDetails | null;
 };
 
-/** Per-destination change summary, ported from `RestoreFormCtrl`'s `changeString`. */
 type DestinationChange =
 	| { kind: 'revision'; revisionId: number; date: FormattedCreatedDate }
 	| { kind: 'not-on-instance' }
@@ -37,7 +33,6 @@ type RestoreDestinationView = {
 	change: DestinationChange;
 };
 
-/** Prepare a raw destination for rendering (ported from `RestoreFormCtrl`). */
 const toDestinationView = (
 	destination: RestoreDestination,
 ): RestoreDestinationView => {
@@ -72,7 +67,7 @@ const destinationsUrl = (contentId: string): string =>
 
 /**
  * Fetch the restore destinations for a piece of content. Throws on a failed
- * request or an empty/non-array payload, matching the legacy service contract.
+ * request or an empty/non-array payload.
  */
 const fetchRestoreDestinations = async (
 	contentId: string,

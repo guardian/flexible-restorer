@@ -12,8 +12,6 @@ type FormattedCreatedDate = {
  * Break the "actual" snapshot date into the parts the sidebar shows (time,
  * day-of-month with a superscript ordinal, then month) so the component can
  * render them as JSX rather than an HTML string.
- *
- * Ported from the legacy date formatting service.
  */
 const formatCreatedDate = (createdDate: Date): FormattedCreatedDate => ({
 	prefix: format(createdDate, "HH:mm:ss 'on' d"),
@@ -22,17 +20,17 @@ const formatCreatedDate = (createdDate: Date): FormattedCreatedDate => ({
 	month: format(createdDate, 'MMMM'),
 });
 
-/** e.g. "Mon 3 October 2026". */
+/** e.g. "Sat 3 October 2026". */
 const formatLongDate = (date: Date): string => format(date, 'EEE d MMMM yyyy');
 
 /**
  * Humanised distance between `createdDate` and `from` (defaults to now), without
  * the "ago"/"in" suffix (the caller appends it). A few singular/small cases are
- * remapped to the article phrasing the UI used before the date-fns switch.
+ * expressed as "a few seconds", "a minute" or "an hour".
  */
 const relativeDate = (createdDate: Date, from: Date = new Date()): string => {
 	const distance = formatDistanceStrict(createdDate, from);
-	// Single-digit second gaps read as "a few seconds" (as the UI did before);
+	// Single-digit second gaps read as "a few seconds";
 	// 10+ seconds keep the numeric form.
 	if (/^\d seconds?$/.test(distance)) {
 		return 'a few seconds';

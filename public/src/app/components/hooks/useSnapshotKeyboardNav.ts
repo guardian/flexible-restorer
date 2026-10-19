@@ -13,15 +13,12 @@ type UseSnapshotKeyboardNavParams = {
 };
 
 /**
- * Keyboard navigation for the snapshot sidebar, mirroring the legacy
- * `SnapshotListInteractionCtrl`. Arrow up/down move the active selection, while
- * Enter/left/right drive the content panel and restore modal — all via the Redux
- * viewer slice.
+ * Arrow up/down move the active selection; Enter opens the restore modal and
+ * left/right switch the content view through the Redux viewer slice.
  *
- * The listener is registered once  on mount — before the version list has
- * finished loading — so a keypress issued as soon as the page is interactive is
- * never missed while waiting for the fetch to resolve or for a re-render to
- * re-bind it. Live state is read through a ref rather than a stale closure.
+ * Register the listener on mount so the modal and view shortcuts work while the
+ * version list loads; only up/down navigation needs the loaded list. Read live
+ * state through a ref to avoid stale closures and rebinding on each render.
  */
 const useSnapshotKeyboardNav = ({
 	snapshots,

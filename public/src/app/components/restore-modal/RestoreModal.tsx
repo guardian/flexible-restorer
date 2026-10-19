@@ -11,19 +11,16 @@ import { closeModal as closeModalAction } from '../store/viewerSlice';
 import { palette } from '../styles/palette';
 import type { FormattedCreatedDate } from '../utils/dateFormat';
 
-// Colours and fonts preserve the legacy modal presentation. Only `grey400`
-// maps to an existing local palette
-// token; the rest are legacy values with no Stand/local equivalent so they are
-// inlined here with comments.
-const GREY_650 = '#333333'; // $color-650-grey (text)
-const GREY_200 = '#EDEDED'; // $color-200-grey (disabled input background)
+// Local overrides give the Stand dialog the viewer's Egyptian/Agate typography
+// and custom control colours rather than the default Stand presentation.
+const GREY_650 = '#333333';
+const GREY_200 = '#EDEDED'; // Disabled input background.
 const INPUT_BORDER = '#9a9a9a';
-const LOADING_BAR = '#898984'; // $color-500-grey
+const LOADING_BAR = '#898984';
 const FONT_EGYPTIAN = '"Guardian Egyptian Text"';
 const FONT_AGATE = '"Guardian Agate Sans"';
 
-// Mirror the legacy box presentation on the Stand Modal: an 80%-wide, square,
-// white panel over a 20%-black backdrop.
+// An 80%-wide, square white panel over a 20%-black backdrop.
 const modalTheme = {
 	overlay: {
 		backgroundColor: 'rgba(0, 0, 0, 0.2)',
@@ -50,7 +47,7 @@ const buttonsCss = css({ paddingTop: '20px' });
 
 const rowCss = css({ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' });
 
-// Column widths from the 12-col grid mixin (col-#{span}).
+// Widths express a 12-column layout: source 5/12, arrow 1/12, destinations 6/12.
 const col = (width: string) =>
 	css({ boxSizing: 'border-box', flex: `11 1 ${width}`, maxWidth: width });
 
@@ -61,7 +58,7 @@ const centre = css({
 });
 
 // --- typography / blocks ---
-// Applied to the Stand Dialog header to keep the legacy title face.
+// Override the Stand Dialog heading with the article's Egyptian typeface.
 const titleCss = css({
 	margin: 0,
 	padding: 0,
@@ -80,7 +77,6 @@ const formHeader = css({
 	color: GREY_650,
 });
 
-// .modal__content__container — bottom rule between sections (none on the last).
 const container = (hasBorder: boolean) =>
 	css({
 		padding: '20px 0',
@@ -98,7 +94,7 @@ const arrow = css({ fontSize: 'xx-large' });
 
 const fullWidth = css({ width: '100%' });
 
-// --- destination list (.modal__content__destination-list + -form) ---
+// --- destination list ---
 const destinationList = css({
 	marginTop: '5px',
 	marginBottom: 0,
@@ -123,7 +119,7 @@ const destinationLabel = css({
 	alignItems: 'center',
 });
 
-// --- form fieldsets (.modal__content__form) ---
+// --- form fieldsets ---
 const formColumn = css({
 	// Form labels use the Egyptian display face.
 	label: {
@@ -159,8 +155,8 @@ const controlInput = css({
 	'&:disabled': { background: GREY_200 },
 });
 
-// The decal keeps its "✓" content in the accessibility tree even when hidden
-// (opacity toggle only), matching the legacy markup the e2e locators rely on.
+// Opacity hides the checkmark visually but leaves it in the accessibility tree.
+// E2e locators include that checkmark even for unchecked controls.
 const decal = (isChecked: boolean, top?: string) =>
 	css({
 		pointerEvents: 'none',
@@ -208,7 +204,7 @@ const LoadingBars: FunctionComponent = () => (
 	</div>
 );
 
-/** Render a snapshot/last-modified date with a superscript ordinal (DateFormatService.formatHtml). */
+/** Render a snapshot/last-modified date with a superscript ordinal. */
 const DateText: FunctionComponent<{ date: FormattedCreatedDate }> = ({
 	date,
 }) => (
@@ -218,7 +214,6 @@ const DateText: FunctionComponent<{ date: FormattedCreatedDate }> = ({
 	</>
 );
 
-/** The per-destination change summary (ported from `RestoreFormCtrl`'s changeString). */
 const DestinationChangeText: FunctionComponent<{
 	change: RestoreDestinationView['change'];
 }> = ({ change }) => {
@@ -245,7 +240,6 @@ export type RestoreModalProps = {
 /**
  * Restore modal: the "Before you restore" confirmation form.
  *
- * Migrated from the `ModalCtrl`/`RestoreFormCtrl` block of restore-list.html.
  * Open/close is driven by the Redux viewer slice (`isModalOpen`), shared with the
  * content viewer, sidebar keyboard handler and error modal. The shell is the
  * Stand `Modal`/`Dialog`, which owns focus trapping, the body scroll lock and
