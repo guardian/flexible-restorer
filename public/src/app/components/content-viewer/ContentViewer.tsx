@@ -47,7 +47,6 @@ export type ContentViewerProps = {
  * Snapshot content viewer: the article furniture, body (HTML/JSON) and the
  * restore/copy/export/toggle actions.
  *
- * The active selection is shared through the Redux viewer slice.
  */
 export const ContentViewer: FunctionComponent<ContentViewerProps> = ({
 	contentId,

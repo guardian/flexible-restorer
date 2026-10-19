@@ -1,5 +1,3 @@
-// POST a source snapshot to the chosen destination; the URL identifies both
-// stacks and the source snapshot's content id and timestamp.
 const restoreUrl = (
 	sourceSystemId: string,
 	contentId: string,

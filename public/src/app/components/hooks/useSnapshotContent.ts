@@ -17,7 +17,6 @@ const FADE_MS = 200;
 type UseSnapshotContent = {
 	content: SnapshotContent | undefined;
 	isShowingJSON: boolean;
-	/** Keeps the panel transparent until the content fade-in timer completes. */
 	isSettingContent: boolean;
 	copyLabel: string;
 	canRestore: boolean;

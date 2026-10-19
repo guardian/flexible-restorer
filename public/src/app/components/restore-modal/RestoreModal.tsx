@@ -77,7 +77,6 @@ const formHeader = css({
 	color: GREY_650,
 });
 
-// Separate form sections with a bottom rule, omitting it on the last section.
 const container = (hasBorder: boolean) =>
 	css({
 		padding: '20px 0',
@@ -215,7 +214,6 @@ const DateText: FunctionComponent<{ date: FormattedCreatedDate }> = ({
 	</>
 );
 
-/** The per-destination change summary. */
 const DestinationChangeText: FunctionComponent<{
 	change: RestoreDestinationView['change'];
 }> = ({ change }) => {
