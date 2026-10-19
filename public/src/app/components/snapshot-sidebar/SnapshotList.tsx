@@ -33,8 +33,7 @@ export type SnapshotListProps = {
 
 /**
  * The ordered snapshot list: an optional "from composer-secondary" banner, the
- * item row and the delta row, per snapshot. Migrated from the `snapshot-list`
- * the legacy restore-list template.
+ * item row and the delta row, per snapshot.
  */
 export const SnapshotList: FunctionComponent<SnapshotListProps> = ({
 	snapshots,

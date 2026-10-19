@@ -8,10 +8,7 @@ export type RawHtmlProps = {
 /**
  * Render an author-supplied HTML fragment (from Composer) as real React nodes.
  *
- * This replaces the legacy `ng-bind-html` / `$sce.trustAsHtml` path. Parsing to
- * React elements (rather than `dangerouslySetInnerHTML`) means React never runs
- * inline `on*` handlers or `<script>` tags, so it is a safer rendering of the
- * server-owned snapshot HTML.
+ * Parsing converts markup to React elements; it does not sanitize the HTML.
  */
 export const RawHtml: FunctionComponent<RawHtmlProps> = ({ html }) => {
 	return <>{parse(html) as ReactNode}</>;

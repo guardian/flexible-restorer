@@ -1,8 +1,5 @@
-// Typed model for a single snapshot's renderable content, ported from the
-// The legacy snapshot model built a
-// single HTML string via `getHTMLContent`; here we instead expose the article as
-// a flat list of typed elements so the React `article/*` components can render
-// them without `dangerouslySetInnerHTML`.
+// Expose the article as typed elements so dedicated components can render text,
+// lists and timelines without assembling a single HTML string for the body.
 
 /** A leaf element holding a raw HTML/text fragment authored in Composer. */
 type TextElement = { kind: 'html'; html: string };
@@ -132,9 +129,9 @@ const toElements = (raw: RawElement[]): ArticleElement[] =>
 		.filter((element): element is ArticleElement => element !== undefined);
 
 /**
- * Parse a raw snapshot into the renderable content model, mirroring the
- * derivations of the legacy `SnapshotModel` (headline/standfirst/trailText from
- * `preview.fields`, the flattened block elements, and the pretty-printed JSON).
+ * Parse a raw snapshot into the renderableContent model, extracting preview fields,
+ * flattening block elements and retaining the full snapshot
+ * as pretty-printed JSON.
  */
 const parseSnapshotContent = (raw: RawSnapshot): SnapshotContent => {
 	const preview = raw.preview;

@@ -8,11 +8,9 @@ export type TimelineElementViewProps = {
 };
 
 /**
- * Render a "timeline" element.
- *
- * Mirrors the legacy `getTimelineEventContent` in SnapshotModel.js: each section
- * shows its (plain-text) title followed by its events, where an event renders
- * its title as an `<h2>`, its date as a `<p>`, then the nested body elements.
+ * Render timeline sections with their titles and dated events.
+ * Section titles, event headings and dates are plain text; event bodies are
+ * nested article elements rendered through the shared article renderer.
  */
 export const TimelineElementView: FunctionComponent<
 	TimelineElementViewProps

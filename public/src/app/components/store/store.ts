@@ -15,8 +15,8 @@ const store = configureStore({
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({
-			// The parsed snapshot/destination view models cached by the service APIs
-			// hold `Date` values (parsed on ingress); treat them as serialisable.
+			// Snapshot-list view models contain `createdDate` values. Allow these
+			// Date instances through the serializability check.
 			serializableCheck: {
 				isSerializable: (value: unknown) =>
 					value instanceof Date || isPlain(value),

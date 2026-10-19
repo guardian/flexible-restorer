@@ -50,8 +50,7 @@ const viewerSlice = createSlice({
 		openModal: (state) => {
 			state.isModalOpen = true;
 		},
-		// Closing the modal also returns the panel to the HTML view, mirroring the
-		// legacy `hiddenModal` event.
+		// Closing the modal also returns the panel to the HTML view.
 		closeModal: (state) => {
 			state.isModalOpen = false;
 			state.contentView = 'html';

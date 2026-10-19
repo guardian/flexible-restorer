@@ -6,8 +6,7 @@ import type { FunctionComponent } from 'react';
 import { icons } from '../styles/icons';
 import { palette } from '../styles/palette';
 
-// Fixed action bar aligned to the right with a thin bottom rule.
-// bar aligned to the right with a thin bottom rule.
+// Right-aligned action bar, separated from the article by a thin bottom rule.
 const actions = css({
 	display: 'flex',
 	gap: '1rem',
