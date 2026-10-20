@@ -48,6 +48,8 @@ RUN sbt -batch compile
 # Build frontend assets. Only re-runs when public/ or the Vite/TS config changes,
 # not when Scala sources change.
 COPY public ./public
+# Stories import '#.storybook/preview', so tsc needs it to type-check.
+COPY .storybook ./.storybook
 COPY vite.config.ts tsconfig.json tsconfig.node.json ./
 RUN npm run build
 
