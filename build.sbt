@@ -9,9 +9,6 @@ ThisBuild / scalaVersion := "3.3.8"
 // -unchecked and -deprecation are already added by the PlayScala plugin
 scalacOptions += "-feature"
 
-val awsVersion = "2.17.276"
-val awsVersionV1 = "1.12.307"
-
 libraryDependencies ++= dependencies
 
 lazy val mainProject = project.in(file("."))
