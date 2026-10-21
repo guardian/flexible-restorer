@@ -48,9 +48,8 @@ const SLIDE_IN_DELAY_MS = 500;
 /**
  * Snapshot sidebar: article header + version list + click/keyboard interaction.
  *
- * Migrated from the legacy sidebar and list controllers. The active selection
- * lives in the Redux viewer slice, shared with the content viewer and restore
- * modal.
+ * The active selection lives in the Redux viewer slice, shared with the content
+ * viewer and restore modal.
  */
 export const SnapshotSidebar: FunctionComponent<SnapshotSidebarProps> = ({
 	contentId,

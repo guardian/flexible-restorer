@@ -19,7 +19,7 @@ import type { ApiError } from './apiError';
  * Each endpoint wraps the existing `fetch*` helper via `queryFn`, preserving its
  * request options, URL and error contract; responses are parsed into their view
  * models on ingress so every consumer shares one parsed reference. The parsed
- * models hold `moment` values, which the store's serializableCheck allows (see
+ * models hold `Date` values, which the store's serializableCheck allows (see
  * store.ts).
  */
 const restorerApi = createApi({

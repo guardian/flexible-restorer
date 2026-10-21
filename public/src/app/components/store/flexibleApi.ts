@@ -22,8 +22,7 @@ type RestoreParams = {
  *
  * Each endpoint wraps the existing `fetch*` helper via `queryFn`, preserving its
  * request options, URL and error contract; destinations are parsed into view
- * models on ingress. The parsed models hold `moment` values, which the store's
- * serializableCheck allows (see store.ts).
+ * models on ingress.
  */
 const flexibleApi = createApi({
 	reducerPath: 'flexibleApi',
@@ -31,8 +30,9 @@ const flexibleApi = createApi({
 	endpoints: (builder) => ({
 		getRestoreDestinations: builder.query<RestoreDestinationView[], string>(
 			{
-				// Drop the cache as soon as the modal closes (no subscribers) so each
-				// reopen fetches fresh destinations, matching the legacy per-open fetch.
+				// Drop cached destinations as soon as the last subscriber unsubscribes.
+				// Availability can change between restores; useRestoreForm also forces
+				// a fresh request on each open, even if a subscription is still active.
 				keepUnusedDataFor: 0,
 				queryFn: async (contentId) => {
 					try {

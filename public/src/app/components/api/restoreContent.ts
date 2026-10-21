@@ -1,7 +1,3 @@
-// Restore request layer for the React restore modal. Mirrors the legacy
-// POST to the restore endpoint built
-// from the active (source) snapshot and the chosen destination.
-
 const restoreUrl = (
 	sourceSystemId: string,
 	contentId: string,

@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { format, formatDistanceStrict } from 'date-fns';
 
 type FormattedCreatedDate = {
 	/** e.g. "14:30:45 on 3" */
@@ -12,24 +12,37 @@ type FormattedCreatedDate = {
  * Break the "actual" snapshot date into the parts the sidebar shows (time,
  * day-of-month with a superscript ordinal, then month) so the component can
  * render them as JSX rather than an HTML string.
- *
- * Ported from the legacy date formatting service.
  */
-const formatCreatedDate = (createdDate: number): FormattedCreatedDate => {
-	const value = moment(createdDate);
-	return {
-		prefix: value.format('HH:mm:ss [on] D'),
-		ordinal: value.format('Do').slice(-2),
-		month: value.format('MMMM'),
-	};
-};
+const formatCreatedDate = (createdDate: Date): FormattedCreatedDate => ({
+	prefix: format(createdDate, "HH:mm:ss 'on' d"),
+	// `do` yields e.g. "3rd"; strip the digits to leave just the ordinal suffix.
+	ordinal: format(createdDate, 'do').replace(/[0-9]/g, ''),
+	month: format(createdDate, 'MMMM'),
+});
+
+/** e.g. "Sat 3 October 2026". */
+const formatLongDate = (date: Date): string => format(date, 'EEE d MMMM yyyy');
 
 /**
  * Humanised distance between `createdDate` and `from` (defaults to now), without
- * the "ago"/"in" suffix from the legacy snapshot model.
+ * the "ago"/"in" suffix (the caller appends it). A few singular/small cases are
+ * expressed as "a few seconds", "a minute" or "an hour".
  */
-const relativeDate = (createdDate: number, from: number = Date.now()): string =>
-	moment(createdDate).from(moment(from), true);
+const relativeDate = (createdDate: Date, from: Date = new Date()): string => {
+	const distance = formatDistanceStrict(createdDate, from);
+	// Single-digit second gaps read as "a few seconds";
+	// 10+ seconds keep the numeric form.
+	if (/^\d seconds?$/.test(distance)) {
+		return 'a few seconds';
+	}
+	if (distance === '1 minute') {
+		return 'a minute';
+	}
+	if (distance === '1 hour') {
+		return 'an hour';
+	}
+	return distance;
+};
 
-export { formatCreatedDate, relativeDate };
+export { formatCreatedDate, formatLongDate, relativeDate };
 export type { FormattedCreatedDate };

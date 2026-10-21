@@ -1,11 +1,8 @@
-import moment from 'moment';
-import { relativeDate } from '../utils/dateFormat';
+import { formatLongDate, relativeDate } from '../utils/dateFormat';
 
 // Raw shape of a single entry returned by `GET /api/1/versionList/:contentId`
 // (see app/controllers/Versions.scala). Only the fields the sidebar reads are
-// modelled; everything is optional except the identifier/system the server
-// always sends, matching the defensive `lodash.get` access of the legacy
-// `SnapshotIdModel`.
+// modelled; the identifier, timestamp and system fields are required.
 type RawUser = {
 	firstName?: string;
 	lastName?: string;
@@ -49,24 +46,21 @@ type RawSnapshotId = {
 	};
 };
 
-/** Comment settings, mirroring `SnapshotIdModel.commentsEnabled`. */
+/** Raw comment setting and its boolean interpretation. */
 type CommentsState = {
 	defined: string | undefined;
 	on: boolean;
 };
 
 /**
- * View model consumed by the React sidebar. All fields are pre-derived (the
- * legacy model computed these lazily via getters) so components stay
- * presentational.
+ * View model with pre-derived fields so sidebar components stay presentational.
  */
 type SnapshotIdViewModel = {
 	contentId: string;
 	timestamp: string;
 	systemId: string;
 	isSecondary: boolean;
-	/** Snapshot time as epoch milliseconds (kept serializable for the store). */
-	createdDate: number;
+	createdDate: Date;
 	revisionId: number | undefined;
 	headline: string | undefined;
 	composerUrl: string;
@@ -78,13 +72,11 @@ type SnapshotIdViewModel = {
 	userEmail: string;
 };
 
-/** Ported from `SnapshotIdModel.isBecauseOfLaunch`. */
 const isBecauseOfLaunch = (reason: string | undefined): boolean => {
 	const value = reason ?? '';
 	return value === 'Published' || value.toLowerCase().includes('launch');
 };
 
-/** Ported from `SnapshotIdModel.getPublishedState`. */
 const derivePublishedState = (summary: RawSummary | undefined): string => {
 	const settings = summary?.preview?.settings;
 	const scheduledLaunchDate = summary?.scheduledLaunchDate;
@@ -92,11 +84,11 @@ const derivePublishedState = (summary: RawSummary | undefined): string => {
 	const publishedDetails = summary?.contentChangeDetails?.published;
 
 	if (scheduledLaunchDate) {
-		return `Scheduled  ${moment(scheduledLaunchDate).format('ddd D MMMM YYYY')}`;
+		return `Scheduled  ${formatLongDate(new Date(scheduledLaunchDate))}`;
 	}
 
 	if (settings?.embargoedUntil) {
-		return `Embargoed until ${moment(settings.embargoedUntil).format('ddd D MMMM YYYY')}`;
+		return `Embargoed until ${formatLongDate(new Date(settings.embargoedUntil))}`;
 	}
 
 	if (published) {
@@ -110,7 +102,7 @@ const derivePublishedState = (summary: RawSummary | undefined): string => {
 	return '';
 };
 
-/** Ported from `SnapshotIdModel.getUserEmail` (returns a display name, despite the name). */
+/** Returns a display name, despite the function's name. */
 const deriveUserEmail = (summary: RawSummary | undefined): string => {
 	const user = summary?.contentChangeDetails?.lastModified?.user;
 	if (user) {
@@ -120,13 +112,12 @@ const deriveUserEmail = (summary: RawSummary | undefined): string => {
 };
 
 /**
- * Map a raw version-list entry onto the sidebar view model, reproducing the
- * derivations from the legacy snapshot model.
+ * Map a raw version-list entry onto the sidebar view model.
  */
 const toViewModel = (raw: RawSnapshotId): SnapshotIdViewModel => {
 	const summary = raw.info?.summary;
 	const settings = summary?.preview?.settings;
-	const createdDate = moment(raw.timestamp.replace(/_/g, ':')).valueOf();
+	const createdDate = new Date(raw.timestamp.replace(/_/g, ':'));
 	const commentable = settings?.commentable;
 	const snapshotReason = raw.info?.metadata?.reason;
 
@@ -152,8 +143,7 @@ const toViewModel = (raw: RawSnapshotId): SnapshotIdViewModel => {
 };
 
 /**
- * Parse the raw version-list payload into sorted view models. Sorted newest
- * first, matching the `SnapshotIds` collection comparator.
+ * Parse the raw version-list payload into view models sorted newest first.
  */
 const parseSnapshotList = (raw: RawSnapshotId[]): SnapshotIdViewModel[] =>
 	raw

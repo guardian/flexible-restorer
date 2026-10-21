@@ -1,6 +1,5 @@
-// Palette values preserved from the legacy snapshot list. These are
-// faithful legacy values with no exact @guardian/stand token equivalent, so they
-// are kept local rather than mapped to Stand design tokens.
+// These colours have no exact @guardian/stand token equivalents,
+// so they are kept in a local palette.
 export const palette = {
 	grey500: '#898984',
 	grey400: '#BDBDBD',

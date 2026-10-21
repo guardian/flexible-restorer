@@ -6,7 +6,7 @@
     "moduleResolution": "Bundler",
     "jsx": "react-jsx",
     "jsxImportSource": "@emotion/react",
-    "types": ["react", "react-dom", "jest", "@testing-library/jest-dom"],
+    "types": ["react", "react-dom"],
 
     /* Strictest mode */
     "strict": true,
@@ -18,14 +18,16 @@
     "exactOptionalPropertyTypes": true,
     "forceConsistentCasingInFileNames": true,
 
-    /* Type-check only; webpack/Babel emits the bundle */
+    /* Type-check only; Vite emits the bundle */
     "noEmit": true,
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+    "tsBuildInfoFile": "node_modules/.cache/tsconfig.app/.tsbuildinfo"
   },
-  "include": ["public/src/app/main.tsx", "public/src/app/components/**/*.ts", "public/src/app/components/**/*.tsx"]
+  "include": ["public/src/app/main.tsx", "public/src/app/components/**/*.ts", "public/src/app/components/**/*.tsx", "vitest.setup.ts"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
