@@ -1,3 +1,7 @@
+import earlierSnapshot from '../../../../../e2e-tests/fixtures/snapshots/6aa258d98f080f2ddaddc8dd/2026-09-10T23:02:47.676Z.json';
+import earlierInfo from '../../../../../e2e-tests/fixtures/snapshots/6aa258d98f080f2ddaddc8dd/2026-09-10T23:02:47.676Z.info.json';
+import latestSnapshot from '../../../../../e2e-tests/fixtures/snapshots/6aa258d98f080f2ddaddc8dd/2026-09-11T01:32:39.779Z.json';
+import latestInfo from '../../../../../e2e-tests/fixtures/snapshots/6aa258d98f080f2ddaddc8dd/2026-09-11T01:32:39.779Z.info.json';
 import type { RestoreDestination } from '../api/fetchRestoreDestinations';
 import type { User } from '../api/fetchUser';
 import type { RawSnapshot } from '../models/snapshotContent';
@@ -5,7 +9,7 @@ import { parseSnapshotContent } from '../models/snapshotContent';
 import type { RawSnapshotId } from '../models/snapshotId';
 import { parseSnapshotList } from '../models/snapshotId';
 
-export const mockContentId = '5a65beade4b063d00a114104';
+export const mockContentId = '6aa258d98f080f2ddaddc8dd';
 
 const primarySystem = {
 	id: 'composer',
@@ -19,130 +23,38 @@ const secondarySystem = {
 	composerPrefix: 'https://composer-secondary.local.dev-gutools.co.uk',
 };
 
-const lastModifiedBy = { user: { firstName: 'Jane', lastName: 'Smith' } };
+const latestTimestamp = '2026-09-11T01_32_39.779Z';
+const earlierTimestamp = '2026-09-10T23_02_47.676Z';
 
 export const mockRawSnapshotList: RawSnapshotId[] = [
 	{
 		contentId: mockContentId,
-		timestamp: '2026-06-26T11_26_27.839Z',
+		timestamp: latestTimestamp,
 		system: primarySystem,
-		info: {
-			metadata: { reason: 'Published' },
-			summary: {
-				published: true,
-				preview: {
-					fields: { headline: 'Storybook arrives at the restorer' },
-					settings: { commentable: 'true' },
-				},
-				contentChangeDetails: {
-					revision: 3,
-					lastModified: lastModifiedBy,
-				},
-			},
-		},
+		info: latestInfo,
 	},
 	{
 		contentId: mockContentId,
-		timestamp: '2026-06-25T09_12_00.000Z',
+		timestamp: earlierTimestamp,
 		system: primarySystem,
-		info: {
-			metadata: { reason: 'Periodic snapshot' },
-			summary: {
-				preview: {
-					fields: { headline: 'Storybook arrives at the restorer' },
-					settings: {
-						legallySensitive: 'true',
-						commentable: 'false',
-					},
-				},
-				contentChangeDetails: {
-					revision: 2,
-					lastModified: lastModifiedBy,
-				},
-			},
-		},
+		info: earlierInfo,
 	},
 	{
 		contentId: mockContentId,
-		timestamp: '2026-06-20T16_45_10.000Z',
+		timestamp: earlierTimestamp,
 		system: secondarySystem,
-		info: {
-			metadata: { reason: 'Periodic snapshot' },
-			summary: {
-				preview: {
-					fields: {
-						headline: 'Storybook arrives at the restorer (draft)',
-					},
-				},
-				contentChangeDetails: {
-					revision: 1,
-					lastModified: lastModifiedBy,
-				},
-			},
-		},
+		info: earlierInfo,
 	},
 ];
 
 export const mockSnapshots = parseSnapshotList(mockRawSnapshotList);
 
-export const mockRawSnapshot: RawSnapshot = {
-	preview: {
-		fields: {
-			headline: 'Storybook arrives at the restorer',
-			standfirst: 'Every component now has a home of its own',
-			trailText: 'Components, isolated',
-		},
-		blocks: [
-			{
-				elements: [
-					{
-						fields: {
-							text: '<p>This is a <strong>paragraph</strong> of article body text.</p>',
-						},
-					},
-					{
-						fields: {
-							items: [
-								{
-									title: 'Key takeaway',
-									content: [
-										{
-											fields: {
-												text: '<p>List item content.</p>',
-											},
-										},
-									],
-								},
-							],
-						},
-					},
-					{
-						fields: {
-							sections: [
-								{
-									title: 'Timeline',
-									events: [
-										{
-											title: 'Event',
-											date: '26 June 2026',
-											body: [
-												{
-													fields: {
-														text: '<p>Event body.</p>',
-													},
-												},
-											],
-										},
-									],
-								},
-							],
-						},
-					},
-				],
-			},
-		],
-	},
+export const mockRawSnapshots: Record<string, RawSnapshot> = {
+	[latestTimestamp]: latestSnapshot,
+	[earlierTimestamp]: earlierSnapshot,
 };
+
+export const mockRawSnapshot: RawSnapshot = latestSnapshot;
 
 export const mockSnapshotContent = parseSnapshotContent(mockRawSnapshot);
 
@@ -160,8 +72,10 @@ export const mockRestoreDestinations: RestoreDestination[] = [
 		available: true,
 		composerPrefix: primarySystem.composerPrefix,
 		changeDetails: {
-			revisionId: 3,
-			lastModified: '2026-06-26T11:26:27.839Z',
+			revisionId: latestInfo.summary.contentChangeDetails.revision,
+			lastModified: new Date(
+				latestInfo.summary.contentChangeDetails.lastModified.date,
+			).toISOString(),
 		},
 	},
 	{

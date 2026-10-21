@@ -3,6 +3,7 @@ import {
 	mockPermissions,
 	mockRawSnapshot,
 	mockRawSnapshotList,
+	mockRawSnapshots,
 	mockRestoreDestinations,
 	mockUser,
 } from './mockData';
@@ -12,8 +13,12 @@ export const handlers = {
 	versionList: http.get('/api/1/versionList/:contentId', () =>
 		HttpResponse.json(mockRawSnapshotList),
 	),
-	version: http.get('/api/1/version/:systemId/:contentId/:timestamp', () =>
-		HttpResponse.json(mockRawSnapshot),
+	version: http.get(
+		'/api/1/version/:systemId/:contentId/:timestamp',
+		({ params }) =>
+			HttpResponse.json(
+				mockRawSnapshots[String(params.timestamp)] ?? mockRawSnapshot,
+			),
 	),
 	user: http.get('/api/1/user', () => HttpResponse.json(mockUser)),
 	permissions: http.get('/api/1/user/permissions', () =>
