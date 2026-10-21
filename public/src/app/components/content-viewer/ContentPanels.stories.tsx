@@ -10,9 +10,9 @@ const meta = preview.meta({
 		isShowingJSON: false,
 	},
 	decorators: [
-		// The panels track is 200% wide; clip to show one column at a time.
+		// Clip the 200%-wide track to one column, and bound the height as the app layout does so the panels scroll.
 		(Story) => (
-			<div style={{ overflow: 'hidden' }}>
+			<div style={{ display: 'flex', height: 600, overflow: 'hidden' }}>
 				<Story />
 			</div>
 		),
