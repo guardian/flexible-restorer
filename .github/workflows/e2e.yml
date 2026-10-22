@@ -37,7 +37,7 @@ jobs:
 
             - name: Cache Playwright browsers
               id: playwright-cache
-              uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+              uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
               with:
                   path: ~/.cache/ms-playwright
                   key: ${{ runner.os }}-${{ runner.arch }}-playwright-chromium-${{ hashFiles('package-lock.json') }}
@@ -59,13 +59,13 @@ jobs:
             # the E2E_*_IMAGE variables below tell Testcontainers to use them
             # directly, avoiding a second build through its separate builder.
             - name: Set up Docker Buildx
-              uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
+              uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
 
             - name: Pull LocalStack image
               run: docker pull localstack/localstack:4
 
             - name: Build mock API image
-              uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+              uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
               with:
                   context: .
                   file: e2e-tests/images/mock-flexible-api.Dockerfile
@@ -76,7 +76,7 @@ jobs:
                   cache-to: type=gha,scope=e2e-mock-api,mode=max
 
             - name: Build Restorer image
-              uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+              uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
               with:
                   context: .
                   file: e2e-tests/images/restorer.Dockerfile
@@ -87,7 +87,7 @@ jobs:
                   cache-to: type=gha,scope=e2e-restorer,mode=max
 
             - name: Build nginx image
-              uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+              uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
               with:
                   context: .
                   file: e2e-tests/images/nginx.Dockerfile
