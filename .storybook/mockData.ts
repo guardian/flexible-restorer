@@ -1,13 +1,13 @@
-import earlierInfo from '../../../../../e2e-tests/fixtures/snapshots/6aa258d98f080f2ddaddc8dd/2026-09-10T23:02:47.676Z.info.json';
-import earlierSnapshot from '../../../../../e2e-tests/fixtures/snapshots/6aa258d98f080f2ddaddc8dd/2026-09-10T23:02:47.676Z.json';
-import latestInfo from '../../../../../e2e-tests/fixtures/snapshots/6aa258d98f080f2ddaddc8dd/2026-09-11T01:32:39.779Z.info.json';
-import latestSnapshot from '../../../../../e2e-tests/fixtures/snapshots/6aa258d98f080f2ddaddc8dd/2026-09-11T01:32:39.779Z.json';
-import type { RestoreDestination } from '../api/fetchRestoreDestinations';
-import type { User } from '../api/fetchUser';
-import type { RawSnapshot } from '../models/snapshotContent';
-import { parseSnapshotContent } from '../models/snapshotContent';
-import type { RawSnapshotId } from '../models/snapshotId';
-import { parseSnapshotList } from '../models/snapshotId';
+import earlierInfo from '../e2e-tests/fixtures/snapshots/6aa258d98f080f2ddaddc8dd/2026-09-10T23:02:47.676Z.info.json';
+import earlierSnapshot from '../e2e-tests/fixtures/snapshots/6aa258d98f080f2ddaddc8dd/2026-09-10T23:02:47.676Z.json';
+import latestInfo from '../e2e-tests/fixtures/snapshots/6aa258d98f080f2ddaddc8dd/2026-09-11T01:32:39.779Z.info.json';
+import latestSnapshot from '../e2e-tests/fixtures/snapshots/6aa258d98f080f2ddaddc8dd/2026-09-11T01:32:39.779Z.json';
+import type { RestoreDestination } from '../public/src/app/components/api/fetchRestoreDestinations';
+import type { User } from '../public/src/app/components/api/fetchUser';
+import type { RawSnapshot } from '../public/src/app/components/models/snapshotContent';
+import { parseSnapshotContent } from '../public/src/app/components/models/snapshotContent';
+import type { RawSnapshotId } from '../public/src/app/components/models/snapshotId';
+import { parseSnapshotList } from '../public/src/app/components/models/snapshotId';
 
 export const mockContentId = '6aa258d98f080f2ddaddc8dd';
 

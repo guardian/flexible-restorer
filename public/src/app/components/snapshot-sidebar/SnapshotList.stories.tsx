@@ -1,6 +1,6 @@
 import { fn } from 'storybook/test';
+import { mockSnapshots } from '#.storybook/mockData';
 import preview from '#.storybook/preview';
-import { mockSnapshots } from '../storybook/mockData';
 import { SnapshotList } from './SnapshotList';
 
 const meta = preview.meta({

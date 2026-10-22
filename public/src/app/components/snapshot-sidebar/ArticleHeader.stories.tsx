@@ -1,5 +1,5 @@
+import { mockSnapshots } from '#.storybook/mockData';
 import preview from '#.storybook/preview';
-import { mockSnapshots } from '../storybook/mockData';
 import { ArticleHeader } from './ArticleHeader';
 
 const meta = preview.meta({

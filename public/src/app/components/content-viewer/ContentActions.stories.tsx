@@ -1,6 +1,6 @@
 import { fn } from 'storybook/test';
+import { mockContentId } from '#.storybook/mockData';
 import preview from '#.storybook/preview';
-import { mockContentId } from '../storybook/mockData';
 import { ContentActions } from './ContentActions';
 
 const meta = preview.meta({

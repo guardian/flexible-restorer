@@ -4,7 +4,8 @@
         "e2e-tests"
     ],
     "imports": {
-        "#.storybook/preview": "./.storybook/preview.tsx"
+        "#.storybook/preview": "./.storybook/preview.tsx",
+        "#.storybook/mockData": "./.storybook/mockData.ts"
     },
     "scripts": {
         "dev": "vite --host",

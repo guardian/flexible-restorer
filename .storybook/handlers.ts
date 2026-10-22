@@ -8,7 +8,7 @@ import {
 	mockUser,
 } from './mockData';
 
-/** Default MSW handlers for the restorer API; override per story via `parameters.msw.handlers`. */
+/** Default MSW handlers for the restorer API; override per story with `msw.use()` in the story's `beforeEach`. */
 export const handlers = {
 	versionList: http.get('/api/1/versionList/:contentId', () =>
 		HttpResponse.json(mockRawSnapshotList),

@@ -1,5 +1,6 @@
+import { http, HttpResponse } from 'msw';
+import { mockContentId } from '#.storybook/mockData';
 import preview from '#.storybook/preview';
-import { mockContentId } from '../storybook/mockData';
 import { SnapshotSidebar } from './SnapshotSidebar';
 
 const meta = preview.meta({
@@ -16,3 +17,13 @@ const meta = preview.meta({
 });
 
 export const Default = meta.story();
+
+export const NoSnapshots = meta.story({
+	beforeEach({ msw }) {
+		msw.use(
+			http.get('/api/1/versionList/:contentId', () =>
+				HttpResponse.json([]),
+			),
+		);
+	},
+});

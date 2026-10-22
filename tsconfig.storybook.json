@@ -7,7 +7,6 @@
   },
   "include": [
     "public/src/app/components/**/*.stories.tsx",
-    "public/src/app/components/storybook/**/*.ts",
     "public/src/app/components/svg.d.ts",
     ".storybook/*.ts",
     ".storybook/*.tsx"

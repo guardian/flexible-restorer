@@ -1,7 +1,7 @@
 import { fn } from 'storybook/test';
+import { mockSnapshots } from '#.storybook/mockData';
 import preview from '#.storybook/preview';
 import type { SnapshotIdViewModel } from '../models/snapshotId';
-import { mockSnapshots } from '../storybook/mockData';
 import { formatLongDate } from '../utils/dateFormat';
 import { SnapshotListItem } from './SnapshotListItem';
 

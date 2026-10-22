@@ -23,11 +23,7 @@ export default [
 	},
 	{
 		// Storybook files are excluded from tsconfig.json.
-		files: [
-			'**/*.stories.tsx',
-			'public/src/app/components/storybook/**',
-			'.storybook/**',
-		],
+		files: ['**/*.stories.tsx', '.storybook/**'],
 		languageOptions: {
 			parserOptions: {
 				projectService: false,

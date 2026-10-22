@@ -1,5 +1,5 @@
+import { mockContentId } from '#.storybook/mockData';
 import preview from '#.storybook/preview';
-import { mockContentId } from '../storybook/mockData';
 import { VersionsView } from './VersionsView';
 
 const meta = preview.meta({

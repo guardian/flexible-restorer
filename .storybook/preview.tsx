@@ -9,7 +9,7 @@ import { flexibleApi } from '../public/src/app/components/store/flexibleApi';
 import { restorerApi } from '../public/src/app/components/store/restorerApi';
 import { viewerSlice } from '../public/src/app/components/store/viewerSlice';
 import type { ViewerState } from '../public/src/app/components/store/viewerSlice';
-import { handlers } from '../public/src/app/components/storybook/handlers';
+import { handlers } from './handlers';
 import '../public/src/app/fonts.css';
 import '../public/gu-noting.css';
 

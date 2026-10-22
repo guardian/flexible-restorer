@@ -1,5 +1,5 @@
+import { mockSnapshotContent } from '#.storybook/mockData';
 import preview from '#.storybook/preview';
-import { mockSnapshotContent } from '../storybook/mockData';
 import { ContentPanels } from './ContentPanels';
 
 const meta = preview.meta({

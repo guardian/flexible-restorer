@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
+import { mockContentId } from '#.storybook/mockData';
 import preview from '#.storybook/preview';
 import { App } from './App';
-import { mockContentId } from './storybook/mockData';
 
 const meta = preview.meta({
 	component: App,
