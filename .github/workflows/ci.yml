@@ -71,6 +71,30 @@ jobs:
                   if-no-files-found: error
                   retention-days: 1
 
+    chromatic:
+        runs-on: ubuntu-latest
+        permissions:
+            # Required for `actions/checkout`
+            contents: read
+        steps:
+            - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+              with:
+                  # Chromatic uses git history to find baseline builds.
+                  fetch-depth: 0
+
+            - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+              with:
+                  node-version-file: ".tool-versions"
+                  cache: npm
+                  cache-dependency-path: "package-lock.json"
+
+            - name: Publish Storybook to Chromatic
+              run: |
+                  npm ci
+                  npm run chromatic
+              env:
+                  CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+
     e2e:
         # Run the e2e suite as part of CI so the deploy can depend on it.
         permissions:
