@@ -21,4 +21,19 @@ export default [
 			'import/prefer-default-export': 'off',
 		},
 	},
+	{
+		// Storybook files are excluded from tsconfig.json.
+		files: [
+			'**/*.stories.tsx',
+			'public/src/app/components/storybook/**',
+			'.storybook/**',
+		],
+		languageOptions: {
+			parserOptions: {
+				projectService: false,
+				project: './tsconfig.storybook.json',
+				tsconfigRootDir: import.meta.dirname,
+			},
+		},
+	},
 ];

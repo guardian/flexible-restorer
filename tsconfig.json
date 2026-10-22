@@ -29,5 +29,7 @@
     "tsBuildInfoFile": "node_modules/.cache/tsconfig.app/.tsbuildinfo"
   },
   "include": ["public/src/app/main.tsx", "public/src/app/components/**/*.ts", "public/src/app/components/**/*.tsx", "vitest.setup.ts"],
+  // Storybook files are type-checked by tsconfig.storybook.json so the app build doesn't depend on them.
+  "exclude": ["public/src/app/components/**/*.stories.tsx", "public/src/app/components/storybook/**"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

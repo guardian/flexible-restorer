@@ -14,8 +14,8 @@ export default defineMain({
 	// The app's pre-compression plugin is only needed for Play-served assets.
 	viteFinal: (config) => ({
 		...config,
-		plugins: config.plugins
-			?.flat()
+		plugins: (config.plugins ?? [])
+			.flat()
 			.filter(
 				(plugin) =>
 					!(
