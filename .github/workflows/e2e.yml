@@ -48,16 +48,8 @@ jobs:
               if: steps.playwright-cache.outputs.cache-hit != 'true'
               run: npx playwright install chromium
 
-            # Like Grid, rely on the hosted runner's Chromium system libraries.
-            # Verify they are sufficient on cache hits and misses before building
-            # the stack, without downloading Linux packages on every run.
             - name: Verify Chromium can launch
-              run: |
-                  node --input-type=module <<'NODE'
-                  import { chromium } from 'playwright';
-                  const browser = await chromium.launch();
-                  await browser.close();
-                  NODE
+              run: npx tsx e2e-tests/setup/verify-chromium.ts
 
             # Pre-build images before the suite starts so Scala compilation stays
             # outside its timeout. Buildx restores and saves layers between runs
