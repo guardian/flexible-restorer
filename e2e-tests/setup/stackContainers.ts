@@ -63,7 +63,12 @@ function buildImage(
     projectRoot: string,
     dockerfile: string,
     tag: string,
+    prebuiltImage?: string,
 ): Promise<GenericContainer> {
+    if (prebuiltImage) {
+        return Promise.resolve(new GenericContainer(prebuiltImage));
+    }
+
     return GenericContainer.fromDockerfile(projectRoot, dockerfile)
         .withBuildkit()
         .build(tag, {
@@ -154,6 +159,7 @@ export async function startLocalStack(
                 projectRoot,
                 "e2e-tests/images/mock-flexible-api.Dockerfile",
                 mockImageTag,
+                process.env.E2E_MOCK_API_IMAGE,
             )
         )
             .withNetwork(network)
@@ -175,6 +181,7 @@ export async function startLocalStack(
                 projectRoot,
                 "e2e-tests/images/restorer.Dockerfile",
                 restorerImageTag,
+                process.env.E2E_RESTORER_IMAGE,
             )
         )
             .withNetwork(network)
@@ -261,6 +268,7 @@ export async function startLocalStack(
                 projectRoot,
                 "e2e-tests/images/nginx.Dockerfile",
                 nginxImageTag,
+                process.env.E2E_NGINX_IMAGE,
             )
         )
             .withNetwork(network)
