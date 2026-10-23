@@ -8,7 +8,7 @@ on:
 
 jobs:
     e2e:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
 
         permissions:
             # Required for `actions/checkout`
@@ -46,11 +46,18 @@ jobs:
 
             - name: Install Playwright browser
               if: steps.playwright-cache.outputs.cache-hit != 'true'
-              run: npx playwright install --with-deps chromium
+              run: npx playwright install chromium
 
-            - name: Install Playwright system dependencies
-              if: steps.playwright-cache.outputs.cache-hit == 'true'
-              run: npx playwright install-deps chromium
+            # Like Grid, rely on the hosted runner's Chromium system libraries.
+            # Verify they are sufficient on cache hits and misses before building
+            # the stack, without downloading Linux packages on every run.
+            - name: Verify Chromium can launch
+              run: |
+                  node --input-type=module <<'NODE'
+                  import { chromium } from 'playwright';
+                  const browser = await chromium.launch();
+                  await browser.close();
+                  NODE
 
             # Pre-build images before the suite starts so Scala compilation stays
             # outside its timeout. Buildx restores and saves layers between runs
