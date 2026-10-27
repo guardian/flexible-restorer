@@ -24,7 +24,7 @@
         "test": "npm run bddgen && playwright test --config=e2e-tests/playwright.config.js",
         "test:ci": "START_LOCAL_INFRA=true playwright test --config=e2e-tests/playwright.config.js",
         "test:ui": "npm run bddgen && playwright test --config=e2e-tests/playwright.config.js --ui-host=0.0.0.0 --ui-port=9323",
-        "chromatic": "chromatic --exit-zero-on-changes"
+        "chromatic": "chromatic --exit-zero-on-changes --build-script-name storybook:build"
     },
     "dependencies": {
         "@emotion/react": "^11.14.0",
