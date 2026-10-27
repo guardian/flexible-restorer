@@ -59,6 +59,7 @@ export const ContentActions: FunctionComponent<ContentActionsProps> = ({
 			size="sm"
 			onPress={onCopy}
 			data-testid="snapshot-content-copy"
+			data-comment="copy"
 		>
 			{copyLabel}
 		</Button>
