@@ -7,19 +7,11 @@ import { tmpdir } from "os";
 import { join } from "path";
 
 /**
- * Playwright-style step definitions for `tests/features/export.feature`.
- *
- * These are stubs only — no implementations yet. Each step receives the
- * Playwright fixtures as the first argument (e.g. `async ({ page }) => { ... }`)
- * following the playwright-style approach:
- * https://vitalets.github.io/playwright-bdd/#/writing-steps/playwright-style
- *
- * NOTE: The Background steps `the application stack is running` and
- * `I am signed in through pan-domain auth` are intentionally NOT redefined here
- * — they already exist in `content-search.steps.ts`, and playwright-bdd shares
- * step definitions across all step files.
+ * Steps for e2e-tests/features/export.feature. Stack and sign-in Background
+ * steps are shared from content-search.steps.ts; do not register duplicates.
+ * The not-found assertion here is also reused by restore scenarios through
+ * support/lastApiResponse.ts.
  */
-
 // The download triggered by an export action, captured in the When step so the
 // following Then step can assert on it.
 let lastDownload: Download | undefined;

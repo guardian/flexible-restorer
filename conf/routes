@@ -2,7 +2,7 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Angular app
+# Application pages
 GET            /                                           controllers.Application.index
 GET            /content/:contentId/versions                controllers.Application.versionIndex(contentId:String)
 

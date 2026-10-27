@@ -1,11 +1,12 @@
-@(message: String)
+@(message: String, vite: helpers.ViteManifest)
 <!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
     <title>Composer Restorer - Access denied</title>
     <link rel="stylesheet" type="text/css" href="https://assets.guim.co.uk/fonts/open-sans/OpenSans.css" />
-    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("dist/main.css")" />
+    @vite.stylesheets
+    @vite.favicon
 </head>
 <body>
 <div class="find-snapshots">

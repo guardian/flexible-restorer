@@ -3,32 +3,19 @@ import { Given, When, Then, expect } from "../fixtures";
 import { createPanDomainCookie } from "../setup/panDomainCookie";
 
 /**
- * Playwright-style step definitions for
- * `tests/features/content-snapshot-content.feature`.
- *
- * These are stubs only — no implementations yet. Each step receives the
- * Playwright fixtures as the first argument (e.g. `async ({ page }) => { ... }`)
- * following the playwright-style approach:
- * https://vitalets.github.io/playwright-bdd/#/writing-steps/playwright-style
- *
- * The custom fixtures in `../fixtures` boot (or reuse) the local stack and
- * provide a signed-in `page` for the steps to use.
- *
- * NOTE: The Background steps `the application stack is running` and
- * `I am signed in through pan-domain auth` are intentionally NOT redefined here
- * — they already exist in `content-search.steps.ts`, and playwright-bdd shares
- * step definitions across all step files.
+ * Steps for e2e-tests/features/content-snapshot-content.feature, including the
+ * version-history and restore-modal steps reused by other features.
+ * Stack and sign-in Background steps live in content-search.steps.ts; the
+ * localStack fixture provides connection details but does not sign in for us.
+ * playwright-bdd shares definitions across files; do not register duplicates.
  */
-
 // --- Background ---------------------------------------------------------------
 
 let timeout = 5 * 1000;
 
-// A generous but bounded wait for the restore modal's destination list to load.
-// Loading destinations is comparatively slow — the controller queries each
-// stack sequentially (see app/controllers/Restore.scala#restoreDestinations) —
-// and slower still under multi-worker load on the shared stack, so allow extra
-// headroom without falling back to the 15-minute test timeout.
+// Destination queries run concurrently, but the response waits for every stack
+// to respond or fail. Allow headroom under multi-worker load on the shared stack.
+// Keep this wait bounded so missing destinations fail before the full test timeout.
 let destinationsLoadTimeout = 25 * 1000;
 
 // On a successful restore the app navigates the browser to the destination
@@ -267,8 +254,7 @@ Given("the user permissions are loaded", async () => {
 });
 
 When("the user has restore_content permission", async ( {page , localStack}) => {
-    // The default user has the `restorer_access` permission, so no action is needed to grant it. 
-    // But we update the cookie here just to ensure the test user is signed in with the correct role for this scenario.
+    // Sign in with the default test role for this scenario.
     const { baseUrl, panDomainPrivateKey } = localStack;
     const cookieData = createPanDomainCookie(panDomainPrivateKey);
     
@@ -313,7 +299,7 @@ Then(
     "the Restore action should not be visible in the snapshot content panel",
     async ({ page }) => {
         // Inverse of the visible case: when the user lacks restore_content
-        // permission the "Restore" button is not rendered (ng-if="canRestore"),
+        // permission the "Restore" button is not rendered,
         // so the exact-matched label must be hidden. Match the text exactly so
         // it is not confused with the modal's "Restore Version" button.
         await expect(page.getByText("Restore", { exact: true })).toBeHidden({
@@ -324,11 +310,9 @@ Then(
 
 // --- Enter key opens the restore modal ----------------------------------------
 
-// The restore modal is hidden purely by toggling opacity (it does not use
-// display/visibility). Playwright treats an `opacity: 0` element as visible, so
-// open/closed cannot be detected via visibility matchers. Instead, locate the
-// React modal by its test id and assert on its computed opacity: `1` when open,
-// `0` when closed.
+// The restore modal is the Stand `Modal`/`Dialog`, which mounts its overlay
+// (and test id) only while open and removes it on close. Open/closed is
+// therefore detected with `toBeVisible()` / `toBeHidden()` on the test id.
 const restoreModalLocator = (page: Page) =>
     page.locator('[data-testid="restore-modal"]');
 
@@ -343,7 +327,7 @@ When("I press Enter", async ({ page }) => {
 });
 
 Then("the restore modal should be displayed", async ({ page }) => {
-    await expect(restoreModalLocator(page)).toHaveCSS("opacity", "1", {
+    await expect(restoreModalLocator(page)).toBeVisible({
         timeout: timeout,
     });
 });
@@ -374,18 +358,17 @@ Given("the restore modal is open", async ({ page }) => {
     // Open the modal via the Enter key, then confirm it is displayed so the
     // close behaviour can be exercised from a known-open state.
     await page.keyboard.press("Enter");
-    await expect(restoreModalLocator(page)).toHaveCSS("opacity", "1", {
+    await expect(restoreModalLocator(page)).toBeVisible({
         timeout: timeout,
     });
 });
 
 When("I choose Cancel", async ({ page }) => {
-    // The modal's Cancel button calls `modalCtrl.closeModal()`.
     await page.getByRole("button", { name: "Cancel" }).click();
 });
 
 Then("the restore modal should close", async ({ page }) => {
-    await expect(restoreModalLocator(page)).toHaveCSS("opacity", "0", {
+    await expect(restoreModalLocator(page)).toBeHidden({
         timeout: timeout,
     });
 });
@@ -400,9 +383,9 @@ Then("HTML display mode should be restored", async ({ page }) => {
 
 When("I reopen the restore modal and press Escape", async ({ page }) => {
     // Reopen with Enter, confirm it is open, then close it with Escape, which
-    // the modal controller handles while it is active (keyCode 27).
+    // react-aria handles while the modal is active.
     await page.keyboard.press("Enter");
-    await expect(restoreModalLocator(page)).toHaveCSS("opacity", "1", {
+    await expect(restoreModalLocator(page)).toBeVisible({
         timeout: timeout,
     });
     await page.keyboard.press("Escape");
@@ -436,15 +419,13 @@ Given(
 Given(
     "the restore modal is opened for an active snapshot",
     async ({ page }) => {
-        // Wait for the content panel to render so the keyboard handlers are
-        // wired up, then open the modal via Enter and confirm it is displayed.
-        // Opening the modal publishes `snapshot-list:display-modal`, which kicks
-        // off the async load of the source details and restore destinations.
+        // Start from a loaded snapshot. Enter opens the modal and triggers
+        // useRestoreForm to load permissions and destinations.
         await expect(page.getByText("Show JSON", { exact: true })).toBeVisible({
             timeout: timeout,
         });
         await page.keyboard.press("Enter");
-        await expect(restoreModalLocator(page)).toHaveCSS("opacity", "1", {
+        await expect(restoreModalLocator(page)).toBeVisible({
             timeout: timeout,
         });
     },
@@ -507,7 +488,7 @@ When("either required safety checkbox is not selected", async ({ page }) => {
 });
 
 Then("the Restore Version action should be disabled", async ({ page }) => {
-    // The submit button is `ng-disabled` unless both safety checkboxes are
+    // The submit button is disabled unless both safety checkboxes are
     // checked, so with only one selected it must be disabled.
     await expect(
         page.getByRole("button", { name: "Restore Version" }),
@@ -520,8 +501,7 @@ When("both required safety checkboxes are selected", async ({ page }) => {
 });
 
 Then("the Restore Version action should be enabled", async ({ page }) => {
-    // With both safety checkboxes checked the `ng-disabled` condition clears and
-    // the submit button becomes enabled.
+    // With a destination selected and both safety checks confirmed, submission is enabled.
     await expect(
         page.getByRole("button", { name: "Restore Version" }),
     ).toBeEnabled({ timeout: timeout });
@@ -564,7 +544,7 @@ When("I submit Restore Version successfully", async ({ page, localStack }) => {
     // changeDetails calls are discarded).
     await page.request.delete(localStack.mockApiUrl + "/__admin/requests");
 
-    // On success the controller sets `window.location.href` to the destination
+    // On success useRestoreForm sets `window.location.href` to the destination
     // Composer content URL. That host redirects to Google auth, so intercept the
     // navigation, record the requested URL, and abort it — the redirect step
     // asserts on the captured URL rather than following it.
@@ -619,9 +599,8 @@ Then(
     "I should be redirected to that destination Composer content URL",
     async () => {
         const contentId = "568c4110e4b0c73bdb0e52df";
-        // On success the controller redirects via
-        // `window.location.href = ${selectedDestination.composerPrefix}/content/:id`
-        // (see public/javascripts/app/controllers/RestoreFormCtrl.js#restore).
+        // On success useRestoreForm redirects to the selected destination's
+        // composerPrefix followed by /content/:id.
         // The selected destination is "Composer (CODE)", whose composerPrefix is
         // built from the CODE stage domain (code.dev-gutools.co.uk). The submit
         // step intercepts that navigation and records the requested URL, so we
@@ -660,10 +639,9 @@ Given("snapshot content loading fails", async ({ page }) => {
         timeout: timeout,
     });
 
-    // Force the snapshot content endpoint to fail. The next time the app loads a
-    // snapshot's content (GET /api/1/version/:system/:content/:timestamp, see
-    // SnapshotCollectionService.js) the request returns 500, so
-    // SnapshotContentCtrl.loadContent's `.catch` publishes the 'error' event.
+    // Make GET /api/1/version/:system/:content/:timestamp fail on the next fetch.
+    // useSnapshotContent forwards the RTK Query error to the viewer slice via
+    // setError, which supplies the message displayed by ErrorModal.
     await page.route("**/api/1/version/**", async (route) => {
         await route.fulfill({
             status: 500,
@@ -674,12 +652,9 @@ Given("snapshot content loading fails", async ({ page }) => {
 });
 
 When("the error is published", async ({ page }) => {
-    // Pressing the down arrow makes the next snapshot active, which loads its
-    // content from the (now failing) endpoint. The rejected request causes
-    // SnapshotContentCtrl to publish the 'error' event the modals react to.
-    // Wait for the React sidebar list to be interactive first: the keydown
-    // handler is a no-op until the snapshot list has loaded, so pressing too
-    // early would not navigate (and never trigger the failing content fetch).
+    // ArrowDown needs a loaded list; before that it is a no-op and would never
+    // trigger the failing fetch. Wait for an active row, then select the next
+    // snapshot to exercise the request failure and error-modal path.
     await expect(
         page.locator('[data-testid="snapshot-list-item"][data-active="true"]'),
     ).toHaveCount(1, { timeout: timeout });
@@ -689,7 +664,7 @@ When("the error is published", async ({ page }) => {
 Then(
     "I should see the error modal with an explanatory message",
     async ({ page }) => {
-        // The error event opens the React/Stand modal and supplies its content.
+        // ErrorModal displays the error held in the Redux viewer slice.
         const errorModal = errorModalLocator(page);
         await expect(errorModal).toBeVisible({ timeout: timeout });
         await expect(errorModal).toContainText("Ooops, something went wrong");
@@ -697,10 +672,8 @@ Then(
 );
 
 Then("the restore modal should close if it was open", async ({ page }) => {
-    // ModalController subscribes to the 'error' event and always closes the
-    // restore modal. It was not opened in this scenario, so it must be closed
-    // (opacity 0) once the error has been published.
-    await expect(restoreModalLocator(page)).toHaveCSS("opacity", "0", {
+    // The restore modal was not opened in this scenario and should remain closed.
+    await expect(restoreModalLocator(page)).toBeHidden({
         timeout: timeout,
     });
 });
@@ -710,10 +683,8 @@ Then("the restore modal should close if it was open", async ({ page }) => {
 When(
     "there are no destinations available for the current content",
     async ({ page }) => {
-        // Force the destinations endpoint to return an empty list.
-        // RestoreService.getDestinations rejects on an empty array, and
-        // RestoreFormCtrl's `.catch` then sets `$scope.destinations = []` (see
-        // RestoreService.js / RestoreFormCtrl.js), leaving no destinations.
+        // fetchRestoreDestinations rejects an empty list; useRestoreForm catches
+        // that error and clears the destination choices.
         await page.route(
             "**/api/1/restore/destinations/**",
             async (route) => {
@@ -729,11 +700,11 @@ When(
         // close and reopen it to reload destinations through the now-empty
         // endpoint.
         await page.keyboard.press("Escape");
-        await expect(restoreModalLocator(page)).toHaveCSS("opacity", "0", {
+        await expect(restoreModalLocator(page)).toBeHidden({
             timeout: timeout,
         });
         await page.keyboard.press("Enter");
-        await expect(restoreModalLocator(page)).toHaveCSS("opacity", "1", {
+        await expect(restoreModalLocator(page)).toBeVisible({
             timeout: timeout,
         });
     },
@@ -742,9 +713,7 @@ When(
 Then(
     "I should see an error outcome for missing restore destinations",
     async ({ page }) => {
-        // With no destinations returned, the `ng-repeat="dest in destinations"`
-        // renders nothing, so the restore modal offers no destination radio
-        // options to restore to.
+        // An empty destination list leaves no radio options to restore to.
         await expect(page.getByRole("radio")).toHaveCount(0, {
             timeout: timeout,
         });

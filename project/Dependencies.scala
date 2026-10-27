@@ -2,7 +2,7 @@ import play.sbt.PlayImport.ws
 import sbt._
 
 object Dependencies {
-  val awsVersion = "2.25.70"
+  val awsVersion = "2.55.11"
   val awsVersionV1 = "1.12.584"
 
   val awsDependencies = Seq(
@@ -10,9 +10,9 @@ object Dependencies {
   )
 
   val guardianDependencies = Seq(
-    "com.gu" %% "pan-domain-auth-play_3-0" % "13.0.0",
+    "com.gu" %% "pan-domain-auth-play_3-0" % "22.2.0",
     "com.gu" %% "editorial-permissions-client" % "6.0.1",
-    "com.gu" %% "simple-configuration-ssm" % "2.0.0"
+    "com.gu" %% "simple-configuration-ssm" % "15.0.0"
   )
 
   val testDependencies = Seq(

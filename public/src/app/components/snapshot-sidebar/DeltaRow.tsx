@@ -1,0 +1,51 @@
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+import { baseTypography } from '@guardian/stand';
+import type { FunctionComponent } from 'react';
+import { palette } from '../styles/palette';
+
+const textStyle = {
+	fontFamily: baseTypography.family.openSans,
+	fontSize: '12px',
+};
+
+// --- delta row ---
+const deltaRow = css({
+	display: 'flex',
+	flexDirection: 'row-reverse',
+	alignItems: 'center',
+	padding: '5px 0 2px 0',
+	opacity: 0.3,
+});
+
+const deltaIcon = css({
+	marginLeft: '5px',
+	width: 0,
+	height: 0,
+	borderLeft: '4px solid transparent',
+	borderRight: '4px solid transparent',
+	borderTop: `5px solid ${palette.grey500}`,
+});
+
+const deltaContent = css({
+	transition: 'opacity .2s ease-in-out',
+	lineHeight: 1.4,
+	fontSize: '12px',
+});
+
+export type DeltaRowProps = {
+	/** Humanised time between a snapshot and the next (older) one. */
+	label: string;
+};
+
+/**
+ * The faint "time between snapshots" row shown after each item.
+ */
+export const DeltaRow: FunctionComponent<DeltaRowProps> = ({ label }) => (
+	<li css={deltaRow}>
+		<span css={[deltaContent, textStyle]} data-testid="snapshot-delta">
+			{label}
+		</span>
+		<span css={deltaIcon} aria-hidden="true" />
+	</li>
+);

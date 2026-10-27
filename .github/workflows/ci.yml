@@ -6,20 +6,17 @@ on:
         branches:
             - main
 jobs:
-    CI:
+    build:
         runs-on: ubuntu-latest
 
         permissions:
-            # id-token and pull-requests required by actions-riff-raff
-            id-token: write
-            pull-requests: write
             # Required for `actions/checkout`
             contents: read
 
         steps:
-            - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
+            - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-            - uses: actions/setup-node@3235b876344d2a9aa001b8d1453c930bba69e610 # v3.9.1
+            - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
               with:
                   node-version-file: ".tool-versions"
                   cache: npm
@@ -29,6 +26,9 @@ jobs:
               run: |
                   npm ci
                   npm run build
+
+            - name: JS Lint
+              run: npm run lint
 
             - name: JS Unit Tests
               run: npm run test:unit
@@ -44,7 +44,7 @@ jobs:
                   mv target/restorer2_1.0.0_all.deb restorer2.deb
 
             - name: Setup Node (CDK)
-              uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+              uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
               with:
                   node-version-file: 'cdk/.nvmrc'
                   cache: npm
@@ -57,6 +57,49 @@ jobs:
                   npm run lint
                   npm test
                   npm run synth
+
+            # Hand the deployable artifacts to the riff-raff job, which only runs
+            # once the e2e tests have also passed.
+            - name: Upload build artifacts
+              uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+              with:
+                  name: riff-raff-artifacts
+                  path: |
+                      restorer2.deb
+                      cdk/cdk.out/Restorer2-euwest-1-CODE.template.json
+                      cdk/cdk.out/Restorer2-euwest-1-PROD.template.json
+                  if-no-files-found: error
+                  retention-days: 1
+
+    e2e:
+        # Run the e2e suite as part of CI so the deploy can depend on it.
+        permissions:
+            # Default to least privilege for reusable workflow invocation.
+            contents: read
+        uses: ./.github/workflows/e2e.yml
+        secrets: inherit
+
+    riff-raff:
+        # On main, only upload to Riff-Raff once the e2e tests have also passed.
+        if: github.ref == 'refs/heads/main'
+        needs: [build, e2e]
+        runs-on: ubuntu-latest
+
+        permissions: &riff-raff-permissions
+            # id-token and pull-requests required by actions-riff-raff
+            id-token: write
+            pull-requests: write
+            # Required for `actions/checkout`
+            contents: read
+
+        steps: &riff-raff-steps
+            # Needed for riff-raff.yaml (configPath) and the git context.
+            - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+            - name: Download build artifacts
+              uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+              with:
+                  name: riff-raff-artifacts
 
             # Upload our build artifacts to Riff-Raff (well, S3)
             - uses: guardian/actions-riff-raff@eecac3ac4f7a446dd59aaa636163c9ae88baf4a4 # v4.3.6
@@ -72,3 +115,11 @@ jobs:
                       cfn-restorer2:
                         - cdk/cdk.out/Restorer2-euwest-1-CODE.template.json
                         - cdk/cdk.out/Restorer2-euwest-1-PROD.template.json
+
+    riff-raff-branch:
+        # Off main, upload as soon as the build passes without waiting on e2e.
+        if: github.ref != 'refs/heads/main'
+        needs: build
+        runs-on: ubuntu-latest
+        permissions: *riff-raff-permissions
+        steps: *riff-raff-steps

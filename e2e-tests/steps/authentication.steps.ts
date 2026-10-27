@@ -3,23 +3,12 @@ import { When, Then, expect } from "../fixtures";
 import { createPanDomainCookie, type Role } from "../setup/panDomainCookie";
 
 /**
- * Playwright-style step definitions for `tests/features/authentication.feature`.
- *
- * Each step receives the Playwright fixtures as the first argument
- * (e.g. `async ({ page }) => { ... }`) following the playwright-style approach:
- * https://vitalets.github.io/playwright-bdd/#/writing-steps/playwright-style
- *
- * The custom fixtures in `../fixtures` boot (or reuse) the local stack.
- *
- * NOTE: Steps that already exist in other step files are intentionally NOT
- * redefined here, because playwright-bdd shares step definitions across all step
- * files. The Background step `the application stack is running` and the sign-in
- * step `I am signed in through pan-domain auth` are reused from
- * `content-search.steps.ts`. The global `Before({ tags: "@pending" })` skip hook
- * is also registered there and applies to every `@pending` scenario, including
- * the not-yet-implemented scenarios in this feature.
+ * Steps for e2e-tests/features/authentication.feature.
+ * The fixtures expose the shared local stack; content-search.steps.ts defines
+ * the stack and sign-in Background steps. playwright-bdd shares definitions
+ * across files, so reuse those steps rather than registering duplicates here.
+ * The shared @pending hooks also apply to scenarios in this feature.
  */
-
 let timeout = 5 * 1000;
 
 // --- A protected page is only available to signed-in users with restorer access
@@ -116,11 +105,9 @@ Then(
 
 // --- The app exposes the current signed-in user ------------------------------
 
-// The frontend's `UserService` fetches `/api/1/user` and `/api/1/user/permissions`
-// (see `public/javascripts/app/services/UserService.js`). Both are served by
-// `controllers.Login` behind the auth gate, so the requests reuse the signed-in
-// session set up by `I am signed in through pan-domain auth` (the cookie is added
-// to the browser context, which `page.request` shares).
+// fetchUser requests /api/1/user and /api/1/user/permissions, both served by
+// controllers.Login behind the auth gate. The shared sign-in step adds the
+// session cookie to the browser context, which page.request also uses.
 let userDetails: { firstName?: string; lastName?: string; email?: string };
 let permissionMap: Record<string, boolean>;
 
