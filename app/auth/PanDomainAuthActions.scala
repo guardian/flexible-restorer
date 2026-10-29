@@ -29,7 +29,7 @@ trait PanDomainAuthActions extends AuthActions with Loggable {
     isValid && hasRestorerAccess
   }
 
-  override def showUnauthedMessage(message: String)(implicit request: RequestHeader): Result = {
+  override def showUnauthedMessage(message: String): Result = {
     Results.Redirect(controllers.routes.Login.authError(message))
   }
 
