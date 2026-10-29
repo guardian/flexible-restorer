@@ -25,6 +25,7 @@ public/css
 public/build.js
 public/build.js.map
 public/dist
+storybook-static/
 test-results/
 .features-gen/
 cucumber-report*
