@@ -58,18 +58,15 @@ jobs:
                   npx bddgen --config=e2e-tests/playwright.config.js
                   npm run test:ci
 
-            # Publish the test results (Playwright traces/videos/screenshots and
-            # the Cucumber HTML report) even when the run fails.
-            - name: Upload test results
-              if: always()
+            # Publish both HTML reports, including captured attachments, after
+            # successful or failed runs, but not cancelled runs.
+            - name: Upload e2e reports
+              if: ${{ !cancelled() }}
               uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
               with:
-                  name: e2e-test-results
-                  # Playwright resolves outputDir and the Cucumber report's
-                  # outputFile relative to the config dir (e2e-tests/), so both
-                  # artifacts land under e2e-tests/, not the repo root.
+                  name: e2e-report
                   path: |
-                      e2e-tests/test-results/
+                      e2e-tests/playwright-report/
                       e2e-tests/cucumber-report/
                   if-no-files-found: ignore
                   retention-days: 14
