@@ -11,27 +11,36 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
       "GuAllowPolicy",
       "GuAllowPolicy",
       "GuAllowPolicy",
+      "GuDistributionBucketParameter",
       "GuVpcParameter",
       "GuSubnetListParameter",
       "GuSubnetListParameter",
-      "GuEc2App",
-      "GuCertificate",
+      "GuLoadBalancedAppExperimental",
+      "GuListBucketPolicy",
       "GuInstanceRole",
       "GuSsmSshPolicy",
       "GuDescribeEC2Policy",
       "GuLoggingStreamNameParameter",
       "GuLogShippingPolicy",
-      "GuDistributionBucketParameter",
       "GuGetDistributablePolicy",
       "GuParameterStoreReadPolicy",
       "GuAmiParameter",
       "GuHttpsEgressSecurityGroup",
       "GuAutoScalingGroup",
+      "GuApplicationTargetGroup",
+      "GuRiffRaffDeploymentIdParameterExperimental",
+      "GuRepository",
+      "GuArtifactsAccountId",
+      "GuHttpsEgressSecurityGroup",
+      "GuSecurityGroup",
+      "GuApplicationTargetGroup",
+      "GuCertificate",
       "GuApplicationLoadBalancer",
       "GuAccessLoggingBucketParameter",
-      "GuApplicationTargetGroup",
       "GuHttpsApplicationListener",
-      "GuDeveloperPolicyExperimental",
+      "GuLambdaFunction",
+      "GuHttpsEgressSecurityGroup",
+      "GuDeveloperPolicy",
       "GuCname",
     ],
     "gu:cdk:version": "TEST",
@@ -57,6 +66,11 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
       "Description": "S3 bucket to store your access logs",
       "Type": "AWS::SSM::Parameter::Value<String>",
     },
+    "ArtifactsAccountId": {
+      "Default": "/organisation/accounts/artifacts",
+      "Description": "Account ID of the Artifacts account. Useful as some shared resources live here.",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
     "DistributionBucketName": {
       "Default": "/account/services/artifact.bucket",
       "Description": "SSM parameter containing the S3 bucket name holding distribution artifacts",
@@ -71,10 +85,22 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
       "Description": "SSM parameter containing the Name (not ARN) on the kinesis stream",
       "Type": "AWS::SSM::Parameter::Value<String>",
     },
+    "RiffRaffDeploymentId": {
+      "Description": "Used by Riff-Raff to inject the deployment ID.",
+      "Type": "String",
+    },
     "VpcId": {
       "Default": "/account/vpc/primary/id",
       "Description": "Virtual Private Cloud to run EC2 instances within. Should NOT be the account default VPC.",
       "Type": "AWS::SSM::Parameter::Value<AWS::EC2::VPC::Id>",
+    },
+    "bucketoverrideParameter": {
+      "Default": "/organisation/services/artifact.bucket",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+    "deploytoolsaccountidparameterParameter": {
+      "Default": "/organisation/accounts/deployTools",
+      "Type": "AWS::SSM::Parameter::Value<String>",
     },
     "restorer2PrivateSubnets": {
       "Default": "/account/vpc/primary/subnets/private",
@@ -88,8 +114,49 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
     },
   },
   "Resources": {
-    "AutoScalingGroupRestorer2ASG07C0C93C": {
+    "AsgRollingUpdatePolicy2A1DDC6F": {
       "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "cloudformation:SignalResource",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "AWS::StackId",
+              },
+            },
+            {
+              "Action": "elasticloadbalancing:DescribeTargetHealth",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "AsgRollingUpdatePolicy2A1DDC6F",
+        "Roles": [
+          {
+            "Ref": "InstanceRoleRestorer2A97F6455",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "AutoScalingGroupRestorer2ASG07C0C93C": {
+      "CreationPolicy": {
+        "AutoScalingCreationPolicy": {
+          "MinSuccessfulInstancesPercent": 100,
+        },
+        "ResourceSignal": {
+          "Count": 1,
+          "Timeout": "PT3M",
+        },
+      },
+      "DependsOn": [
+        "AsgRollingUpdatePolicy2A1DDC6F",
+      ],
+      "Properties": {
+        "DesiredCapacity": "1",
         "HealthCheckGracePeriod": 120,
         "HealthCheckType": "ELB",
         "LaunchTemplate": {
@@ -103,13 +170,13 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
             ],
           },
         },
-        "MaxSize": "4",
+        "MaxSize": "2",
         "MetricsCollection": [
           {
             "Granularity": "1Minute",
           },
         ],
-        "MinSize": "2",
+        "MinSize": "1",
         "Tags": [
           {
             "Key": "App",
@@ -154,11 +221,51 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
             "Ref": "TargetGroupRestorer289B6C480",
           },
         ],
-        "VPCZoneIdentifier": {
-          "Ref": "restorer2PrivateSubnets",
-        },
+        "VPCZoneIdentifier": [
+          {
+            "Fn::Select": [
+              0,
+              {
+                "Ref": "restorer2PrivateSubnets",
+              },
+            ],
+          },
+          {
+            "Fn::Select": [
+              1,
+              {
+                "Ref": "restorer2PrivateSubnets",
+              },
+            ],
+          },
+          {
+            "Fn::Select": [
+              2,
+              {
+                "Ref": "restorer2PrivateSubnets",
+              },
+            ],
+          },
+        ],
       },
       "Type": "AWS::AutoScaling::AutoScalingGroup",
+      "UpdatePolicy": {
+        "AutoScalingRollingUpdate": {
+          "MaxBatchSize": 2,
+          "MinInstancesInService": 1,
+          "MinSuccessfulInstancesPercent": 100,
+          "PauseTime": "PT3M",
+          "SuspendProcesses": [
+            "AlarmNotification",
+            "AZRebalance",
+            "HealthCheck",
+            "InstanceRefresh",
+            "ReplaceUnhealthy",
+            "ScheduledActions",
+          ],
+          "WaitOnResourceSignals": true,
+        },
+      },
     },
     "CertificateRestorer22E39A9E5": {
       "DeletionPolicy": "Retain",
@@ -246,6 +353,611 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
       },
       "Type": "Guardian::DNS::RecordSet",
     },
+    "EcsService81FC6EF6": {
+      "DependsOn": [
+        "EcsTaskDefinitionTaskRoleDefaultPolicy1FD2F057",
+        "EcsTaskDefinitionTaskRoleB7B6D8DD",
+        "ListenerRestorer2DeterministicRouteToEc2RuleA2C74BD9",
+        "ListenerRestorer2DeterministicRouteToEcsRule173F4914",
+        "ListenerRestorer293099711",
+        "S3FilesMountTarget0",
+        "S3FilesMountTarget1",
+        "S3FilesMountTarget2",
+      ],
+      "Properties": {
+        "Cluster": {
+          "Ref": "restorer2EcsCluster77DA0E12",
+        },
+        "DeploymentConfiguration": {
+          "Alarms": {
+            "AlarmNames": [],
+            "Enable": false,
+            "Rollback": false,
+          },
+          "DeploymentCircuitBreaker": {
+            "Enable": true,
+            "Rollback": true,
+          },
+          "MaximumPercent": 200,
+          "MinimumHealthyPercent": 100,
+        },
+        "DeploymentController": {
+          "Type": "ECS",
+        },
+        "EnableECSManagedTags": false,
+        "HealthCheckGracePeriodSeconds": 60,
+        "LaunchType": "FARGATE",
+        "LoadBalancers": [
+          {
+            "ContainerName": "restorer2",
+            "ContainerPort": 9000,
+            "TargetGroupArn": {
+              "Ref": "Restorer2EcsTargetGroupRestorer21C90AD93",
+            },
+          },
+        ],
+        "Monitoring": {
+          "MetricConfigurations": [
+            {
+              "MetricNames": [
+                "CPUUtilization",
+                "MemoryUtilization",
+              ],
+              "ResolutionSeconds": 20,
+            },
+          ],
+        },
+        "NetworkConfiguration": {
+          "AwsvpcConfiguration": {
+            "AssignPublicIp": "DISABLED",
+            "SecurityGroups": [
+              {
+                "Fn::GetAtt": [
+                  "GuHttpsEgressSecurityGroupRestorer2ecsA19F73E0",
+                  "GroupId",
+                ],
+              },
+            ],
+            "Subnets": [
+              {
+                "Fn::Select": [
+                  0,
+                  {
+                    "Ref": "restorer2PrivateSubnets",
+                  },
+                ],
+              },
+              {
+                "Fn::Select": [
+                  1,
+                  {
+                    "Ref": "restorer2PrivateSubnets",
+                  },
+                ],
+              },
+              {
+                "Fn::Select": [
+                  2,
+                  {
+                    "Ref": "restorer2PrivateSubnets",
+                  },
+                ],
+              },
+            ],
+          },
+        },
+        "PropagateTags": "SERVICE",
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "CODE",
+          },
+        ],
+        "TaskDefinition": {
+          "Ref": "EcsTaskDefinition63157ED3",
+        },
+      },
+      "Type": "AWS::ECS::Service",
+    },
+    "EcsServiceTaskCountTarget02FCCE22": {
+      "DependsOn": [
+        "EcsTaskDefinitionTaskRoleDefaultPolicy1FD2F057",
+        "EcsTaskDefinitionTaskRoleB7B6D8DD",
+        "S3FilesMountTarget0",
+        "S3FilesMountTarget1",
+        "S3FilesMountTarget2",
+      ],
+      "Properties": {
+        "MaxCapacity": 1,
+        "MinCapacity": 1,
+        "ResourceId": {
+          "Fn::Join": [
+            "",
+            [
+              "service/",
+              {
+                "Ref": "restorer2EcsCluster77DA0E12",
+              },
+              "/",
+              {
+                "Fn::GetAtt": [
+                  "EcsService81FC6EF6",
+                  "Name",
+                ],
+              },
+            ],
+          ],
+        },
+        "RoleARN": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":iam::",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService",
+            ],
+          ],
+        },
+        "ScalableDimension": "ecs:service:DesiredCount",
+        "ServiceNamespace": "ecs",
+      },
+      "Type": "AWS::ApplicationAutoScaling::ScalableTarget",
+    },
+    "EcsTaskDefinition63157ED3": {
+      "Properties": {
+        "ContainerDefinitions": [
+          {
+            "DockerLabels": {
+              "RiffRaffDeploymentId": {
+                "Ref": "RiffRaffDeploymentId",
+              },
+            },
+            "Environment": [
+              {
+                "Name": "STACK",
+                "Value": "flexible",
+              },
+              {
+                "Name": "STAGE",
+                "Value": "CODE",
+              },
+              {
+                "Name": "APP",
+                "Value": "restorer2",
+              },
+              {
+                "Name": "TASK_NAME",
+                "Value": "restorer2",
+              },
+              {
+                "Name": "GU_REPO",
+                "Value": "guardian/flexible-restorer",
+              },
+            ],
+            "Essential": true,
+            "Image": {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Ref": "ArtifactsAccountId",
+                  },
+                  ".dkr.ecr.eu-west-1.",
+                  {
+                    "Ref": "AWS::URLSuffix",
+                  },
+                  "/guardian/flexible-restorer/restorer2:DEV",
+                ],
+              ],
+            },
+            "LogConfiguration": {
+              "LogDriver": "awsfirelens",
+              "Options": {
+                "Name": "kinesis_streams",
+                "region": "eu-west-1",
+                "retry_limit": "2",
+                "stream": {
+                  "Ref": "LoggingStreamName",
+                },
+              },
+            },
+            "MountPoints": [
+              {
+                "ContainerPath": "/etc/gu/s3-sync/",
+                "ReadOnly": true,
+                "SourceVolume": "s3files-volume",
+              },
+            ],
+            "Name": "restorer2",
+            "PortMappings": [
+              {
+                "ContainerPort": 9000,
+                "Protocol": "tcp",
+              },
+            ],
+            "ReadonlyRootFilesystem": true,
+            "VersionConsistency": "disabled",
+          },
+          {
+            "Environment": [
+              {
+                "Name": "STACK",
+                "Value": "flexible",
+              },
+              {
+                "Name": "STAGE",
+                "Value": "CODE",
+              },
+              {
+                "Name": "APP",
+                "Value": "restorer2",
+              },
+              {
+                "Name": "TASK_NAME",
+                "Value": "restorer2",
+              },
+              {
+                "Name": "GU_REPO",
+                "Value": "guardian/flexible-restorer",
+              },
+            ],
+            "Essential": true,
+            "FirelensConfiguration": {
+              "Type": "fluentbit",
+            },
+            "Image": "ghcr.io/guardian/devx-logs@sha256:cf91724a5166f1c143e07958820aa2122afb61c164b68555d15cb92abb5acda0",
+            "LogConfiguration": {
+              "LogDriver": "awslogs",
+              "Options": {
+                "awslogs-group": {
+                  "Ref": "EcsTaskDefinitionLogShippingLogGroup0E405BD0",
+                },
+                "awslogs-region": "eu-west-1",
+                "awslogs-stream-prefix": "flexible/CODE/restorer2/devx-logs-sidecar",
+              },
+            },
+            "MountPoints": [
+              {
+                "ContainerPath": "/init",
+                "ReadOnly": false,
+                "SourceVolume": "logging-volume",
+              },
+            ],
+            "Name": "LogShipping",
+            "ReadonlyRootFilesystem": true,
+            "VersionConsistency": "disabled",
+          },
+        ],
+        "Cpu": "1024",
+        "ExecutionRoleArn": {
+          "Fn::GetAtt": [
+            "EcsTaskDefinitionExecutionRoleBE450C73",
+            "Arn",
+          ],
+        },
+        "Family": "Restorer2CODEEcsTaskDefinition6C04045D",
+        "Memory": "2048",
+        "NetworkMode": "awsvpc",
+        "RequiresCompatibilities": [
+          "FARGATE",
+        ],
+        "RuntimePlatform": {
+          "CpuArchitecture": "ARM64",
+          "OperatingSystemFamily": "LINUX",
+        },
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "CODE",
+          },
+        ],
+        "TaskRoleArn": {
+          "Fn::GetAtt": [
+            "EcsTaskDefinitionTaskRoleB7B6D8DD",
+            "Arn",
+          ],
+        },
+        "Volumes": [
+          {
+            "Name": "logging-volume",
+          },
+          {
+            "Name": "s3files-volume",
+            "S3FilesVolumeConfiguration": {
+              "FileSystemArn": {
+                "Fn::GetAtt": [
+                  "S3FilesFileSystem",
+                  "FileSystemArn",
+                ],
+              },
+              "RootDirectory": "/",
+            },
+          },
+        ],
+      },
+      "Type": "AWS::ECS::TaskDefinition",
+    },
+    "EcsTaskDefinitionExecutionRoleBE450C73": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ecs-tasks.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "CODE",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "EcsTaskDefinitionExecutionRoleDefaultPolicy1611A942": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":ecr:eu-west-1:",
+                    {
+                      "Ref": "ArtifactsAccountId",
+                    },
+                    ":repository/guardian/flexible-restorer/restorer2",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": "ecr:GetAuthorizationToken",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+              ],
+              "Effect": "Allow",
+              "Resource": "arn:aws:ecr:eu-west-1:694911143906:repository/aws-guardduty-agent-fargate",
+            },
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "EcsTaskDefinitionLogShippingLogGroup0E405BD0",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "EcsTaskDefinitionExecutionRoleDefaultPolicy1611A942",
+        "Roles": [
+          {
+            "Ref": "EcsTaskDefinitionExecutionRoleBE450C73",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "EcsTaskDefinitionLogShippingLogGroup0E405BD0": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "RetentionInDays": 1,
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "CODE",
+          },
+        ],
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "EcsTaskDefinitionTaskRoleB7B6D8DD": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ecs-tasks.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "CODE",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "EcsTaskDefinitionTaskRoleDefaultPolicy1FD2F057": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3files:ClientMount",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "S3FilesFileSystem",
+                  "FileSystemArn",
+                ],
+              },
+            },
+            {
+              "Action": "s3:ListBucket",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":s3:::",
+                    {
+                      "Ref": "DistributionBucketName",
+                    },
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": [
+                "s3:GetObject",
+                "s3:GetObjectVersion",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":s3:::",
+                    {
+                      "Ref": "DistributionBucketName",
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "EcsTaskDefinitionTaskRoleDefaultPolicy1FD2F057",
+        "Roles": [
+          {
+            "Ref": "EcsTaskDefinitionTaskRoleB7B6D8DD",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
     "GetDistributablePolicyRestorer220872BCF": {
       "Properties": {
         "PolicyDocument": {
@@ -318,6 +1030,88 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
       },
       "Type": "AWS::EC2::SecurityGroup",
     },
+    "GuHttpsEgressSecurityGroupRestorer2ecsA19F73E0": {
+      "Properties": {
+        "GroupDescription": "Allow all outbound HTTPS traffic",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound HTTPS traffic",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+        ],
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2-ecs",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "CODE",
+          },
+        ],
+        "VpcId": {
+          "Ref": "VpcId",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "GuHttpsEgressSecurityGroupRestorer2ecsfromRestorer2CODELoadBalancerRestorer2SecurityGroupDF605337900014F5798B": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "GuHttpsEgressSecurityGroupRestorer2ecsA19F73E0",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "LoadBalancerRestorer2SecurityGroup64900CDE",
+            "GroupId",
+          ],
+        },
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupIngress",
+    },
+    "GuHttpsEgressSecurityGroupRestorer2ecsfromRestorer2CODEldpaccessRestorer2E1AD168590008CA8EDA9": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "GuHttpsEgressSecurityGroupRestorer2ecsA19F73E0",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "ldpaccessRestorer20E1137C4",
+            "GroupId",
+          ],
+        },
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupIngress",
+    },
     "GuHttpsEgressSecurityGroupRestorer2fromRestorer2CODELoadBalancerRestorer2SecurityGroupDF60533790008161999D": {
       "Properties": {
         "Description": "Load balancer to target",
@@ -338,6 +1132,67 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
         "ToPort": 9000,
       },
       "Type": "AWS::EC2::SecurityGroupIngress",
+    },
+    "GuHttpsEgressSecurityGroupRestorer2fromRestorer2CODEldpaccessRestorer2E1AD1685900009724374": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "GuHttpsEgressSecurityGroupRestorer26476AC82",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "ldpaccessRestorer20E1137C4",
+            "GroupId",
+          ],
+        },
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupIngress",
+    },
+    "GuListBucketPolicyRestorer2064BB816": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:ListBucket",
+              "Condition": {
+                "StringLike": {
+                  "s3:prefix": "flexible/CODE/restorer2/conf/",
+                },
+              },
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":s3:::",
+                    {
+                      "Ref": "DistributionBucketName",
+                    },
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "GuListBucketPolicyRestorer2064BB816",
+        "Roles": [
+          {
+            "Ref": "InstanceRoleRestorer2A97F6455",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
     },
     "GuLogShippingPolicy981BFE5A": {
       "Properties": {
@@ -372,6 +1227,9 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
         "Roles": [
           {
             "Ref": "InstanceRoleRestorer2A97F6455",
+          },
+          {
+            "Ref": "EcsTaskDefinitionTaskRoleB7B6D8DD",
           },
         ],
       },
@@ -439,6 +1297,9 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
           {
             "Ref": "InstanceRoleRestorer2A97F6455",
           },
+          {
+            "Ref": "EcsTaskDefinitionTaskRoleB7B6D8DD",
+          },
         ],
       },
       "Type": "AWS::IAM::Policy",
@@ -454,9 +1315,42 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
         ],
         "DefaultActions": [
           {
-            "TargetGroupArn": {
-              "Ref": "TargetGroupRestorer289B6C480",
+            "AuthenticateCognitoConfig": {
+              "SessionTimeout": "900",
+              "UserPoolArn": {
+                "Fn::GetAtt": [
+                  "restorer2userpool0523E0B9",
+                  "Arn",
+                ],
+              },
+              "UserPoolClientId": {
+                "Ref": "restorer2userpoolalbclient536F80BD",
+              },
+              "UserPoolDomain": {
+                "Ref": "restorer2userpooldomain0C0BE6B7",
+              },
             },
+            "Order": 1,
+            "Type": "authenticate-cognito",
+          },
+          {
+            "ForwardConfig": {
+              "TargetGroups": [
+                {
+                  "TargetGroupArn": {
+                    "Ref": "TargetGroupRestorer289B6C480",
+                  },
+                  "Weight": 1,
+                },
+                {
+                  "TargetGroupArn": {
+                    "Ref": "Restorer2EcsTargetGroupRestorer21C90AD93",
+                  },
+                  "Weight": 0,
+                },
+              ],
+            },
+            "Order": 2,
             "Type": "forward",
           },
         ],
@@ -466,8 +1360,130 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
         "Port": 443,
         "Protocol": "HTTPS",
         "SslPolicy": "ELBSecurityPolicy-TLS13-1-2-2021-06",
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "CODE",
+          },
+        ],
       },
       "Type": "AWS::ElasticLoadBalancingV2::Listener",
+    },
+    "ListenerRestorer2DeterministicRouteToEc2RuleA2C74BD9": {
+      "Properties": {
+        "Actions": [
+          {
+            "TargetGroupArn": {
+              "Ref": "TargetGroupRestorer289B6C480",
+            },
+            "Type": "forward",
+          },
+        ],
+        "Conditions": [
+          {
+            "Field": "http-header",
+            "HttpHeaderConfig": {
+              "HttpHeaderName": "X-Gu-Target-Group",
+              "Values": [
+                "ec2",
+              ],
+            },
+          },
+        ],
+        "ListenerArn": {
+          "Ref": "ListenerRestorer293099711",
+        },
+        "Priority": 10,
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "CODE",
+          },
+        ],
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
+    },
+    "ListenerRestorer2DeterministicRouteToEcsRule173F4914": {
+      "Properties": {
+        "Actions": [
+          {
+            "TargetGroupArn": {
+              "Ref": "Restorer2EcsTargetGroupRestorer21C90AD93",
+            },
+            "Type": "forward",
+          },
+        ],
+        "Conditions": [
+          {
+            "Field": "http-header",
+            "HttpHeaderConfig": {
+              "HttpHeaderName": "X-Gu-Target-Group",
+              "Values": [
+                "ecs",
+              ],
+            },
+          },
+        ],
+        "ListenerArn": {
+          "Ref": "ListenerRestorer293099711",
+        },
+        "Priority": 11,
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "CODE",
+          },
+        ],
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
     },
     "LoadBalancerRestorer2E6E71926": {
       "Properties": {
@@ -507,6 +1523,12 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
               "GroupId",
             ],
           },
+          {
+            "Fn::GetAtt": [
+              "ldpaccessRestorer20E1137C4",
+              "GroupId",
+            ],
+          },
         ],
         "Subnets": {
           "Ref": "restorer2PublicSubnets",
@@ -540,6 +1562,15 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
     "LoadBalancerRestorer2SecurityGroup64900CDE": {
       "Properties": {
         "GroupDescription": "Automatically created Security Group for ELB Restorer2CODELoadBalancerRestorer2427850B7",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow to IdP endpoint",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+        ],
         "SecurityGroupIngress": [
           {
             "CidrIp": "0.0.0.0/0",
@@ -630,6 +1661,27 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
       },
       "Type": "AWS::EC2::SecurityGroupEgress",
     },
+    "LoadBalancerRestorer2SecurityGrouptoRestorer2CODEGuHttpsEgressSecurityGroupRestorer2ecsF4175FD6900021814833": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "DestinationSecurityGroupId": {
+          "Fn::GetAtt": [
+            "GuHttpsEgressSecurityGroupRestorer2ecsA19F73E0",
+            "GroupId",
+          ],
+        },
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "LoadBalancerRestorer2SecurityGroup64900CDE",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupEgress",
+    },
     "PanDomainPolicyB981546E": {
       "Properties": {
         "PolicyDocument": {
@@ -650,6 +1702,9 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
         "Roles": [
           {
             "Ref": "InstanceRoleRestorer2A97F6455",
+          },
+          {
+            "Ref": "EcsTaskDefinitionTaskRoleB7B6D8DD",
           },
         ],
       },
@@ -702,6 +1757,9 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
           {
             "Ref": "InstanceRoleRestorer2A97F6455",
           },
+          {
+            "Ref": "EcsTaskDefinitionTaskRoleB7B6D8DD",
+          },
         ],
       },
       "Type": "AWS::IAM::Policy",
@@ -723,9 +1781,61 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
           {
             "Ref": "InstanceRoleRestorer2A97F6455",
           },
+          {
+            "Ref": "EcsTaskDefinitionTaskRoleB7B6D8DD",
+          },
         ],
       },
       "Type": "AWS::IAM::Policy",
+    },
+    "Restorer2EcsTargetGroupRestorer21C90AD93": {
+      "Properties": {
+        "HealthCheckIntervalSeconds": 10,
+        "HealthCheckPath": "/management/healthcheck",
+        "HealthCheckProtocol": "HTTP",
+        "HealthCheckTimeoutSeconds": 5,
+        "HealthyThresholdCount": 5,
+        "Port": 9000,
+        "Protocol": "HTTP",
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "CODE",
+          },
+        ],
+        "TargetGroupAttributes": [
+          {
+            "Key": "deregistration_delay.timeout_seconds",
+            "Value": "30",
+          },
+          {
+            "Key": "stickiness.enabled",
+            "Value": "false",
+          },
+        ],
+        "TargetType": "ip",
+        "UnhealthyThresholdCount": 2,
+        "VpcId": {
+          "Ref": "VpcId",
+        },
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
     },
     "RestorerAppLocalRunPolicy374A087B": {
       "Properties": {
@@ -794,6 +1904,9 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
           {
             "Ref": "InstanceRoleRestorer2A97F6455",
           },
+          {
+            "Ref": "EcsTaskDefinitionTaskRoleB7B6D8DD",
+          },
         ],
       },
       "Type": "AWS::IAM::Policy",
@@ -817,6 +1930,9 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
         "Roles": [
           {
             "Ref": "InstanceRoleRestorer2A97F6455",
+          },
+          {
+            "Ref": "EcsTaskDefinitionTaskRoleB7B6D8DD",
           },
         ],
       },
@@ -842,6 +1958,9 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
           {
             "Ref": "InstanceRoleRestorer2A97F6455",
           },
+          {
+            "Ref": "EcsTaskDefinitionTaskRoleB7B6D8DD",
+          },
         ],
       },
       "Type": "AWS::IAM::Policy",
@@ -866,9 +1985,473 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
           {
             "Ref": "InstanceRoleRestorer2A97F6455",
           },
+          {
+            "Ref": "EcsTaskDefinitionTaskRoleB7B6D8DD",
+          },
         ],
       },
       "Type": "AWS::IAM::Policy",
+    },
+    "S3FilesFileSystem": {
+      "DependsOn": [
+        "S3FilesRoleDefaultPolicyD9591E55",
+        "S3FilesRole37B20925",
+      ],
+      "Properties": {
+        "Bucket": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":s3:::",
+              {
+                "Ref": "DistributionBucketName",
+              },
+            ],
+          ],
+        },
+        "Prefix": "flexible/CODE/restorer2/conf/",
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "S3FilesRole37B20925",
+            "Arn",
+          ],
+        },
+        "Tags": [
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "CODE",
+          },
+        ],
+      },
+      "Type": "AWS::S3Files::FileSystem",
+    },
+    "S3FilesMountTarget0": {
+      "Properties": {
+        "FileSystemId": {
+          "Fn::GetAtt": [
+            "S3FilesFileSystem",
+            "FileSystemId",
+          ],
+        },
+        "SecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "S3FilesMountTargetSecurityGroupRestorer2s3files3EC38059",
+              "GroupId",
+            ],
+          },
+        ],
+        "SubnetId": {
+          "Fn::Select": [
+            0,
+            {
+              "Ref": "restorer2PrivateSubnets",
+            },
+          ],
+        },
+      },
+      "Type": "AWS::S3Files::MountTarget",
+    },
+    "S3FilesMountTarget1": {
+      "Properties": {
+        "FileSystemId": {
+          "Fn::GetAtt": [
+            "S3FilesFileSystem",
+            "FileSystemId",
+          ],
+        },
+        "SecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "S3FilesMountTargetSecurityGroupRestorer2s3files3EC38059",
+              "GroupId",
+            ],
+          },
+        ],
+        "SubnetId": {
+          "Fn::Select": [
+            1,
+            {
+              "Ref": "restorer2PrivateSubnets",
+            },
+          ],
+        },
+      },
+      "Type": "AWS::S3Files::MountTarget",
+    },
+    "S3FilesMountTarget2": {
+      "Properties": {
+        "FileSystemId": {
+          "Fn::GetAtt": [
+            "S3FilesFileSystem",
+            "FileSystemId",
+          ],
+        },
+        "SecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "S3FilesMountTargetSecurityGroupRestorer2s3files3EC38059",
+              "GroupId",
+            ],
+          },
+        ],
+        "SubnetId": {
+          "Fn::Select": [
+            2,
+            {
+              "Ref": "restorer2PrivateSubnets",
+            },
+          ],
+        },
+      },
+      "Type": "AWS::S3Files::MountTarget",
+    },
+    "S3FilesMountTargetSecurityGroupRestorer2s3files3EC38059": {
+      "Properties": {
+        "GroupDescription": "Restorer2-CODE/S3FilesMountTargetSecurityGroupRestorer2s3files",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "255.255.255.255/32",
+            "Description": "Disallow all traffic",
+            "FromPort": 252,
+            "IpProtocol": "icmp",
+            "ToPort": 86,
+          },
+        ],
+        "SecurityGroupIngress": [
+          {
+            "Description": "Allow ECS tasks to mount S3 Files",
+            "FromPort": 2049,
+            "IpProtocol": "tcp",
+            "SourceSecurityGroupId": {
+              "Fn::GetAtt": [
+                "GuHttpsEgressSecurityGroupRestorer2ecsA19F73E0",
+                "GroupId",
+              ],
+            },
+            "ToPort": 2049,
+          },
+        ],
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2-s3files",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "CODE",
+          },
+        ],
+        "VpcId": {
+          "Ref": "VpcId",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "S3FilesRole37B20925": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Condition": {
+                "ArnLike": {
+                  "aws:SourceArn": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":s3files:eu-west-1:",
+                        {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":file-system/*",
+                      ],
+                    ],
+                  },
+                },
+                "StringEquals": {
+                  "aws:SourceAccount": {
+                    "Ref": "AWS::AccountId",
+                  },
+                },
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "elasticfilesystem.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Role used by the S3 Files filesystem for restorer2 mount",
+        "Tags": [
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "CODE",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "S3FilesRoleDefaultPolicyD9591E55": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:ListBucket",
+                "s3:ListBucketVersions",
+                "s3:GetBucketVersioning",
+                "s3:GetBucketLocation",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":s3:::",
+                    {
+                      "Ref": "DistributionBucketName",
+                    },
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": [
+                "s3:AbortMultipartUpload",
+                "s3:DeleteObject*",
+                "s3:GetObject*",
+                "s3:List*",
+                "s3:PutObject*",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":s3:::",
+                    {
+                      "Ref": "DistributionBucketName",
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": [
+                "kms:GenerateDataKey",
+                "kms:Encrypt",
+                "kms:Decrypt",
+                "kms:ReEncryptFrom",
+                "kms:ReEncryptTo",
+              ],
+              "Condition": {
+                "StringLike": {
+                  "kms:EncryptionContext:aws:s3:arn": [
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:",
+                          {
+                            "Ref": "AWS::Partition",
+                          },
+                          ":s3:::",
+                          {
+                            "Ref": "DistributionBucketName",
+                          },
+                        ],
+                      ],
+                    },
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:",
+                          {
+                            "Ref": "AWS::Partition",
+                          },
+                          ":s3:::",
+                          {
+                            "Ref": "DistributionBucketName",
+                          },
+                          "/*",
+                        ],
+                      ],
+                    },
+                  ],
+                  "kms:ViaService": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "s3.eu-west-1.",
+                        {
+                          "Ref": "AWS::URLSuffix",
+                        },
+                      ],
+                    ],
+                  },
+                },
+              },
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":kms:eu-west-1:",
+                    {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":key/*",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": [
+                "events:DeleteRule",
+                "events:DisableRule",
+                "events:EnableRule",
+                "events:PutRule",
+                "events:PutTargets",
+                "events:RemoveTargets",
+              ],
+              "Condition": {
+                "StringEquals": {
+                  "events:ManagedBy": "elasticfilesystem.amazonaws.com",
+                },
+              },
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":events:*:*:rule/DO-NOT-DELETE-S3-Files*",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": [
+                "events:DescribeRule",
+                "events:ListTargetsByRule",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":events:*:*:rule/*",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": [
+                "events:ListRuleNamesByTarget",
+                "events:ListRules",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "S3FilesRoleDefaultPolicyD9591E55",
+        "Roles": [
+          {
+            "Ref": "S3FilesRole37B20925",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "S3FilesTaskEgress": {
+      "Properties": {
+        "Description": "Allow NFS traffic to S3 Files mount targets",
+        "DestinationSecurityGroupId": {
+          "Fn::GetAtt": [
+            "S3FilesMountTargetSecurityGroupRestorer2s3files3EC38059",
+            "GroupId",
+          ],
+        },
+        "FromPort": 2049,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "GuHttpsEgressSecurityGroupRestorer2ecsA19F73E0",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 2049,
+      },
+      "Type": "AWS::EC2::SecurityGroupEgress",
     },
     "SsmSshPolicy4CFC977E": {
       "Properties": {
@@ -955,6 +2538,248 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
       },
       "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
     },
+    "authlambda5AE8A89F": {
+      "DependsOn": [
+        "authlambdaServiceRoleDefaultPolicy4F870132",
+        "authlambdaServiceRole39F49DB1",
+      ],
+      "Properties": {
+        "Architectures": [
+          "x86_64",
+        ],
+        "Code": {
+          "S3Bucket": {
+            "Ref": "bucketoverrideParameter",
+          },
+          "S3Key": "deploy/PROD/cognito-lambda/devx-cognito-lambda-amd64-v2.zip",
+        },
+        "Environment": {
+          "Variables": {
+            "ALLOWED_GROUPS": "engineering@guardian.co.uk",
+            "APP": "restorer2",
+            "GATEKEEPER_FUNCTION_ARN": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:lambda:eu-west-1:",
+                  {
+                    "Ref": "deploytoolsaccountidparameterParameter",
+                  },
+                  ":function:deploy-PROD-gatekeeper-lambda",
+                ],
+              ],
+            },
+            "STACK": "flexible",
+            "STAGE": "CODE",
+          },
+        },
+        "Handler": "bootstrap",
+        "LoggingConfig": {
+          "LogFormat": "JSON",
+        },
+        "MemorySize": 128,
+        "Role": {
+          "Fn::GetAtt": [
+            "authlambdaServiceRole39F49DB1",
+            "Arn",
+          ],
+        },
+        "Runtime": "provided.al2023",
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Owner",
+            "Value": "DevX",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "CODE",
+          },
+        ],
+        "Timeout": 30,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "authlambdaServiceRole39F49DB1": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Owner",
+            "Value": "DevX",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "CODE",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "authlambdaServiceRoleDefaultPolicy4F870132": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      {
+                        "Ref": "bucketoverrideParameter",
+                      },
+                    ],
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      {
+                        "Ref": "bucketoverrideParameter",
+                      },
+                      "/deploy/PROD/cognito-lambda/devx-cognito-lambda-amd64-v2.zip",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": "ssm:GetParametersByPath",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:ssm:eu-west-1:",
+                    {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":parameter/CODE/flexible/restorer2",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": [
+                "ssm:GetParameters",
+                "ssm:GetParameter",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:ssm:eu-west-1:",
+                    {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":parameter/CODE/flexible/restorer2/*",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:lambda:eu-west-1:",
+                    {
+                      "Ref": "deploytoolsaccountidparameterParameter",
+                    },
+                    ":function:deploy-PROD-gatekeeper-lambda",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "authlambdaServiceRoleDefaultPolicy4F870132",
+        "Roles": [
+          {
+            "Ref": "authlambdaServiceRole39F49DB1",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
     "flexibleCODErestorer2D7F0B16F": {
       "DependsOn": [
         "InstanceRoleRestorer2A97F6455",
@@ -999,6 +2824,10 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
                   "Value": "restorer2",
                 },
                 {
+                  "Key": "gu:build-identifier",
+                  "Value": "DEV",
+                },
+                {
                   "Key": "gu:cdk:version",
                   "Value": "TEST",
                 },
@@ -1028,6 +2857,10 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
                   "Value": "restorer2",
                 },
                 {
+                  "Key": "gu:build-identifier",
+                  "Value": "DEV",
+                },
+                {
                   "Key": "gu:cdk:version",
                   "Value": "TEST",
                 },
@@ -1051,9 +2884,56 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
             },
           ],
           "UserData": {
-            "Fn::Base64": "#!/bin/bash
+            "Fn::Base64": {
+              "Fn::Join": [
+                "",
+                [
+                  "#!/bin/bash
+function exitTrap(){
+exitCode=$?
+
+        cfn-signal --stack ",
+                  {
+                    "Ref": "AWS::StackId",
+                  },
+                  "           --resource AutoScalingGroupRestorer2ASG07C0C93C           --region eu-west-1           --exit-code $exitCode || echo 'Failed to send Cloudformation Signal'
+        
+}
+trap exitTrap EXIT
 aws s3 cp s3://composer-dist/flexible/CODE/restorer2/restorer2.deb /tmp/restorer2.deb
-dpkg -i /tmp/restorer2.deb",
+dpkg -i /tmp/restorer2.deb
+echo "Launch template last updated by Riff-Raff deployment ID: ",
+                  {
+                    "Ref": "RiffRaffDeploymentId",
+                  },
+                  ""
+# GuEc2AppExperimental Instance Health Check Start
+
+      TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+      INSTANCE_ID=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" "http://169.254.169.254/latest/meta-data/instance-id")
+
+      STATE=$(aws elbv2 describe-target-health         --target-group-arn ",
+                  {
+                    "Ref": "TargetGroupRestorer289B6C480",
+                  },
+                  "         --region eu-west-1         --targets Id=$INSTANCE_ID,Port=9000         --query "TargetHealthDescriptions[0].TargetHealth.State")
+
+      until [ "$STATE" == "\\"healthy\\"" ]; do
+        echo "Instance running build DEV not yet healthy within target group. Current state $STATE. Sleeping..."
+        sleep 5
+        STATE=$(aws elbv2 describe-target-health           --target-group-arn ",
+                  {
+                    "Ref": "TargetGroupRestorer289B6C480",
+                  },
+                  "           --region eu-west-1           --targets Id=$INSTANCE_ID,Port=9000           --query "TargetHealthDescriptions[0].TargetHealth.State")
+      done
+
+      echo "Instance running build DEV is healthy in target group."
+      
+# GuEc2AppExperimental Instance Health Check End",
+                ],
+              ],
+            },
           },
         },
         "TagSpecifications": [
@@ -1063,6 +2943,10 @@ dpkg -i /tmp/restorer2.deb",
               {
                 "Key": "App",
                 "Value": "restorer2",
+              },
+              {
+                "Key": "gu:build-identifier",
+                "Value": "DEV",
               },
               {
                 "Key": "gu:cdk:version",
@@ -1100,6 +2984,311 @@ dpkg -i /tmp/restorer2.deb",
       },
       "Type": "AWS::IAM::InstanceProfile",
     },
+    "googleidp5A744057": {
+      "Properties": {
+        "AttributeMapping": {
+          "email": "email",
+          "family_name": "family_name",
+          "given_name": "given_name",
+          "name": "name",
+          "picture": "picture",
+        },
+        "ProviderDetails": {
+          "authorize_scopes": "openid email profile",
+          "client_id": "{{resolve:secretsmanager:/CODE/flexible/restorer2/google-auth-credentials:SecretString:clientId::}}",
+          "client_secret": "{{resolve:secretsmanager:/CODE/flexible/restorer2/google-auth-credentials:SecretString:clientSecret::}}",
+        },
+        "ProviderName": "Google",
+        "ProviderType": "Google",
+        "UserPoolId": {
+          "Ref": "restorer2userpool0523E0B9",
+        },
+      },
+      "Type": "AWS::Cognito::UserPoolIdentityProvider",
+    },
+    "ldpaccessRestorer20E1137C4": {
+      "Properties": {
+        "GroupDescription": "Allow all outbound HTTPS traffic",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound HTTPS traffic",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+        ],
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "CODE",
+          },
+        ],
+        "VpcId": {
+          "Ref": "VpcId",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "ldpaccessRestorer2toRestorer2CODEAccessToApiSecurityGroup0ACA11D829000489A230E": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "DestinationSecurityGroupId": "sg-4d028336",
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "ldpaccessRestorer20E1137C4",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupEgress",
+    },
+    "ldpaccessRestorer2toRestorer2CODEAccessToApiSecurityGroup15A9D0B119000A7496B51": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "DestinationSecurityGroupId": "sg-3137fa4b",
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "ldpaccessRestorer20E1137C4",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupEgress",
+    },
+    "ldpaccessRestorer2toRestorer2CODEGuHttpsEgressSecurityGroupRestorer222928D04900080ABC50C": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "DestinationSecurityGroupId": {
+          "Fn::GetAtt": [
+            "GuHttpsEgressSecurityGroupRestorer26476AC82",
+            "GroupId",
+          ],
+        },
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "ldpaccessRestorer20E1137C4",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupEgress",
+    },
+    "ldpaccessRestorer2toRestorer2CODEGuHttpsEgressSecurityGroupRestorer2ecsF4175FD69000E9A0B5D2": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "DestinationSecurityGroupId": {
+          "Fn::GetAtt": [
+            "GuHttpsEgressSecurityGroupRestorer2ecsA19F73E0",
+            "GroupId",
+          ],
+        },
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "ldpaccessRestorer20E1137C4",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupEgress",
+    },
+    "restorer2EcsCluster77DA0E12": {
+      "Properties": {
+        "ClusterSettings": [
+          {
+            "Name": "containerInsights",
+            "Value": "enhanced",
+          },
+        ],
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "CODE",
+          },
+        ],
+      },
+      "Type": "AWS::ECS::Cluster",
+    },
+    "restorer2userpool0523E0B9": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AccountRecoverySetting": {
+          "RecoveryMechanisms": [
+            {
+              "Name": "verified_phone_number",
+              "Priority": 1,
+            },
+            {
+              "Name": "verified_email",
+              "Priority": 2,
+            },
+          ],
+        },
+        "AdminCreateUserConfig": {
+          "AllowAdminCreateUserOnly": true,
+        },
+        "EmailVerificationMessage": "The verification code to your new account is {####}",
+        "EmailVerificationSubject": "Verify your new account",
+        "LambdaConfig": {
+          "PreAuthentication": {
+            "Fn::GetAtt": [
+              "authlambda5AE8A89F",
+              "Arn",
+            ],
+          },
+          "PreSignUp": {
+            "Fn::GetAtt": [
+              "authlambda5AE8A89F",
+              "Arn",
+            ],
+          },
+        },
+        "SmsVerificationMessage": "The verification code to your new account is {####}",
+        "UserPoolTags": {
+          "Stack": "flexible",
+          "Stage": "CODE",
+          "gu:cdk:version": "TEST",
+          "gu:repo": "guardian/flexible-restorer",
+        },
+        "VerificationMessageTemplate": {
+          "DefaultEmailOption": "CONFIRM_WITH_CODE",
+          "EmailMessage": "The verification code to your new account is {####}",
+          "EmailSubject": "Verify your new account",
+          "SmsMessage": "The verification code to your new account is {####}",
+        },
+      },
+      "Type": "AWS::Cognito::UserPool",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "restorer2userpoolPreAuthenticationCognitoD3B2DA55": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "authlambda5AE8A89F",
+            "Arn",
+          ],
+        },
+        "Principal": "cognito-idp.amazonaws.com",
+        "SourceArn": {
+          "Fn::GetAtt": [
+            "restorer2userpool0523E0B9",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "restorer2userpoolPreSignUpCognito9837CBBB": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "authlambda5AE8A89F",
+            "Arn",
+          ],
+        },
+        "Principal": "cognito-idp.amazonaws.com",
+        "SourceArn": {
+          "Fn::GetAtt": [
+            "restorer2userpool0523E0B9",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "restorer2userpoolalbclient536F80BD": {
+      "DependsOn": [
+        "googleidp5A744057",
+      ],
+      "Properties": {
+        "AccessTokenValidity": 60,
+        "AllowedOAuthFlows": [
+          "implicit",
+          "code",
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": [
+          "profile",
+          "phone",
+          "email",
+          "openid",
+          "aws.cognito.signin.user.admin",
+        ],
+        "CallbackURLs": [
+          "https://restorer.code.dev-gutools.co.uk/oauth2/idpresponse",
+        ],
+        "GenerateSecret": true,
+        "IdTokenValidity": 60,
+        "RefreshTokenValidity": 10080,
+        "SupportedIdentityProviders": [
+          "Google",
+        ],
+        "TokenValidityUnits": {
+          "AccessToken": "minutes",
+          "IdToken": "minutes",
+          "RefreshToken": "minutes",
+        },
+        "UserPoolId": {
+          "Ref": "restorer2userpool0523E0B9",
+        },
+      },
+      "Type": "AWS::Cognito::UserPoolClient",
+    },
+    "restorer2userpooldomain0C0BE6B7": {
+      "Properties": {
+        "Domain": "com-gu-restorer2-code-1d45dcecfacf0f9bc11041e4ef8d2ef4",
+        "UserPoolId": {
+          "Ref": "restorer2userpool0523E0B9",
+        },
+      },
+      "Type": "AWS::Cognito::UserPoolDomain",
+    },
   },
 }
 `;
@@ -1115,26 +3304,35 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
       "GuAllowPolicy",
       "GuAllowPolicy",
       "GuAllowPolicy",
+      "GuDistributionBucketParameter",
       "GuVpcParameter",
       "GuSubnetListParameter",
       "GuSubnetListParameter",
-      "GuEc2App",
-      "GuCertificate",
+      "GuLoadBalancedAppExperimental",
+      "GuListBucketPolicy",
       "GuInstanceRole",
       "GuSsmSshPolicy",
       "GuDescribeEC2Policy",
       "GuLoggingStreamNameParameter",
       "GuLogShippingPolicy",
-      "GuDistributionBucketParameter",
       "GuGetDistributablePolicy",
       "GuParameterStoreReadPolicy",
       "GuAmiParameter",
       "GuHttpsEgressSecurityGroup",
       "GuAutoScalingGroup",
+      "GuApplicationTargetGroup",
+      "GuRiffRaffDeploymentIdParameterExperimental",
+      "GuRepository",
+      "GuArtifactsAccountId",
+      "GuHttpsEgressSecurityGroup",
+      "GuSecurityGroup",
+      "GuApplicationTargetGroup",
+      "GuCertificate",
       "GuApplicationLoadBalancer",
       "GuAccessLoggingBucketParameter",
-      "GuApplicationTargetGroup",
       "GuHttpsApplicationListener",
+      "GuLambdaFunction",
+      "GuHttpsEgressSecurityGroup",
       "GuCname",
     ],
     "gu:cdk:version": "TEST",
@@ -1160,6 +3358,11 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
       "Description": "S3 bucket to store your access logs",
       "Type": "AWS::SSM::Parameter::Value<String>",
     },
+    "ArtifactsAccountId": {
+      "Default": "/organisation/accounts/artifacts",
+      "Description": "Account ID of the Artifacts account. Useful as some shared resources live here.",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
     "DistributionBucketName": {
       "Default": "/account/services/artifact.bucket",
       "Description": "SSM parameter containing the S3 bucket name holding distribution artifacts",
@@ -1174,10 +3377,22 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
       "Description": "SSM parameter containing the Name (not ARN) on the kinesis stream",
       "Type": "AWS::SSM::Parameter::Value<String>",
     },
+    "RiffRaffDeploymentId": {
+      "Description": "Used by Riff-Raff to inject the deployment ID.",
+      "Type": "String",
+    },
     "VpcId": {
       "Default": "/account/vpc/primary/id",
       "Description": "Virtual Private Cloud to run EC2 instances within. Should NOT be the account default VPC.",
       "Type": "AWS::SSM::Parameter::Value<AWS::EC2::VPC::Id>",
+    },
+    "bucketoverrideParameter": {
+      "Default": "/organisation/services/artifact.bucket",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+    "deploytoolsaccountidparameterParameter": {
+      "Default": "/organisation/accounts/deployTools",
+      "Type": "AWS::SSM::Parameter::Value<String>",
     },
     "restorer2PrivateSubnets": {
       "Default": "/account/vpc/primary/subnets/private",
@@ -1191,8 +3406,49 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
     },
   },
   "Resources": {
-    "AutoScalingGroupRestorer2ASG07C0C93C": {
+    "AsgRollingUpdatePolicy2A1DDC6F": {
       "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "cloudformation:SignalResource",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "AWS::StackId",
+              },
+            },
+            {
+              "Action": "elasticloadbalancing:DescribeTargetHealth",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "AsgRollingUpdatePolicy2A1DDC6F",
+        "Roles": [
+          {
+            "Ref": "InstanceRoleRestorer2A97F6455",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "AutoScalingGroupRestorer2ASG07C0C93C": {
+      "CreationPolicy": {
+        "AutoScalingCreationPolicy": {
+          "MinSuccessfulInstancesPercent": 100,
+        },
+        "ResourceSignal": {
+          "Count": 1,
+          "Timeout": "PT3M",
+        },
+      },
+      "DependsOn": [
+        "AsgRollingUpdatePolicy2A1DDC6F",
+      ],
+      "Properties": {
+        "DesiredCapacity": "1",
         "HealthCheckGracePeriod": 120,
         "HealthCheckType": "ELB",
         "LaunchTemplate": {
@@ -1206,13 +3462,13 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
             ],
           },
         },
-        "MaxSize": "4",
+        "MaxSize": "2",
         "MetricsCollection": [
           {
             "Granularity": "1Minute",
           },
         ],
-        "MinSize": "2",
+        "MinSize": "1",
         "Tags": [
           {
             "Key": "App",
@@ -1257,11 +3513,51 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
             "Ref": "TargetGroupRestorer289B6C480",
           },
         ],
-        "VPCZoneIdentifier": {
-          "Ref": "restorer2PrivateSubnets",
-        },
+        "VPCZoneIdentifier": [
+          {
+            "Fn::Select": [
+              0,
+              {
+                "Ref": "restorer2PrivateSubnets",
+              },
+            ],
+          },
+          {
+            "Fn::Select": [
+              1,
+              {
+                "Ref": "restorer2PrivateSubnets",
+              },
+            ],
+          },
+          {
+            "Fn::Select": [
+              2,
+              {
+                "Ref": "restorer2PrivateSubnets",
+              },
+            ],
+          },
+        ],
       },
       "Type": "AWS::AutoScaling::AutoScalingGroup",
+      "UpdatePolicy": {
+        "AutoScalingRollingUpdate": {
+          "MaxBatchSize": 2,
+          "MinInstancesInService": 1,
+          "MinSuccessfulInstancesPercent": 100,
+          "PauseTime": "PT3M",
+          "SuspendProcesses": [
+            "AlarmNotification",
+            "AZRebalance",
+            "HealthCheck",
+            "InstanceRefresh",
+            "ReplaceUnhealthy",
+            "ScheduledActions",
+          ],
+          "WaitOnResourceSignals": true,
+        },
+      },
     },
     "CertificateRestorer22E39A9E5": {
       "DeletionPolicy": "Retain",
@@ -1349,6 +3645,611 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
       },
       "Type": "Guardian::DNS::RecordSet",
     },
+    "EcsService81FC6EF6": {
+      "DependsOn": [
+        "EcsTaskDefinitionTaskRoleDefaultPolicy1FD2F057",
+        "EcsTaskDefinitionTaskRoleB7B6D8DD",
+        "ListenerRestorer2DeterministicRouteToEc2RuleA2C74BD9",
+        "ListenerRestorer2DeterministicRouteToEcsRule173F4914",
+        "ListenerRestorer293099711",
+        "S3FilesMountTarget0",
+        "S3FilesMountTarget1",
+        "S3FilesMountTarget2",
+      ],
+      "Properties": {
+        "Cluster": {
+          "Ref": "restorer2EcsCluster77DA0E12",
+        },
+        "DeploymentConfiguration": {
+          "Alarms": {
+            "AlarmNames": [],
+            "Enable": false,
+            "Rollback": false,
+          },
+          "DeploymentCircuitBreaker": {
+            "Enable": true,
+            "Rollback": true,
+          },
+          "MaximumPercent": 200,
+          "MinimumHealthyPercent": 100,
+        },
+        "DeploymentController": {
+          "Type": "ECS",
+        },
+        "EnableECSManagedTags": false,
+        "HealthCheckGracePeriodSeconds": 60,
+        "LaunchType": "FARGATE",
+        "LoadBalancers": [
+          {
+            "ContainerName": "restorer2",
+            "ContainerPort": 9000,
+            "TargetGroupArn": {
+              "Ref": "Restorer2EcsTargetGroupRestorer21C90AD93",
+            },
+          },
+        ],
+        "Monitoring": {
+          "MetricConfigurations": [
+            {
+              "MetricNames": [
+                "CPUUtilization",
+                "MemoryUtilization",
+              ],
+              "ResolutionSeconds": 20,
+            },
+          ],
+        },
+        "NetworkConfiguration": {
+          "AwsvpcConfiguration": {
+            "AssignPublicIp": "DISABLED",
+            "SecurityGroups": [
+              {
+                "Fn::GetAtt": [
+                  "GuHttpsEgressSecurityGroupRestorer2ecsA19F73E0",
+                  "GroupId",
+                ],
+              },
+            ],
+            "Subnets": [
+              {
+                "Fn::Select": [
+                  0,
+                  {
+                    "Ref": "restorer2PrivateSubnets",
+                  },
+                ],
+              },
+              {
+                "Fn::Select": [
+                  1,
+                  {
+                    "Ref": "restorer2PrivateSubnets",
+                  },
+                ],
+              },
+              {
+                "Fn::Select": [
+                  2,
+                  {
+                    "Ref": "restorer2PrivateSubnets",
+                  },
+                ],
+              },
+            ],
+          },
+        },
+        "PropagateTags": "SERVICE",
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+        "TaskDefinition": {
+          "Ref": "EcsTaskDefinition63157ED3",
+        },
+      },
+      "Type": "AWS::ECS::Service",
+    },
+    "EcsServiceTaskCountTarget02FCCE22": {
+      "DependsOn": [
+        "EcsTaskDefinitionTaskRoleDefaultPolicy1FD2F057",
+        "EcsTaskDefinitionTaskRoleB7B6D8DD",
+        "S3FilesMountTarget0",
+        "S3FilesMountTarget1",
+        "S3FilesMountTarget2",
+      ],
+      "Properties": {
+        "MaxCapacity": 1,
+        "MinCapacity": 1,
+        "ResourceId": {
+          "Fn::Join": [
+            "",
+            [
+              "service/",
+              {
+                "Ref": "restorer2EcsCluster77DA0E12",
+              },
+              "/",
+              {
+                "Fn::GetAtt": [
+                  "EcsService81FC6EF6",
+                  "Name",
+                ],
+              },
+            ],
+          ],
+        },
+        "RoleARN": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":iam::",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService",
+            ],
+          ],
+        },
+        "ScalableDimension": "ecs:service:DesiredCount",
+        "ServiceNamespace": "ecs",
+      },
+      "Type": "AWS::ApplicationAutoScaling::ScalableTarget",
+    },
+    "EcsTaskDefinition63157ED3": {
+      "Properties": {
+        "ContainerDefinitions": [
+          {
+            "DockerLabels": {
+              "RiffRaffDeploymentId": {
+                "Ref": "RiffRaffDeploymentId",
+              },
+            },
+            "Environment": [
+              {
+                "Name": "STACK",
+                "Value": "flexible",
+              },
+              {
+                "Name": "STAGE",
+                "Value": "PROD",
+              },
+              {
+                "Name": "APP",
+                "Value": "restorer2",
+              },
+              {
+                "Name": "TASK_NAME",
+                "Value": "restorer2",
+              },
+              {
+                "Name": "GU_REPO",
+                "Value": "guardian/flexible-restorer",
+              },
+            ],
+            "Essential": true,
+            "Image": {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Ref": "ArtifactsAccountId",
+                  },
+                  ".dkr.ecr.eu-west-1.",
+                  {
+                    "Ref": "AWS::URLSuffix",
+                  },
+                  "/guardian/flexible-restorer/restorer2:DEV",
+                ],
+              ],
+            },
+            "LogConfiguration": {
+              "LogDriver": "awsfirelens",
+              "Options": {
+                "Name": "kinesis_streams",
+                "region": "eu-west-1",
+                "retry_limit": "2",
+                "stream": {
+                  "Ref": "LoggingStreamName",
+                },
+              },
+            },
+            "MountPoints": [
+              {
+                "ContainerPath": "/etc/gu/s3-sync/",
+                "ReadOnly": true,
+                "SourceVolume": "s3files-volume",
+              },
+            ],
+            "Name": "restorer2",
+            "PortMappings": [
+              {
+                "ContainerPort": 9000,
+                "Protocol": "tcp",
+              },
+            ],
+            "ReadonlyRootFilesystem": true,
+            "VersionConsistency": "disabled",
+          },
+          {
+            "Environment": [
+              {
+                "Name": "STACK",
+                "Value": "flexible",
+              },
+              {
+                "Name": "STAGE",
+                "Value": "PROD",
+              },
+              {
+                "Name": "APP",
+                "Value": "restorer2",
+              },
+              {
+                "Name": "TASK_NAME",
+                "Value": "restorer2",
+              },
+              {
+                "Name": "GU_REPO",
+                "Value": "guardian/flexible-restorer",
+              },
+            ],
+            "Essential": true,
+            "FirelensConfiguration": {
+              "Type": "fluentbit",
+            },
+            "Image": "ghcr.io/guardian/devx-logs@sha256:cf91724a5166f1c143e07958820aa2122afb61c164b68555d15cb92abb5acda0",
+            "LogConfiguration": {
+              "LogDriver": "awslogs",
+              "Options": {
+                "awslogs-group": {
+                  "Ref": "EcsTaskDefinitionLogShippingLogGroup0E405BD0",
+                },
+                "awslogs-region": "eu-west-1",
+                "awslogs-stream-prefix": "flexible/PROD/restorer2/devx-logs-sidecar",
+              },
+            },
+            "MountPoints": [
+              {
+                "ContainerPath": "/init",
+                "ReadOnly": false,
+                "SourceVolume": "logging-volume",
+              },
+            ],
+            "Name": "LogShipping",
+            "ReadonlyRootFilesystem": true,
+            "VersionConsistency": "disabled",
+          },
+        ],
+        "Cpu": "1024",
+        "ExecutionRoleArn": {
+          "Fn::GetAtt": [
+            "EcsTaskDefinitionExecutionRoleBE450C73",
+            "Arn",
+          ],
+        },
+        "Family": "Restorer2PRODEcsTaskDefinition95DF4398",
+        "Memory": "2048",
+        "NetworkMode": "awsvpc",
+        "RequiresCompatibilities": [
+          "FARGATE",
+        ],
+        "RuntimePlatform": {
+          "CpuArchitecture": "ARM64",
+          "OperatingSystemFamily": "LINUX",
+        },
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+        "TaskRoleArn": {
+          "Fn::GetAtt": [
+            "EcsTaskDefinitionTaskRoleB7B6D8DD",
+            "Arn",
+          ],
+        },
+        "Volumes": [
+          {
+            "Name": "logging-volume",
+          },
+          {
+            "Name": "s3files-volume",
+            "S3FilesVolumeConfiguration": {
+              "FileSystemArn": {
+                "Fn::GetAtt": [
+                  "S3FilesFileSystem",
+                  "FileSystemArn",
+                ],
+              },
+              "RootDirectory": "/",
+            },
+          },
+        ],
+      },
+      "Type": "AWS::ECS::TaskDefinition",
+    },
+    "EcsTaskDefinitionExecutionRoleBE450C73": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ecs-tasks.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "EcsTaskDefinitionExecutionRoleDefaultPolicy1611A942": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":ecr:eu-west-1:",
+                    {
+                      "Ref": "ArtifactsAccountId",
+                    },
+                    ":repository/guardian/flexible-restorer/restorer2",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": "ecr:GetAuthorizationToken",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+              ],
+              "Effect": "Allow",
+              "Resource": "arn:aws:ecr:eu-west-1:694911143906:repository/aws-guardduty-agent-fargate",
+            },
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "EcsTaskDefinitionLogShippingLogGroup0E405BD0",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "EcsTaskDefinitionExecutionRoleDefaultPolicy1611A942",
+        "Roles": [
+          {
+            "Ref": "EcsTaskDefinitionExecutionRoleBE450C73",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "EcsTaskDefinitionLogShippingLogGroup0E405BD0": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "RetentionInDays": 1,
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "EcsTaskDefinitionTaskRoleB7B6D8DD": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ecs-tasks.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "EcsTaskDefinitionTaskRoleDefaultPolicy1FD2F057": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3files:ClientMount",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "S3FilesFileSystem",
+                  "FileSystemArn",
+                ],
+              },
+            },
+            {
+              "Action": "s3:ListBucket",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":s3:::",
+                    {
+                      "Ref": "DistributionBucketName",
+                    },
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": [
+                "s3:GetObject",
+                "s3:GetObjectVersion",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":s3:::",
+                    {
+                      "Ref": "DistributionBucketName",
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "EcsTaskDefinitionTaskRoleDefaultPolicy1FD2F057",
+        "Roles": [
+          {
+            "Ref": "EcsTaskDefinitionTaskRoleB7B6D8DD",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
     "GetDistributablePolicyRestorer220872BCF": {
       "Properties": {
         "PolicyDocument": {
@@ -1421,6 +4322,88 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
       },
       "Type": "AWS::EC2::SecurityGroup",
     },
+    "GuHttpsEgressSecurityGroupRestorer2ecsA19F73E0": {
+      "Properties": {
+        "GroupDescription": "Allow all outbound HTTPS traffic",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound HTTPS traffic",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+        ],
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2-ecs",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+        "VpcId": {
+          "Ref": "VpcId",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "GuHttpsEgressSecurityGroupRestorer2ecsfromRestorer2PRODLoadBalancerRestorer2SecurityGroupDB0828C090001AFAE993": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "GuHttpsEgressSecurityGroupRestorer2ecsA19F73E0",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "LoadBalancerRestorer2SecurityGroup64900CDE",
+            "GroupId",
+          ],
+        },
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupIngress",
+    },
+    "GuHttpsEgressSecurityGroupRestorer2ecsfromRestorer2PRODldpaccessRestorer2183667C690007D8D78FA": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "GuHttpsEgressSecurityGroupRestorer2ecsA19F73E0",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "ldpaccessRestorer20E1137C4",
+            "GroupId",
+          ],
+        },
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupIngress",
+    },
     "GuHttpsEgressSecurityGroupRestorer2fromRestorer2PRODLoadBalancerRestorer2SecurityGroupDB0828C090006EEF1F79": {
       "Properties": {
         "Description": "Load balancer to target",
@@ -1441,6 +4424,67 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
         "ToPort": 9000,
       },
       "Type": "AWS::EC2::SecurityGroupIngress",
+    },
+    "GuHttpsEgressSecurityGroupRestorer2fromRestorer2PRODldpaccessRestorer2183667C69000804C39DA": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "GuHttpsEgressSecurityGroupRestorer26476AC82",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "ldpaccessRestorer20E1137C4",
+            "GroupId",
+          ],
+        },
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupIngress",
+    },
+    "GuListBucketPolicyRestorer2064BB816": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:ListBucket",
+              "Condition": {
+                "StringLike": {
+                  "s3:prefix": "flexible/PROD/restorer2/conf/",
+                },
+              },
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":s3:::",
+                    {
+                      "Ref": "DistributionBucketName",
+                    },
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "GuListBucketPolicyRestorer2064BB816",
+        "Roles": [
+          {
+            "Ref": "InstanceRoleRestorer2A97F6455",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
     },
     "GuLogShippingPolicy981BFE5A": {
       "Properties": {
@@ -1475,6 +4519,9 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
         "Roles": [
           {
             "Ref": "InstanceRoleRestorer2A97F6455",
+          },
+          {
+            "Ref": "EcsTaskDefinitionTaskRoleB7B6D8DD",
           },
         ],
       },
@@ -1542,6 +4589,9 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
           {
             "Ref": "InstanceRoleRestorer2A97F6455",
           },
+          {
+            "Ref": "EcsTaskDefinitionTaskRoleB7B6D8DD",
+          },
         ],
       },
       "Type": "AWS::IAM::Policy",
@@ -1557,9 +4607,42 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
         ],
         "DefaultActions": [
           {
-            "TargetGroupArn": {
-              "Ref": "TargetGroupRestorer289B6C480",
+            "AuthenticateCognitoConfig": {
+              "SessionTimeout": "900",
+              "UserPoolArn": {
+                "Fn::GetAtt": [
+                  "restorer2userpool0523E0B9",
+                  "Arn",
+                ],
+              },
+              "UserPoolClientId": {
+                "Ref": "restorer2userpoolalbclient536F80BD",
+              },
+              "UserPoolDomain": {
+                "Ref": "restorer2userpooldomain0C0BE6B7",
+              },
             },
+            "Order": 1,
+            "Type": "authenticate-cognito",
+          },
+          {
+            "ForwardConfig": {
+              "TargetGroups": [
+                {
+                  "TargetGroupArn": {
+                    "Ref": "TargetGroupRestorer289B6C480",
+                  },
+                  "Weight": 1,
+                },
+                {
+                  "TargetGroupArn": {
+                    "Ref": "Restorer2EcsTargetGroupRestorer21C90AD93",
+                  },
+                  "Weight": 0,
+                },
+              ],
+            },
+            "Order": 2,
             "Type": "forward",
           },
         ],
@@ -1569,8 +4652,130 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
         "Port": 443,
         "Protocol": "HTTPS",
         "SslPolicy": "ELBSecurityPolicy-TLS13-1-2-2021-06",
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
       },
       "Type": "AWS::ElasticLoadBalancingV2::Listener",
+    },
+    "ListenerRestorer2DeterministicRouteToEc2RuleA2C74BD9": {
+      "Properties": {
+        "Actions": [
+          {
+            "TargetGroupArn": {
+              "Ref": "TargetGroupRestorer289B6C480",
+            },
+            "Type": "forward",
+          },
+        ],
+        "Conditions": [
+          {
+            "Field": "http-header",
+            "HttpHeaderConfig": {
+              "HttpHeaderName": "X-Gu-Target-Group",
+              "Values": [
+                "ec2",
+              ],
+            },
+          },
+        ],
+        "ListenerArn": {
+          "Ref": "ListenerRestorer293099711",
+        },
+        "Priority": 10,
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
+    },
+    "ListenerRestorer2DeterministicRouteToEcsRule173F4914": {
+      "Properties": {
+        "Actions": [
+          {
+            "TargetGroupArn": {
+              "Ref": "Restorer2EcsTargetGroupRestorer21C90AD93",
+            },
+            "Type": "forward",
+          },
+        ],
+        "Conditions": [
+          {
+            "Field": "http-header",
+            "HttpHeaderConfig": {
+              "HttpHeaderName": "X-Gu-Target-Group",
+              "Values": [
+                "ecs",
+              ],
+            },
+          },
+        ],
+        "ListenerArn": {
+          "Ref": "ListenerRestorer293099711",
+        },
+        "Priority": 11,
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
     },
     "LoadBalancerRestorer2E6E71926": {
       "Properties": {
@@ -1610,6 +4815,12 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
               "GroupId",
             ],
           },
+          {
+            "Fn::GetAtt": [
+              "ldpaccessRestorer20E1137C4",
+              "GroupId",
+            ],
+          },
         ],
         "Subnets": {
           "Ref": "restorer2PublicSubnets",
@@ -1643,6 +4854,15 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
     "LoadBalancerRestorer2SecurityGroup64900CDE": {
       "Properties": {
         "GroupDescription": "Automatically created Security Group for ELB Restorer2PRODLoadBalancerRestorer23819373C",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow to IdP endpoint",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+        ],
         "SecurityGroupIngress": [
           {
             "CidrIp": "0.0.0.0/0",
@@ -1765,6 +4985,27 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
       },
       "Type": "AWS::EC2::SecurityGroupEgress",
     },
+    "LoadBalancerRestorer2SecurityGrouptoRestorer2PRODGuHttpsEgressSecurityGroupRestorer2ecs9F01821F9000AA01A192": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "DestinationSecurityGroupId": {
+          "Fn::GetAtt": [
+            "GuHttpsEgressSecurityGroupRestorer2ecsA19F73E0",
+            "GroupId",
+          ],
+        },
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "LoadBalancerRestorer2SecurityGroup64900CDE",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupEgress",
+    },
     "PanDomainPolicyB981546E": {
       "Properties": {
         "PolicyDocument": {
@@ -1785,6 +5026,9 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
         "Roles": [
           {
             "Ref": "InstanceRoleRestorer2A97F6455",
+          },
+          {
+            "Ref": "EcsTaskDefinitionTaskRoleB7B6D8DD",
           },
         ],
       },
@@ -1837,6 +5081,9 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
           {
             "Ref": "InstanceRoleRestorer2A97F6455",
           },
+          {
+            "Ref": "EcsTaskDefinitionTaskRoleB7B6D8DD",
+          },
         ],
       },
       "Type": "AWS::IAM::Policy",
@@ -1858,9 +5105,61 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
           {
             "Ref": "InstanceRoleRestorer2A97F6455",
           },
+          {
+            "Ref": "EcsTaskDefinitionTaskRoleB7B6D8DD",
+          },
         ],
       },
       "Type": "AWS::IAM::Policy",
+    },
+    "Restorer2EcsTargetGroupRestorer21C90AD93": {
+      "Properties": {
+        "HealthCheckIntervalSeconds": 10,
+        "HealthCheckPath": "/management/healthcheck",
+        "HealthCheckProtocol": "HTTP",
+        "HealthCheckTimeoutSeconds": 5,
+        "HealthyThresholdCount": 5,
+        "Port": 9000,
+        "Protocol": "HTTP",
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+        "TargetGroupAttributes": [
+          {
+            "Key": "deregistration_delay.timeout_seconds",
+            "Value": "30",
+          },
+          {
+            "Key": "stickiness.enabled",
+            "Value": "false",
+          },
+        ],
+        "TargetType": "ip",
+        "UnhealthyThresholdCount": 2,
+        "VpcId": {
+          "Ref": "VpcId",
+        },
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
     },
     "RestorerGetDistributablesPolicy147D3507": {
       "Properties": {
@@ -1878,6 +5177,9 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
         "Roles": [
           {
             "Ref": "InstanceRoleRestorer2A97F6455",
+          },
+          {
+            "Ref": "EcsTaskDefinitionTaskRoleB7B6D8DD",
           },
         ],
       },
@@ -1903,6 +5205,9 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
           {
             "Ref": "InstanceRoleRestorer2A97F6455",
           },
+          {
+            "Ref": "EcsTaskDefinitionTaskRoleB7B6D8DD",
+          },
         ],
       },
       "Type": "AWS::IAM::Policy",
@@ -1926,6 +5231,9 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
         "Roles": [
           {
             "Ref": "InstanceRoleRestorer2A97F6455",
+          },
+          {
+            "Ref": "EcsTaskDefinitionTaskRoleB7B6D8DD",
           },
         ],
       },
@@ -1951,9 +5259,473 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
           {
             "Ref": "InstanceRoleRestorer2A97F6455",
           },
+          {
+            "Ref": "EcsTaskDefinitionTaskRoleB7B6D8DD",
+          },
         ],
       },
       "Type": "AWS::IAM::Policy",
+    },
+    "S3FilesFileSystem": {
+      "DependsOn": [
+        "S3FilesRoleDefaultPolicyD9591E55",
+        "S3FilesRole37B20925",
+      ],
+      "Properties": {
+        "Bucket": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":s3:::",
+              {
+                "Ref": "DistributionBucketName",
+              },
+            ],
+          ],
+        },
+        "Prefix": "flexible/PROD/restorer2/conf/",
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "S3FilesRole37B20925",
+            "Arn",
+          ],
+        },
+        "Tags": [
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+      },
+      "Type": "AWS::S3Files::FileSystem",
+    },
+    "S3FilesMountTarget0": {
+      "Properties": {
+        "FileSystemId": {
+          "Fn::GetAtt": [
+            "S3FilesFileSystem",
+            "FileSystemId",
+          ],
+        },
+        "SecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "S3FilesMountTargetSecurityGroupRestorer2s3files3EC38059",
+              "GroupId",
+            ],
+          },
+        ],
+        "SubnetId": {
+          "Fn::Select": [
+            0,
+            {
+              "Ref": "restorer2PrivateSubnets",
+            },
+          ],
+        },
+      },
+      "Type": "AWS::S3Files::MountTarget",
+    },
+    "S3FilesMountTarget1": {
+      "Properties": {
+        "FileSystemId": {
+          "Fn::GetAtt": [
+            "S3FilesFileSystem",
+            "FileSystemId",
+          ],
+        },
+        "SecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "S3FilesMountTargetSecurityGroupRestorer2s3files3EC38059",
+              "GroupId",
+            ],
+          },
+        ],
+        "SubnetId": {
+          "Fn::Select": [
+            1,
+            {
+              "Ref": "restorer2PrivateSubnets",
+            },
+          ],
+        },
+      },
+      "Type": "AWS::S3Files::MountTarget",
+    },
+    "S3FilesMountTarget2": {
+      "Properties": {
+        "FileSystemId": {
+          "Fn::GetAtt": [
+            "S3FilesFileSystem",
+            "FileSystemId",
+          ],
+        },
+        "SecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "S3FilesMountTargetSecurityGroupRestorer2s3files3EC38059",
+              "GroupId",
+            ],
+          },
+        ],
+        "SubnetId": {
+          "Fn::Select": [
+            2,
+            {
+              "Ref": "restorer2PrivateSubnets",
+            },
+          ],
+        },
+      },
+      "Type": "AWS::S3Files::MountTarget",
+    },
+    "S3FilesMountTargetSecurityGroupRestorer2s3files3EC38059": {
+      "Properties": {
+        "GroupDescription": "Restorer2-PROD/S3FilesMountTargetSecurityGroupRestorer2s3files",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "255.255.255.255/32",
+            "Description": "Disallow all traffic",
+            "FromPort": 252,
+            "IpProtocol": "icmp",
+            "ToPort": 86,
+          },
+        ],
+        "SecurityGroupIngress": [
+          {
+            "Description": "Allow ECS tasks to mount S3 Files",
+            "FromPort": 2049,
+            "IpProtocol": "tcp",
+            "SourceSecurityGroupId": {
+              "Fn::GetAtt": [
+                "GuHttpsEgressSecurityGroupRestorer2ecsA19F73E0",
+                "GroupId",
+              ],
+            },
+            "ToPort": 2049,
+          },
+        ],
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2-s3files",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+        "VpcId": {
+          "Ref": "VpcId",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "S3FilesRole37B20925": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Condition": {
+                "ArnLike": {
+                  "aws:SourceArn": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":s3files:eu-west-1:",
+                        {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":file-system/*",
+                      ],
+                    ],
+                  },
+                },
+                "StringEquals": {
+                  "aws:SourceAccount": {
+                    "Ref": "AWS::AccountId",
+                  },
+                },
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "elasticfilesystem.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Role used by the S3 Files filesystem for restorer2 mount",
+        "Tags": [
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "S3FilesRoleDefaultPolicyD9591E55": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:ListBucket",
+                "s3:ListBucketVersions",
+                "s3:GetBucketVersioning",
+                "s3:GetBucketLocation",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":s3:::",
+                    {
+                      "Ref": "DistributionBucketName",
+                    },
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": [
+                "s3:AbortMultipartUpload",
+                "s3:DeleteObject*",
+                "s3:GetObject*",
+                "s3:List*",
+                "s3:PutObject*",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":s3:::",
+                    {
+                      "Ref": "DistributionBucketName",
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": [
+                "kms:GenerateDataKey",
+                "kms:Encrypt",
+                "kms:Decrypt",
+                "kms:ReEncryptFrom",
+                "kms:ReEncryptTo",
+              ],
+              "Condition": {
+                "StringLike": {
+                  "kms:EncryptionContext:aws:s3:arn": [
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:",
+                          {
+                            "Ref": "AWS::Partition",
+                          },
+                          ":s3:::",
+                          {
+                            "Ref": "DistributionBucketName",
+                          },
+                        ],
+                      ],
+                    },
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:",
+                          {
+                            "Ref": "AWS::Partition",
+                          },
+                          ":s3:::",
+                          {
+                            "Ref": "DistributionBucketName",
+                          },
+                          "/*",
+                        ],
+                      ],
+                    },
+                  ],
+                  "kms:ViaService": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "s3.eu-west-1.",
+                        {
+                          "Ref": "AWS::URLSuffix",
+                        },
+                      ],
+                    ],
+                  },
+                },
+              },
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":kms:eu-west-1:",
+                    {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":key/*",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": [
+                "events:DeleteRule",
+                "events:DisableRule",
+                "events:EnableRule",
+                "events:PutRule",
+                "events:PutTargets",
+                "events:RemoveTargets",
+              ],
+              "Condition": {
+                "StringEquals": {
+                  "events:ManagedBy": "elasticfilesystem.amazonaws.com",
+                },
+              },
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":events:*:*:rule/DO-NOT-DELETE-S3-Files*",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": [
+                "events:DescribeRule",
+                "events:ListTargetsByRule",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":events:*:*:rule/*",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": [
+                "events:ListRuleNamesByTarget",
+                "events:ListRules",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "S3FilesRoleDefaultPolicyD9591E55",
+        "Roles": [
+          {
+            "Ref": "S3FilesRole37B20925",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "S3FilesTaskEgress": {
+      "Properties": {
+        "Description": "Allow NFS traffic to S3 Files mount targets",
+        "DestinationSecurityGroupId": {
+          "Fn::GetAtt": [
+            "S3FilesMountTargetSecurityGroupRestorer2s3files3EC38059",
+            "GroupId",
+          ],
+        },
+        "FromPort": 2049,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "GuHttpsEgressSecurityGroupRestorer2ecsA19F73E0",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 2049,
+      },
+      "Type": "AWS::EC2::SecurityGroupEgress",
     },
     "SsmSshPolicy4CFC977E": {
       "Properties": {
@@ -2040,6 +5812,248 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
       },
       "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
     },
+    "authlambda5AE8A89F": {
+      "DependsOn": [
+        "authlambdaServiceRoleDefaultPolicy4F870132",
+        "authlambdaServiceRole39F49DB1",
+      ],
+      "Properties": {
+        "Architectures": [
+          "x86_64",
+        ],
+        "Code": {
+          "S3Bucket": {
+            "Ref": "bucketoverrideParameter",
+          },
+          "S3Key": "deploy/PROD/cognito-lambda/devx-cognito-lambda-amd64-v2.zip",
+        },
+        "Environment": {
+          "Variables": {
+            "ALLOWED_GROUPS": "engineering@guardian.co.uk",
+            "APP": "restorer2",
+            "GATEKEEPER_FUNCTION_ARN": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:lambda:eu-west-1:",
+                  {
+                    "Ref": "deploytoolsaccountidparameterParameter",
+                  },
+                  ":function:deploy-PROD-gatekeeper-lambda",
+                ],
+              ],
+            },
+            "STACK": "flexible",
+            "STAGE": "PROD",
+          },
+        },
+        "Handler": "bootstrap",
+        "LoggingConfig": {
+          "LogFormat": "JSON",
+        },
+        "MemorySize": 128,
+        "Role": {
+          "Fn::GetAtt": [
+            "authlambdaServiceRole39F49DB1",
+            "Arn",
+          ],
+        },
+        "Runtime": "provided.al2023",
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Owner",
+            "Value": "DevX",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+        "Timeout": 30,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "authlambdaServiceRole39F49DB1": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Owner",
+            "Value": "DevX",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "authlambdaServiceRoleDefaultPolicy4F870132": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      {
+                        "Ref": "bucketoverrideParameter",
+                      },
+                    ],
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      {
+                        "Ref": "bucketoverrideParameter",
+                      },
+                      "/deploy/PROD/cognito-lambda/devx-cognito-lambda-amd64-v2.zip",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": "ssm:GetParametersByPath",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:ssm:eu-west-1:",
+                    {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":parameter/PROD/flexible/restorer2",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": [
+                "ssm:GetParameters",
+                "ssm:GetParameter",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:ssm:eu-west-1:",
+                    {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":parameter/PROD/flexible/restorer2/*",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:lambda:eu-west-1:",
+                    {
+                      "Ref": "deploytoolsaccountidparameterParameter",
+                    },
+                    ":function:deploy-PROD-gatekeeper-lambda",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "authlambdaServiceRoleDefaultPolicy4F870132",
+        "Roles": [
+          {
+            "Ref": "authlambdaServiceRole39F49DB1",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
     "flexiblePRODrestorer2F490296C": {
       "DependsOn": [
         "InstanceRoleRestorer2A97F6455",
@@ -2086,6 +6100,10 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
                   "Value": "restorer2",
                 },
                 {
+                  "Key": "gu:build-identifier",
+                  "Value": "DEV",
+                },
+                {
                   "Key": "gu:cdk:version",
                   "Value": "TEST",
                 },
@@ -2115,6 +6133,10 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
                   "Value": "restorer2",
                 },
                 {
+                  "Key": "gu:build-identifier",
+                  "Value": "DEV",
+                },
+                {
                   "Key": "gu:cdk:version",
                   "Value": "TEST",
                 },
@@ -2138,9 +6160,56 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
             },
           ],
           "UserData": {
-            "Fn::Base64": "#!/bin/bash
+            "Fn::Base64": {
+              "Fn::Join": [
+                "",
+                [
+                  "#!/bin/bash
+function exitTrap(){
+exitCode=$?
+
+        cfn-signal --stack ",
+                  {
+                    "Ref": "AWS::StackId",
+                  },
+                  "           --resource AutoScalingGroupRestorer2ASG07C0C93C           --region eu-west-1           --exit-code $exitCode || echo 'Failed to send Cloudformation Signal'
+        
+}
+trap exitTrap EXIT
 aws s3 cp s3://composer-dist/flexible/PROD/restorer2/restorer2.deb /tmp/restorer2.deb
-dpkg -i /tmp/restorer2.deb",
+dpkg -i /tmp/restorer2.deb
+echo "Launch template last updated by Riff-Raff deployment ID: ",
+                  {
+                    "Ref": "RiffRaffDeploymentId",
+                  },
+                  ""
+# GuEc2AppExperimental Instance Health Check Start
+
+      TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+      INSTANCE_ID=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" "http://169.254.169.254/latest/meta-data/instance-id")
+
+      STATE=$(aws elbv2 describe-target-health         --target-group-arn ",
+                  {
+                    "Ref": "TargetGroupRestorer289B6C480",
+                  },
+                  "         --region eu-west-1         --targets Id=$INSTANCE_ID,Port=9000         --query "TargetHealthDescriptions[0].TargetHealth.State")
+
+      until [ "$STATE" == "\\"healthy\\"" ]; do
+        echo "Instance running build DEV not yet healthy within target group. Current state $STATE. Sleeping..."
+        sleep 5
+        STATE=$(aws elbv2 describe-target-health           --target-group-arn ",
+                  {
+                    "Ref": "TargetGroupRestorer289B6C480",
+                  },
+                  "           --region eu-west-1           --targets Id=$INSTANCE_ID,Port=9000           --query "TargetHealthDescriptions[0].TargetHealth.State")
+      done
+
+      echo "Instance running build DEV is healthy in target group."
+      
+# GuEc2AppExperimental Instance Health Check End",
+                ],
+              ],
+            },
           },
         },
         "TagSpecifications": [
@@ -2150,6 +6219,10 @@ dpkg -i /tmp/restorer2.deb",
               {
                 "Key": "App",
                 "Value": "restorer2",
+              },
+              {
+                "Key": "gu:build-identifier",
+                "Value": "DEV",
               },
               {
                 "Key": "gu:cdk:version",
@@ -2186,6 +6259,343 @@ dpkg -i /tmp/restorer2.deb",
         ],
       },
       "Type": "AWS::IAM::InstanceProfile",
+    },
+    "googleidp5A744057": {
+      "Properties": {
+        "AttributeMapping": {
+          "email": "email",
+          "family_name": "family_name",
+          "given_name": "given_name",
+          "name": "name",
+          "picture": "picture",
+        },
+        "ProviderDetails": {
+          "authorize_scopes": "openid email profile",
+          "client_id": "{{resolve:secretsmanager:/PROD/flexible/restorer2/google-auth-credentials:SecretString:clientId::}}",
+          "client_secret": "{{resolve:secretsmanager:/PROD/flexible/restorer2/google-auth-credentials:SecretString:clientSecret::}}",
+        },
+        "ProviderName": "Google",
+        "ProviderType": "Google",
+        "UserPoolId": {
+          "Ref": "restorer2userpool0523E0B9",
+        },
+      },
+      "Type": "AWS::Cognito::UserPoolIdentityProvider",
+    },
+    "ldpaccessRestorer20E1137C4": {
+      "Properties": {
+        "GroupDescription": "Allow all outbound HTTPS traffic",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound HTTPS traffic",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+        ],
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+        "VpcId": {
+          "Ref": "VpcId",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "ldpaccessRestorer2toRestorer2PRODAccessToApiSecurityGroup074E9A168900006B780A1": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "DestinationSecurityGroupId": "sg-4744c43c",
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "ldpaccessRestorer20E1137C4",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupEgress",
+    },
+    "ldpaccessRestorer2toRestorer2PRODAccessToApiSecurityGroup19EBD5A5990006CC5B1A1": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "DestinationSecurityGroupId": "sg-baae78c0",
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "ldpaccessRestorer20E1137C4",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupEgress",
+    },
+    "ldpaccessRestorer2toRestorer2PRODAccessToApiSecurityGroup2F0CFCB5A900054B1E81C": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "DestinationSecurityGroupId": "sg-4d028336",
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "ldpaccessRestorer20E1137C4",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupEgress",
+    },
+    "ldpaccessRestorer2toRestorer2PRODAccessToApiSecurityGroup36547161290002EDBCBF3": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "DestinationSecurityGroupId": "sg-3137fa4b",
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "ldpaccessRestorer20E1137C4",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupEgress",
+    },
+    "ldpaccessRestorer2toRestorer2PRODGuHttpsEgressSecurityGroupRestorer2DCE68ED490000BF03513": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "DestinationSecurityGroupId": {
+          "Fn::GetAtt": [
+            "GuHttpsEgressSecurityGroupRestorer26476AC82",
+            "GroupId",
+          ],
+        },
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "ldpaccessRestorer20E1137C4",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupEgress",
+    },
+    "ldpaccessRestorer2toRestorer2PRODGuHttpsEgressSecurityGroupRestorer2ecs9F01821F9000E6103491": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "DestinationSecurityGroupId": {
+          "Fn::GetAtt": [
+            "GuHttpsEgressSecurityGroupRestorer2ecsA19F73E0",
+            "GroupId",
+          ],
+        },
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "ldpaccessRestorer20E1137C4",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupEgress",
+    },
+    "restorer2EcsCluster77DA0E12": {
+      "Properties": {
+        "ClusterSettings": [
+          {
+            "Name": "containerInsights",
+            "Value": "enhanced",
+          },
+        ],
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+      },
+      "Type": "AWS::ECS::Cluster",
+    },
+    "restorer2userpool0523E0B9": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AccountRecoverySetting": {
+          "RecoveryMechanisms": [
+            {
+              "Name": "verified_phone_number",
+              "Priority": 1,
+            },
+            {
+              "Name": "verified_email",
+              "Priority": 2,
+            },
+          ],
+        },
+        "AdminCreateUserConfig": {
+          "AllowAdminCreateUserOnly": true,
+        },
+        "EmailVerificationMessage": "The verification code to your new account is {####}",
+        "EmailVerificationSubject": "Verify your new account",
+        "LambdaConfig": {
+          "PreAuthentication": {
+            "Fn::GetAtt": [
+              "authlambda5AE8A89F",
+              "Arn",
+            ],
+          },
+          "PreSignUp": {
+            "Fn::GetAtt": [
+              "authlambda5AE8A89F",
+              "Arn",
+            ],
+          },
+        },
+        "SmsVerificationMessage": "The verification code to your new account is {####}",
+        "UserPoolTags": {
+          "Stack": "flexible",
+          "Stage": "PROD",
+          "gu:cdk:version": "TEST",
+          "gu:repo": "guardian/flexible-restorer",
+        },
+        "VerificationMessageTemplate": {
+          "DefaultEmailOption": "CONFIRM_WITH_CODE",
+          "EmailMessage": "The verification code to your new account is {####}",
+          "EmailSubject": "Verify your new account",
+          "SmsMessage": "The verification code to your new account is {####}",
+        },
+      },
+      "Type": "AWS::Cognito::UserPool",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "restorer2userpoolPreAuthenticationCognitoD3B2DA55": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "authlambda5AE8A89F",
+            "Arn",
+          ],
+        },
+        "Principal": "cognito-idp.amazonaws.com",
+        "SourceArn": {
+          "Fn::GetAtt": [
+            "restorer2userpool0523E0B9",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "restorer2userpoolPreSignUpCognito9837CBBB": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "authlambda5AE8A89F",
+            "Arn",
+          ],
+        },
+        "Principal": "cognito-idp.amazonaws.com",
+        "SourceArn": {
+          "Fn::GetAtt": [
+            "restorer2userpool0523E0B9",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "restorer2userpoolalbclient536F80BD": {
+      "DependsOn": [
+        "googleidp5A744057",
+      ],
+      "Properties": {
+        "AccessTokenValidity": 60,
+        "AllowedOAuthFlows": [
+          "implicit",
+          "code",
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": [
+          "profile",
+          "phone",
+          "email",
+          "openid",
+          "aws.cognito.signin.user.admin",
+        ],
+        "CallbackURLs": [
+          "https://restorer.gutools.co.uk/oauth2/idpresponse",
+        ],
+        "GenerateSecret": true,
+        "IdTokenValidity": 60,
+        "RefreshTokenValidity": 10080,
+        "SupportedIdentityProviders": [
+          "Google",
+        ],
+        "TokenValidityUnits": {
+          "AccessToken": "minutes",
+          "IdToken": "minutes",
+          "RefreshToken": "minutes",
+        },
+        "UserPoolId": {
+          "Ref": "restorer2userpool0523E0B9",
+        },
+      },
+      "Type": "AWS::Cognito::UserPoolClient",
+    },
+    "restorer2userpooldomain0C0BE6B7": {
+      "Properties": {
+        "Domain": "com-gu-restorer2-prod-6e9cfc0530adb535a7c6e1550e0fbb29",
+        "UserPoolId": {
+          "Ref": "restorer2userpool0523E0B9",
+        },
+      },
+      "Type": "AWS::Cognito::UserPoolDomain",
     },
   },
 }
