@@ -2,7 +2,7 @@ import play.sbt.PlayImport.ws
 import sbt._
 
 object Dependencies {
-  val awsVersion = "2.55.11"
+  val awsVersion = "2.55.16"
   val awsVersionV1 = "1.12.584"
 
   val awsDependencies = Seq(
