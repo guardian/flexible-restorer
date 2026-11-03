@@ -121,7 +121,20 @@ export class Restorer2 extends GuStack {
           scaling: { minimumInstances: 2, maximumInstances: 4 },
           applicationLogging: { enabled: true },
           imageRecipe: "editorial-tools-jammy-java11"
-        }
+        },
+      ecsProps: {
+         imageIdentifier: process.env.IMAGE_DIGEST ?? "DEV",
+         cpu: 1024,
+         memoryLimitMiB: 2048,
+         scaling: {
+            minimumTasks: 2,
+            maximumTasks: 4,
+         },
+      },
+      targetGroupWeights: {
+         ecs: 0,
+         ec2: 1
+      }
     });
 
     // Allow the restorer instances to reach the flexible-content API ELBs.

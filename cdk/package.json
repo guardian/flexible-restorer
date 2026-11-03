@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "test": "jest",
-    "test-update": "jest -u",
+    "test": "IMAGE_DIGEST=DEV jest",
+    "test-update": "IMAGE_DIGEST=DEV jest -u",
     "format": "prettier --write \"{lib,bin}/**/*.ts\"",
     "lint": "eslint lib/** bin/** --no-error-on-unmatched-pattern",
     "synth": "cdk synth --path-metadata false --version-reporting false",

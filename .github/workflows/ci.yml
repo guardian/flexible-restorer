@@ -7,7 +7,7 @@ on:
             - main
 jobs:
     build:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04-arm
 
         permissions:
             # Required for `actions/checkout`
@@ -62,6 +62,8 @@ jobs:
 
             - name: CDK build
               working-directory: cdk
+              env:
+                IMAGE_DIGEST: ${{ steps.publish-image.outputs.imageDigest }}
               run: |
                   npm ci
                   npm run lint
