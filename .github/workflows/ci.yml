@@ -7,11 +7,13 @@ on:
             - main
 jobs:
     build:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04-arm
 
         permissions:
             # Required for `actions/checkout`
             contents: read
+            id-token: write
+            pull-requests: write
 
         steps:
             - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -33,11 +35,11 @@ jobs:
             - name: JS Unit Tests
               run: npm run test:unit
 
-            - uses: guardian/setup-scala@ac4ece07deb7cef715b8c975d4b8c77109c89ce8 # v1.1.3
+            - uses: guardian/setup-scala@v2.0.1
 
             - name: Scala Build
               run: |
-                  sbt clean compile test Debian/packageBin
+                  sbt clean compile test Debian/packageBin Docker/publishLocal
 
             - name: Rename file to match Launch Configuration in AWS
               run: |
@@ -50,8 +52,18 @@ jobs:
                   cache: npm
                   cache-dependency-path: 'cdk/package-lock.json'
 
+            - name: Publish Image
+              uses: guardian/actions-ecr/push@1b5a5070838c494e90a4492f15f69c3f83247ef4 # v1.1.0
+              id: publish-image
+              with:
+                roleArn: ${{ secrets.GU_ARTIFACTS_ROLE_ARN }}
+                githubToken: ${{ secrets.GITHUB_TOKEN }}
+                app: restorer2
+
             - name: CDK build
               working-directory: cdk
+              env:
+                IMAGE_DIGEST: ${{ steps.publish-image.outputs.imageDigest }}
               run: |
                   npm ci
                   npm run lint
