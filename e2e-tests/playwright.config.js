@@ -44,6 +44,14 @@ module.exports = defineConfig({
     retries: 1,
     reporter: [
         ["list"],
+        ...(process.env.CI ? [["github"]] : []),
+        [
+            "html",
+            {
+                outputFolder: path.join(__dirname, "playwright-report"),
+                open: "never",
+            },
+        ],
         // Enable the Cucumber HTML report only when REPORT is set, e.g.
         // `REPORT=1 npm run test`.
         ...(process.env.REPORT
