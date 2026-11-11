@@ -1,0 +1,13 @@
+version: 2
+updates:
+  - package-ecosystem: "docker"
+    directory: "/e2e-tests/images"
+    schedule:
+      interval: "weekly"
+    allow:
+      - dependency-name: "ubuntu"
+    ignore:
+      - dependency-name: "ubuntu"
+        update-types:
+          - "version-update:semver-major"
+          - "version-update:semver-minor"
