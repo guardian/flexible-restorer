@@ -89,6 +89,14 @@ Open a browser on your host machine and point it at localhost:9323 to open the P
 
 Playwright discovers and runs the specs under `e2e-tests/steps`.
 
+### E2E reports
+
+CI prints list output and adds GitHub failure annotations. Playwright and Cucumber
+HTML reports are uploaded together as the `e2e-report` artifact, retained for 14 days
+after successful or failed runs, excluding cancelled runs. Traces and videos are
+captured on the first retry, and screenshots only on failure. Failures before
+report generation may leave no reports to upload.
+
 ## Run local stack only - no AWS credentials and all services mocked locally
 
 If you want the same Testcontainers stack used by the e2e test without running the
