@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { randomUUID } from "node:crypto";
 
 /**
  * Helpers for sharing a long-running local stack (started via `npm run
@@ -15,6 +16,7 @@ export type SharedStackInfo = {
     baseUrl: string;
     panDomainPrivateKey: string;
     mockApiUrl: string;
+    runId?: string;
 };
 
 const SHARED_STACK_FILE = "tmp/e2e-local-stack.json";
@@ -29,21 +31,29 @@ export function writeSharedStackInfo(
 ): void {
     const filePath = sharedStackFilePath(projectRoot);
     fs.mkdirSync(path.dirname(filePath), { recursive: true });
-    fs.writeFileSync(filePath, JSON.stringify(info, null, 2), "utf8");
+    const temporaryPath = `${filePath}.${randomUUID()}.tmp`;
+    try {
+        fs.writeFileSync(temporaryPath, JSON.stringify(info, null, 2), {
+            encoding: "utf8",
+            mode: 0o600,
+            flag: "wx",
+        });
+        fs.renameSync(temporaryPath, filePath);
+    } finally {
+        fs.rmSync(temporaryPath, { force: true });
+    }
 }
 
-export function clearSharedStackInfo(projectRoot: string): void {
-    const filePath = sharedStackFilePath(projectRoot);
-    fs.rmSync(filePath, { force: true });
+export function clearSharedStackInfo(projectRoot: string, runId: string): void {
+    if (readSharedStackInfo(projectRoot)?.runId === runId) {
+        fs.rmSync(sharedStackFilePath(projectRoot), { force: true });
+    }
 }
 
 export function readSharedStackInfo(
     projectRoot: string,
 ): SharedStackInfo | undefined {
     const filePath = sharedStackFilePath(projectRoot);
-    if (!fs.existsSync(filePath)) {
-        return undefined;
-    }
 
     try {
         const parsed = JSON.parse(fs.readFileSync(filePath, "utf8"));
@@ -56,7 +66,7 @@ export function readSharedStackInfo(
             return parsed as SharedStackInfo;
         }
     } catch {
-        // Fall through and treat a corrupt/unreadable file as "no shared stack".
+        // Treat a missing, corrupt or unreadable file as "no shared stack".
     }
 
     return undefined;
@@ -80,19 +90,15 @@ export async function isStackReachable(
     } = {},
 ): Promise<boolean> {
     for (let attempt = 0; attempt < attempts; attempt++) {
-        const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(), attemptTimeoutMs);
         try {
             await fetch(baseUrl, {
                 method: "GET",
                 redirect: "manual",
-                signal: controller.signal,
+                signal: AbortSignal.timeout(attemptTimeoutMs),
             });
             return true;
         } catch {
             // Retry: a timeout here is most likely an in-progress recompile.
-        } finally {
-            clearTimeout(timer);
         }
     }
     return false;

@@ -19,6 +19,7 @@ jobs:
             # `gh`/GitHub API calls it makes) is authenticated and avoids the
             # low unauthenticated rate limit.
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            E2E_RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}
 
         steps:
             - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -54,47 +55,16 @@ jobs:
             # Pre-build images before the suite starts so Scala compilation stays
             # outside its timeout. Buildx restores and saves layers between runs
             # using the GitHub Actions cache, with a separate scope per image.
-            # load: true makes the images available to the local Docker engine;
-            # the E2E_*_IMAGE variables below tell Testcontainers to use them
-            # directly, avoiding a second build through its separate builder.
+            # The E2E_*_IMAGE variables below reuse the loaded images directly.
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
 
-            - name: Pull LocalStack image
-              run: docker pull localstack/localstack:4
-
-            - name: Build mock API image
-              uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+            - name: Pre-build e2e Docker images
+              uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+              env:
+                  E2E_BUILD_CACHE: gha
               with:
-                  context: .
-                  file: e2e-tests/images/mock-flexible-api.Dockerfile
-                  tags: flexible-restorer-mock-api-e2e:prebuild
-                  load: true
-                  push: false
-                  cache-from: type=gha,scope=e2e-mock-api
-                  cache-to: type=gha,scope=e2e-mock-api,mode=max
-
-            - name: Build Restorer image
-              uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
-              with:
-                  context: .
-                  file: e2e-tests/images/restorer.Dockerfile
-                  tags: flexible-restorer-app-e2e:prebuild
-                  load: true
-                  push: false
-                  cache-from: type=gha,scope=e2e-restorer
-                  cache-to: type=gha,scope=e2e-restorer,mode=max
-
-            - name: Build nginx image
-              uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
-              with:
-                  context: .
-                  file: e2e-tests/images/nginx.Dockerfile
-                  tags: flexible-restorer-nginx-e2e:prebuild
-                  load: true
-                  push: false
-                  cache-from: type=gha,scope=e2e-nginx
-                  cache-to: type=gha,scope=e2e-nginx,mode=max
+                  script: await exec.exec('npm', ['run', 'e2e:prebuild']);
 
             - name: Run e2e tests
               # Generate the BDD tests from the feature files, then run them.
@@ -111,6 +81,7 @@ jobs:
             # Publish both HTML reports, including captured attachments, after
             # successful or failed runs, but not cancelled runs.
             - name: Upload e2e reports
+              id: e2e-report
               if: ${{ !cancelled() }}
               uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
               with:
@@ -118,5 +89,13 @@ jobs:
                   path: |
                       e2e-tests/playwright-report/
                       e2e-tests/cucumber-report/
+                      e2e-tests/artifacts/
                   if-no-files-found: ignore
                   retention-days: 14
+
+            - name: Link to e2e reports and logs
+              if: ${{ failure() && steps.e2e-report.outputs.artifact-url != '' }}
+              env:
+                  REPORT_URL: ${{ steps.e2e-report.outputs.artifact-url }}
+              run: |
+                  echo "::error title=E2E reports and logs::See the reports and stack logs for this failed run: $REPORT_URL"

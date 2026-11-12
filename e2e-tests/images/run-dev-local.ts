@@ -1,24 +1,8 @@
 import fs from "fs";
 import path from "path";
+import { once } from "node:events";
 
 const { startLocalStack, stopLocalStack } = require("../setup/stackContainers") as typeof import("../setup/stackContainers");
-const {
-    writeSharedStackInfo,
-    clearSharedStackInfo,
-} = require("../setup/sharedStack") as typeof import("../setup/sharedStack");
-
-function waitForTerminationSignal(): Promise<void> {
-    return new Promise((resolve) => {
-        const resolveOnce = () => {
-            process.off("SIGINT", resolveOnce);
-            process.off("SIGTERM", resolveOnce);
-            resolve();
-        };
-
-        process.once("SIGINT", resolveOnce);
-        process.once("SIGTERM", resolveOnce);
-    });
-}
 
 async function main() {
     const projectRoot = process.cwd();
@@ -27,24 +11,20 @@ async function main() {
 
     // Create the mount target up front so Docker doesn't create it as root.
     fs.mkdirSync(path.join(projectRoot, "logs"), { recursive: true });
+    const shutdown = new AbortController();
+    const termination = once(shutdown.signal, "abort");
+    const onSignal = () => shutdown.abort(new Error("Local stack interrupted"));
+
+    process.once("SIGINT", onSignal);
+    process.once("SIGTERM", onSignal);
 
     try {
         stack = await startLocalStack(projectRoot, {
             hostPort: 9000,
-            // Echo each container's logs to this terminal so `sbt run` output
-            // (and the other services) is visible while developing locally.
-            streamLogs: true,
             // Surface the restorer's logs/application.log on the host.
             mountLogs: true,
             mode,
-        });
-
-        // Publish the running stack's details so `npm run test` reuses this
-        // stack instead of booting its own (and skips the run when absent).
-        writeSharedStackInfo(projectRoot, {
-            baseUrl: stack.baseUrl,
-            panDomainPrivateKey: stack.panDomainPrivateKey,
-            mockApiUrl: stack.mockApiUrl,
+            signal: shutdown.signal,
         });
 
         console.log(`\nLocal stack (${mode} mode) started at ${stack.baseUrl}`);
@@ -53,10 +33,11 @@ async function main() {
         );
         console.log("Press Ctrl+C to stop.");
         process.stdin.resume();
-        await waitForTerminationSignal();
+        await termination;
     } finally {
+        process.off("SIGINT", onSignal);
+        process.off("SIGTERM", onSignal);
         process.stdin.pause();
-        clearSharedStackInfo(projectRoot);
         await stopLocalStack(stack);
     }
 }

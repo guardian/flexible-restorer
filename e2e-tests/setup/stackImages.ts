@@ -1,0 +1,78 @@
+import { spawn } from "node:child_process";
+import {
+    GenericContainer,
+    getContainerRuntimeClient,
+    getReaper,
+    LABEL_TESTCONTAINERS_SESSION_ID,
+} from "testcontainers";
+import type { StackDiagnostics } from "./stackDiagnostics";
+import { settleAll } from "./stackLifecycle";
+
+export const LOCALSTACK_IMAGE = "localstack/localstack:4";
+
+export async function runCommand(
+    executable: string,
+    args: string[],
+    cwd: string,
+    diagnostics: StackDiagnostics,
+    stepName: string,
+): Promise<void> {
+    await diagnostics.step(stepName, () => new Promise<void>((resolve, reject) => {
+        const child = spawn(executable, args, {
+            cwd,
+            stdio: ["ignore", "pipe", "pipe"],
+            timeout: 20 * 60 * 1000,
+            killSignal: "SIGKILL",
+        });
+        const logName = stepName.replaceAll(":", "-");
+        diagnostics.capture("builds", logName, child.stdout);
+        diagnostics.capture("builds", logName, child.stderr);
+        child.once("error", reject);
+        child.once("close", (code, signal) => {
+            if (code === 0) {
+                resolve();
+            } else {
+                reject(new Error(`${stepName} exited with ${signal ?? code}; see builds/${logName}.log`));
+            }
+        });
+    }));
+}
+
+export async function buildStackImages(
+    projectRoot: string,
+    diagnostics: StackDiagnostics,
+    prebuild = false,
+) {
+    const build = async (name: string, dockerfile: string, image: string, prebuiltImage?: string) => {
+        if (!prebuild && prebuiltImage) {
+            diagnostics.log(`build:${name} using prebuilt image ${prebuiltImage}`);
+            return new GenericContainer(prebuiltImage);
+        }
+
+        const labels = prebuild ? [] : [
+            "--label",
+            `${LABEL_TESTCONTAINERS_SESSION_ID}=${(await getReaper(await getContainerRuntimeClient())).sessionId}`,
+        ];
+        const builder = prebuild && process.env.E2E_BUILD_CACHE === "gha" ? [
+            "buildx", "build", "--load",
+            "--cache-from", `type=gha,version=2,scope=e2e-${name}`,
+            "--cache-to", `type=gha,version=2,scope=e2e-${name},mode=max`,
+        ] : ["build"];
+        const tag = `${image}:${prebuild ? "prebuild" : diagnostics.runId}`;
+
+        await runCommand("docker", [
+            ...builder, "--progress=plain", ...labels,
+            "-f", `e2e-tests/images/${dockerfile}.Dockerfile`, "-t", tag, ".",
+        ], projectRoot, diagnostics, `build:${name}`);
+
+        return new GenericContainer(tag);
+    };
+
+    const [restorer, mockApi, nginx] = await settleAll([
+        () => build("restorer", "restorer", "flexible-restorer-app-e2e", process.env.E2E_RESTORER_IMAGE),
+        () => build("mock-api", "mock-flexible-api", "flexible-restorer-mock-api-e2e", process.env.E2E_MOCK_API_IMAGE),
+        () => build("nginx", "nginx", "flexible-restorer-nginx-e2e", process.env.E2E_NGINX_IMAGE),
+    ]);
+
+    return { restorer, mockApi, nginx };
+}

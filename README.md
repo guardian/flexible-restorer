@@ -95,12 +95,27 @@ CI prints list output and adds GitHub failure annotations. Playwright and Cucumb
 HTML reports are uploaded together as the `e2e-report` artifact, retained for 14 days
 after successful or failed runs, excluding cancelled runs. Traces and videos are
 captured on the first retry, and screenshots only on failure. Failures before
-report generation may leave no reports to upload.
+report generation may leave no HTML reports, but any available stack logs are
+included in the same artifact. Failed jobs include a direct link to it.
+
+### Stack logs
+
+Logs are saved in `e2e-tests/artifacts/<run-id>/` and kept after the stack stops:
+
+- `stack.log`: startup and cleanup progress, timings and errors.
+- `builds/`: image build and pull logs.
+- `containers/`: logs from each container.
+
+The terminal prints the log directory. To also stream detailed logs, set
+`E2E_DEBUG=1`, for example:
+
+```sh
+E2E_DEBUG=1 npm run dev:local
+```
 
 ## Run local stack only - no AWS credentials and all services mocked locally
 
-If you want the same Testcontainers stack used by the e2e test without running the
-spec itself, use:
+To run the stack without tests, start Docker with BuildKit support and run:
 
 ```
 npm run dev:local
