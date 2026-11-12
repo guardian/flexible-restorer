@@ -70,7 +70,7 @@ export function createStackResources(reporter: StackReporter) {
     }
 
     async function stopOwnedResources(): Promise<void> {
-        reporter.log("cleanup START");
+        reporter.log("cleanup STARTED");
         const results = await Promise.allSettled(
             Array.from(containers, ([name, container]) =>
                 reporter.step(`stop:${name}`, () => container.stop()),
@@ -84,7 +84,7 @@ export function createStackResources(reporter: StackReporter) {
         }
 
         const failures = results.filter((result) => result.status === "rejected");
-        reporter.log(`cleanup END failures=${failures.length}`);
+        reporter.log(`cleanup DONE failures=${failures.length}`);
     }
 
     return { startNetwork, startContainer, stopAll };

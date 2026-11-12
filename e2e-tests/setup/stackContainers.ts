@@ -243,7 +243,7 @@ export async function startLocalStack(
             mockApiUrl,
             runId: diagnostics.runId,
         }));
-        diagnostics.log(`Stack ready at ${baseUrl}`);
+        diagnostics.log(`stack ready at ${baseUrl}`);
 
         return {
             baseUrl,
@@ -262,7 +262,7 @@ export async function startLocalStack(
             projectRoot,
         };
     } catch (error) {
-        diagnostics.log(`Startup failed: ${inspect(error, { depth: 5 })}`);
+        diagnostics.log(`startup failed: ${inspect(error, { depth: 5 })}`);
         await cleanupLocalStack(projectRoot, resources, diagnostics);
         throw error;
     }
@@ -280,7 +280,7 @@ async function cleanupLocalStack(
             clearSharedStackInfo(projectRoot, diagnostics.runId);
         }).catch(() => { });
         diagnostics.flush();
-        diagnostics.log(`Diagnostics retained: ${diagnostics.directory}`);
+        diagnostics.log(`diagnostics retained: ${diagnostics.directory}`);
     }
 }
 

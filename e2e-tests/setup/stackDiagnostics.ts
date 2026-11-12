@@ -48,12 +48,11 @@ export function createStackDiagnostics(
         }
     }
 
-    function log(message: string, terminalMessage = message): void {
-        const now = new Date();
-        const entry = `${now.toISOString()} ${redact(message)}`;
+    function log(message: string): void {
+        const entry = redact(message);
 
         append(path.join(directory, "stack.log"), `${entry}\n`);
-        console.log(`${now.toLocaleTimeString("en-GB", { hour12: false })}  ${redact(terminalMessage)}`);
+        console.log(entry);
     }
 
     function formatDuration(seconds: number): string {
@@ -65,20 +64,17 @@ export function createStackDiagnostics(
 
     async function step<Result>(name: string, action: () => Promise<Result>): Promise<Result> {
         const started = performance.now();
-        log(`${name} START`);
+        log(`${name} STARTED`);
 
         try {
             const result = await action();
             const duration = ((performance.now() - started) / 1000).toFixed(1);
-            log(`${name} OK duration=${duration}s`, `${name} OK [${formatDuration(Number(duration))}]`);
+            log(`${name} DONE [${formatDuration(Number(duration))}]`);
             return result;
         } catch (error) {
             const duration = ((performance.now() - started) / 1000).toFixed(1);
             const details = inspect(error, { depth: 5 });
-            log(
-                `${name} FAILED duration=${duration}s\n${details}`,
-                `${name} FAILED [${formatDuration(Number(duration))}]\n${details}`,
-            );
+            log(`${name} FAILED [${formatDuration(Number(duration))}]\n${details}`);
             throw error;
         }
     }
@@ -132,7 +128,7 @@ export function createStackDiagnostics(
     }
 
     fs.mkdirSync(directory, { recursive: true, mode: 0o700 });
-    log(`Diagnostics: ${directory}`);
+    log(`diagnostics: ${directory}`);
 
     return { runId, directory, log, step, capture, flush } as const;
 }
