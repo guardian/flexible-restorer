@@ -1,6 +1,5 @@
 export type StackReporter = {
     step<Result>(name: string, action: () => Promise<Result>): Promise<Result>;
-    log(message: string): void;
 };
 
 type Stoppable = { stop(): Promise<unknown> };

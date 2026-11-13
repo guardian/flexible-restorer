@@ -74,17 +74,17 @@ export function createStackDiagnostics(
 
         try {
             const result = await action();
-            const duration = ((performance.now() - started) / 1000).toFixed(1);
+            const duration = (performance.now() - started) / 1000;
 
-            log(`${label} ${"DONE".padEnd(7)} [${formatDuration(Number(duration))}]`);
+            log(`${label} ${"DONE".padEnd(7)} [${formatDuration(duration)}]`);
 
             return result;
         } catch (error) {
-            const duration = ((performance.now() - started) / 1000).toFixed(1);
+            const duration = (performance.now() - started) / 1000;
             const details = reportedErrors.has(error) ? "" : `\n${inspect(error, { depth: 5 })}`;
 
             reportedErrors.add(error);
-            log(`${label} ${"FAILED".padEnd(7)} [${formatDuration(Number(duration))}]${details}`);
+            log(`${label} ${"FAILED".padEnd(7)} [${formatDuration(duration)}]${details}`);
             throw error;
         }
     }

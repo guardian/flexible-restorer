@@ -11,7 +11,6 @@ function deferred<Result>() {
 function reporter(): StackReporter {
     return {
         step: async (_name, action) => action(),
-        log: () => { },
     };
 }
 

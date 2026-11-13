@@ -1,5 +1,5 @@
 import path from "path";
-import { GenericContainer, Network, Wait, type StartedNetwork, type StartedTestContainer } from "testcontainers";
+import { GenericContainer, Network, Wait } from "testcontainers";
 import { generatePanDomainKeys } from "./panDomainKeys";
 import { seedS3 } from "./seedS3";
 import { createStackDiagnostics, formatDuration, type StackDiagnostics } from "./stackDiagnostics";
@@ -30,11 +30,6 @@ export type LocalStack = {
      * destination/restore calls return at runtime.
      */
     mockApiUrl: string;
-    s3Container: StartedTestContainer;
-    restorerContainer: StartedTestContainer;
-    mockContentAPIContainer: StartedTestContainer;
-    nginxContainer: StartedTestContainer;
-    network: StartedNetwork;
     resources: StackResources;
     diagnostics: StackDiagnostics;
     projectRoot: string;
@@ -75,7 +70,7 @@ export async function startLocalStack(
         options.signal?.throwIfAborted();
         const panDomainKeys = generatePanDomainKeys();
         const network = await resources.startNetwork(() => new Network().start());
-        const [images, s3Container] = await settleAll([
+        const [images] = await settleAll([
             () => buildStackImages(projectRoot, { diagnostics }),
             async () => {
                 const s3Container = await resources.startContainer("localstack", () => new GenericContainer(LOCALSTACK_IMAGE)
@@ -109,12 +104,11 @@ export async function startLocalStack(
                     .withStartupTimeout(5 * 60 * 1000)
                     .start());
                 await diagnostics.step("seed:s3", () => seedS3(s3Container, projectRoot, panDomainKeys));
-                return s3Container;
             },
         ]);
 
         options.signal?.throwIfAborted();
-        const [mockContentAPIContainer, restorerContainer] = await settleAll([
+        const [mockContentAPIContainer] = await settleAll([
             () => resources.startContainer("mock-api", () => images.mockApi
                 .withNetwork(network)
                 .withNetworkAliases(...MOCK_API_HOSTNAMES)
@@ -251,11 +245,6 @@ export async function startLocalStack(
             cookieUrl: `${baseUrl}/cookie`,
             panDomainPrivateKey: panDomainKeys.privateKeyPem,
             mockApiUrl,
-            s3Container,
-            restorerContainer,
-            mockContentAPIContainer,
-            nginxContainer,
-            network,
             resources,
             diagnostics,
             projectRoot,
@@ -289,9 +278,9 @@ async function cleanupLocalStack(
 
         diagnostics.flush();
 
-        const duration = ((performance.now() - started) / 1000).toFixed(1);
+        const duration = (performance.now() - started) / 1000;
 
-        diagnostics.log(`${label} ${"DONE".padEnd(7)} [${formatDuration(Number(duration))}] failures=${failures}`);
+        diagnostics.log(`${label} ${"DONE".padEnd(7)} [${formatDuration(duration)}] failures=${failures}`);
         diagnostics.log(`diagnostics retained: ${diagnostics.directory}`);
     }
 }
