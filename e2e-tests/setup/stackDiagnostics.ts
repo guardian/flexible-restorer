@@ -4,6 +4,9 @@ import path from "node:path";
 import type { Readable } from "node:stream";
 import { inspect, stripVTControlCharacters } from "node:util";
 
+const OWNER_READ_WRITE = 0o600;
+const OWNER_READ_WRITE_EXECUTE = 0o700;
+
 export type StackDiagnostics = ReturnType<typeof createStackDiagnostics>;
 
 export function formatDuration(seconds: number): string {
@@ -46,8 +49,8 @@ export function createStackDiagnostics(
 
     function append(file: string, text: string): void {
         try {
-            fs.mkdirSync(path.dirname(file), { recursive: true, mode: 0o700 });
-            fs.appendFileSync(file, text, { mode: 0o600 });
+            fs.mkdirSync(path.dirname(file), { recursive: true, mode: OWNER_READ_WRITE_EXECUTE });
+            fs.appendFileSync(file, text, { mode: OWNER_READ_WRITE });
         } catch (error) {
             if (!writeFailed) {
                 writeFailed = true;
@@ -135,7 +138,7 @@ export function createStackDiagnostics(
         }
     }
 
-    fs.mkdirSync(directory, { recursive: true, mode: 0o700 });
+    fs.mkdirSync(directory, { recursive: true, mode: OWNER_READ_WRITE_EXECUTE });
     log(`diagnostics: ${directory}`);
 
     return { runId, directory, log, step, capture, flush } as const;

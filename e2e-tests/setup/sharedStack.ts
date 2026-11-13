@@ -20,6 +20,7 @@ export type SharedStackInfo = {
 };
 
 const SHARED_STACK_FILE = "tmp/e2e-local-stack.json";
+const OWNER_READ_WRITE = 0o600;
 
 function sharedStackFilePath(projectRoot: string): string {
     return path.join(projectRoot, SHARED_STACK_FILE);
@@ -35,7 +36,7 @@ export function writeSharedStackInfo(
     try {
         fs.writeFileSync(temporaryPath, JSON.stringify(info, null, 2), {
             encoding: "utf8",
-            mode: 0o600,
+            mode: OWNER_READ_WRITE,
             flag: "wx",
         });
         fs.renameSync(temporaryPath, filePath);
