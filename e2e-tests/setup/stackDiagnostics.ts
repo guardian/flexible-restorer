@@ -23,6 +23,7 @@ export function createStackDiagnostics(
         .map(([, value]) => value ?? "")
         .filter(Boolean));
     const flushers = new Set<() => void>();
+    const reportedErrors = new Set<unknown>();
     let writeFailed = false;
 
     if (!/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/.test(runId)) {
@@ -65,23 +66,29 @@ export function createStackDiagnostics(
     async function step<Result>(name: string, action: () => Promise<Result>): Promise<Result> {
         const started = performance.now();
         const label = name.padEnd(24);
+
         log(`${label} STARTED`);
 
         try {
             const result = await action();
             const duration = ((performance.now() - started) / 1000).toFixed(1);
+
             log(`${label} ${"DONE".padEnd(7)} [${formatDuration(Number(duration))}]`);
+
             return result;
         } catch (error) {
             const duration = ((performance.now() - started) / 1000).toFixed(1);
-            const details = inspect(error, { depth: 5 });
-            log(`${label} ${"FAILED".padEnd(7)} [${formatDuration(Number(duration))}]\n${details}`);
+            const details = reportedErrors.has(error) ? "" : `\n${inspect(error, { depth: 5 })}`;
+
+            reportedErrors.add(error);
+            log(`${label} ${"FAILED".padEnd(7)} [${formatDuration(Number(duration))}]${details}`);
             throw error;
         }
     }
 
     function capture(category: "builds" | "containers", name: string, stream: Readable): void {
         const file = path.join(directory, category, `${name}.log`);
+
         append(file, `\n${new Date().toISOString()} ${name} log attached\n`);
 
         if (stream.readableEncoding !== "utf8") {

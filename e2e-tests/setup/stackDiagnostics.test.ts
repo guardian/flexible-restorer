@@ -26,16 +26,19 @@ afterEach(() => {
 });
 
 describe("stack diagnostics", () => {
-    it("saves failure details and preserves the original error", async () => {
+    it("saves propagated failure details once and preserves the original error", async () => {
         const diagnostics = createDiagnostics();
         const failure = new Error("readiness failed");
 
-        await expect(diagnostics.step("start:app", async () => { throw failure; })).rejects.toBe(failure);
+        await expect(diagnostics.step("startup", () =>
+            diagnostics.step("start:app", async () => { throw failure; }),
+        )).rejects.toBe(failure);
 
         const output = fs.readFileSync(path.join(diagnostics.directory, "stack.log"), "utf8");
 
         expect(output).toMatch(/start:app\s+FAILED/);
-        expect(output).toContain("Error: readiness failed");
+        expect(output).toMatch(/startup\s+FAILED/);
+        expect(output.match(/Error: readiness failed/g)).toHaveLength(1);
     });
 
     it("redacts secrets split across saved log chunks", () => {

@@ -1,4 +1,5 @@
 import { spawn } from "node:child_process";
+import path from "node:path";
 import {
     GenericContainer,
     getContainerRuntimeClient,
@@ -25,6 +26,7 @@ export async function runCommand(
             killSignal: "SIGKILL",
         });
         const logName = stepName.replaceAll(":", "-");
+        const logPath = path.resolve(diagnostics.directory, "builds", `${logName}.log`);
         diagnostics.capture("builds", logName, child.stdout);
         diagnostics.capture("builds", logName, child.stderr);
         child.once("error", reject);
@@ -32,7 +34,7 @@ export async function runCommand(
             if (code === 0) {
                 resolve();
             } else {
-                reject(new Error(`${stepName} exited with ${signal ?? code}; see builds/${logName}.log`));
+                reject(new Error(`${stepName} exited with ${signal ?? code}; see ${logPath}`));
             }
         });
     }));
