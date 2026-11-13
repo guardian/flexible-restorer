@@ -42,7 +42,7 @@ export type StackResources = ReturnType<typeof createStackResources>;
 export function createStackResources(reporter: StackReporter) {
     const containers = new Map<string, Stoppable>();
     let network: Stoppable | undefined;
-    let cleanup: Promise<void> | undefined;
+    let cleanup: Promise<number> | undefined;
 
     async function startNetwork<Resource extends Stoppable>(
         action: () => Promise<Resource>,
@@ -65,12 +65,11 @@ export function createStackResources(reporter: StackReporter) {
         });
     }
 
-    function stopAll(): Promise<void> {
+    function stopAll(): Promise<number> {
         return cleanup ??= stopOwnedResources();
     }
 
-    async function stopOwnedResources(): Promise<void> {
-        reporter.log("cleanup STARTED");
+    async function stopOwnedResources(): Promise<number> {
         const results = await Promise.allSettled(
             Array.from(containers, ([name, container]) =>
                 reporter.step(`stop:${name}`, () => container.stop()),
@@ -83,8 +82,7 @@ export function createStackResources(reporter: StackReporter) {
             ]));
         }
 
-        const failures = results.filter((result) => result.status === "rejected");
-        reporter.log(`cleanup DONE failures=${failures.length}`);
+        return results.filter((result) => result.status === "rejected").length;
     }
 
     return { startNetwork, startContainer, stopAll };

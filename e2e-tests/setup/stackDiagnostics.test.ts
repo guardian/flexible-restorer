@@ -34,7 +34,7 @@ describe("stack diagnostics", () => {
 
         const output = fs.readFileSync(path.join(diagnostics.directory, "stack.log"), "utf8");
 
-        expect(output).toContain("start:app FAILED");
+        expect(output).toMatch(/start:app\s+FAILED/);
         expect(output).toContain("Error: readiness failed");
     });
 

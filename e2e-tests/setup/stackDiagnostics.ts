@@ -6,6 +6,13 @@ import { inspect, stripVTControlCharacters } from "node:util";
 
 export type StackDiagnostics = ReturnType<typeof createStackDiagnostics>;
 
+export function formatDuration(seconds: number): string {
+    if (seconds < 60) {
+        return `${seconds.toFixed(1)}s`;
+    }
+    return `${Math.floor(seconds / 60)}m ${Math.floor(seconds % 60)}s`;
+}
+
 export function createStackDiagnostics(
     projectRoot: string,
     options: { runId?: string; debug?: boolean } = {},
@@ -55,26 +62,20 @@ export function createStackDiagnostics(
         console.log(entry);
     }
 
-    function formatDuration(seconds: number): string {
-        if (seconds < 60) {
-            return `${seconds.toFixed(1)}s`;
-        }
-        return `${Math.floor(seconds / 60)}m ${Math.floor(seconds % 60)}s`;
-    }
-
     async function step<Result>(name: string, action: () => Promise<Result>): Promise<Result> {
         const started = performance.now();
-        log(`${name} STARTED`);
+        const label = name.padEnd(24);
+        log(`${label} STARTED`);
 
         try {
             const result = await action();
             const duration = ((performance.now() - started) / 1000).toFixed(1);
-            log(`${name} DONE [${formatDuration(Number(duration))}]`);
+            log(`${label} ${"DONE".padEnd(7)} [${formatDuration(Number(duration))}]`);
             return result;
         } catch (error) {
             const duration = ((performance.now() - started) / 1000).toFixed(1);
             const details = inspect(error, { depth: 5 });
-            log(`${name} FAILED [${formatDuration(Number(duration))}]\n${details}`);
+            log(`${label} ${"FAILED".padEnd(7)} [${formatDuration(Number(duration))}]\n${details}`);
             throw error;
         }
     }

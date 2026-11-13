@@ -1,9 +1,8 @@
 import path from "path";
-import { inspect } from "node:util";
 import { GenericContainer, Network, Wait, type StartedNetwork, type StartedTestContainer } from "testcontainers";
 import { generatePanDomainKeys } from "./panDomainKeys";
 import { seedS3 } from "./seedS3";
-import { createStackDiagnostics, type StackDiagnostics } from "./stackDiagnostics";
+import { createStackDiagnostics, formatDuration, type StackDiagnostics } from "./stackDiagnostics";
 import { buildStackImages, LOCALSTACK_IMAGE } from "./stackImages";
 import { settleAll, createStackResources, type StackResources } from "./stackLifecycle";
 import { clearSharedStackInfo, writeSharedStackInfo } from "./sharedStack";
@@ -72,7 +71,7 @@ export async function startLocalStack(
     // caller/CI has set it explicitly.
     process.env.TESTCONTAINERS_HOST_OVERRIDE ??= "localhost";
 
-    try {
+    return diagnostics.step("startup", async () => {
         options.signal?.throwIfAborted();
         const panDomainKeys = generatePanDomainKeys();
         const network = await resources.startNetwork(() => new Network().start());
@@ -261,11 +260,10 @@ export async function startLocalStack(
             diagnostics,
             projectRoot,
         };
-    } catch (error) {
-        diagnostics.log(`startup failed: ${inspect(error, { depth: 5 })}`);
+    }).catch(async (error) => {
         await cleanupLocalStack(projectRoot, resources, diagnostics);
         throw error;
-    }
+    });
 }
 
 async function cleanupLocalStack(
@@ -273,13 +271,27 @@ async function cleanupLocalStack(
     resources: StackResources,
     diagnostics: StackDiagnostics,
 ): Promise<void> {
+    const label = "cleanup".padEnd(24);
+    const started = performance.now();
+    let failures = 0;
+
+    diagnostics.log(`${label} STARTED`);
+
     try {
-        await resources.stopAll();
+        failures = await resources.stopAll();
+    } catch (error) {
+        failures++;
+        throw error;
     } finally {
         await diagnostics.step("remove:metadata", async () => {
             clearSharedStackInfo(projectRoot, diagnostics.runId);
-        }).catch(() => { });
+        }).catch(() => { failures++; });
+
         diagnostics.flush();
+
+        const duration = ((performance.now() - started) / 1000).toFixed(1);
+
+        diagnostics.log(`${label} ${"DONE".padEnd(7)} [${formatDuration(Number(duration))}] failures=${failures}`);
         diagnostics.log(`diagnostics retained: ${diagnostics.directory}`);
     }
 }

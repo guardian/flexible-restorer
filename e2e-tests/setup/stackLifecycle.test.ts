@@ -64,11 +64,11 @@ describe("stack lifecycle", () => {
         expect(events).toEqual(expect.arrayContaining(["broken", "slow"]));
 
         pendingStop.resolve();
-        await cleanup;
+        expect(await cleanup).toBe(1);
 
         expect(events[2]).toBe("network");
 
-        await resources.stopAll();
+        expect(await resources.stopAll()).toBe(1);
 
         expect(events).toHaveLength(3);
     });
