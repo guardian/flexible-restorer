@@ -3,8 +3,6 @@
 # built-ins, so no project dependencies need to be installed.
 FROM node:20-alpine
 
-RUN echo "Intentional e2e build failure" >&2; exit 1
-
 RUN npm install -g tsx@4.22.4
 
 WORKDIR /app
