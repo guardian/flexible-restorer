@@ -133,7 +133,7 @@ export class Restorer2 extends GuStack {
       },
       targetGroupWeights: {
          ecs: 1,
-         ec2: 9
+         ec2: 0
       }
     });
 

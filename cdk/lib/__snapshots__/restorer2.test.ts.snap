@@ -1028,7 +1028,7 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
                   "TargetGroupArn": {
                     "Ref": "TargetGroupRestorer289B6C480",
                   },
-                  "Weight": 9,
+                  "Weight": 0,
                 },
                 {
                   "TargetGroupArn": {
@@ -2958,7 +2958,7 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
                   "TargetGroupArn": {
                     "Ref": "TargetGroupRestorer289B6C480",
                   },
-                  "Weight": 9,
+                  "Weight": 0,
                 },
                 {
                   "TargetGroupArn": {
