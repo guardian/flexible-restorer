@@ -3,7 +3,7 @@ import { createPanDomainCookie } from "../setup/panDomainCookie";
 import { setLastApiResponse } from "./support/lastApiResponse";
 import { resetMockState } from "./support/mockState";
 import type { APIRequestContext, APIResponse, Page } from "@playwright/test";
-import type { LocalStack } from "../setup/stackContainers";
+import type { SharedStackInfo } from "../setup/sharedStack";
 
 /**
  * Steps for e2e-tests/features/content-restore.feature.
@@ -139,7 +139,7 @@ function destinationRadioByName(page: Page, name: RegExp) {
 /** Open the version history page for a piece of content and launch the modal. */
 async function openRestoreModalFor(
     page: Page,
-    localStack: LocalStack,
+    localStack: SharedStackInfo,
     contentId: string,
 ): Promise<void> {
     await page.goto(`${localStack.baseUrl}/content/${contentId}/versions`, {
@@ -599,7 +599,7 @@ When("both safety checkboxes are selected", async ({ page }) => {
 
 // --- Closing the modal resets the restore form back to its initial state ------
 
-Given("I choose a destination and select the safety checkboxes", async ({ page }) => { 
+Given("I choose a destination and select the safety checkboxes", async ({ page }) => {
     await page.getByRole('radio', { name: '✓ Composer (CODE) currently' }).check();
     await page.getByRole('checkbox', { name: '✓ You are not in content' }).check();
     await page.getByRole('checkbox', { name: '✓ No one else is in the' }).check();

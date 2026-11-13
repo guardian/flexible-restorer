@@ -5,6 +5,11 @@ project/target
 # Ignore patterns are root-anchored, so `**/` is needed to match nested copies
 **/node_modules
 logs
+tmp
+e2e-tests/artifacts
+e2e-tests/playwright-report
+e2e-tests/cucumber-report
+e2e-tests/test-results
 task-temp-directory
 web/public
 web/classes
