@@ -8,8 +8,12 @@ async function main(): Promise<void> {
 
     try {
         await diagnostics.step("prebuild", () => settleAll([
-            () => buildStackImages(projectRoot, diagnostics, true),
-            () => runCommand("docker", ["pull", LOCALSTACK_IMAGE], projectRoot, diagnostics, "pull:localstack"),
+            () => buildStackImages(projectRoot, { diagnostics, prebuild: true }),
+            () => runCommand("docker", ["pull", LOCALSTACK_IMAGE], {
+                cwd: projectRoot,
+                diagnostics,
+                stepName: "pull:localstack",
+            }),
         ]));
     } finally {
         diagnostics.flush();

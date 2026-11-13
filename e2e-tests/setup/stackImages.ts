@@ -14,9 +14,11 @@ export const LOCALSTACK_IMAGE = "localstack/localstack:4";
 export async function runCommand(
     executable: string,
     args: string[],
-    cwd: string,
-    diagnostics: StackDiagnostics,
-    stepName: string,
+    { cwd, diagnostics, stepName }: {
+        cwd: string;
+        diagnostics: StackDiagnostics;
+        stepName: string;
+    },
 ): Promise<void> {
     await diagnostics.step(stepName, () => new Promise<void>((resolve, reject) => {
         const child = spawn(executable, args, {
@@ -42,10 +44,17 @@ export async function runCommand(
 
 export async function buildStackImages(
     projectRoot: string,
-    diagnostics: StackDiagnostics,
-    prebuild = false,
+    { diagnostics, prebuild = false }: {
+        diagnostics: StackDiagnostics;
+        prebuild?: boolean;
+    },
 ) {
-    const build = async (name: string, dockerfile: string, image: string, prebuiltImage?: string) => {
+    const build = async ({ name, dockerfile, image, prebuiltImage }: {
+        name: string;
+        dockerfile: string;
+        image: string;
+        prebuiltImage?: string;
+    }) => {
         if (!prebuild && prebuiltImage) {
             diagnostics.log(`build:${name} using prebuilt image ${prebuiltImage}`);
             return new GenericContainer(prebuiltImage);
@@ -65,15 +74,34 @@ export async function buildStackImages(
         await runCommand("docker", [
             ...builder, "--progress=plain", ...labels,
             "-f", `e2e-tests/images/${dockerfile}.Dockerfile`, "-t", tag, ".",
-        ], projectRoot, diagnostics, `build:${name}`);
+        ], {
+            cwd: projectRoot,
+            diagnostics,
+            stepName: `build:${name}`,
+        });
 
         return new GenericContainer(tag);
     };
 
     const [restorer, mockApi, nginx] = await settleAll([
-        () => build("restorer", "restorer", "flexible-restorer-app-e2e", process.env.E2E_RESTORER_IMAGE),
-        () => build("mock-api", "mock-flexible-api", "flexible-restorer-mock-api-e2e", process.env.E2E_MOCK_API_IMAGE),
-        () => build("nginx", "nginx", "flexible-restorer-nginx-e2e", process.env.E2E_NGINX_IMAGE),
+        () => build({
+            name: "restorer",
+            dockerfile: "restorer",
+            image: "flexible-restorer-app-e2e",
+            prebuiltImage: process.env.E2E_RESTORER_IMAGE,
+        }),
+        () => build({
+            name: "mock-api",
+            dockerfile: "mock-flexible-api",
+            image: "flexible-restorer-mock-api-e2e",
+            prebuiltImage: process.env.E2E_MOCK_API_IMAGE,
+        }),
+        () => build({
+            name: "nginx",
+            dockerfile: "nginx",
+            image: "flexible-restorer-nginx-e2e",
+            prebuiltImage: process.env.E2E_NGINX_IMAGE,
+        }),
     ]);
 
     return { restorer, mockApi, nginx };

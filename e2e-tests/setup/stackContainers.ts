@@ -76,7 +76,7 @@ export async function startLocalStack(
         const panDomainKeys = generatePanDomainKeys();
         const network = await resources.startNetwork(() => new Network().start());
         const [images, s3Container] = await settleAll([
-            () => buildStackImages(projectRoot, diagnostics),
+            () => buildStackImages(projectRoot, { diagnostics }),
             async () => {
                 const s3Container = await resources.startContainer("localstack", () => new GenericContainer(LOCALSTACK_IMAGE)
                     .withNetwork(network)
