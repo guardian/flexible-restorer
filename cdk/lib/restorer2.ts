@@ -130,6 +130,7 @@ export class Restorer2 extends GuStack {
             minimumTasks: 2,
             maximumTasks: 4,
          },
+         provisionManagedSecurityRole: true,
       },
       targetGroupWeights: {
          ecs: 0,
