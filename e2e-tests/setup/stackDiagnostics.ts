@@ -1,4 +1,3 @@
-import { randomUUID } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import type { Readable } from "node:stream";
@@ -20,7 +19,8 @@ export function createStackDiagnostics(
     projectRoot: string,
     options: { runId?: string; debug?: boolean } = {},
 ) {
-    const runId = options.runId ?? process.env.E2E_RUN_ID ?? randomUUID();
+    const runId = options.runId ?? process.env.E2E_RUN_ID
+        ?? new Date().toISOString().replace(/:/g, "-");
     const sensitiveValues = new Set(Object.entries(process.env)
         .filter(([name]) => /TOKEN|SECRET|PASSWORD|PRIVATE_KEY/i.test(name))
         .map(([, value]) => value ?? "")
@@ -33,7 +33,7 @@ export function createStackDiagnostics(
         throw new Error("E2E_RUN_ID must contain only letters, numbers, dots, underscores and hyphens");
     }
 
-    const directory = path.join(projectRoot, "e2e-tests/artifacts", runId);
+    const directory = path.join(projectRoot, "e2e-tests/logs", runId);
 
     function redact(text: string): string {
         let redacted = stripVTControlCharacters(text)
