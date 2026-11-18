@@ -30,6 +30,7 @@ test-results/
 .features-gen/
 cucumber-report*
 playwright-report*
+/e2e-tests/artifacts/
 .DS_Store
 .vscode/settings.json
 .bsp
