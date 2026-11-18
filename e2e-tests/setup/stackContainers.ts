@@ -1,4 +1,5 @@
 import path from "path";
+import { ApplicationContainer } from "@guardian/end-to-end-testing";
 import { GenericContainer, Network, Wait } from "testcontainers";
 import { generatePanDomainKeys } from "./panDomainKeys";
 import { seedS3 } from "./seedS3";
@@ -11,6 +12,8 @@ import { clearSharedStackInfo, writeSharedStackInfo } from "./sharedStack";
 // the conventional dummy pair keeps the SDKs and awslocal happy.
 const S3_ACCESS_KEY_ID = "test";
 const S3_SECRET_ACCESS_KEY = "test";
+
+const RESTORER_IMAGE = "ghcr.io/guardian/end-to-end-testing/application:sha-bd6ece21f26061c1a00f18153a19c048e987e8de@sha256:05076c85f32d2404b36a47f178769fb6f858cd95a9997557e0cc416cd7b6eaed";
 
 // LocalStack serves every enabled service on this one port.
 const LOCALSTACK_PORT = 4566;
@@ -121,60 +124,38 @@ export async function startLocalStack(
                 )
                 .withStartupTimeout(2 * 60 * 1000)
                 .start()),
-            () => resources.startContainer("restorer", () => images.restorer
+            () => new ApplicationContainer(RESTORER_IMAGE, {
+                    port: 9000,
+                    healthCheckPath: "/management/healthcheck",
+                })
                 .withNetwork(network)
                 // nginx proxies to the restorer over the Docker network by this alias.
                 .withNetworkAliases("restorer")
+                .withWorkingDir("/app")
                 // In prod mode the app is staged and run in Play Prod mode (assets
                 // served from the packaged classpath with the immutable cache
                 // header); dev mode uses `sbt run` with the Vite dev server. The source is
                 // still bind-mounted below in both modes so the run reflects host code.
-                .withCommand([
-                    mode === "prod"
-                        ? "/app/entrypoint.prod.sh"
-                        : "/app/entrypoint.dev.sh",
-                ])
-                // Mount the source from the host so code changes are watched and
-                // picked up without rebuilding the image. Individual paths are
-                // mounted (rather than all of /app) so the image's baked
-                // node_modules, compiled target/, and built public/dist are
-                // preserved: `sbt run` recompiles changed Scala on the next request
-                // and the Vite dev server (started by entrypoint.dev.sh) serves the
-                // frontend with HMR.
+                    .withCommand([
+                        mode === "prod"
+                            ? "/app/entrypoint.prod.sh"
+                            : "/app/entrypoint.dev.sh",
+                    ])
                 .withBindMounts([
                     {
-                        source: path.join(projectRoot, "app"),
-                        target: "/app/app",
-                        mode: "ro",
+                        source: projectRoot,
+                        target: "/app",
+                        mode: "rw",
                     },
-                    {
-                        source: path.join(projectRoot, "conf"),
-                        target: "/app/conf",
-                        mode: "ro",
-                    },
-                    {
-                        source: path.join(projectRoot, "public/src"),
-                        target: "/app/public/src",
-                        mode: "ro",
-                    },
-                    {
-                        source: path.join(projectRoot, "public/sass"),
-                        target: "/app/public/sass",
-                        mode: "ro",
-                    },
-                    // Only mounted for local dev (not the parallel e2e suite, whose
-                    // runs would otherwise all write to the same host log file).
-                    // Surfaces logback's logs/application.log on the host.
-                    ...(mountLogs
-                        ? [
-                            {
-                                source: path.join(projectRoot, "logs"),
-                                target: "/app/logs",
-                                mode: "rw" as const,
-                            },
-                        ]
-                        : []),
                 ])
+                .withTmpFs({
+                    "/app/node_modules": "rw,exec",
+                    "/app/target": "rw,exec",
+                    "/app/project/target": "rw,exec",
+                    "/app/project/project": "rw,exec",
+                    "/app/public/dist": "rw,exec",
+                    ...(!mountLogs ? { "/app/logs": "rw" } : {}),
+                })
                 .withEnvironment({
                     AWS_ENDPOINT_URL_S3: `http://${S3_ENDPOINT_HOST}:${LOCALSTACK_PORT}`,
                     AWS_ACCESS_KEY_ID: S3_ACCESS_KEY_ID,
@@ -186,20 +167,7 @@ export async function startLocalStack(
                     LOCAL_FLEXIBLE_API_PREFIX: `http://flexible-api.DEV.flexible.gudiscovery:${MOCK_API_PORT}`,
                 })
                 .withLogConsumer((stream) => diagnostics.capture("containers", "restorer", stream))
-                // Exposed on dynamic host ports for debugging; browsers reach the app
-                // (and the Vite dev server on 5173) through the nginx container below,
-                // not these ports directly.
-                .withExposedPorts(9000, 5173)
-                .withStartupTimeout(10 * 60 * 1000)
-                // `sbt run` (Play dev mode) binds the port before compiling — it only
-                // compiles the app on the first request. Waiting for a 200 from the
-                // (unauthenticated) healthcheck forces that first compile now, so the
-                // stack is genuinely ready before we publish/use it, rather than the
-                // first real request paying the compile cost and timing out.
-                .withWaitStrategy(
-                    Wait.forHttp("/management/healthcheck", 9000).forStatusCode(200),
-                )
-                .start()),
+                .start(),
         ]);
 
         const mockApiUrl = `http://${mockContentAPIContainer.getHost()}:${mockContentAPIContainer.getMappedPort(MOCK_API_PORT)}`;

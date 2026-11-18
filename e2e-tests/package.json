@@ -4,11 +4,12 @@
     "private": true,
     "description": "Playwright/BDD end-to-end tests for composer-restorer.",
     "devDependencies": {
+        "@guardian/end-to-end-testing": "0.0.0-canary-20261118100539",
         "@guardian/pan-domain-node": "1.2.5",
         "@playwright/test": "^1.62.1",
         "playwright": "^1.62.1",
         "playwright-bdd": "^9.2.0",
-        "testcontainers": "^10.17.1",
+        "testcontainers": "^12.2.1",
         "tsx": "^4.22.4"
     }
 }
