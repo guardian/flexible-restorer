@@ -100,6 +100,9 @@ included in the same artifact. Failed jobs include a direct link to it.
 
 ### Stack logs
 
+Use synthetic test data and never log real credentials. Redaction is best-effort,
+not a guarantee.
+
 Logs are saved in `e2e-tests/logs/<run-id>/` and kept after the stack stops:
 
 - `stack.log`: startup and cleanup progress, timings and errors.

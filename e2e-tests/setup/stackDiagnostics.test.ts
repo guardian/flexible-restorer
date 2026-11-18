@@ -26,19 +26,26 @@ afterEach(() => {
 });
 
 describe("stack diagnostics", () => {
-    it("saves propagated failure details once and preserves the original error", async () => {
+    it("redacts propagated failure details in saved logs and terminal output", async () => {
+        const dummySecret = "test-only-failure-secret";
+        vi.stubEnv("E2E_TEST_SECRET", dummySecret);
         const diagnostics = createDiagnostics();
-        const failure = new Error("readiness failed");
+        const failure = new Error(`readiness failed: ${dummySecret}`);
 
         await expect(diagnostics.step("startup", () =>
             diagnostics.step("start:app", async () => { throw failure; }),
         )).rejects.toBe(failure);
 
         const output = fs.readFileSync(path.join(diagnostics.directory, "stack.log"), "utf8");
+        const terminalOutput = vi.mocked(console.log).mock.calls.flat().join("\n");
 
-        expect(output).toMatch(/start:app\s+FAILED/);
-        expect(output).toMatch(/startup\s+FAILED/);
-        expect(output.match(/Error: readiness failed/g)).toHaveLength(1);
+        for (const loggedOutput of [output, terminalOutput]) {
+            expect(loggedOutput).toMatch(/start:app\s+FAILED/);
+            expect(loggedOutput).toMatch(/startup\s+FAILED/);
+            expect(loggedOutput.match(/Error: readiness failed/g)).toHaveLength(1);
+            expect(loggedOutput).toContain("[REDACTED]");
+            expect(loggedOutput).not.toContain(dummySecret);
+        }
     });
 
     it("redacts secrets split across saved log chunks", () => {
