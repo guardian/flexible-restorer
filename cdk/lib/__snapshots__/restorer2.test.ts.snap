@@ -263,6 +263,69 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
       },
       "Type": "Guardian::DNS::RecordSet",
     },
+    "ECSInfrastructureRoleE492121F": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ecs.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/AmazonECSInfrastructureRolePolicyForManagedInstances",
+        ],
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": "iam:PassRole",
+                  "Condition": {
+                    "StringLike": {
+                      "iam:PassedToService": "ec2.*",
+                    },
+                  },
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "ECSManagedInstancesRole1E652558",
+                      "Arn",
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "PassInstanceRoleToEC2",
+          },
+        ],
+        "Tags": [
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "CODE",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
     "ECSInstanceProfileBA4A4DA9": {
       "Properties": {
         "Roles": [
@@ -373,12 +436,23 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
     },
     "EcsService81FC6EF6": {
       "DependsOn": [
+        "ECSInstanceProfileBA4A4DA9",
+        "ECSManagedInstancesRole1E652558",
         "EcsTaskDefinitionTaskRoleB7B6D8DD",
         "ListenerRestorer2DeterministicRouteToEc2RuleA2C74BD9",
         "ListenerRestorer2DeterministicRouteToEcsRule173F4914",
         "ListenerRestorer293099711",
+        "ManagedInstancesCapacityProviderC2946447",
       ],
       "Properties": {
+        "CapacityProviderStrategy": [
+          {
+            "CapacityProvider": {
+              "Ref": "ManagedInstancesCapacityProviderC2946447",
+            },
+            "Weight": 1,
+          },
+        ],
         "Cluster": {
           "Ref": "restorer2EcsCluster77DA0E12",
         },
@@ -400,7 +474,6 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
         },
         "EnableECSManagedTags": false,
         "HealthCheckGracePeriodSeconds": 60,
-        "LaunchType": "FARGATE",
         "LoadBalancers": [
           {
             "ContainerName": "restorer2",
@@ -468,7 +541,10 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
     },
     "EcsServiceTaskCountTarget02FCCE22": {
       "DependsOn": [
+        "ECSInstanceProfileBA4A4DA9",
+        "ECSManagedInstancesRole1E652558",
         "EcsTaskDefinitionTaskRoleB7B6D8DD",
+        "ManagedInstancesCapacityProviderC2946447",
       ],
       "Properties": {
         "MaxCapacity": 4,
@@ -644,7 +720,7 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
             "VersionConsistency": "disabled",
           },
         ],
-        "Cpu": "1024",
+        "Cpu": "2048",
         "ExecutionRoleArn": {
           "Fn::GetAtt": [
             "EcsTaskDefinitionExecutionRoleBE450C73",
@@ -652,10 +728,10 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
           ],
         },
         "Family": "Restorer2CODEEcsTaskDefinition6C04045D",
-        "Memory": "2048",
+        "Memory": "1024",
         "NetworkMode": "awsvpc",
         "RequiresCompatibilities": [
-          "FARGATE",
+          "MANAGED_INSTANCES",
         ],
         "RuntimePlatform": {
           "CpuArchitecture": "ARM64",
@@ -768,15 +844,6 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
               "Action": "ecr:GetAuthorizationToken",
               "Effect": "Allow",
               "Resource": "*",
-            },
-            {
-              "Action": [
-                "ecr:BatchCheckLayerAvailability",
-                "ecr:GetDownloadUrlForLayer",
-                "ecr:BatchGetImage",
-              ],
-              "Effect": "Allow",
-              "Resource": "arn:aws:ecr:eu-west-1:694911143906:repository/aws-guardduty-agent-fargate",
             },
             {
               "Action": [
@@ -1502,6 +1569,76 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
         "ToPort": 9000,
       },
       "Type": "AWS::EC2::SecurityGroupEgress",
+    },
+    "ManagedInstancesCapacityProviderC2946447": {
+      "Properties": {
+        "ClusterName": {
+          "Ref": "restorer2EcsCluster77DA0E12",
+        },
+        "ManagedInstancesProvider": {
+          "InfrastructureRoleArn": {
+            "Fn::GetAtt": [
+              "ECSInfrastructureRoleE492121F",
+              "Arn",
+            ],
+          },
+          "InstanceLaunchTemplate": {
+            "Ec2InstanceProfileArn": {
+              "Fn::GetAtt": [
+                "ECSInstanceProfileBA4A4DA9",
+                "Arn",
+              ],
+            },
+            "InstanceRequirements": {
+              "AllowedInstanceTypes": [
+                "t4g.*",
+              ],
+              "MemoryMiB": {
+                "Min": 1024,
+              },
+              "VCpuCount": {
+                "Min": 2,
+              },
+            },
+            "NetworkConfiguration": {
+              "SecurityGroups": [
+                {
+                  "Fn::GetAtt": [
+                    "GuHttpsEgressSecurityGroupRestorer2ecsA19F73E0",
+                    "GroupId",
+                  ],
+                },
+              ],
+              "Subnets": {
+                "Ref": "restorer2PrivateSubnets",
+              },
+            },
+          },
+        },
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "CODE",
+          },
+        ],
+      },
+      "Type": "AWS::ECS::CapacityProvider",
     },
     "PanDomainPolicyB981546E": {
       "Properties": {
@@ -2342,6 +2479,69 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
       },
       "Type": "Guardian::DNS::RecordSet",
     },
+    "ECSInfrastructureRoleE492121F": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ecs.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/AmazonECSInfrastructureRolePolicyForManagedInstances",
+        ],
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": "iam:PassRole",
+                  "Condition": {
+                    "StringLike": {
+                      "iam:PassedToService": "ec2.*",
+                    },
+                  },
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "ECSManagedInstancesRole1E652558",
+                      "Arn",
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "PassInstanceRoleToEC2",
+          },
+        ],
+        "Tags": [
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
     "ECSInstanceProfileBA4A4DA9": {
       "Properties": {
         "Roles": [
@@ -2452,12 +2652,23 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
     },
     "EcsService81FC6EF6": {
       "DependsOn": [
+        "ECSInstanceProfileBA4A4DA9",
+        "ECSManagedInstancesRole1E652558",
         "EcsTaskDefinitionTaskRoleB7B6D8DD",
         "ListenerRestorer2DeterministicRouteToEc2RuleA2C74BD9",
         "ListenerRestorer2DeterministicRouteToEcsRule173F4914",
         "ListenerRestorer293099711",
+        "ManagedInstancesCapacityProviderC2946447",
       ],
       "Properties": {
+        "CapacityProviderStrategy": [
+          {
+            "CapacityProvider": {
+              "Ref": "ManagedInstancesCapacityProviderC2946447",
+            },
+            "Weight": 1,
+          },
+        ],
         "Cluster": {
           "Ref": "restorer2EcsCluster77DA0E12",
         },
@@ -2479,7 +2690,6 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
         },
         "EnableECSManagedTags": false,
         "HealthCheckGracePeriodSeconds": 60,
-        "LaunchType": "FARGATE",
         "LoadBalancers": [
           {
             "ContainerName": "restorer2",
@@ -2547,7 +2757,10 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
     },
     "EcsServiceTaskCountTarget02FCCE22": {
       "DependsOn": [
+        "ECSInstanceProfileBA4A4DA9",
+        "ECSManagedInstancesRole1E652558",
         "EcsTaskDefinitionTaskRoleB7B6D8DD",
+        "ManagedInstancesCapacityProviderC2946447",
       ],
       "Properties": {
         "MaxCapacity": 4,
@@ -2723,7 +2936,7 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
             "VersionConsistency": "disabled",
           },
         ],
-        "Cpu": "1024",
+        "Cpu": "2048",
         "ExecutionRoleArn": {
           "Fn::GetAtt": [
             "EcsTaskDefinitionExecutionRoleBE450C73",
@@ -2731,10 +2944,10 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
           ],
         },
         "Family": "Restorer2PRODEcsTaskDefinition95DF4398",
-        "Memory": "2048",
+        "Memory": "1024",
         "NetworkMode": "awsvpc",
         "RequiresCompatibilities": [
-          "FARGATE",
+          "MANAGED_INSTANCES",
         ],
         "RuntimePlatform": {
           "CpuArchitecture": "ARM64",
@@ -2847,15 +3060,6 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
               "Action": "ecr:GetAuthorizationToken",
               "Effect": "Allow",
               "Resource": "*",
-            },
-            {
-              "Action": [
-                "ecr:BatchCheckLayerAvailability",
-                "ecr:GetDownloadUrlForLayer",
-                "ecr:BatchGetImage",
-              ],
-              "Effect": "Allow",
-              "Resource": "arn:aws:ecr:eu-west-1:694911143906:repository/aws-guardduty-agent-fargate",
             },
             {
               "Action": [
@@ -3613,6 +3817,76 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
         "ToPort": 9000,
       },
       "Type": "AWS::EC2::SecurityGroupEgress",
+    },
+    "ManagedInstancesCapacityProviderC2946447": {
+      "Properties": {
+        "ClusterName": {
+          "Ref": "restorer2EcsCluster77DA0E12",
+        },
+        "ManagedInstancesProvider": {
+          "InfrastructureRoleArn": {
+            "Fn::GetAtt": [
+              "ECSInfrastructureRoleE492121F",
+              "Arn",
+            ],
+          },
+          "InstanceLaunchTemplate": {
+            "Ec2InstanceProfileArn": {
+              "Fn::GetAtt": [
+                "ECSInstanceProfileBA4A4DA9",
+                "Arn",
+              ],
+            },
+            "InstanceRequirements": {
+              "AllowedInstanceTypes": [
+                "t4g.*",
+              ],
+              "MemoryMiB": {
+                "Min": 1024,
+              },
+              "VCpuCount": {
+                "Min": 2,
+              },
+            },
+            "NetworkConfiguration": {
+              "SecurityGroups": [
+                {
+                  "Fn::GetAtt": [
+                    "GuHttpsEgressSecurityGroupRestorer2ecsA19F73E0",
+                    "GroupId",
+                  ],
+                },
+              ],
+              "Subnets": {
+                "Ref": "restorer2PrivateSubnets",
+              },
+            },
+          },
+        },
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "restorer2",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/flexible-restorer",
+          },
+          {
+            "Key": "Stack",
+            "Value": "flexible",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+      },
+      "Type": "AWS::ECS::CapacityProvider",
     },
     "PanDomainPolicyB981546E": {
       "Properties": {
