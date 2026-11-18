@@ -6,7 +6,7 @@ import { GuAllowPolicy, GuDeveloperPolicy, GuGetS3ObjectsPolicy } from "@guardia
 import {GuLoadBalancedAppExperimental} from "@guardian/cdk/lib/experimental/patterns/gu-load-balanced-app";
 import type { App } from "aws-cdk-lib";
 import { CfnParameter, Duration, Size } from "aws-cdk-lib";
-import { InstanceClass, InstanceSize, InstanceType, SecurityGroup, UserData } from "aws-cdk-lib/aws-ec2";
+import { BurstablePerformance, InstanceClass, InstanceSize, InstanceType, SecurityGroup, UserData } from "aws-cdk-lib/aws-ec2";
 import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
 
 const app = "restorer2";
@@ -133,6 +133,7 @@ export class Restorer2 extends GuStack {
          managedInstancesProps: {
              instancesRequirements: {
                  vCpuCountMin: 2,
+                 burstablePerformance: BurstablePerformance.REQUIRED,
                  memoryMin: Size.mebibytes(1024),
                  allowedInstanceTypes: ['t4g.*'],
              }

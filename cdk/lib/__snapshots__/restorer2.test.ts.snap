@@ -1593,6 +1593,7 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
               "AllowedInstanceTypes": [
                 "t4g.*",
               ],
+              "BurstablePerformance": "required",
               "MemoryMiB": {
                 "Min": 1024,
               },
@@ -3841,6 +3842,7 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
               "AllowedInstanceTypes": [
                 "t4g.*",
               ],
+              "BurstablePerformance": "required",
               "MemoryMiB": {
                 "Min": 1024,
               },
