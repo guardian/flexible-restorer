@@ -5,7 +5,7 @@ import { GuCname } from "@guardian/cdk/lib/constructs/dns";
 import { GuAllowPolicy, GuDeveloperPolicy, GuGetS3ObjectsPolicy } from "@guardian/cdk/lib/constructs/iam";
 import {GuLoadBalancedAppExperimental} from "@guardian/cdk/lib/experimental/patterns/gu-load-balanced-app";
 import type { App } from "aws-cdk-lib";
-import { CfnParameter, Duration } from "aws-cdk-lib";
+import { CfnParameter, Duration, Size } from "aws-cdk-lib";
 import { InstanceClass, InstanceSize, InstanceType, SecurityGroup, UserData } from "aws-cdk-lib/aws-ec2";
 import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
 
@@ -124,13 +124,19 @@ export class Restorer2 extends GuStack {
         },
       ecsProps: {
          imageIdentifier: process.env.IMAGE_DIGEST ?? "DEV",
-         cpu: 1024,
-         memoryLimitMiB: 2048,
+         cpu: 2048,
+         memoryLimitMiB: 1024,
          scaling: {
             minimumTasks: 2,
             maximumTasks: 4,
          },
-         provisionManagedSecurityRole: true,
+         managedInstancesProps: {
+             instancesRequirements: {
+                 vCpuCountMin: 2,
+                 memoryMin: Size.mebibytes(1024),
+                 allowedInstanceTypes: ['t4g.*'],
+             }
+         },
       },
       targetGroupWeights: {
          ecs: 0,
