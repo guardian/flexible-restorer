@@ -4,9 +4,11 @@ import {GuStack} from "@guardian/cdk/lib/constructs/core";
 import { GuCname } from "@guardian/cdk/lib/constructs/dns";
 import { GuAllowPolicy, GuDeveloperPolicy, GuGetS3ObjectsPolicy } from "@guardian/cdk/lib/constructs/iam";
 import {GuLoadBalancedAppExperimental} from "@guardian/cdk/lib/experimental/patterns/gu-load-balanced-app";
-import type { App } from "aws-cdk-lib";
-import { CfnParameter, Duration, Size } from "aws-cdk-lib";
-import { BurstablePerformance, InstanceClass, InstanceSize, InstanceType, SecurityGroup, UserData } from "aws-cdk-lib/aws-ec2";
+import type {App} from "aws-cdk-lib";
+import { Size} from "aws-cdk-lib";
+import { CfnParameter, Duration } from "aws-cdk-lib";
+import {BurstablePerformance} from "aws-cdk-lib/aws-ec2";
+import { CfnService } from "aws-cdk-lib/aws-ecs";
 import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
 
 const app = "restorer2";
@@ -51,12 +53,6 @@ export class Restorer2 extends GuStack {
 
     const kmsKeyArn = kmsKeyArnParameter.valueAsString;
 
-    const userData = UserData.forLinux();
-    userData.addCommands(
-      `aws s3 cp s3://composer-dist/flexible/${this.stage}/${app}/${app}.deb /tmp/${app}.deb`,
-      `dpkg -i /tmp/${app}.deb`,
-    );
-
     const snapshotBuckets = [
       `flexible-snapshotter-${stageConfig.snapshotBucketSuffix}`,
       `flexible-secondary-snapshotter-${stageConfig.snapshotBucketSuffix}`,
@@ -71,10 +67,6 @@ export class Restorer2 extends GuStack {
 
     const permissionsCachePath = (stage: string) => `${stage}/permissions.json`;
 
-    // Only app-specific permissions are needed here: GuInstanceRole (created by
-    // GuEc2App) already grants ec2:DescribeInstances, ec2:DescribeTags and
-    // autoscaling:Describe* (via GuDescribeEC2Policy), SSM SSH access,
-    // parameter-store reads and Kinesis log shipping.
     const additionalPolicies = [
       new GuAllowPolicy(this, "RestorerSSMPolicy", {
         actions: ["ssm:GetParameters", "ssm:GetParametersByPath"],
@@ -106,44 +98,33 @@ export class Restorer2 extends GuStack {
       }),
     ];
 
-    const loadBalancedApp = new GuLoadBalancedAppExperimental(this, {
-      app,
-      access: { scope: AccessScope.PUBLIC },
-      applicationPort: 9000,
-      monitoringConfiguration: { noMonitoring: true },
-      certificateProps: { domainName: stageConfig.domainName },
-      healthcheck: { path: "/management/healthcheck" },
-      additionalPolicies,
-      ec2Props: {
-          instanceType: InstanceType.of(InstanceClass.BURSTABLE4_GRAVITON, InstanceSize.MICRO),
-          userData,
-          instanceMetricGranularity: "5Minute",
-          scaling: { minimumInstances: 2, maximumInstances: 4 },
-          applicationLogging: { enabled: true },
-          imageRecipe: "editorial-tools-jammy-java11"
-        },
-      ecsProps: {
-         imageIdentifier: process.env.IMAGE_DIGEST ?? "DEV",
-         cpu: 2048,
-         memoryLimitMiB: 1024,
-         scaling: {
-            minimumTasks: 2,
-            maximumTasks: 4,
-         },
-         managedInstancesProps: {
-             instancesRequirements: {
-                 vCpuCountMin: 2,
-                 burstablePerformance: BurstablePerformance.REQUIRED,
-                 memoryMin: Size.mebibytes(1024),
-                 allowedInstanceTypes: ['t4g.*'],
-             }
-         },
-      },
-      targetGroupWeights: {
-         ecs: 0,
-         ec2: 1
-      }
-    });
+      const loadBalancedApp = new GuLoadBalancedAppExperimental(this, {
+         app,
+         access: { scope: AccessScope.PUBLIC },
+         applicationPort: 9000,
+         monitoringConfiguration: { noMonitoring: true },
+         certificateProps: { domainName: stageConfig.domainName },
+         healthcheck: { path: "/management/healthcheck" },
+         additionalPolicies,
+         ecsProps: {
+             imageIdentifier: process.env.IMAGE_DIGEST ?? "DEV",
+             cpu: 2048,
+             memoryLimitMiB: 1024,
+             scaling: {
+                 minimumTasks: 2,
+                 maximumTasks: 4,
+             },
+             managedInstancesProps: {
+                 instancesRequirements: {
+                     vCpuCountMin: 2,
+                     burstablePerformance: BurstablePerformance.REQUIRED,
+                     memoryMin: Size.mebibytes(1024),
+                     allowedInstanceTypes: ['t4g.*'],
+                 }
+             },
+             provisionManagedSecurityRole: true,
+         }
+     });
 
     // Allow the restorer instances to reach the flexible-content API ELBs.
     // PROD additionally needs access to the CODE API (to restore content into
@@ -154,18 +135,19 @@ export class Restorer2 extends GuStack {
         ? [...stageConfigs.PROD.accessToApiSecurityGroupIds, ...stageConfigs.CODE.accessToApiSecurityGroupIds]
         : stageConfigs.CODE.accessToApiSecurityGroupIds;
 
-      const autoScalingGroup = loadBalancedApp.autoScalingGroup;
-      if (!autoScalingGroup) {
-          throw new Error("Flexible restorer requires an EC2 Auto Scaling Group for API access configuration");
+        const ecsService = loadBalancedApp.ecsService;
+        if (!ecsService) {
+            throw new Error("Flexible restorer requires an ECS service for API access configuration");
       }
 
-    apiSecurityGroupIds.forEach((securityGroupId, index) => {
-      autoScalingGroup.instanceLaunchTemplate.connections.addSecurityGroup(
-        SecurityGroup.fromSecurityGroupId(this, `AccessToApiSecurityGroup${index}`, securityGroupId, {
-          mutable: false,
-        }),
-      );
-    });
+        const cfnEcsService = ecsService.node.defaultChild;
+        if (!(cfnEcsService instanceof CfnService)) {
+            throw new Error("Flexible restorer requires an ECS CloudFormation service for API access configuration");
+        }
+        cfnEcsService.addPropertyOverride("NetworkConfiguration.AwsvpcConfiguration.SecurityGroups", [
+            ...ecsService.connections.securityGroups.map(({ securityGroupId }) => securityGroupId),
+            ...apiSecurityGroupIds,
+        ]);
 
     if (this.stage === "CODE") {
       const panDomainPaths = panDomainSettingsPaths("local.dev-gutools.co.uk")
