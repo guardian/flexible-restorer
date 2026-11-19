@@ -28,7 +28,6 @@ module.exports = defineConfig({
     // e2e/globalSetup.ts) and stop it afterwards, so workers all share one
     // stack instead of each booting their own in parallel.
     globalSetup: path.join(__dirname, "setup/globalSetup.ts"),
-    globalTeardown: path.join(__dirname, "setup/globalTeardown.ts"),
     expect: {
         timeout: 10 * 1000,
     },
@@ -44,15 +43,23 @@ module.exports = defineConfig({
     retries: 1,
     reporter: [
         ["list"],
+        ...(process.env.CI ? [["github"]] : []),
+        [
+            "html",
+            {
+                outputFolder: path.join(__dirname, "playwright-report"),
+                open: "never",
+            },
+        ],
         // Enable the Cucumber HTML report only when REPORT is set, e.g.
         // `REPORT=1 npm run test`.
         ...(process.env.REPORT
             ? [
-                  cucumberReporter("html", {
-                      outputFile: "cucumber-report/index.html",
-                      externalAttachments: true,
-                  }),
-              ]
+                cucumberReporter("html", {
+                    outputFile: "cucumber-report/index.html",
+                    externalAttachments: true,
+                }),
+            ]
             : []),
     ],
     use: {

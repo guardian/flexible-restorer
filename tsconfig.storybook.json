@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["react", "react-dom", "node"],
+    "incremental": true,
+    "tsBuildInfoFile": "node_modules/.cache/tsconfig.storybook/.tsbuildinfo"
+  },
+  "include": [
+    "public/src/app/components/**/*.stories.tsx",
+    "public/src/app/components/svg.d.ts",
+    ".storybook/*.ts",
+    ".storybook/*.tsx"
+  ],
+  "exclude": []
+}

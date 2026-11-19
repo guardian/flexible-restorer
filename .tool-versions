@@ -6,6 +6,6 @@ node 24.18.0
 
 sbt 1.9.7
 
-github:guardian/devenv 20260721-123412
+github:guardian/devenv 20260930-111347
  
 aqua:aws/aws-cli 2

@@ -1,11 +1,10 @@
 import path from "path";
 import { test as base, createBdd } from "playwright-bdd";
 import { expect } from "@playwright/test";
-import { type LocalStack } from "./setup/stackContainers";
-import { readSharedStackInfo } from "./setup/sharedStack";
+import { readSharedStackInfo, type SharedStackInfo } from "./setup/sharedStack";
 
 type WorkerFixtures = {
-    localStack: LocalStack;
+    localStack: SharedStackInfo & { cookieUrl: string };
 };
 
 /**
@@ -21,7 +20,7 @@ type WorkerFixtures = {
  */
 export const test = base.extend<object, WorkerFixtures>({
     localStack: [
-        async ({}, use) => {
+        async ({ }, use) => {
             const projectRoot = path.resolve(__dirname, "..");
 
             // Global setup guarantees a single stack is running and has published
@@ -30,8 +29,8 @@ export const test = base.extend<object, WorkerFixtures>({
             if (!sharedStack) {
                 throw new Error(
                     "No shared local stack found. It is normally started by global " +
-                        "setup; if you are running Playwright directly, start one " +
-                        "with `npm run dev:local` first.",
+                    "setup; if you are running Playwright directly, start one " +
+                    "with `npm run dev:local` first.",
                 );
             }
 
@@ -40,11 +39,6 @@ export const test = base.extend<object, WorkerFixtures>({
                 cookieUrl: `${sharedStack.baseUrl}/cookie`,
                 panDomainPrivateKey: sharedStack.panDomainPrivateKey,
                 mockApiUrl: sharedStack.mockApiUrl,
-                s3Container: undefined,
-                restorerContainer: undefined,
-                mockContainer: undefined,
-                nginxContainer: undefined,
-                network: undefined,
             });
         },
         { scope: "worker", timeout: 12 * 60 * 1000 },

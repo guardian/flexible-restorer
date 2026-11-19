@@ -1,13 +1,12 @@
 import { AccessScope } from "@guardian/cdk/lib/constants";
-import type { GuStackProps } from "@guardian/cdk/lib/constructs/core";
-import { GuStack } from "@guardian/cdk/lib/constructs/core";
+import type { GuStackProps} from "@guardian/cdk/lib/constructs/core";
+import {GuStack} from "@guardian/cdk/lib/constructs/core";
 import { GuCname } from "@guardian/cdk/lib/constructs/dns";
-import { GuAllowPolicy, GuGetS3ObjectsPolicy } from "@guardian/cdk/lib/constructs/iam";
-import { GuDeveloperPolicyExperimental } from "@guardian/cdk/lib/experimental/constructs/iam/policies";
-import { GuEc2App } from "@guardian/cdk/lib/patterns/ec2-app";
+import { GuAllowPolicy, GuDeveloperPolicy, GuGetS3ObjectsPolicy } from "@guardian/cdk/lib/constructs/iam";
+import {GuLoadBalancedAppExperimental} from "@guardian/cdk/lib/experimental/patterns/gu-load-balanced-app";
 import type { App } from "aws-cdk-lib";
-import { CfnParameter, Duration } from "aws-cdk-lib";
-import { InstanceClass, InstanceSize, InstanceType, SecurityGroup, UserData } from "aws-cdk-lib/aws-ec2";
+import { CfnParameter, Duration, Size } from "aws-cdk-lib";
+import { BurstablePerformance, InstanceClass, InstanceSize, InstanceType, SecurityGroup, UserData } from "aws-cdk-lib/aws-ec2";
 import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
 
 const app = "restorer2";
@@ -107,20 +106,43 @@ export class Restorer2 extends GuStack {
       }),
     ];
 
-    const ec2App = new GuEc2App(this, {
+    const loadBalancedApp = new GuLoadBalancedAppExperimental(this, {
       app,
       access: { scope: AccessScope.PUBLIC },
       applicationPort: 9000,
-      instanceType: InstanceType.of(InstanceClass.BURSTABLE4_GRAVITON, InstanceSize.MICRO),
-      instanceMetricGranularity: "5Minute",
       monitoringConfiguration: { noMonitoring: true },
-      applicationLogging: { enabled: true },
-      imageRecipe: "editorial-tools-jammy-java11",
-      userData,
       certificateProps: { domainName: stageConfig.domainName },
-      scaling: { minimumInstances: 2, maximumInstances: 4 },
       healthcheck: { path: "/management/healthcheck" },
       additionalPolicies,
+      ec2Props: {
+          instanceType: InstanceType.of(InstanceClass.BURSTABLE4_GRAVITON, InstanceSize.MICRO),
+          userData,
+          instanceMetricGranularity: "5Minute",
+          scaling: { minimumInstances: 2, maximumInstances: 4 },
+          applicationLogging: { enabled: true },
+          imageRecipe: "editorial-tools-jammy-java11"
+        },
+      ecsProps: {
+         imageIdentifier: process.env.IMAGE_DIGEST ?? "DEV",
+         cpu: 2048,
+         memoryLimitMiB: 1024,
+         scaling: {
+            minimumTasks: 2,
+            maximumTasks: 4,
+         },
+         managedInstancesProps: {
+             instancesRequirements: {
+                 vCpuCountMin: 2,
+                 burstablePerformance: BurstablePerformance.REQUIRED,
+                 memoryMin: Size.mebibytes(1024),
+                 allowedInstanceTypes: ['t4g.*'],
+             }
+         },
+      },
+      targetGroupWeights: {
+         ecs: 0,
+         ec2: 1
+      }
     });
 
     // Allow the restorer instances to reach the flexible-content API ELBs.
@@ -132,8 +154,13 @@ export class Restorer2 extends GuStack {
         ? [...stageConfigs.PROD.accessToApiSecurityGroupIds, ...stageConfigs.CODE.accessToApiSecurityGroupIds]
         : stageConfigs.CODE.accessToApiSecurityGroupIds;
 
+      const autoScalingGroup = loadBalancedApp.autoScalingGroup;
+      if (!autoScalingGroup) {
+          throw new Error("Flexible restorer requires an EC2 Auto Scaling Group for API access configuration");
+      }
+
     apiSecurityGroupIds.forEach((securityGroupId, index) => {
-      ec2App.autoScalingGroup.instanceLaunchTemplate.connections.addSecurityGroup(
+      autoScalingGroup.instanceLaunchTemplate.connections.addSecurityGroup(
         SecurityGroup.fromSecurityGroupId(this, `AccessToApiSecurityGroup${index}`, securityGroupId, {
           mutable: false,
         }),
@@ -144,7 +171,7 @@ export class Restorer2 extends GuStack {
       const panDomainPaths = panDomainSettingsPaths("local.dev-gutools.co.uk")
         .concat([panDomainKeysPath])
 
-      new GuDeveloperPolicyExperimental(this, "RestorerAppLocalRunPolicy", {
+      new GuDeveloperPolicy(this, "RestorerAppLocalRunPolicy", {
         grantId: "run-flexible-restorer-locally",
         friendlyName: "Run Restorer Locally",
         // Checks reject any Allow whose resource contains a wildcard, which every
@@ -187,7 +214,7 @@ export class Restorer2 extends GuStack {
       domainName: stageConfig.domainName,
       ttl: Duration.seconds(60),
       // Trailing dot to match NS1 records fully-qualified format.
-      resourceRecord: `${ec2App.loadBalancer.loadBalancerDnsName}.`,
+      resourceRecord: `${loadBalancedApp.loadBalancer.loadBalancerDnsName}.`,
     });
   }
 }
