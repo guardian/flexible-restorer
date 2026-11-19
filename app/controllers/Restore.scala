@@ -46,7 +46,10 @@ class Restore(
       }
       result.fold(
         errors => InternalServerError(s"Error whilst restoring: $errors"),
-        identity
+        result => {
+          logger.info(s"Successfully restored content $contentId from $sourceId to $destinationId")
+          result
+        }
       )
     }
   }

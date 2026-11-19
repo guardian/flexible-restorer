@@ -12,13 +12,3 @@ deployments:
       cloudFormationStackName: Flexible-Restorer
       cloudFormationStackByTags: false
       prependStackToCloudFormationStackName: false
-      amiParameter: AMIRestorer2
-      amiTags:
-        Recipe: editorial-tools-jammy-java11
-        AmigoStage: PROD
-        BuiltBy: amigo
-      amiEncrypted: true
-  restorer2:
-    type: autoscaling
-    dependencies:
-      - cfn-restorer2
