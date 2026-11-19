@@ -125,8 +125,12 @@ export async function startLocalStack(
                 .withStartupTimeout(2 * 60 * 1000)
                 .start()),
             () => new ApplicationContainer(RESTORER_IMAGE, {
-                    port: 9000,
+                    image: RESTORER_IMAGE,
+                    name: "restorer",
+                    exposedPorts: [9000, 5173],
+                    healthCheckPort: 9000,
                     healthCheckPath: "/management/healthcheck",
+                    streamLogs,
                 })
                 .withNetwork(network)
                 // nginx proxies to the restorer over the Docker network by this alias.
@@ -136,11 +140,13 @@ export async function startLocalStack(
                 // served from the packaged classpath with the immutable cache
                 // header); dev mode uses `sbt run` with the Vite dev server. The source is
                 // still bind-mounted below in both modes so the run reflects host code.
-                    .withCommand([
-                        mode === "prod"
-                            ? "/app/entrypoint.prod.sh"
-                            : "/app/entrypoint.dev.sh",
-                    ])
+                .withCommand([
+                    "bash",
+                    "/app/e2e-tests/images/entrypoint.sh",
+                    mode === "prod"
+                        ? "/app/e2e-tests/images/entrypoint.prod.sh"
+                        : "/app/e2e-tests/images/entrypoint.dev.sh",
+                ])
                 .withBindMounts([
                     {
                         source: projectRoot,
@@ -166,7 +172,6 @@ export async function startLocalStack(
                     // reachable inside the Docker network via its registered alias.
                     LOCAL_FLEXIBLE_API_PREFIX: `http://flexible-api.DEV.flexible.gudiscovery:${MOCK_API_PORT}`,
                 })
-                .withLogConsumer((stream) => diagnostics.capture("containers", "restorer", stream))
                 .start(),
         ]);
 
