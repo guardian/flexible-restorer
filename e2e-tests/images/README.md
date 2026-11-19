@@ -61,7 +61,6 @@ flowchart TB
 
 | File | Purpose |
 | --- | --- |
-| [`restorer.Dockerfile`](./restorer.Dockerfile) | Legacy standalone app image; no longer used by the local/e2e stack. |
 | [`entrypoint.sh`](./entrypoint.sh) | Installs the toolchain and dependencies, then runs the selected app entrypoint. |
 | [`nginx.Dockerfile`](./nginx.Dockerfile) | nginx proxy + `/cookie`, with the cookie baked in at build time. |
 | [`nginx-dev.conf.template`](./nginx-dev.conf.template) | nginx server config; the cookie token is templated in via `envsubst`. |
