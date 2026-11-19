@@ -109,8 +109,8 @@ Logs are saved in `e2e-tests/logs/<run-id>/` and kept after the stack stops:
 - `builds/`: image build and pull logs.
 - `containers/`: logs from each container.
 
-Local run IDs default to a UTC timestamp, such as
-`2026-11-17T14-32-08.123Z`. CI keeps its workflow run and attempt IDs.
+Run IDs use a UTC timestamp both locally and in CI, such as
+`2026-11-17T14-32-08.123Z`.
 
 The terminal prints the log directory. To also stream detailed logs, set
 `E2E_DEBUG=1`, for example:

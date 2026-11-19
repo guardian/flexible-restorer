@@ -17,10 +17,9 @@ export function formatDuration(seconds: number): string {
 
 export function createStackDiagnostics(
     projectRoot: string,
-    options: { runId?: string; debug?: boolean } = {},
+    options: { debug?: boolean } = {},
 ) {
-    const runId = options.runId ?? process.env.E2E_RUN_ID
-        ?? new Date().toISOString().replace(/:/g, "-");
+    const runId = new Date().toISOString().replace(/:/g, "-");
     const sensitiveValues = new Set(Object.entries(process.env)
         .filter(([name]) => /TOKEN|SECRET|PASSWORD|PRIVATE_KEY/i.test(name))
         .map(([, value]) => value ?? "")
@@ -28,10 +27,6 @@ export function createStackDiagnostics(
     const flushers = new Set<() => void>();
     const reportedErrors = new Set<unknown>();
     let writeFailed = false;
-
-    if (!/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/.test(runId)) {
-        throw new Error("E2E_RUN_ID must contain only letters, numbers, dots, underscores and hyphens");
-    }
 
     const directory = path.join(projectRoot, "e2e-tests/logs", runId);
 
