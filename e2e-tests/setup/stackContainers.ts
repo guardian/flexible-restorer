@@ -13,8 +13,6 @@ import { clearSharedStackInfo, writeSharedStackInfo } from "./sharedStack";
 const S3_ACCESS_KEY_ID = "test";
 const S3_SECRET_ACCESS_KEY = "test";
 
-const RESTORER_IMAGE = "ghcr.io/guardian/end-to-end-testing/application:sha-bd6ece21f26061c1a00f18153a19c048e987e8de@sha256:05076c85f32d2404b36a47f178769fb6f858cd95a9997557e0cc416cd7b6eaed";
-
 // LocalStack serves every enabled service on this one port.
 const LOCALSTACK_PORT = 4566;
 // LocalStack only parses the bucket from the Host header when it contains `.s3.`,
@@ -124,8 +122,7 @@ export async function startLocalStack(
                 )
                 .withStartupTimeout(2 * 60 * 1000)
                 .start()),
-            () => new ApplicationContainer(RESTORER_IMAGE, {
-                    image: RESTORER_IMAGE,
+            () => new ApplicationContainer({
                     name: "restorer",
                     exposedPorts: [9000, 5173],
                     healthCheckPort: 9000,
