@@ -61,9 +61,9 @@ flowchart TB
 
 | File | Purpose |
 | --- | --- |
-| [`entrypoint.sh`](./entrypoint.sh) | Installs the toolchain and dependencies, then runs the selected app entrypoint. |
 | [`nginx.Dockerfile`](./nginx.Dockerfile) | nginx proxy + `/cookie`, with the cookie baked in at build time. |
 | [`nginx-dev.conf.template`](./nginx-dev.conf.template) | nginx server config; the cookie token is templated in via `envsubst`. |
 | [`generate-pan-domain-cookie.ts`](./generate-pan-domain-cookie.ts) | Build-time cookie generator reusing the project's cookie helper. |
-| [`entrypoint.dev.sh`](./entrypoint.dev.sh) | Restorer container entrypoint (Vite + `sbt run`). |
+| [`entrypoint.dev.sh`](./entrypoint.dev.sh) | Installs the toolchain and dependencies, then runs Vite + `sbt run`. |
+| [`entrypoint.prod.sh`](./entrypoint.prod.sh) | Installs the toolchain and dependencies, then builds and runs Restorer in Play Prod mode. |
 | [`run-dev-local.ts`](./run-dev-local.ts) | `npm run dev:local` — starts the stack and keeps it running. |

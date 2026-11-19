@@ -142,7 +142,6 @@ export async function startLocalStack(
                 // still bind-mounted below in both modes so the run reflects host code.
                 .withCommand([
                     "bash",
-                    "/app/e2e-tests/images/entrypoint.sh",
                     mode === "prod"
                         ? "/app/e2e-tests/images/entrypoint.prod.sh"
                         : "/app/e2e-tests/images/entrypoint.dev.sh",
