@@ -167,6 +167,7 @@ export async function startLocalStack(
                     // reachable inside the Docker network via its registered alias.
                     LOCAL_FLEXIBLE_API_PREFIX: `http://flexible-api.DEV.flexible.gudiscovery:${MOCK_API_PORT}`,
                 })
+                .withLogConsumer((stream) => diagnostics.capture("containers", "restorer", stream))
                 .start(),
         ]);
 
