@@ -122,7 +122,7 @@ export async function startLocalStack(
                 )
                 .withStartupTimeout(2 * 60 * 1000)
                 .start()),
-            () => new ApplicationContainer({
+            () => resources.startContainer("restorer", () => new ApplicationContainer({
                     name: "restorer",
                     exposedPorts: [9000, 5173],
                     healthCheckPort: 9000,
@@ -168,7 +168,7 @@ export async function startLocalStack(
                     LOCAL_FLEXIBLE_API_PREFIX: `http://flexible-api.DEV.flexible.gudiscovery:${MOCK_API_PORT}`,
                 })
                 .withLogConsumer((stream) => diagnostics.capture("containers", "restorer", stream))
-                .start(),
+                .start()),
         ]);
 
         const mockApiUrl = `http://${mockContentAPIContainer.getHost()}:${mockContentAPIContainer.getMappedPort(MOCK_API_PORT)}`;
