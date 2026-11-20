@@ -13,7 +13,7 @@ function createDiagnostics() {
     directories.push(root);
     vi.spyOn(console, "log").mockImplementation(() => { });
 
-    return createStackDiagnostics(root, { runId: "test-run", debug: false });
+    return createStackDiagnostics(root, { debug: false });
 }
 
 afterEach(() => {
