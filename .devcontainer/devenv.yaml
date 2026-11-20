@@ -53,8 +53,6 @@ postCreateCommand:
     workingDirectory: "."
   - cmd: "docker pull localstack/localstack:4"
     workingDirectory: "."
-  - cmd: "docker build -f e2e-tests/images/restorer.Dockerfile -t flexible-restorer-app-e2e:cache ."
-    workingDirectory: "."
   - cmd: "docker build -f e2e-tests/images/nginx.Dockerfile -t flexible-restorer-nginx-e2e:cache ."
     workingDirectory: "."
 #   - cmd: "make setup"

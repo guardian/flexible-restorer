@@ -83,13 +83,7 @@ export async function buildStackImages(
         return new GenericContainer(tag);
     };
 
-    const [restorer, mockApi, nginx] = await settleAll([
-        () => build({
-            name: "restorer",
-            dockerfile: "restorer",
-            image: "flexible-restorer-app-e2e",
-            prebuiltImage: process.env.E2E_RESTORER_IMAGE,
-        }),
+    const [mockApi, nginx] = await settleAll([
         () => build({
             name: "mock-api",
             dockerfile: "mock-flexible-api",
@@ -104,5 +98,5 @@ export async function buildStackImages(
         }),
     ]);
 
-    return { restorer, mockApi, nginx };
+    return { mockApi, nginx };
 }

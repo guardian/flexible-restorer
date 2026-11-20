@@ -2,6 +2,11 @@
 
 set -euo pipefail
 
+mise trust /app/.tool-versions
+mise install java node sbt
+mise reshim
+npm ci
+
 # Inside Docker, localhost points at this container, not the host machine.
 export AWS_ENDPOINT_URL_S3="${AWS_ENDPOINT_URL_S3:-http://host.docker.internal:9002}"
 export AWS_REGION="${AWS_REGION:-eu-west-1}"
