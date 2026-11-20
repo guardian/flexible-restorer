@@ -7,7 +7,7 @@ import {GuLoadBalancedAppExperimental} from "@guardian/cdk/lib/experimental/patt
 import type {App} from "aws-cdk-lib";
 import { Size} from "aws-cdk-lib";
 import { CfnParameter, Duration } from "aws-cdk-lib";
-import {BurstablePerformance} from "aws-cdk-lib/aws-ec2";
+import {BurstablePerformance, InstanceClass, InstanceSize, InstanceType, UserData} from "aws-cdk-lib/aws-ec2";
 import { CfnService } from "aws-cdk-lib/aws-ecs";
 import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
 
@@ -98,56 +98,75 @@ export class Restorer2 extends GuStack {
       }),
     ];
 
-      const loadBalancedApp = new GuLoadBalancedAppExperimental(this, {
-         app,
-         access: { scope: AccessScope.PUBLIC },
-         applicationPort: 9000,
-         monitoringConfiguration: { noMonitoring: true },
-         certificateProps: { domainName: stageConfig.domainName },
-         healthcheck: { path: "/management/healthcheck" },
-         additionalPolicies,
-         ecsProps: {
-             imageIdentifier: process.env.IMAGE_DIGEST ?? "DEV",
-             cpu: 2048,
-             memoryLimitMiB: 1024,
-             scaling: {
-                 minimumTasks: 2,
-                 maximumTasks: 4,
-             },
-             managedInstancesProps: {
-                 instancesRequirements: {
-                     vCpuCountMin: 2,
-                     burstablePerformance: BurstablePerformance.REQUIRED,
-                     memoryMin: Size.mebibytes(1024),
-                     allowedInstanceTypes: ['t4g.*'],
-                 }
-             },
-             provisionManagedSecurityRole: true,
-         }
-     });
-
     // Allow the restorer instances to reach the flexible-content API ELBs.
     // PROD additionally needs access to the CODE API (to restore content into
     // CODE). Note the 5 security group limit for instances in a private subnet:
     // GuCDK attaches one (HTTPS egress), leaving room for at most four here.
-    const apiSecurityGroupIds =
-      this.stage === "PROD"
-        ? [...stageConfigs.PROD.accessToApiSecurityGroupIds, ...stageConfigs.CODE.accessToApiSecurityGroupIds]
-        : stageConfigs.CODE.accessToApiSecurityGroupIds;
+    const apiSecurityGroupIds: string[] =
+        this.stage === "PROD"
+            ? [...stageConfigs.PROD.accessToApiSecurityGroupIds, ...stageConfigs.CODE.accessToApiSecurityGroupIds]
+            : stageConfigs.CODE.accessToApiSecurityGroupIds;
 
-        const ecsService = loadBalancedApp.ecsService;
-        if (!ecsService) {
-            throw new Error("Flexible restorer requires an ECS service for API access configuration");
-      }
+      const userData = UserData.forLinux();
+      userData.addCommands(
+          `aws s3 cp s3://composer-dist/flexible/${this.stage}/${app}/${app}.deb /tmp/${app}.deb`,
+          `dpkg -i /tmp/${app}.deb`,
+      );
 
-        const cfnEcsService = ecsService.node.defaultChild;
-        if (!(cfnEcsService instanceof CfnService)) {
-            throw new Error("Flexible restorer requires an ECS CloudFormation service for API access configuration");
+    const loadBalancedApp = new GuLoadBalancedAppExperimental(this, {
+        app,
+        access: { scope: AccessScope.PUBLIC },
+        applicationPort: 9000,
+        monitoringConfiguration: { noMonitoring: true },
+        certificateProps: { domainName: stageConfig.domainName },
+        healthcheck: { path: "/management/healthcheck" },
+        additionalPolicies,
+        ec2Props: {
+            instanceType: InstanceType.of(InstanceClass.BURSTABLE4_GRAVITON, InstanceSize.MICRO),
+            userData,
+            instanceMetricGranularity: "5Minute",
+            scaling: { minimumInstances: 2, maximumInstances: 4 },
+            applicationLogging: { enabled: true },
+            imageRecipe: "editorial-tools-jammy-java11",
+            securityGroupIds: apiSecurityGroupIds
+        },
+        ecsProps: {
+            imageIdentifier: process.env.IMAGE_DIGEST ?? "DEV",
+            cpu: 2048,
+            memoryLimitMiB: 1024,
+            scaling: {
+                minimumTasks: 2,
+                maximumTasks: 4,
+            },
+            instancesRequirements: {
+                vCpuCountMin: 2,
+                burstablePerformance: BurstablePerformance.REQUIRED,
+                memoryMin: Size.mebibytes(1024),
+                allowedInstanceTypes: ['t4g.*'],
+            },
+            provisionManagedSecurityRole: true,
+            securityGroupIds: apiSecurityGroupIds,
+        },
+        targetGroupWeights: {
+            ecs: 5,
+            ec2: 5
         }
-        cfnEcsService.addPropertyOverride("NetworkConfiguration.AwsvpcConfiguration.SecurityGroups", [
-            ...ecsService.connections.securityGroups.map(({ securityGroupId }) => securityGroupId),
-            ...apiSecurityGroupIds,
-        ]);
+    });
+
+    const ecsService = loadBalancedApp.ecsService;
+
+    if (!ecsService) {
+        throw new Error("Flexible restorer requires an ECS service for API access configuration");
+    }
+
+    const cfnEcsService = ecsService.node.defaultChild;
+    if (!(cfnEcsService instanceof CfnService)) {
+        throw new Error("Flexible restorer requires an ECS CloudFormation service for API access configuration");
+    }
+    // cfnEcsService.addPropertyOverride("NetworkConfiguration.AwsvpcConfiguration.SecurityGroups", [
+    //     ...ecsService.connections.securityGroups.map(({ securityGroupId }) => securityGroupId),
+    //     ...apiSecurityGroupIds,
+    // ]);
 
     if (this.stage === "CODE") {
       const panDomainPaths = panDomainSettingsPaths("local.dev-gutools.co.uk")

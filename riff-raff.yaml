@@ -2,13 +2,23 @@ regions: [eu-west-1]
 stacks: [flexible]
 
 deployments:
-  cfn-restorer2:
-    type: cloud-formation
-    app: restorer2
-    parameters:
-      templateStagePaths:
-        CODE: Restorer2-euwest-1-CODE.template.json
-        PROD: Restorer2-euwest-1-PROD.template.json
-      cloudFormationStackName: Flexible-Restorer
-      cloudFormationStackByTags: false
-      prependStackToCloudFormationStackName: false
+    cfn-restorer2:
+        type: cloud-formation
+        app: restorer2
+        parameters:
+            templateStagePaths:
+                CODE: Restorer2-euwest-1-CODE.template.json
+                PROD: Restorer2-euwest-1-PROD.template.json
+            cloudFormationStackName: Flexible-Restorer
+            cloudFormationStackByTags: false
+            prependStackToCloudFormationStackName: false
+            amiParameter: AMIRestorer2
+            amiTags:
+                Recipe: editorial-tools-jammy-java11
+                AmigoStage: PROD
+                BuiltBy: amigo
+            amiEncrypted: true
+    restorer2:
+        type: autoscaling
+        dependencies:
+            - cfn-restorer2
