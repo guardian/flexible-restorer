@@ -127,7 +127,6 @@ export async function startLocalStack(
                     exposedPorts: [9000, 5173],
                     healthCheckPort: 9000,
                     healthCheckPath: "/management/healthcheck",
-                    streamLogs,
                 })
                 .withNetwork(network)
                 // nginx proxies to the restorer over the Docker network by this alias.
