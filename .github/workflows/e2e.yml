@@ -47,8 +47,7 @@ jobs:
             - name: Verify Chromium can launch
               run: npx tsx e2e-tests/setup/verify-chromium.ts
 
-            # Pre-build images before the suite starts so Scala compilation stays
-            # outside its timeout. Buildx restores and saves layers between runs
+            # Pre-build the mock and nginx images. Buildx restores and saves layers between runs
             # using the GitHub Actions cache, with a separate scope per image.
             # The E2E_*_IMAGE variables below reuse the loaded images directly.
             - name: Set up Docker Buildx
@@ -67,7 +66,6 @@ jobs:
               # REPORT=1 also produces the Cucumber HTML report.
               env:
                   REPORT: "1"
-                  E2E_RESTORER_IMAGE: flexible-restorer-app-e2e:prebuild
                   E2E_MOCK_API_IMAGE: flexible-restorer-mock-api-e2e:prebuild
                   E2E_NGINX_IMAGE: flexible-restorer-nginx-e2e:prebuild
               run: |

@@ -2,6 +2,11 @@
 
 set -euo pipefail
 
+mise trust /app/.tool-versions
+mise install java node sbt
+mise reshim
+npm ci
+
 # Inside Docker, localhost points at this container. Respect values injected by
 # the local stack (e.g. AWS_ENDPOINT_URL_S3=http://minio:9000); fall back to the
 # host otherwise.

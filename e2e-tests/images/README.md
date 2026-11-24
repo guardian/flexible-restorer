@@ -4,6 +4,20 @@ These images make up the containerised Restorer stack used by the e2e suite and
 by `npm run dev:local`. They are orchestrated by
 [`../setup/stackContainers.ts`](../setup/stackContainers.ts) via Testcontainers.
 
+The main app uses `ApplicationContainer` from `@guardian/end-to-end-testing`.
+It exposes port `9000` and waits up to ten minutes for HTTP 200 from
+`/management/healthcheck`. The stack adds the Vite port, mounts, environment and
+dev/prod startup command. It uses the shared application image pinned in
+[`../setup/stackContainers.ts`](../setup/stackContainers.ts) by commit and digest;
+there is no Restorer image build or `E2E_RESTORER_IMAGE` override.
+
+The repository is bind-mounted at `/app`. The common entrypoint installs the
+repository's pinned Java, Node and sbt versions with mise, then runs `npm ci`
+before starting the selected dev/prod entrypoint. Dependencies, build outputs
+and test logs use container-local tmpfs mounts so parallel runs do not overwrite
+host artifacts. Local development can still write logs to the host via `mountLogs`.
+Cold starts need network access to download the toolchain and dependencies.
+
 ## How traffic flows
 
 ```mermaid
@@ -47,9 +61,9 @@ flowchart TB
 
 | File | Purpose |
 | --- | --- |
-| [`restorer.Dockerfile`](./restorer.Dockerfile) | Builds and runs the Play app (`entrypoint.dev.sh`). |
 | [`nginx.Dockerfile`](./nginx.Dockerfile) | nginx proxy + `/cookie`, with the cookie baked in at build time. |
 | [`nginx-dev.conf.template`](./nginx-dev.conf.template) | nginx server config; the cookie token is templated in via `envsubst`. |
 | [`generate-pan-domain-cookie.ts`](./generate-pan-domain-cookie.ts) | Build-time cookie generator reusing the project's cookie helper. |
-| [`entrypoint.dev.sh`](./entrypoint.dev.sh) | Restorer container entrypoint (webpack watch + `sbt run`). |
+| [`entrypoint.dev.sh`](./entrypoint.dev.sh) | Installs the toolchain and dependencies, then runs Vite + `sbt run`. |
+| [`entrypoint.prod.sh`](./entrypoint.prod.sh) | Installs the toolchain and dependencies, then builds and runs Restorer in Play Prod mode. |
 | [`run-dev-local.ts`](./run-dev-local.ts) | `npm run dev:local` — starts the stack and keeps it running. |
