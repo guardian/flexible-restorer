@@ -148,6 +148,7 @@ export async function startLocalStack(
                         target: "/app",
                         mode: "rw",
                     },
+                    ...dependencyCacheBindMounts(),
                 ])
                 .withTmpFs({
                     "/app/node_modules": "rw,exec",
@@ -259,3 +260,21 @@ export async function stopLocalStack(stack?: LocalStack): Promise<void> {
         await cleanupLocalStack(stack.projectRoot, stack.resources, stack.diagnostics);
     }
 }
+
+function dependencyCacheBindMounts(): { source: string; target: string; mode: "rw" }[] {
+    const coursierCacheDir = process.env.DEVENV_COURSIER_CACHE_MOUNT_DIR;
+    const ivyCacheDir = process.env.DEVENV_IVY_CACHE_MOUNT_DIR;
+    const npmCacheDir = process.env.E2E_NPM_CACACHE_DIR;
+    const mounts: { source: string; target: string; mode: "rw" }[] = [];
+    if (coursierCacheDir) {
+        mounts.push({ source: coursierCacheDir, target: "/root/.cache/coursier/v1", mode: "rw" });
+    }
+    if (ivyCacheDir) {
+        mounts.push({ source: ivyCacheDir, target: "/root/.ivy2/cache", mode: "rw" });
+    }
+    if (npmCacheDir) {
+        mounts.push({ source: npmCacheDir, target: "/root/.npm/_cacache", mode: "rw" });
+    }
+    return mounts;
+}
+
