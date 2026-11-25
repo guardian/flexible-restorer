@@ -7,8 +7,7 @@ import {GuLoadBalancedAppExperimental} from "@guardian/cdk/lib/experimental/patt
 import type {App} from "aws-cdk-lib";
 import { Size} from "aws-cdk-lib";
 import { CfnParameter, Duration } from "aws-cdk-lib";
-import {BurstablePerformance} from "aws-cdk-lib/aws-ec2";
-import { CfnService } from "aws-cdk-lib/aws-ecs";
+import {BurstablePerformance, ISecurityGroup, SecurityGroup} from "aws-cdk-lib/aws-ec2";
 import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
 
 const app = "restorer2";
@@ -98,6 +97,25 @@ export class Restorer2 extends GuStack {
       }),
     ];
 
+      // Allow the restorer instances to reach the flexible-content API ELBs.
+      // PROD additionally needs access to the CODE API (to restore content into
+      // CODE). Note the 5 security group limit for instances in a private subnet:
+      // GuCDK attaches one (HTTPS egress), leaving room for at most four here.
+      const additionalApplicationSecurityGroups: ISecurityGroup[] = (
+          this.stage === 'PROD'
+              ? [
+                  ...stageConfigs.PROD.accessToApiSecurityGroupIds,
+                  ...stageConfigs.CODE.accessToApiSecurityGroupIds,
+              ]
+              : stageConfigs.CODE.accessToApiSecurityGroupIds
+      ).map((securityGroupId, index) =>
+          SecurityGroup.fromSecurityGroupId(
+              this,
+              `ImportedSecurityGroup${index}`,
+              securityGroupId,
+          ),
+      );
+
       const loadBalancedApp = new GuLoadBalancedAppExperimental(this, {
          app,
          access: { scope: AccessScope.PUBLIC },
@@ -114,40 +132,16 @@ export class Restorer2 extends GuStack {
                  minimumTasks: 2,
                  maximumTasks: 4,
              },
-             managedInstancesProps: {
-                 instancesRequirements: {
-                     vCpuCountMin: 2,
-                     burstablePerformance: BurstablePerformance.REQUIRED,
-                     memoryMin: Size.mebibytes(1024),
-                     allowedInstanceTypes: ['t4g.*'],
-                 }
+             instancesRequirements: {
+                 vCpuCountMin: 2,
+                 burstablePerformance: BurstablePerformance.REQUIRED,
+                 memoryMin: Size.mebibytes(1024),
+                 allowedInstanceTypes: ['t4g.*'],
              },
              provisionManagedSecurityRole: true,
-         }
+         },
+         additionalApplicationSecurityGroups,
      });
-
-    // Allow the restorer instances to reach the flexible-content API ELBs.
-    // PROD additionally needs access to the CODE API (to restore content into
-    // CODE). Note the 5 security group limit for instances in a private subnet:
-    // GuCDK attaches one (HTTPS egress), leaving room for at most four here.
-    const apiSecurityGroupIds =
-      this.stage === "PROD"
-        ? [...stageConfigs.PROD.accessToApiSecurityGroupIds, ...stageConfigs.CODE.accessToApiSecurityGroupIds]
-        : stageConfigs.CODE.accessToApiSecurityGroupIds;
-
-        const ecsService = loadBalancedApp.ecsService;
-        if (!ecsService) {
-            throw new Error("Flexible restorer requires an ECS service for API access configuration");
-      }
-
-        const cfnEcsService = ecsService.node.defaultChild;
-        if (!(cfnEcsService instanceof CfnService)) {
-            throw new Error("Flexible restorer requires an ECS CloudFormation service for API access configuration");
-        }
-        cfnEcsService.addPropertyOverride("NetworkConfiguration.AwsvpcConfiguration.SecurityGroups", [
-            ...ecsService.connections.securityGroups.map(({ securityGroupId }) => securityGroupId),
-            ...apiSecurityGroupIds,
-        ]);
 
     if (this.stage === "CODE") {
       const panDomainPaths = panDomainSettingsPaths("local.dev-gutools.co.uk")
