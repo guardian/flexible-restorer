@@ -127,11 +127,23 @@ export async function startLocalStack(
                     exposedPorts: [9000, 5173],
                     healthCheckPort: 9000,
                     healthCheckPath: "/management/healthcheck",
+                    projectHostPath: projectRoot,
+                    projectContainerPath: "/app",
+                    projectExcludePaths: [
+                        "/app/node_modules",
+                        "/app/target",
+                        "/app/project/target",
+                        "/app/project/project",
+                        "/app/public/dist",
+                        ...(!mountLogs ? ["/app/logs"] : []),
+                    ],
+                    coursierCacheDir: process.env.DEVENV_COURSIER_CACHE_MOUNT_DIR,
+                    ivyCacheDir: process.env.DEVENV_IVY_CACHE_MOUNT_DIR,
+                    npmCacheDir: process.env.E2E_NPM_CACACHE_DIR,
                 })
                 .withNetwork(network)
                 // nginx proxies to the restorer over the Docker network by this alias.
                 .withNetworkAliases("restorer")
-                .withWorkingDir("/app")
                 // In prod mode the app is staged and run in Play Prod mode (assets
                 // served from the packaged classpath with the immutable cache
                 // header); dev mode uses `sbt run` with the Vite dev server. The source is
@@ -142,22 +154,6 @@ export async function startLocalStack(
                         ? "/app/e2e-tests/images/entrypoint.prod.sh"
                         : "/app/e2e-tests/images/entrypoint.dev.sh",
                 ])
-                .withBindMounts([
-                    {
-                        source: projectRoot,
-                        target: "/app",
-                        mode: "rw",
-                    },
-                    ...dependencyCacheBindMounts(),
-                ])
-                .withTmpFs({
-                    "/app/node_modules": "rw,exec",
-                    "/app/target": "rw,exec",
-                    "/app/project/target": "rw,exec",
-                    "/app/project/project": "rw,exec",
-                    "/app/public/dist": "rw,exec",
-                    ...(!mountLogs ? { "/app/logs": "rw" } : {}),
-                })
                 .withEnvironment({
                     AWS_ENDPOINT_URL_S3: `http://${S3_ENDPOINT_HOST}:${LOCALSTACK_PORT}`,
                     AWS_ACCESS_KEY_ID: S3_ACCESS_KEY_ID,
@@ -259,22 +255,5 @@ export async function stopLocalStack(stack?: LocalStack): Promise<void> {
     if (stack) {
         await cleanupLocalStack(stack.projectRoot, stack.resources, stack.diagnostics);
     }
-}
-
-function dependencyCacheBindMounts(): { source: string; target: string; mode: "rw" }[] {
-    const coursierCacheDir = process.env.DEVENV_COURSIER_CACHE_MOUNT_DIR;
-    const ivyCacheDir = process.env.DEVENV_IVY_CACHE_MOUNT_DIR;
-    const npmCacheDir = process.env.E2E_NPM_CACACHE_DIR;
-    const mounts: { source: string; target: string; mode: "rw" }[] = [];
-    if (coursierCacheDir) {
-        mounts.push({ source: coursierCacheDir, target: "/root/.cache/coursier/v1", mode: "rw" });
-    }
-    if (ivyCacheDir) {
-        mounts.push({ source: ivyCacheDir, target: "/root/.ivy2/cache", mode: "rw" });
-    }
-    if (npmCacheDir) {
-        mounts.push({ source: npmCacheDir, target: "/root/.npm/_cacache", mode: "rw" });
-    }
-    return mounts;
 }
 
