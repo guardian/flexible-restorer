@@ -17,7 +17,6 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
       "GuLoadBalancedAppExperimental",
       "GuRepository",
       "GuArtifactsAccountId",
-      "GuRepository",
       "GuLoggingStreamNameParameter",
       "GuHttpsEgressSecurityGroup",
       "GuECSManagedInstanceRoleExperimental",
@@ -541,47 +540,73 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
             "VersionConsistency": "disabled",
           },
           {
+            "Command": [
+              "/bin/bash",
+              "-c",
+              "mkdir -p /tmp/guardian && printf '%s\\n' "$GU_FLUENT_BIT_PARSERS" > /tmp/guardian/guardian-parsers.conf && printf '%s\\n' "$GU_FLUENT_BIT_CONFIG" > /tmp/guardian/guardian.conf && exec /init/fluent_bit_init_entrypoint.sh",
+            ],
             "Environment": [
               {
-                "Name": "STACK",
-                "Value": "flexible",
+                "Name": "aws_fluent_bit_init_file_1",
+                "Value": "/tmp/guardian/guardian-parsers.conf",
               },
               {
-                "Name": "STAGE",
-                "Value": "CODE",
+                "Name": "aws_fluent_bit_init_file_2",
+                "Value": "/ecs/ecs-metadata.conf",
               },
               {
-                "Name": "APP",
-                "Value": "restorer2",
+                "Name": "aws_fluent_bit_init_file_3",
+                "Value": "/tmp/guardian/guardian.conf",
               },
               {
-                "Name": "TASK_NAME",
-                "Value": "restorer2",
+                "Name": "OUTPUT_PLUGIN",
+                "Value": "null",
               },
               {
-                "Name": "GU_REPO",
-                "Value": "guardian/flexible-restorer",
+                "Name": "GU_FLUENT_BIT_PARSERS",
+                "Value": "
+[PARSER]
+    Name json
+    Format json
+    Time_Key time
+    Time_Format %Y-%m-%dT%H:%M:%SZ",
+              },
+              {
+                "Name": "GU_FLUENT_BIT_CONFIG",
+                "Value": "
+[FILTER]
+    Name modify
+    Match *
+    Rename log message
+
+[FILTER]
+    Name parser
+    Match *
+    Key_Name message
+    Parser json
+    Reserve_Data On
+
+[FILTER]
+    Name modify
+    Match *
+    Add ShippedBy devx-logs
+    Add gu:logging-sidecar sha256:0aa2921b14e44b8f00e057c68a0a3bafb944261a1c5aac36362bf2e1be8bef4d
+    Add stack flexible
+    Add stage CODE
+    Add app restorer2
+    Add gu:repo guardian/flexible-restorer
+    Add task restorer2
+
+[OUTPUT]
+    Name \${OUTPUT_PLUGIN}
+    Match *",
               },
             ],
             "Essential": true,
             "FirelensConfiguration": {
               "Type": "fluentbit",
             },
-            "Image": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "ArtifactsAccountId",
-                  },
-                  ".dkr.ecr.eu-west-1.",
-                  {
-                    "Ref": "AWS::URLSuffix",
-                  },
-                  "/guardian/cdk/logging@sha256:32dce4e7a9e628b053ca42c271d7bbdf3697b4980c4612e845a15257c2bd1d99",
-                ],
-              ],
-            },
+            "Image": "public.ecr.aws/aws-observability/aws-for-fluent-bit:init-3.4.11@sha256:0aa2921b14e44b8f00e057c68a0a3bafb944261a1c5aac36362bf2e1be8bef4d",
             "LogConfiguration": {
               "LogDriver": "awslogs",
               "Options": {
@@ -594,7 +619,7 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
             },
             "MountPoints": [
               {
-                "ContainerPath": "/init",
+                "ContainerPath": "/tmp",
                 "ReadOnly": false,
                 "SourceVolume": "logging-volume",
               },
@@ -728,30 +753,6 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
               "Action": "ecr:GetAuthorizationToken",
               "Effect": "Allow",
               "Resource": "*",
-            },
-            {
-              "Action": [
-                "ecr:BatchCheckLayerAvailability",
-                "ecr:GetDownloadUrlForLayer",
-                "ecr:BatchGetImage",
-              ],
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:",
-                    {
-                      "Ref": "AWS::Partition",
-                    },
-                    ":ecr:eu-west-1:",
-                    {
-                      "Ref": "ArtifactsAccountId",
-                    },
-                    ":repository/guardian/cdk/logging",
-                  ],
-                ],
-              },
             },
             {
               "Action": [
@@ -945,6 +946,38 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
         ],
       },
       "Type": "AWS::IAM::Policy",
+    },
+    "ImportedSecurityGroup0fromRestorer2CODELoadBalancerRestorer2SecurityGroupDF6053379000A52BD6A6": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "FromPort": 9000,
+        "GroupId": "sg-4d028336",
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "LoadBalancerRestorer2SecurityGroup64900CDE",
+            "GroupId",
+          ],
+        },
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupIngress",
+    },
+    "ImportedSecurityGroup1fromRestorer2CODELoadBalancerRestorer2SecurityGroupDF6053379000EB2A98A3": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "FromPort": 9000,
+        "GroupId": "sg-3137fa4b",
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "LoadBalancerRestorer2SecurityGroup64900CDE",
+            "GroupId",
+          ],
+        },
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupIngress",
     },
     "KMSKeyPolicyF2126861": {
       "Properties": {
@@ -1149,6 +1182,38 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
       },
       "Type": "AWS::EC2::SecurityGroupEgress",
     },
+    "LoadBalancerRestorer2SecurityGrouptoRestorer2CODEImportedSecurityGroup07E60ACBA90006229AA6E": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "DestinationSecurityGroupId": "sg-4d028336",
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "LoadBalancerRestorer2SecurityGroup64900CDE",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupEgress",
+    },
+    "LoadBalancerRestorer2SecurityGrouptoRestorer2CODEImportedSecurityGroup166B31AFA9000B873E7A5": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "DestinationSecurityGroupId": "sg-3137fa4b",
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "LoadBalancerRestorer2SecurityGroup64900CDE",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupEgress",
+    },
     "ManagedInstancesCapacityProviderC2946447": {
       "Properties": {
         "ClusterName": {
@@ -1194,6 +1259,7 @@ exports[`The Restorer2 stack matches the snapshot for CODE 1`] = `
               },
             },
           },
+          "PropagateTags": "CAPACITY_PROVIDER",
         },
         "Tags": [
           {
@@ -1563,7 +1629,6 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
       "GuLoadBalancedAppExperimental",
       "GuRepository",
       "GuArtifactsAccountId",
-      "GuRepository",
       "GuLoggingStreamNameParameter",
       "GuHttpsEgressSecurityGroup",
       "GuECSManagedInstanceRoleExperimental",
@@ -2088,47 +2153,73 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
             "VersionConsistency": "disabled",
           },
           {
+            "Command": [
+              "/bin/bash",
+              "-c",
+              "mkdir -p /tmp/guardian && printf '%s\\n' "$GU_FLUENT_BIT_PARSERS" > /tmp/guardian/guardian-parsers.conf && printf '%s\\n' "$GU_FLUENT_BIT_CONFIG" > /tmp/guardian/guardian.conf && exec /init/fluent_bit_init_entrypoint.sh",
+            ],
             "Environment": [
               {
-                "Name": "STACK",
-                "Value": "flexible",
+                "Name": "aws_fluent_bit_init_file_1",
+                "Value": "/tmp/guardian/guardian-parsers.conf",
               },
               {
-                "Name": "STAGE",
-                "Value": "PROD",
+                "Name": "aws_fluent_bit_init_file_2",
+                "Value": "/ecs/ecs-metadata.conf",
               },
               {
-                "Name": "APP",
-                "Value": "restorer2",
+                "Name": "aws_fluent_bit_init_file_3",
+                "Value": "/tmp/guardian/guardian.conf",
               },
               {
-                "Name": "TASK_NAME",
-                "Value": "restorer2",
+                "Name": "OUTPUT_PLUGIN",
+                "Value": "null",
               },
               {
-                "Name": "GU_REPO",
-                "Value": "guardian/flexible-restorer",
+                "Name": "GU_FLUENT_BIT_PARSERS",
+                "Value": "
+[PARSER]
+    Name json
+    Format json
+    Time_Key time
+    Time_Format %Y-%m-%dT%H:%M:%SZ",
+              },
+              {
+                "Name": "GU_FLUENT_BIT_CONFIG",
+                "Value": "
+[FILTER]
+    Name modify
+    Match *
+    Rename log message
+
+[FILTER]
+    Name parser
+    Match *
+    Key_Name message
+    Parser json
+    Reserve_Data On
+
+[FILTER]
+    Name modify
+    Match *
+    Add ShippedBy devx-logs
+    Add gu:logging-sidecar sha256:0aa2921b14e44b8f00e057c68a0a3bafb944261a1c5aac36362bf2e1be8bef4d
+    Add stack flexible
+    Add stage PROD
+    Add app restorer2
+    Add gu:repo guardian/flexible-restorer
+    Add task restorer2
+
+[OUTPUT]
+    Name \${OUTPUT_PLUGIN}
+    Match *",
               },
             ],
             "Essential": true,
             "FirelensConfiguration": {
               "Type": "fluentbit",
             },
-            "Image": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "ArtifactsAccountId",
-                  },
-                  ".dkr.ecr.eu-west-1.",
-                  {
-                    "Ref": "AWS::URLSuffix",
-                  },
-                  "/guardian/cdk/logging@sha256:32dce4e7a9e628b053ca42c271d7bbdf3697b4980c4612e845a15257c2bd1d99",
-                ],
-              ],
-            },
+            "Image": "public.ecr.aws/aws-observability/aws-for-fluent-bit:init-3.4.11@sha256:0aa2921b14e44b8f00e057c68a0a3bafb944261a1c5aac36362bf2e1be8bef4d",
             "LogConfiguration": {
               "LogDriver": "awslogs",
               "Options": {
@@ -2141,7 +2232,7 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
             },
             "MountPoints": [
               {
-                "ContainerPath": "/init",
+                "ContainerPath": "/tmp",
                 "ReadOnly": false,
                 "SourceVolume": "logging-volume",
               },
@@ -2275,30 +2366,6 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
               "Action": "ecr:GetAuthorizationToken",
               "Effect": "Allow",
               "Resource": "*",
-            },
-            {
-              "Action": [
-                "ecr:BatchCheckLayerAvailability",
-                "ecr:GetDownloadUrlForLayer",
-                "ecr:BatchGetImage",
-              ],
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:",
-                    {
-                      "Ref": "AWS::Partition",
-                    },
-                    ":ecr:eu-west-1:",
-                    {
-                      "Ref": "ArtifactsAccountId",
-                    },
-                    ":repository/guardian/cdk/logging",
-                  ],
-                ],
-              },
             },
             {
               "Action": [
@@ -2492,6 +2559,70 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
         ],
       },
       "Type": "AWS::IAM::Policy",
+    },
+    "ImportedSecurityGroup0fromRestorer2PRODLoadBalancerRestorer2SecurityGroupDB0828C0900029E58815": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "FromPort": 9000,
+        "GroupId": "sg-4744c43c",
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "LoadBalancerRestorer2SecurityGroup64900CDE",
+            "GroupId",
+          ],
+        },
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupIngress",
+    },
+    "ImportedSecurityGroup1fromRestorer2PRODLoadBalancerRestorer2SecurityGroupDB0828C0900044964C1D": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "FromPort": 9000,
+        "GroupId": "sg-baae78c0",
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "LoadBalancerRestorer2SecurityGroup64900CDE",
+            "GroupId",
+          ],
+        },
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupIngress",
+    },
+    "ImportedSecurityGroup2fromRestorer2PRODLoadBalancerRestorer2SecurityGroupDB0828C090000D425294": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "FromPort": 9000,
+        "GroupId": "sg-4d028336",
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "LoadBalancerRestorer2SecurityGroup64900CDE",
+            "GroupId",
+          ],
+        },
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupIngress",
+    },
+    "ImportedSecurityGroup3fromRestorer2PRODLoadBalancerRestorer2SecurityGroupDB0828C09000625C0454": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "FromPort": 9000,
+        "GroupId": "sg-3137fa4b",
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "LoadBalancerRestorer2SecurityGroup64900CDE",
+            "GroupId",
+          ],
+        },
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupIngress",
     },
     "KMSKeyPolicyF2126861": {
       "Properties": {
@@ -2696,6 +2827,70 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
       },
       "Type": "AWS::EC2::SecurityGroupEgress",
     },
+    "LoadBalancerRestorer2SecurityGrouptoRestorer2PRODImportedSecurityGroup02D62199D9000CD0490EA": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "DestinationSecurityGroupId": "sg-4744c43c",
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "LoadBalancerRestorer2SecurityGroup64900CDE",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupEgress",
+    },
+    "LoadBalancerRestorer2SecurityGrouptoRestorer2PRODImportedSecurityGroup169BB26739000E30F3E85": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "DestinationSecurityGroupId": "sg-baae78c0",
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "LoadBalancerRestorer2SecurityGroup64900CDE",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupEgress",
+    },
+    "LoadBalancerRestorer2SecurityGrouptoRestorer2PRODImportedSecurityGroup219C13EA69000ABC92EB5": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "DestinationSecurityGroupId": "sg-4d028336",
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "LoadBalancerRestorer2SecurityGroup64900CDE",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupEgress",
+    },
+    "LoadBalancerRestorer2SecurityGrouptoRestorer2PRODImportedSecurityGroup354233EB79000E277BCAE": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "DestinationSecurityGroupId": "sg-3137fa4b",
+        "FromPort": 9000,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "LoadBalancerRestorer2SecurityGroup64900CDE",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 9000,
+      },
+      "Type": "AWS::EC2::SecurityGroupEgress",
+    },
     "ManagedInstancesCapacityProviderC2946447": {
       "Properties": {
         "ClusterName": {
@@ -2741,6 +2936,7 @@ exports[`The Restorer2 stack matches the snapshot for PROD 1`] = `
               },
             },
           },
+          "PropagateTags": "CAPACITY_PROVIDER",
         },
         "Tags": [
           {
